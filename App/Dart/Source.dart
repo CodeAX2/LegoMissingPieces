@@ -2,12 +2,17 @@ import 'RebrickableAccess.dart';
 import 'dart:html';
 import 'LegoSet.dart';
 import 'LegoPiece.dart';
+import 'LegoSetProject.dart';
 
 int main() {
-  RebrickableAccess apiAccess = new RebrickableAccess("");
+  LegoSetProject project = new LegoSetProject("TestProject.lego");
+  project.loadProject();
 
   ButtonElement submitButton = document.getElementById("inputButton");
   submitButton.addEventListener("click", (event) {
+    TextInputElement apiInput = document.getElementById("apiInput");
+    RebrickableAccess apiAccess = new RebrickableAccess(apiInput.value);
+
     TextInputElement searchInput = document.getElementById("searchInput");
     String search = searchInput.value;
     if (search != "") {

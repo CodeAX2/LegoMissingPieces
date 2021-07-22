@@ -14,6 +14,7 @@ class LegoPiece {
   ///
   /// Also requires an [apiAccess] in order to fetch the URL of the image
   /// Adds the LegoPiece to a map of all pieces, so there is never any duplicates
+  /// If [apiAccess] is null, and the piece does not exist, this returns null
   static LegoPiece getPiece(String partID, int colorID, RebrickableAccess apiAccess) {
     if (_registeredPieces == null) {
       _registeredPieces = new Map<String, Map<int, LegoPiece>>();
@@ -24,6 +25,7 @@ class LegoPiece {
     }
 
     if (_registeredPieces[partID][colorID] == null) {
+      if (apiAccess == null) return null;
       _registeredPieces[partID][colorID] = LegoPiece._(partID, colorID, apiAccess);
     }
 

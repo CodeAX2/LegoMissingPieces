@@ -3556,6 +3556,9 @@
     matchAsPrefix$2$s: function(receiver, a0, a1) {
       return J.getInterceptor$s(receiver).matchAsPrefix$2(receiver, a0, a1);
     },
+    readFileSync$2$x: function(receiver, a0, a1) {
+      return J.getInterceptor$x(receiver).readFileSync$2(receiver, a0, a1);
+    },
     send$1$x: function(receiver, a0) {
       return J.getInterceptor$x(receiver).send$1(receiver, a0);
     },
@@ -3570,6 +3573,9 @@
     },
     substring$2$s: function(receiver, a0, a1) {
       return J.getInterceptor$s(receiver).substring$2(receiver, a0, a1);
+    },
+    then$1$1$z: function(receiver, a0, $T1) {
+      return J.getInterceptor$z(receiver).then$1$1(receiver, a0, $T1);
     },
     toList$0$ax: function(receiver) {
       return J.getInterceptor$ax(receiver).toList$0(receiver);
@@ -3670,7 +3676,7 @@
       else {
         t1 = type$.dynamic;
         if (type$.Future_dynamic._is(object))
-          object.then$1$2$onError(thenCallback, errorCallback, t1);
+          object.then$1$2$onError(0, thenCallback, errorCallback, t1);
         else {
           future = new P._Future($.Zone__current, type$._Future_dynamic);
           future._state = 4;
@@ -4456,7 +4462,10 @@
     __SetBase_Object_SetMixin: function __SetBase_Object_SetMixin() {
     },
     _parseJson: function(source, reviver) {
-      var e, exception, t1, parsed = null;
+      var parsed, e, exception, t1;
+      if (typeof source != "string")
+        throw H.wrapException(H.argumentErrorValue(source));
+      parsed = null;
       try {
         parsed = JSON.parse(source);
       } catch (exception) {
@@ -4835,6 +4844,9 @@
     },
     FormatException$: function(message, source, offset) {
       return new P.FormatException(message, source, offset);
+    },
+    print: function(object) {
+      H.printString(H.S(J.toString$0$(object)));
     },
     Uri_parse: function(uri) {
       var delta, indices, schemeEnd, hostStart, portStart, pathStart, queryStart, fragmentStart, isSimple, scheme, t1, t2, schemeAuth, queryStart0, pathStart0, userInfoStart, userInfo, host, portNumber, port, path, query, _null = null,
@@ -6344,6 +6356,10 @@
   E = {BaseClient: function BaseClient() {
     }, ClientException: function ClientException(t0) {
       this.message = t0;
+    }, Promise: function Promise() {
+    }, Date: function Date() {
+    }, JsError: function JsError() {
+    }, Atomics: function Atomics() {
     }, PosixStyle: function PosixStyle(t0, t1, t2) {
       this.separatorPattern = t0;
       this.needsSeparatorPattern = t1;
@@ -6450,16 +6466,19 @@
     CaseInsensitiveMap$from_closure: function CaseInsensitiveMap$from_closure() {
     },
     main: function() {
-      var submitButton,
-        apiAccess = new T.RebrickableAccess();
-      apiAccess._apiKey = "a7269442d60ec146a8be4037be9e3daf";
-      apiAccess._client = new O.BrowserClient(P.LinkedHashSet_LinkedHashSet$_empty(type$.HttpRequest));
+      var t1, submitButton,
+        project = new S.LegoSetProject();
+      project._filePath = "TestProject.lego";
+      project.set$_sets(H.setRuntimeTypeInfo([], type$.JSArray_legacy_LegoSet));
+      t1 = $._fs;
+      if (t1 == null)
+        t1 = $._fs = type$.nullable_FS._as(self.require("fs"));
+      P.print(J.$index$asx(C.C_JsonCodec.decode$2$reviver(0, H._asStringS(J.readFileSync$2$x(t1, project._filePath, "utf-8")), null), "api-key"));
       submitButton = type$.legacy_ButtonElement._as(document.getElementById("inputButton"));
-      (submitButton && C.ButtonElement_methods).addEventListener$2(submitButton, "click", new Z.main_closure(apiAccess));
+      (submitButton && C.ButtonElement_methods).addEventListener$2(submitButton, "click", new Z.main_closure());
       return 0;
     },
-    main_closure: function main_closure(t0) {
-      this.apiAccess = t0;
+    main_closure: function main_closure() {
     },
     main__closure: function main__closure(t0) {
       this.apiAccess = t0;
@@ -6569,15 +6588,15 @@
         text = span.get$text(span);
       if (!C.JSString_methods.contains$1(text, "\r\n"))
         return span;
-      t1 = span.get$end();
+      t1 = span.get$end(span);
       endOffset = t1.get$offset(t1);
       for (t1 = text.length - 1, i = 0; i < t1; ++i)
         if (C.JSString_methods._codeUnitAt$1(text, i) === 13 && C.JSString_methods._codeUnitAt$1(text, i + 1) === 10)
           --endOffset;
       t1 = span.get$start(span);
-      t2 = span.get$sourceUrl();
-      t3 = span.get$end().get$line();
-      t2 = V.SourceLocation$(endOffset, span.get$end().get$column(), t3, t2);
+      t2 = span.get$sourceUrl(span);
+      t3 = span.get$end(span).get$line();
+      t2 = V.SourceLocation$(endOffset, span.get$end(span).get$column(), t3, t2);
       t3 = H.stringReplaceAllUnchecked(text, "\r\n", "\n");
       t4 = span.get$context();
       return X.SourceSpanWithContext$(t1, t2, t3, H.stringReplaceAllUnchecked(t4, "\r\n", "\n"));
@@ -6591,7 +6610,7 @@
       context = C.JSString_methods.substring$2(span.get$context(), 0, span.get$context().length - 1);
       text = span.get$text(span);
       start = span.get$start(span);
-      end = span.get$end();
+      end = span.get$end(span);
       if (C.JSString_methods.endsWith$1(span.get$text(span), "\n")) {
         t1 = B.findLineStart(span.get$context(), span.get$text(span), span.get$start(span).get$column());
         t1.toString;
@@ -6603,16 +6622,16 @@
         if (text.length === 0)
           end = start;
         else {
-          t1 = span.get$end();
+          t1 = span.get$end(span);
           t1 = t1.get$offset(t1);
-          t2 = span.get$sourceUrl();
-          t3 = span.get$end().get$line();
+          t2 = span.get$sourceUrl(span);
+          t3 = span.get$end(span).get$line();
           if (typeof t3 !== "number")
             return t3.$sub();
           end = V.SourceLocation$(t1 - 1, U._Highlight__lastLineLength(context), t3 - 1, t2);
           t1 = span.get$start(span);
           t1 = t1.get$offset(t1);
-          t2 = span.get$end();
+          t2 = span.get$end(span);
           start = t1 === t2.get$offset(t2) ? end : span.get$start(span);
         }
       }
@@ -6620,16 +6639,16 @@
     },
     _Highlight__normalizeEndOfLine: function(span) {
       var text, t1, t2, t3, t4;
-      if (span.get$end().get$column() !== 0)
+      if (span.get$end(span).get$column() !== 0)
         return span;
-      if (span.get$end().get$line() == span.get$start(span).get$line())
+      if (span.get$end(span).get$line() == span.get$start(span).get$line())
         return span;
       text = C.JSString_methods.substring$2(span.get$text(span), 0, span.get$text(span).length - 1);
       t1 = span.get$start(span);
-      t2 = span.get$end();
+      t2 = span.get$end(span);
       t2 = t2.get$offset(t2);
-      t3 = span.get$sourceUrl();
-      t4 = span.get$end().get$line();
+      t3 = span.get$sourceUrl(span);
+      t4 = span.get$end(span).get$line();
       if (typeof t4 !== "number")
         return t4.$sub();
       t3 = V.SourceLocation$(t2 - 1, text.length - C.JSString_methods.lastIndexOf$1(text, "\n") - 1, t4 - 1, t3);
@@ -6784,7 +6803,7 @@
       return P._asyncStartSync($async$LegoSet_searchSets, $async$completer);
     },
     LegoSet: function LegoSet() {
-      this._pieces = this._setID = null;
+      this._piecesOwned = this._pieces = this._setID = null;
     }
   },
   X = {StreamedResponse: function StreamedResponse(t0, t1, t2, t3, t4, t5, t6, t7) {
@@ -6797,6 +6816,16 @@
       _.headers = t5;
       _.isRedirect = t6;
       _.persistentConnection = t7;
+    }, NodeJsError: function NodeJsError() {
+    }, JsAssertionError: function JsAssertionError() {
+    }, JsRangeError: function JsRangeError() {
+    }, JsReferenceError: function JsReferenceError() {
+    }, JsSyntaxError: function JsSyntaxError() {
+    }, JsTypeError: function JsTypeError() {
+    }, JsSystemError: function JsSystemError() {
+    }, Process: function Process() {
+    }, CPUUsage: function CPUUsage() {
+    }, Release: function Release() {
     },
     ParsedPath_ParsedPath$parse: function(path, style) {
       var t1, parts, separators, start, i,
@@ -6902,8 +6931,161 @@
       return C.JSString_methods.splitMapJoin$2$onMatch(C.JSString_methods.substring$2(string, 1, string.length - 1), $.$get$_quotedPair(), type$.String_Function_Match._as(new N.expectQuotedString_closure()));
     },
     expectQuotedString_closure: function expectQuotedString_closure() {
+    },
+    TTY: function TTY() {
+    },
+    TTYReadStream: function TTYReadStream() {
+    },
+    TTYWriteStream: function TTYWriteStream() {
     }
   },
+  V = {BufferModule: function BufferModule() {
+    }, BufferConstants: function BufferConstants() {
+    }, Buffer: function Buffer() {
+    },
+    SourceLocation$: function(offset, column, line, sourceUrl) {
+      var t1 = line == null,
+        t2 = t1 ? 0 : line;
+      if (offset < 0)
+        H.throwExpression(P.RangeError$("Offset may not be negative, was " + offset + "."));
+      else if (!t1 && line < 0)
+        H.throwExpression(P.RangeError$("Line may not be negative, was " + H.S(line) + "."));
+      else if (column < 0)
+        H.throwExpression(P.RangeError$("Column may not be negative, was " + column + "."));
+      return new V.SourceLocation(sourceUrl, offset, t2, column);
+    },
+    SourceLocation: function SourceLocation(t0, t1, t2, t3) {
+      var _ = this;
+      _.sourceUrl = t0;
+      _.offset = t1;
+      _.line = t2;
+      _.column = t3;
+    },
+    SourceSpanBase: function SourceSpanBase() {
+    }
+  },
+  F = {ConsoleModule: function ConsoleModule() {
+    }, Console: function Console() {
+    }, EventEmitter: function EventEmitter() {
+    }, UrlStyle: function UrlStyle(t0, t1, t2, t3) {
+      var _ = this;
+      _.separatorPattern = t0;
+      _.needsSeparatorPattern = t1;
+      _.rootPattern = t2;
+      _.relativeRootPattern = t3;
+    }},
+  D = {FS: function FS() {
+    }, FSConstants: function FSConstants() {
+    }, FSWatcher: function FSWatcher() {
+    }, ReadStream: function ReadStream() {
+    }, ReadStreamOptions: function ReadStreamOptions() {
+    }, WriteStream: function WriteStream() {
+    }, WriteStreamOptions: function WriteStreamOptions() {
+    }, FileOptions: function FileOptions() {
+    }, StatOptions: function StatOptions() {
+    }, MkdirOptions: function MkdirOptions() {
+    }, RmdirOptions: function RmdirOptions() {
+    }, WatchOptions: function WatchOptions() {
+    }, WatchFileOptions: function WatchFileOptions() {
+    }, Stats: function Stats() {
+    }, StreamModule: function StreamModule() {
+    }, Readable: function Readable() {
+    }, Writable: function Writable() {
+    }, Duplex: function Duplex() {
+    }, Transform: function Transform() {
+    }, WritableOptions: function WritableOptions() {
+    }, ReadableOptions: function ReadableOptions() {
+    }, SourceLocationMixin: function SourceLocationMixin() {
+    },
+    current: function() {
+      var exception, t1, path, lastIndex, uri = null;
+      try {
+        uri = P.Uri_base();
+      } catch (exception) {
+        if (type$.Exception._is(H.unwrapException(exception))) {
+          t1 = $._current;
+          if (t1 != null)
+            return t1;
+          throw exception;
+        } else
+          throw exception;
+      }
+      if (J.$eq$(uri, $._currentUriBase)) {
+        t1 = $._current;
+        t1.toString;
+        return t1;
+      }
+      $._currentUriBase = uri;
+      if ($.$get$Style_platform() == $.$get$Style_url())
+        t1 = $._current = uri.resolve$1(".").toString$0(0);
+      else {
+        path = uri.toFilePath$0();
+        lastIndex = path.length - 1;
+        t1 = $._current = lastIndex === 0 ? path : C.JSString_methods.substring$2(path, 0, lastIndex);
+      }
+      t1.toString;
+      return t1;
+    }
+  },
+  Y = {Modules: function Modules() {
+    }, Module: function Module() {
+    }, Net: function Net() {
+    }, Socket: function Socket() {
+    }, NetAddress: function NetAddress() {
+    }, NetServer: function NetServer() {
+    },
+    FileLocation$_: function(file, offset) {
+      if (offset < 0)
+        H.throwExpression(P.RangeError$("Offset may not be negative, was " + offset + "."));
+      else if (offset > file._decodedChars.length)
+        H.throwExpression(P.RangeError$("Offset " + offset + string$.x20must_ + file.get$length(file) + "."));
+      return new Y.FileLocation(file, offset);
+    },
+    SourceFile: function SourceFile(t0, t1, t2) {
+      var _ = this;
+      _.url = t0;
+      _._lineStarts = t1;
+      _._decodedChars = t2;
+      _._cachedLine = null;
+    },
+    FileLocation: function FileLocation(t0, t1) {
+      this.file = t0;
+      this.offset = t1;
+    },
+    _FileSpan: function _FileSpan(t0, t1, t2) {
+      this.file = t0;
+      this._file$_start = t1;
+      this._end = t2;
+    },
+    SourceSpanMixin: function SourceSpanMixin() {
+    },
+    groupBy: function(values, key, $S, $T) {
+      var t1, _i, element, t2, t3,
+        map = P.LinkedHashMap_LinkedHashMap$_empty($T, $S._eval$1("List<0>"));
+      for (t1 = $S._eval$1("JSArray<0>"), _i = 0; _i < 1; ++_i) {
+        element = values[_i];
+        t2 = key.call$1(element);
+        t3 = map.$index(0, t2);
+        if (t3 == null) {
+          t3 = H.setRuntimeTypeInfo([], t1);
+          map.$indexSet(0, t2, t3);
+          t2 = t3;
+        } else
+          t2 = t3;
+        C.JSArray_methods.add$1(t2, element);
+      }
+      return map;
+    }
+  },
+  L = {Immediate: function Immediate() {
+    }, Timeout: function Timeout() {
+    }, WindowsStyle: function WindowsStyle(t0, t1, t2, t3) {
+      var _ = this;
+      _.separatorPattern = t0;
+      _.needsSeparatorPattern = t1;
+      _.rootPattern = t2;
+      _.relativeRootPattern = t3;
+    }},
   B = {InternalStyle: function InternalStyle() {
     },
     encodingForCharset: function(charset) {
@@ -7011,119 +7193,10 @@
       return null;
     }
   },
-  F = {UrlStyle: function UrlStyle(t0, t1, t2, t3) {
-      var _ = this;
-      _.separatorPattern = t0;
-      _.needsSeparatorPattern = t1;
-      _.rootPattern = t2;
-      _.relativeRootPattern = t3;
-    }},
-  L = {WindowsStyle: function WindowsStyle(t0, t1, t2, t3) {
-      var _ = this;
-      _.separatorPattern = t0;
-      _.needsSeparatorPattern = t1;
-      _.rootPattern = t2;
-      _.relativeRootPattern = t3;
-    }},
-  Y = {
-    FileLocation$_: function(file, offset) {
-      if (offset < 0)
-        H.throwExpression(P.RangeError$("Offset may not be negative, was " + offset + "."));
-      else if (offset > file._decodedChars.length)
-        H.throwExpression(P.RangeError$("Offset " + offset + string$.x20must_ + file.get$length(file) + "."));
-      return new Y.FileLocation(file, offset);
-    },
-    SourceFile: function SourceFile(t0, t1, t2) {
-      var _ = this;
-      _.url = t0;
-      _._lineStarts = t1;
-      _._decodedChars = t2;
-      _._cachedLine = null;
-    },
-    FileLocation: function FileLocation(t0, t1) {
-      this.file = t0;
-      this.offset = t1;
-    },
-    _FileSpan: function _FileSpan(t0, t1, t2) {
-      this.file = t0;
-      this._file$_start = t1;
-      this._end = t2;
-    },
-    SourceSpanMixin: function SourceSpanMixin() {
-    },
-    groupBy: function(values, key, $S, $T) {
-      var t1, _i, element, t2, t3,
-        map = P.LinkedHashMap_LinkedHashMap$_empty($T, $S._eval$1("List<0>"));
-      for (t1 = $S._eval$1("JSArray<0>"), _i = 0; _i < 1; ++_i) {
-        element = values[_i];
-        t2 = key.call$1(element);
-        t3 = map.$index(0, t2);
-        if (t3 == null) {
-          t3 = H.setRuntimeTypeInfo([], t1);
-          map.$indexSet(0, t2, t3);
-          t2 = t3;
-        } else
-          t2 = t3;
-        C.JSArray_methods.add$1(t2, element);
-      }
-      return map;
-    }
-  },
-  V = {
-    SourceLocation$: function(offset, column, line, sourceUrl) {
-      var t1 = line == null,
-        t2 = t1 ? 0 : line;
-      if (offset < 0)
-        H.throwExpression(P.RangeError$("Offset may not be negative, was " + offset + "."));
-      else if (!t1 && line < 0)
-        H.throwExpression(P.RangeError$("Line may not be negative, was " + H.S(line) + "."));
-      else if (column < 0)
-        H.throwExpression(P.RangeError$("Column may not be negative, was " + column + "."));
-      return new V.SourceLocation(sourceUrl, offset, t2, column);
-    },
-    SourceLocation: function SourceLocation(t0, t1, t2, t3) {
-      var _ = this;
-      _.sourceUrl = t0;
-      _.offset = t1;
-      _.line = t2;
-      _.column = t3;
-    },
-    SourceSpanBase: function SourceSpanBase() {
-    }
-  },
-  D = {SourceLocationMixin: function SourceLocationMixin() {
-    },
-    current: function() {
-      var exception, t1, path, lastIndex, uri = null;
-      try {
-        uri = P.Uri_base();
-      } catch (exception) {
-        if (type$.Exception._is(H.unwrapException(exception))) {
-          t1 = $._current;
-          if (t1 != null)
-            return t1;
-          throw exception;
-        } else
-          throw exception;
-      }
-      if (J.$eq$(uri, $._currentUriBase)) {
-        t1 = $._current;
-        t1.toString;
-        return t1;
-      }
-      $._currentUriBase = uri;
-      if ($.$get$Style_platform() == $.$get$Style_url())
-        t1 = $._current = uri.resolve$1(".").toString$0(0);
-      else {
-        path = uri.toFilePath$0();
-        lastIndex = path.length - 1;
-        t1 = $._current = lastIndex === 0 ? path : C.JSString_methods.substring$2(path, 0, lastIndex);
-      }
-      t1.toString;
-      return t1;
-    }
-  };
-  var holders = [C, H, J, P, W, M, E, G, T, O, Z, U, X, R, N, B, F, L, Y, V, D];
+  S = {LegoSetProject: function LegoSetProject() {
+      this._filePath = null;
+    }};
+  var holders = [C, H, J, P, W, M, E, G, T, O, Z, U, X, R, N, V, F, D, Y, L, B, S];
   hunkHelpers.setFunctionNamesIfNecessary(holders);
   var $ = {};
   H.JS_CONST.prototype = {};
@@ -7165,6 +7238,22 @@
     },
     toString$0: function(receiver) {
       return String(receiver);
+    },
+    $isFS: 1,
+    get$length: function(obj) {
+      return obj.length;
+    },
+    toString$0: function(receiver) {
+      return receiver.toString();
+    },
+    readFileSync$2: function(receiver, p0, p1) {
+      return receiver.readFileSync(p0, p1);
+    },
+    get$start: function(obj) {
+      return obj.start;
+    },
+    get$end: function(obj) {
+      return obj.end;
     }
   };
   J.PlainJavaScriptObject.prototype = {};
@@ -8278,12 +8367,13 @@
     get$length: function(_) {
       return this.__js_helper$_length;
     },
-    get$keys: function() {
+    get$keys: function(_) {
       return new H.LinkedHashMapKeyIterable(this, H._instanceType(this)._eval$1("LinkedHashMapKeyIterable<1>"));
     },
     get$values: function(_) {
-      var t1 = H._instanceType(this);
-      return H.MappedIterable_MappedIterable(this.get$keys(), new H.JsLinkedHashMap_values_closure(this), t1._precomputed1, t1._rest[1]);
+      var _this = this,
+        t1 = H._instanceType(_this);
+      return H.MappedIterable_MappedIterable(_this.get$keys(_this), new H.JsLinkedHashMap_values_closure(_this), t1._precomputed1, t1._rest[1]);
     },
     containsKey$1: function(key) {
       var strings, nums, _this = this;
@@ -8576,7 +8666,7 @@
     $isRegExp: 1
   };
   H._MatchImplementation.prototype = {
-    get$end: function() {
+    get$end: function(_) {
       var t1 = this._match;
       return t1.index + t1[0].length;
     },
@@ -8612,7 +8702,7 @@
         match = t3._execGlobal$2(string, t1);
         if (match != null) {
           _this.__js_helper$_current = match;
-          nextIndex = match.get$end();
+          nextIndex = match.get$end(match);
           if (match._match.index === nextIndex) {
             if (t3._nativeRegExp.unicode) {
               t1 = _this._nextIndex;
@@ -8640,7 +8730,7 @@
     $isIterator: 1
   };
   H.StringMatch.prototype = {
-    get$end: function() {
+    get$end: function(_) {
       return this.start + this.pattern.length;
     },
     $index: function(_, g) {
@@ -8937,7 +9027,7 @@
     }
   };
   P._Future.prototype = {
-    then$1$2$onError: function(f, onError, $R) {
+    then$1$2$onError: function(_, f, onError, $R) {
       var currentZone, result, t2,
         t1 = this.$ti;
       t1._bind$1($R)._eval$1("1/(2)")._as(f);
@@ -8952,8 +9042,8 @@
       this._addListener$1(new P._FutureListener(result, t2, f, onError, t1._eval$1("@<1>")._bind$1($R)._eval$1("_FutureListener<1,2>")));
       return result;
     },
-    then$1$1: function(f, $R) {
-      return this.then$1$2$onError(f, null, $R);
+    then$1$1: function($receiver, f, $R) {
+      return this.then$1$2$onError($receiver, f, null, $R);
     },
     _thenAwait$1$2: function(f, onError, $E) {
       var result,
@@ -9030,7 +9120,7 @@
       var e, s, exception, _this = this;
       _this._state = 1;
       try {
-        source.then$1$2$onError(new P._Future__chainForeignFuture_closure(_this), new P._Future__chainForeignFuture_closure0(_this), type$.Null);
+        source.then$1$2$onError(0, new P._Future__chainForeignFuture_closure(_this), new P._Future__chainForeignFuture_closure0(_this), type$.Null);
       } catch (exception) {
         e = H.unwrapException(exception);
         s = H.getTraceFromException(exception);
@@ -9198,7 +9288,7 @@
       if (type$.Future_dynamic._is(completeResult)) {
         originalSource = _this._box_1.source;
         t1 = _this._box_0;
-        t1.listenerValueOrError = completeResult.then$1$1(new P._Future__propagateToListeners_handleWhenCompleteCallback_closure(originalSource), type$.dynamic);
+        t1.listenerValueOrError = J.then$1$1$z(completeResult, new P._Future__propagateToListeners_handleWhenCompleteCallback_closure(originalSource), type$.dynamic);
         t1.listenerHasError = false;
       }
     },
@@ -9262,12 +9352,12 @@
       var t1 = {},
         future = new P._Future($.Zone__current, type$._Future_int);
       t1.count = 0;
-      this.listen$4$cancelOnError$onDone$onError(new P.Stream_length_closure(t1, this), true, new P.Stream_length_closure0(t1, future), future.get$_completeError());
+      this.listen$4$cancelOnError$onDone$onError(0, new P.Stream_length_closure(t1, this), true, new P.Stream_length_closure0(t1, future), future.get$_completeError());
       return future;
     },
     get$first: function(_) {
       var future = new P._Future($.Zone__current, H._instanceType(this)._eval$1("_Future<Stream.T>")),
-        subscription = this.listen$4$cancelOnError$onDone$onError(null, true, new P.Stream_first_closure(future), future.get$_completeError());
+        subscription = this.listen$4$cancelOnError$onDone$onError(0, null, true, new P.Stream_first_closure(future), future.get$_completeError());
       subscription.onData$1(new P.Stream_first_closure0(this, subscription, future));
       return future;
     }
@@ -9324,8 +9414,8 @@
   };
   P.StreamSubscription.prototype = {};
   P.StreamView.prototype = {
-    listen$4$cancelOnError$onDone$onError: function(onData, cancelOnError, onDone, onError) {
-      return this._stream.listen$4$cancelOnError$onDone$onError(H._instanceType(this)._eval$1("~(StreamView.T)?")._as(onData), true, type$.nullable_void_Function._as(onDone), onError);
+    listen$4$cancelOnError$onDone$onError: function(_, onData, cancelOnError, onDone, onError) {
+      return this._stream.listen$4$cancelOnError$onDone$onError(0, H._instanceType(this)._eval$1("~(StreamView.T)?")._as(onData), true, type$.nullable_void_Function._as(onDone), onError);
     }
   };
   P.StreamTransformerBase.prototype = {};
@@ -9460,7 +9550,7 @@
     $signature: 0
   };
   P._StreamImpl.prototype = {
-    listen$4$cancelOnError$onDone$onError: function(onData, cancelOnError, onDone, onError) {
+    listen$4$cancelOnError$onDone$onError: function(_, onData, cancelOnError, onDone, onError) {
       var subscription, _this = this,
         t1 = _this.$ti;
       t1._eval$1("~(1)?")._as(onData);
@@ -9561,7 +9651,7 @@
   };
   P._StreamIterator.prototype = {};
   P._EmptyStream.prototype = {
-    listen$4$cancelOnError$onDone$onError: function(onData, cancelOnError, onDone, onError) {
+    listen$4$cancelOnError$onDone$onError: function(_, onData, cancelOnError, onDone, onError) {
       var t1 = this.$ti;
       t1._eval$1("~(1)?")._as(onData);
       type$.nullable_void_Function._as(onDone);
@@ -9964,15 +10054,15 @@
   };
   P.MapMixin.prototype = {
     forEach$1: function(_, action) {
-      var t1, key;
-      H._instanceType(this)._eval$1("~(MapMixin.K,MapMixin.V)")._as(action);
-      for (t1 = this.get$keys(), t1 = t1.get$iterator(t1); t1.moveNext$0();) {
+      var t1, key, _this = this;
+      H._instanceType(_this)._eval$1("~(MapMixin.K,MapMixin.V)")._as(action);
+      for (t1 = _this.get$keys(_this), t1 = t1.get$iterator(t1); t1.moveNext$0();) {
         key = t1.get$current();
-        action.call$2(key, this.$index(0, key));
+        action.call$2(key, _this.$index(0, key));
       }
     },
     get$length: function(_) {
-      var t1 = this.get$keys();
+      var t1 = this.get$keys(this);
       return t1.get$length(t1);
     },
     toString$0: function(_) {
@@ -10040,9 +10130,12 @@
         t1 = this._computeKeys$0().length;
       return t1;
     },
-    get$keys: function() {
-      if (this._processed == null)
-        return this._data.get$keys();
+    get$keys: function(_) {
+      var t1;
+      if (this._processed == null) {
+        t1 = this._data;
+        return t1.get$keys(t1);
+      }
       return new P._JsonMapKeyIterable(this);
     },
     $indexSet: function(_, key, value) {
@@ -10122,12 +10215,12 @@
     },
     elementAt$1: function(_, index) {
       var t1 = this._parent;
-      return t1._processed == null ? t1.get$keys().elementAt$1(0, index) : C.JSArray_methods.$index(t1._computeKeys$0(), index);
+      return t1._processed == null ? t1.get$keys(t1).elementAt$1(0, index) : C.JSArray_methods.$index(t1._computeKeys$0(), index);
     },
     get$iterator: function(_) {
       var t1 = this._parent;
       if (t1._processed == null) {
-        t1 = t1.get$keys();
+        t1 = t1.get$keys(t1);
         t1 = t1.get$iterator(t1);
       } else {
         t1 = t1._computeKeys$0();
@@ -11627,7 +11720,7 @@
   W.UIEvent.prototype = {};
   W.EventStreamProvider.prototype = {};
   W._EventStream.prototype = {
-    listen$4$cancelOnError$onDone$onError: function(onData, cancelOnError, onDone, onError) {
+    listen$4$cancelOnError$onDone$onError: function(_, onData, cancelOnError, onDone, onError) {
       var t1 = H._instanceType(this);
       t1._eval$1("~(1)?")._as(onData);
       type$.nullable_void_Function._as(onDone);
@@ -12003,9 +12096,9 @@
               t3 = type$._EventStream_legacy_ProgressEvent;
               t4 = new W._EventStream(t2._as(xhr), "load", false, t3);
               t5 = type$.void;
-              t4.get$first(t4).then$1$1(new O.BrowserClient_send_closure(xhr, completer, request), t5);
+              t4.get$first(t4).then$1$1(0, new O.BrowserClient_send_closure(xhr, completer, request), t5);
               t3 = new W._EventStream(t2._as(xhr), "error", false, t3);
-              t3.get$first(t3).then$1$1(new O.BrowserClient_send_closure0(completer, request), t5);
+              t3.get$first(t3).then$1$1(0, new O.BrowserClient_send_closure0(completer, request), t5);
               J.send$1$x(xhr, bytes);
               $async$handler = 4;
               $async$goto = 7;
@@ -12078,7 +12171,7 @@
       var t1 = new P._Future($.Zone__current, type$._Future_Uint8List),
         completer = new P._AsyncCompleter(t1, type$._AsyncCompleter_Uint8List),
         sink = new P._ByteCallbackSink(new Z.ByteStream_toBytes_closure(completer), new Uint8Array(1024));
-      this.listen$4$cancelOnError$onDone$onError(sink.get$add(sink), true, sink.get$close(sink), completer.get$completeError());
+      this.listen$4$cancelOnError$onDone$onError(0, sink.get$add(sink), true, sink.get$close(sink), completer.get$completeError());
       return t1;
     }
   };
@@ -12140,13 +12233,13 @@
         t6 = scanner._lastMatch = C.JSString_methods.matchAsPrefix$2(";", t1, scanner._string_scanner$_position);
         t7 = scanner._lastMatchPosition = scanner._string_scanner$_position;
         success = t6 != null;
-        t6 = success ? scanner._lastMatchPosition = scanner._string_scanner$_position = t6.get$end() : t7;
+        t6 = success ? scanner._lastMatchPosition = scanner._string_scanner$_position = t6.get$end(t6) : t7;
         if (!success)
           break;
         t6 = scanner._lastMatch = t2.matchAsPrefix$2(0, t1, t6);
         scanner._lastMatchPosition = scanner._string_scanner$_position;
         if (t6 != null)
-          scanner._lastMatchPosition = scanner._string_scanner$_position = t6.get$end();
+          scanner._lastMatchPosition = scanner._string_scanner$_position = t6.get$end(t6);
         scanner.expect$1(t3);
         if (scanner._string_scanner$_position !== scanner._lastMatchPosition)
           scanner._lastMatch = null;
@@ -12157,7 +12250,7 @@
         t8 = scanner._lastMatchPosition = scanner._string_scanner$_position;
         success = t7 != null;
         if (success) {
-          t7 = scanner._lastMatchPosition = scanner._string_scanner$_position = t7.get$end();
+          t7 = scanner._lastMatchPosition = scanner._string_scanner$_position = t7.get$end(t7);
           t8 = t7;
         } else
           t7 = t8;
@@ -12172,7 +12265,7 @@
         t7 = scanner._lastMatch = t2.matchAsPrefix$2(0, t1, scanner._string_scanner$_position);
         scanner._lastMatchPosition = scanner._string_scanner$_position;
         if (t7 != null)
-          scanner._lastMatchPosition = scanner._string_scanner$_position = t7.get$end();
+          scanner._lastMatchPosition = scanner._string_scanner$_position = t7.get$end(t7);
         parameters.$indexSet(0, t6, value);
       }
       scanner.expectDone$0();
@@ -12215,6 +12308,58 @@
     },
     $signature: 10
   };
+  V.BufferModule.prototype = {};
+  V.BufferConstants.prototype = {};
+  V.Buffer.prototype = {};
+  F.ConsoleModule.prototype = {};
+  F.Console.prototype = {};
+  F.EventEmitter.prototype = {};
+  D.FS.prototype = {};
+  D.FSConstants.prototype = {};
+  D.FSWatcher.prototype = {};
+  D.ReadStream.prototype = {};
+  D.ReadStreamOptions.prototype = {};
+  D.WriteStream.prototype = {};
+  D.WriteStreamOptions.prototype = {};
+  D.FileOptions.prototype = {};
+  D.StatOptions.prototype = {};
+  D.MkdirOptions.prototype = {};
+  D.RmdirOptions.prototype = {};
+  D.WatchOptions.prototype = {};
+  D.WatchFileOptions.prototype = {};
+  D.Stats.prototype = {};
+  E.Promise.prototype = {};
+  E.Date.prototype = {};
+  E.JsError.prototype = {};
+  E.Atomics.prototype = {};
+  Y.Modules.prototype = {};
+  Y.Module.prototype = {};
+  Y.Net.prototype = {};
+  Y.Socket.prototype = {};
+  Y.NetAddress.prototype = {};
+  Y.NetServer.prototype = {};
+  X.NodeJsError.prototype = {};
+  X.JsAssertionError.prototype = {};
+  X.JsRangeError.prototype = {};
+  X.JsReferenceError.prototype = {};
+  X.JsSyntaxError.prototype = {};
+  X.JsTypeError.prototype = {};
+  X.JsSystemError.prototype = {};
+  X.Process.prototype = {};
+  X.CPUUsage.prototype = {};
+  X.Release.prototype = {};
+  D.StreamModule.prototype = {};
+  D.Readable.prototype = {};
+  D.Writable.prototype = {};
+  D.Duplex.prototype = {};
+  D.Transform.prototype = {};
+  D.WritableOptions.prototype = {};
+  D.ReadableOptions.prototype = {};
+  L.Immediate.prototype = {};
+  L.Timeout.prototype = {};
+  N.TTY.prototype = {};
+  N.TTYReadStream.prototype = {};
+  N.TTYWriteStream.prototype = {};
   M.Context.prototype = {
     absolute$1: function(_, part1) {
       var t2, parts,
@@ -12880,7 +13025,7 @@
     }
   };
   Y.FileLocation.prototype = {
-    get$sourceUrl: function() {
+    get$sourceUrl: function(_) {
       return this.file.url;
     },
     get$line: function() {
@@ -12894,7 +13039,7 @@
     }
   };
   Y._FileSpan.prototype = {
-    get$sourceUrl: function() {
+    get$sourceUrl: function(_) {
       return this.file.url;
     },
     get$length: function(_) {
@@ -12903,7 +13048,7 @@
     get$start: function(_) {
       return Y.FileLocation$_(this.file, this._file$_start);
     },
-    get$end: function() {
+    get$end: function(_) {
       return Y.FileLocation$_(this.file, this._end);
     },
     get$text: function(_) {
@@ -12981,7 +13126,7 @@
         for (t5 = line.highlights, t6 = H._arrayInstanceType(t5)._eval$1("ReversedListIterable<1>"), t7 = new H.ReversedListIterable(t5, t6), t6 = new H.ListIterator(t7, t7.get$length(t7), t6._eval$1("ListIterator<ListIterable.E>")), t7 = line.number, t8 = line.text, t9 = J.getInterceptor$s(t8); t6.moveNext$0();) {
           t10 = t6.__internal$_current;
           t11 = t10.span;
-          if (t11.get$start(t11).get$line() != t11.get$end().get$line() && t11.get$start(t11).get$line() === t7 && _this._isOnlyWhitespace$1(t9.substring$2(t8, 0, t11.get$start(t11).get$column()))) {
+          if (t11.get$start(t11).get$line() != t11.get$end(t11).get$line() && t11.get$start(t11).get$line() === t7 && _this._isOnlyWhitespace$1(t9.substring$2(t8, 0, t11.get$start(t11).get$column()))) {
             index = C.JSArray_methods.indexOf$1(highlightsByColumn, null);
             if (index < 0)
               H.throwExpression(P.ArgumentError$(H.S(highlightsByColumn) + " contains no null elements."));
@@ -13005,7 +13150,7 @@
         if (t6) {
           t9 = primary.span;
           t10 = t9.get$start(t9).get$line() === t7 ? t9.get$start(t9).get$column() : 0;
-          _this._writeHighlightedText$4$color(t8, t10, t9.get$end().get$line() === t7 ? t9.get$end().get$column() : t8.length, t4);
+          _this._writeHighlightedText$4$color(t8, t10, t9.get$end(t9).get$line() === t7 ? t9.get$end(t9).get$column() : t8.length, t4);
         } else
           _this._writeText$1(t8);
         t2._contents += "\n";
@@ -13050,7 +13195,12 @@
           t6 = highlight.span;
           startLine = t6.get$start(t6).get$line();
         }
-        endLine = t5 ? null : highlight.span.get$end().get$line();
+        if (t5)
+          endLine = null;
+        else {
+          t6 = highlight.span;
+          endLine = t6.get$end(t6).get$line();
+        }
         if (t1 && highlight === current) {
           _this._colorize$2$color(new U.Highlighter__writeMultilineHighlights_closure(_this, startLine, line), currentColor);
           foundCurrent = true;
@@ -13079,7 +13229,7 @@
       type$.List_nullable__Highlight._as(highlightsByColumn);
       color = _this._primaryColor;
       t1 = highlight.span;
-      if (t1.get$start(t1).get$line() == t1.get$end().get$line()) {
+      if (t1.get$start(t1).get$line() == t1.get$end(t1).get$line()) {
         _this._writeSidebar$0();
         t1 = _this._buffer;
         t1._contents += " ";
@@ -13100,8 +13250,8 @@
           _this._writeMultilineHighlights$3$current(line, highlightsByColumn, highlight);
           _this._colorize$2$color(new U.Highlighter__writeIndicator_closure0(_this, line, highlight), color);
           t1._contents += "\n";
-        } else if (t1.get$end().get$line() === t2) {
-          coversWholeLine = t1.get$end().get$column() === line.text.length;
+        } else if (t1.get$end(t1).get$line() === t2) {
+          coversWholeLine = t1.get$end(t1).get$column() === line.text.length;
           if (coversWholeLine && true) {
             B.replaceWithNull(highlightsByColumn, highlight, type$._Highlight);
             return;
@@ -13203,7 +13353,7 @@
   U.Highlighter$___closure.prototype = {
     call$1: function(highlight) {
       var t1 = type$._Highlight._as(highlight).span;
-      return t1.get$start(t1).get$line() != t1.get$end().get$line();
+      return t1.get$start(t1).get$line() != t1.get$end(t1).get$line();
     },
     $signature: 4
   };
@@ -13215,7 +13365,8 @@
   };
   U.Highlighter__collateLines_closure.prototype = {
     call$1: function(highlight) {
-      return type$._Highlight._as(highlight).span.get$sourceUrl();
+      var t1 = type$._Highlight._as(highlight).span;
+      return t1.get$sourceUrl(t1);
     },
     $signature: 40
   };
@@ -13240,7 +13391,7 @@
         t5.toString;
         t5 = C.JSString_methods.allMatches$1("\n", C.JSString_methods.substring$2(context, 0, t5));
         linesBeforeSpan = t5.get$length(t5);
-        url = t4.get$sourceUrl();
+        url = t4.get$sourceUrl(t4);
         t4 = t4.get$start(t4).get$line();
         if (typeof t4 !== "number")
           return t4.$sub();
@@ -13269,7 +13420,7 @@
             return t7.$gt();
           if (t7 > t8)
             break;
-          if (!J.$eq$(t6.get$sourceUrl(), line.url))
+          if (!J.$eq$(t6.get$sourceUrl(t6), line.url))
             break;
           C.JSArray_methods.add$1(activeHighlights, t5);
         }
@@ -13284,8 +13435,8 @@
     call$1: function(highlight) {
       var t1 = type$._Highlight._as(highlight).span,
         t2 = this.line;
-      if (J.$eq$(t1.get$sourceUrl(), t2.url)) {
-        t1 = t1.get$end().get$line();
+      if (J.$eq$(t1.get$sourceUrl(t1), t2.url)) {
+        t1 = t1.get$end(t1).get$line();
         t2 = t2.number;
         if (typeof t1 !== "number")
           return t1.$lt();
@@ -13349,7 +13500,11 @@
           if (t1.openedOnThisLineColor == null)
             t1.openedOnThisLineColor = t2._primaryColor;
         } else {
-          t2 = _this.endLine === t3 && _this.highlight.span.get$end().get$column() === t2.text.length;
+          if (_this.endLine === t3) {
+            t3 = _this.highlight.span;
+            t2 = t3.get$end(t3).get$column() === t2.text.length;
+          } else
+            t2 = false;
           t3 = _this.$this;
           if (t2)
             t3._buffer._contents += "\u2514";
@@ -13386,7 +13541,7 @@
         t1 = this.$this,
         t2 = type$.SourceSpan._as(this.highlight.span),
         startColumn = t2.get$start(t2).get$column(),
-        endColumn = t2.get$end().get$column();
+        endColumn = t2.get$end(t2).get$column();
       t2 = this.line.text;
       tabsBefore = t1._countTabs$1(J.substring$2$s(t2, 0, startColumn));
       tabsInside = t1._countTabs$1(C.JSString_methods.substring$2(t2, startColumn, endColumn));
@@ -13406,12 +13561,14 @@
   };
   U.Highlighter__writeIndicator_closure1.prototype = {
     call$0: function() {
-      var _this = this,
+      var t2, _this = this,
         t1 = _this.$this;
       if (_this.coversWholeLine)
         t1._buffer._contents += C.JSString_methods.$mul("\u2500", 3);
-      else
-        t1._writeArrow$3$beginning(_this.line, Math.max(_this.highlight.span.get$end().get$column() - 1, 0), false);
+      else {
+        t2 = _this.highlight.span;
+        t1._writeArrow$3$beginning(_this.line, Math.max(t2.get$end(t2).get$column() - 1, 0), false);
+      }
     },
     $signature: 0
   };
@@ -13431,7 +13588,7 @@
   U._Highlight.prototype = {
     toString$0: function(_) {
       var t1 = this.span;
-      t1 = "primary " + (H.S(t1.get$start(t1).get$line()) + ":" + t1.get$start(t1).get$column() + "-" + H.S(t1.get$end().get$line()) + ":" + t1.get$end().get$column());
+      t1 = "primary " + (H.S(t1.get$start(t1).get$line()) + ":" + t1.get$start(t1).get$column() + "-" + H.S(t1.get$end(t1).get$line()) + ":" + t1.get$end(t1).get$column());
       return t1.charCodeAt(0) == 0 ? t1 : t1;
     }
   };
@@ -13441,10 +13598,10 @@
         t1 = this.span;
       if (!(type$.SourceSpanWithContext._is(t1) && B.findLineStart(t1.get$context(), t1.get$text(t1), t1.get$start(t1).get$column()) != null)) {
         t2 = t1.get$start(t1);
-        t2 = V.SourceLocation$(t2.get$offset(t2), 0, 0, t1.get$sourceUrl());
-        t3 = t1.get$end();
+        t2 = V.SourceLocation$(t2.get$offset(t2), 0, 0, t1.get$sourceUrl(t1));
+        t3 = t1.get$end(t1);
         t3 = t3.get$offset(t3);
-        t4 = t1.get$sourceUrl();
+        t4 = t1.get$sourceUrl(t1);
         t5 = B.countCodeUnits(t1.get$text(t1), 10);
         t1 = X.SourceSpanWithContext$(t2, V.SourceLocation$(t3, U._Highlight__lastLineLength(t1.get$text(t1)), t5, t4), t1.get$text(t1), t1.get$text(t1));
       }
@@ -13460,22 +13617,22 @@
   V.SourceLocation.prototype = {
     distance$1: function(other) {
       var t1 = this.sourceUrl;
-      if (!J.$eq$(t1, other.get$sourceUrl()))
-        throw H.wrapException(P.ArgumentError$('Source URLs "' + H.S(t1) + '" and "' + H.S(other.get$sourceUrl()) + "\" don't match."));
+      if (!J.$eq$(t1, other.get$sourceUrl(other)))
+        throw H.wrapException(P.ArgumentError$('Source URLs "' + H.S(t1) + '" and "' + H.S(other.get$sourceUrl(other)) + "\" don't match."));
       return Math.abs(this.offset - other.get$offset(other));
     },
     compareTo$1: function(_, other) {
       var t1;
       type$.SourceLocation._as(other);
       t1 = this.sourceUrl;
-      if (!J.$eq$(t1, other.get$sourceUrl()))
-        throw H.wrapException(P.ArgumentError$('Source URLs "' + H.S(t1) + '" and "' + H.S(other.get$sourceUrl()) + "\" don't match."));
+      if (!J.$eq$(t1, other.get$sourceUrl(other)))
+        throw H.wrapException(P.ArgumentError$('Source URLs "' + H.S(t1) + '" and "' + H.S(other.get$sourceUrl(other)) + "\" don't match."));
       return this.offset - other.get$offset(other);
     },
     $eq: function(_, other) {
       if (other == null)
         return false;
-      return type$.SourceLocation._is(other) && J.$eq$(this.sourceUrl, other.get$sourceUrl()) && this.offset === other.get$offset(other);
+      return type$.SourceLocation._is(other) && J.$eq$(this.sourceUrl, other.get$sourceUrl(other)) && this.offset === other.get$offset(other);
     },
     get$hashCode: function(_) {
       var t1 = this.sourceUrl;
@@ -13491,7 +13648,7 @@
       return t1 + (H.S(source == null ? "unknown source" : source) + ":" + (_this.line + 1) + ":" + (_this.column + 1)) + ">";
     },
     $isComparable: 1,
-    get$sourceUrl: function() {
+    get$sourceUrl: function(receiver) {
       return this.sourceUrl;
     },
     get$offset: function(receiver) {
@@ -13506,20 +13663,22 @@
   };
   D.SourceLocationMixin.prototype = {
     distance$1: function(other) {
-      if (!J.$eq$(this.file.url, other.get$sourceUrl()))
-        throw H.wrapException(P.ArgumentError$('Source URLs "' + H.S(this.get$sourceUrl()) + '" and "' + H.S(other.get$sourceUrl()) + "\" don't match."));
-      return Math.abs(this.offset - other.get$offset(other));
+      var _this = this;
+      if (!J.$eq$(_this.file.url, other.get$sourceUrl(other)))
+        throw H.wrapException(P.ArgumentError$('Source URLs "' + H.S(_this.get$sourceUrl(_this)) + '" and "' + H.S(other.get$sourceUrl(other)) + "\" don't match."));
+      return Math.abs(_this.offset - other.get$offset(other));
     },
     compareTo$1: function(_, other) {
+      var _this = this;
       type$.SourceLocation._as(other);
-      if (!J.$eq$(this.file.url, other.get$sourceUrl()))
-        throw H.wrapException(P.ArgumentError$('Source URLs "' + H.S(this.get$sourceUrl()) + '" and "' + H.S(other.get$sourceUrl()) + "\" don't match."));
-      return this.offset - other.get$offset(other);
+      if (!J.$eq$(_this.file.url, other.get$sourceUrl(other)))
+        throw H.wrapException(P.ArgumentError$('Source URLs "' + H.S(_this.get$sourceUrl(_this)) + '" and "' + H.S(other.get$sourceUrl(other)) + "\" don't match."));
+      return _this.offset - other.get$offset(other);
     },
     $eq: function(_, other) {
       if (other == null)
         return false;
-      return type$.SourceLocation._is(other) && J.$eq$(this.file.url, other.get$sourceUrl()) && this.offset === other.get$offset(other);
+      return type$.SourceLocation._is(other) && J.$eq$(this.file.url, other.get$sourceUrl(other)) && this.offset === other.get$offset(other);
     },
     get$hashCode: function(_) {
       var t1 = this.file.url;
@@ -13547,8 +13706,8 @@
       var t3,
         t1 = this.end,
         t2 = this.start;
-      if (!J.$eq$(t1.get$sourceUrl(), t2.get$sourceUrl()))
-        throw H.wrapException(P.ArgumentError$('Source URLs "' + H.S(t2.get$sourceUrl()) + '" and  "' + H.S(t1.get$sourceUrl()) + "\" don't match."));
+      if (!J.$eq$(t1.get$sourceUrl(t1), t2.get$sourceUrl(t2)))
+        throw H.wrapException(P.ArgumentError$('Source URLs "' + H.S(t2.get$sourceUrl(t2)) + '" and  "' + H.S(t1.get$sourceUrl(t1)) + "\" don't match."));
       else if (t1.get$offset(t1) < t2.get$offset(t2))
         throw H.wrapException(P.ArgumentError$("End " + t1.toString$0(0) + " must come after start " + t2.toString$0(0) + "."));
       else {
@@ -13560,7 +13719,7 @@
     get$start: function(receiver) {
       return this.start;
     },
-    get$end: function() {
+    get$end: function(receiver) {
       return this.end;
     },
     get$text: function(receiver) {
@@ -13578,8 +13737,8 @@
       if (typeof t2 !== "number")
         return t2.$add();
       t2 = "line " + (t2 + 1) + ", column " + (t1.get$start(t1).get$column() + 1);
-      if (t1.get$sourceUrl() != null) {
-        t3 = t1.get$sourceUrl();
+      if (t1.get$sourceUrl(t1) != null) {
+        t3 = t1.get$sourceUrl(t1);
         t3 = t2 + (" of " + H.S($.$get$context().prettyUri$1(t3)));
         t2 = t3;
       }
@@ -13602,21 +13761,22 @@
     }
   };
   Y.SourceSpanMixin.prototype = {
-    get$sourceUrl: function() {
-      return this.get$start(this).get$sourceUrl();
+    get$sourceUrl: function(_) {
+      var t1 = this.get$start(this);
+      return t1.get$sourceUrl(t1);
     },
     get$length: function(_) {
-      var t2,
-        t1 = this.get$end();
+      var t2, _this = this,
+        t1 = _this.get$end(_this);
       t1 = t1.get$offset(t1);
-      t2 = this.get$start(this);
+      t2 = _this.get$start(_this);
       return t1 - t2.get$offset(t2);
     },
     compareTo$1: function(_, other) {
-      var result;
+      var result, _this = this;
       type$.SourceSpan._as(other);
-      result = this.get$start(this).compareTo$1(0, other.get$start(other));
-      return result === 0 ? this.get$end().compareTo$1(0, other.get$end()) : result;
+      result = _this.get$start(_this).compareTo$1(0, other.get$start(other));
+      return result === 0 ? _this.get$end(_this).compareTo$1(0, other.get$end(other)) : result;
     },
     highlight$1$color: function(color) {
       var _this = this;
@@ -13625,20 +13785,21 @@
       return U.Highlighter$(_this, color).highlight$0();
     },
     $eq: function(_, other) {
+      var _this = this;
       if (other == null)
         return false;
-      return type$.SourceSpan._is(other) && this.get$start(this).$eq(0, other.get$start(other)) && this.get$end().$eq(0, other.get$end());
+      return type$.SourceSpan._is(other) && _this.get$start(_this).$eq(0, other.get$start(other)) && _this.get$end(_this).$eq(0, other.get$end(other));
     },
     get$hashCode: function(_) {
-      var t2,
-        t1 = this.get$start(this);
+      var t2, _this = this,
+        t1 = _this.get$start(_this);
       t1 = t1.get$hashCode(t1);
-      t2 = this.get$end();
+      t2 = _this.get$end(_this);
       return t1 + 31 * t2.get$hashCode(t2);
     },
     toString$0: function(_) {
       var _this = this;
-      return "<" + H.getRuntimeType(_this).toString$0(0) + ": from " + _this.get$start(_this).toString$0(0) + " to " + _this.get$end().toString$0(0) + ' "' + _this.get$text(_this) + '">';
+      return "<" + H.getRuntimeType(_this).toString$0(0) + ": from " + _this.get$start(_this).toString$0(0) + " to " + _this.get$end(_this).toString$0(0) + ' "' + _this.get$text(_this) + '">';
     },
     $isComparable: 1,
     $isSourceSpan: 1
@@ -13666,7 +13827,7 @@
       _this._lastMatchPosition = _this._string_scanner$_position;
       success = t1 != null;
       if (success)
-        _this._lastMatchPosition = _this._string_scanner$_position = t1.get$end();
+        _this._lastMatchPosition = _this._string_scanner$_position = t1.get$end(t1);
       return success;
     },
     expect$2$name: function(pattern, $name) {
@@ -13759,7 +13920,9 @@
               H._asIntS(t1.$index(jsonData, "theme_id"));
               H._asStringS(t1.$index(jsonData, "set_img_url"));
               H._asIntS(t1.$index(jsonData, "num_parts"));
-              $async$self.set$_pieces(new H.JsLinkedHashMap(type$.JsLinkedHashMap_of_legacy_LegoPiece_and_legacy_int));
+              t1 = type$.JsLinkedHashMap_of_legacy_LegoPiece_and_legacy_int;
+              $async$self.set$_pieces(new H.JsLinkedHashMap(t1));
+              $async$self.set$_piecesOwned(new H.JsLinkedHashMap(t1));
               t1 = type$.JsLinkedHashMap_of_legacy_String_and_legacy_Map_of_legacy_int_and_legacy_LegoPiece, t2 = type$.JsLinkedHashMap_of_legacy_int_and_legacy_LegoPiece, t3 = type$._Future_legacy_String, t4 = type$.legacy_List_dynamic, partsPage = 1, hasNextPage = true;
             case 4:
               // for condition
@@ -13806,6 +13969,7 @@
                 t6 = J.$index$asx($.LegoPiece__registeredPieces.$index(0, partID), colorID);
                 numInSet = H._asIntS(J.$index$asx(t5.$index(partsList, i), "quantity"));
                 $async$self._pieces.$indexSet(0, t6, numInSet);
+                $async$self._piecesOwned.$indexSet(0, t6, 0);
               }
               ++partsPage;
               // goto for condition
@@ -13826,6 +13990,14 @@
     },
     set$_pieces: function(_pieces) {
       this._pieces = type$.legacy_Map_of_legacy_LegoPiece_and_legacy_int._as(_pieces);
+    },
+    set$_piecesOwned: function(_piecesOwned) {
+      this._piecesOwned = type$.legacy_Map_of_legacy_LegoPiece_and_legacy_int._as(_piecesOwned);
+    }
+  };
+  S.LegoSetProject.prototype = {
+    set$_sets: function(_sets) {
+      type$.legacy_List_legacy_LegoSet._as(_sets);
     }
   };
   T.RebrickableAccess.prototype = {
@@ -13840,7 +14012,7 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              requestURL = P.Uri_parse("https://rebrickable.com/api/v3/lego/" + section + "/?key=" + $async$self._apiKey + "&" + params);
+              requestURL = P.Uri_parse("https://rebrickable.com/api/v3/lego/" + section + "/?key=" + H.S($async$self._apiKey) + "&" + params);
               $async$returnValue = $async$self._client._sendUnstreamed$3("GET", requestURL, type$.nullable_Map_String_String._as(null));
               // goto return
               $async$goto = 1;
@@ -13855,13 +14027,16 @@
   };
   Z.main_closure.prototype = {
     call$1: function($event) {
-      var search, t1;
+      var t1, t2, apiAccess, search;
       type$.legacy_Event._as($event);
-      search = type$.legacy_TextInputElement._as(document.getElementById("searchInput")).value;
-      if (search !== "") {
-        t1 = this.apiAccess;
-        U.LegoSet_searchSets(search, t1).then$1$1(new Z.main__closure(t1), type$.Null);
-      }
+      t1 = document;
+      t2 = type$.legacy_TextInputElement;
+      apiAccess = new T.RebrickableAccess();
+      apiAccess._apiKey = t2._as(t1.getElementById("apiInput")).value;
+      apiAccess._client = new O.BrowserClient(P.LinkedHashSet_LinkedHashSet$_empty(type$.HttpRequest));
+      search = t2._as(t1.getElementById("searchInput")).value;
+      if (search !== "")
+        U.LegoSet_searchSets(search, apiAccess).then$1$1(0, new Z.main__closure(apiAccess), type$.Null);
     },
     $signature: 44
   };
@@ -13911,7 +14086,7 @@
       type$.legacy_MouseEvent._as($event);
       set = new U.LegoSet();
       set._setID = this.curID;
-      set.loadSet$1(this.apiAccess).then$1$1(new Z.main____closure(set), type$.Null);
+      set.loadSet$1(this.apiAccess).then$1$1(0, new Z.main____closure(set), type$.Null);
     },
     $signature: 45
   };
@@ -13920,9 +14095,9 @@
       var pieces, t1, t2, t3;
       H._asBoolS(value);
       pieces = this.set._pieces;
-      for (t1 = pieces.get$keys(), t1 = t1.get$iterator(t1), t2 = type$.Null; t1.moveNext$0();) {
+      for (t1 = pieces.get$keys(pieces), t1 = t1.get$iterator(t1), t2 = type$.Null; t1.moveNext$0();) {
         t3 = t1.get$current();
-        t3._imageURL.then$1$1(new Z.main_____closure(pieces, t3), t2);
+        t3._imageURL.then$1$1(0, new Z.main_____closure(pieces, t3), t2);
       }
     },
     $signature: 46
@@ -13931,7 +14106,7 @@
     call$1: function(value) {
       H._asStringS(value);
       if (value != null)
-        H.printString(value + ":" + J.toString$0$(this.pieces.$index(0, this.key)));
+        P.print(value + ":" + J.toString$0$(this.pieces.$index(0, this.key)));
     },
     $signature: 47
   };
@@ -13991,9 +14166,9 @@
       _inherit = hunkHelpers.inherit,
       _inheritMany = hunkHelpers.inheritMany;
     _inherit(P.Object, null);
-    _inheritMany(P.Object, [H.JS_CONST, J.Interceptor, J.ArrayIterator, P.Error, P._ListBase_Object_ListMixin, H.Closure, P.Iterable, H.ListIterator, P.Iterator, H.ExpandIterator, H.EmptyIterator, H.WhereTypeIterator, H.FixedLengthListMixin, H.UnmodifiableListMixin, H.ConstantMap, H.TypeErrorDecoder, H.NullThrownFromJavaScriptException, H.ExceptionAndStackTrace, H._StackTrace, P.MapMixin, H.LinkedHashMapCell, H.LinkedHashMapKeyIterator, H.JSSyntaxRegExp, H._MatchImplementation, H._AllMatchesIterator, H.StringMatch, H._StringAllMatchesIterator, H.Rti, H._FunctionParameters, H._Type, P._TimerImpl, P._AsyncAwaitCompleter, P.AsyncError, P._Completer, P._FutureListener, P._Future, P._AsyncCallbackEntry, P.Stream, P.StreamSubscription, P.StreamTransformerBase, P._BufferingStreamSubscription, P._PendingEvents, P._DoneStreamSubscription, P._StreamIterator, P._Zone, P.__SetBase_Object_SetMixin, P._LinkedHashSetCell, P._LinkedHashSetIterator, P.ListMixin, P._UnmodifiableMapMixin, P.MapView, P.SetMixin, P.Codec, P.ChunkedConversionSink, P._Utf8Decoder, P.DateTime, P.OutOfMemoryError, P.StackOverflowError, P._Exception, P.FormatException, P.MapEntry, P.Null, P._StringStackTrace, P.StringBuffer, P._Uri, P.UriData, P._SimpleUri, W.EventStreamProvider, W.ImmutableListMixin, W.FixedSizeListIterator, P._AcceptStructuredClone, P.NullRejectionException, M.CanonicalizedMap, E.BaseClient, G.BaseRequest, T.BaseResponse, E.ClientException, R.MediaType, M.Context, O.Style, X.ParsedPath, X.PathException, Y.SourceFile, D.SourceLocationMixin, Y.SourceSpanMixin, U.Highlighter, U._Highlight, U._Line, V.SourceLocation, G.SourceSpanException, X.StringScanner, R.LegoPiece, U.LegoSet, T.RebrickableAccess]);
+    _inheritMany(P.Object, [H.JS_CONST, J.Interceptor, J.ArrayIterator, P.Error, P._ListBase_Object_ListMixin, H.Closure, P.Iterable, H.ListIterator, P.Iterator, H.ExpandIterator, H.EmptyIterator, H.WhereTypeIterator, H.FixedLengthListMixin, H.UnmodifiableListMixin, H.ConstantMap, H.TypeErrorDecoder, H.NullThrownFromJavaScriptException, H.ExceptionAndStackTrace, H._StackTrace, P.MapMixin, H.LinkedHashMapCell, H.LinkedHashMapKeyIterator, H.JSSyntaxRegExp, H._MatchImplementation, H._AllMatchesIterator, H.StringMatch, H._StringAllMatchesIterator, H.Rti, H._FunctionParameters, H._Type, P._TimerImpl, P._AsyncAwaitCompleter, P.AsyncError, P._Completer, P._FutureListener, P._Future, P._AsyncCallbackEntry, P.Stream, P.StreamSubscription, P.StreamTransformerBase, P._BufferingStreamSubscription, P._PendingEvents, P._DoneStreamSubscription, P._StreamIterator, P._Zone, P.__SetBase_Object_SetMixin, P._LinkedHashSetCell, P._LinkedHashSetIterator, P.ListMixin, P._UnmodifiableMapMixin, P.MapView, P.SetMixin, P.Codec, P.ChunkedConversionSink, P._Utf8Decoder, P.DateTime, P.OutOfMemoryError, P.StackOverflowError, P._Exception, P.FormatException, P.MapEntry, P.Null, P._StringStackTrace, P.StringBuffer, P._Uri, P.UriData, P._SimpleUri, W.EventStreamProvider, W.ImmutableListMixin, W.FixedSizeListIterator, P._AcceptStructuredClone, P.NullRejectionException, M.CanonicalizedMap, E.BaseClient, G.BaseRequest, T.BaseResponse, E.ClientException, R.MediaType, M.Context, O.Style, X.ParsedPath, X.PathException, Y.SourceFile, D.SourceLocationMixin, Y.SourceSpanMixin, U.Highlighter, U._Highlight, U._Line, V.SourceLocation, G.SourceSpanException, X.StringScanner, R.LegoPiece, U.LegoSet, S.LegoSetProject, T.RebrickableAccess]);
     _inheritMany(J.Interceptor, [J.JSBool, J.JSNull, J.JavaScriptObject, J.JSArray, J.JSNumber, J.JSString, H.NativeByteBuffer, H.NativeTypedData, W.EventTarget, W.DomException, W.DomTokenList, W.Event, W._HtmlCollection_Interceptor_ListMixin, W._NodeList_Interceptor_ListMixin]);
-    _inheritMany(J.JavaScriptObject, [J.PlainJavaScriptObject, J.UnknownJavaScriptObject, J.JavaScriptFunction]);
+    _inheritMany(J.JavaScriptObject, [J.PlainJavaScriptObject, J.UnknownJavaScriptObject, J.JavaScriptFunction, V.BufferModule, V.BufferConstants, V.Buffer, F.ConsoleModule, F.Console, F.EventEmitter, D.FS, D.FSConstants, D.FSWatcher, D.ReadStream, D.ReadStreamOptions, D.WriteStream, D.WriteStreamOptions, D.FileOptions, D.StatOptions, D.MkdirOptions, D.RmdirOptions, D.WatchOptions, D.WatchFileOptions, D.Stats, E.Promise, E.Date, E.JsError, E.Atomics, Y.Modules, Y.Module, Y.Net, Y.Socket, Y.NetAddress, Y.NetServer, X.NodeJsError, X.Process, X.CPUUsage, X.Release, D.StreamModule, D.Readable, D.Writable, D.Duplex, D.Transform, D.WritableOptions, D.ReadableOptions, L.Immediate, L.Timeout, N.TTY]);
     _inherit(J.JSUnmodifiableArray, J.JSArray);
     _inheritMany(J.JSNumber, [J.JSInt, J.JSNumNotInt]);
     _inheritMany(P.Error, [H.LateError, H.ReachabilityError, H.NotNullableError, P.TypeError, H.JsNoSuchMethodError, H.UnknownJsTypeError, H.RuntimeError, P.AssertionError, H._Error, P.NullThrownError, P.ArgumentError, P.UnsupportedError, P.UnimplementedError, P.StateError, P.ConcurrentModificationError, P.CyclicInitializationError]);
@@ -14060,6 +14235,8 @@
     _inherit(O.Request, G.BaseRequest);
     _inheritMany(T.BaseResponse, [U.Response, X.StreamedResponse]);
     _inherit(Z.CaseInsensitiveMap, M.CanonicalizedMap);
+    _inheritMany(X.NodeJsError, [X.JsAssertionError, X.JsRangeError, X.JsReferenceError, X.JsSyntaxError, X.JsTypeError, X.JsSystemError]);
+    _inheritMany(Y.Socket, [N.TTYReadStream, N.TTYWriteStream]);
     _inherit(B.InternalStyle, O.Style);
     _inheritMany(B.InternalStyle, [E.PosixStyle, F.UrlStyle, L.WindowsStyle]);
     _inherit(Y.FileLocation, D.SourceLocationMixin);
@@ -14089,7 +14266,7 @@
     leafTags: null,
     arrayRti: typeof Symbol == "function" && typeof Symbol() == "symbol" ? Symbol("$ti") : "$ti"
   };
-  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","AElement":"Element","GraphicsElement":"Element","SvgElement":"Element","_ResourceProgressEvent":"ProgressEvent","AudioElement":"HtmlElement","MediaElement":"HtmlElement","ShadowRoot":"Node","DocumentFragment":"Node","HtmlDocument":"Document","PointerEvent":"MouseEvent","CompositionEvent":"UIEvent","CDataSection":"CharacterData","Text":"CharacterData","HtmlFormControlsCollection":"HtmlCollection","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"num":[],"Comparable":["num"]},"JSInt":{"int":[],"num":[],"Comparable":["num"]},"JSNumNotInt":{"num":[],"Comparable":["num"]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[],"JSIndexable":["@"]},"LateError":{"Error":[]},"ReachabilityError":{"Error":[]},"CodeUnits":{"ListMixin":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListMixin.E":"int","UnmodifiableListMixin.E":"int"},"NotNullableError":{"Error":[]},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"ListIterable.E":"2","Iterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"NullError":{"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteBuffer":{"ByteBuffer":[]},"NativeTypedData":{"TypedData":[]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"TypedData":[],"JSIndexable":["1"]},"NativeTypedArrayOfInt":{"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint32List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint8List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"Error":[]},"_Future":{"Future":["1"]},"_IterablePendingEvents":{"_PendingEvents":["1"]},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"StreamView":{"Stream":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventDispatch":["1"]},"_StreamImpl":{"Stream":["1"]},"_GeneratedStreamImpl":{"_StreamImpl":["1"],"Stream":["1"],"Stream.T":"1"},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_EmptyStream":{"Stream":["1"],"Stream.T":"1"},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_LinkedIdentityHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedCustomHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedHashSet":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"SetMixin.E":"1"},"_LinkedHashSetIterator":{"Iterator":["1"]},"IterableBase":{"Iterable":["1"]},"ListBase":{"ListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"_SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"Encoding":{"Codec":["String","List<int>"]},"_JsonMap":{"MapMixin":["String","@"],"Map":["String","@"],"MapMixin.K":"String","MapMixin.V":"@"},"_JsonMapKeyIterable":{"ListIterable":["String"],"EfficientLengthIterable":["String"],"Iterable":["String"],"ListIterable.E":"String","Iterable.E":"String"},"AsciiCodec":{"Encoding":[],"Codec":["String","List<int>"]},"_UnicodeSubsetDecoder":{"Converter":["List<int>","String"]},"AsciiDecoder":{"Converter":["List<int>","String"]},"Base64Codec":{"Codec":["List<int>","String"]},"Base64Encoder":{"Converter":["List<int>","String"]},"ByteConversionSink":{"ChunkedConversionSink":["List<int>"]},"ByteConversionSinkBase":{"ChunkedConversionSink":["List<int>"]},"_ByteCallbackSink":{"ChunkedConversionSink":["List<int>"]},"JsonCodec":{"Codec":["Object?","String"]},"JsonDecoder":{"Converter":["String","Object?"]},"Latin1Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Latin1Decoder":{"Converter":["List<int>","String"]},"Utf8Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"DateTime":{"Comparable":["DateTime"]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"String":{"Comparable":["String"],"Pattern":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"_StringStackTrace":{"StackTrace":[]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"HttpRequest":{"EventTarget":[]},"HttpRequestEventTarget":{"EventTarget":[]},"MouseEvent":{"Event":[]},"Node":{"EventTarget":[]},"ProgressEvent":{"Event":[]},"UIEvent":{"Event":[]},"HtmlElement":{"Element":[],"Node":[],"EventTarget":[]},"AnchorElement":{"Element":[],"Node":[],"EventTarget":[]},"AreaElement":{"Element":[],"Node":[],"EventTarget":[]},"ButtonElement":{"Element":[],"Node":[],"EventTarget":[]},"CharacterData":{"Node":[],"EventTarget":[]},"DivElement":{"Element":[],"Node":[],"EventTarget":[]},"Document":{"Node":[],"EventTarget":[]},"Element":{"Node":[],"EventTarget":[]},"FormElement":{"Element":[],"Node":[],"EventTarget":[]},"HtmlCollection":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"JSIndexable":["Node"],"ImmutableListMixin.E":"Node","ListMixin.E":"Node"},"ImageElement":{"Element":[],"Node":[],"EventTarget":[]},"InputElement":{"TextInputElement":[],"Element":[],"Node":[],"EventTarget":[]},"NodeList":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"JSIndexable":["Node"],"ImmutableListMixin.E":"Node","ListMixin.E":"Node"},"SelectElement":{"Element":[],"Node":[],"EventTarget":[]},"_EventStream":{"Stream":["1"],"Stream.T":"1"},"_ElementEventStreamImpl":{"_EventStream":["1"],"Stream":["1"],"Stream.T":"1"},"_EventStreamSubscription":{"StreamSubscription":["1"]},"FixedSizeListIterator":{"Iterator":["1"]},"NullRejectionException":{"Exception":[]},"CanonicalizedMap":{"Map":["2","3"]},"BaseClient":{"Client":[]},"BrowserClient":{"Client":[]},"ByteStream":{"StreamView":["List<int>"],"Stream":["List<int>"],"Stream.T":"List<int>","StreamView.T":"List<int>"},"ClientException":{"Exception":[]},"Request":{"BaseRequest":[]},"CaseInsensitiveMap":{"CanonicalizedMap":["String","String","1"],"Map":["String","1"],"CanonicalizedMap.K":"String","CanonicalizedMap.V":"1","CanonicalizedMap.C":"String"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"FileLocation":{"SourceLocation":[],"Comparable":["SourceLocation"]},"_FileSpan":{"FileSpan":[],"SourceSpanWithContext":[],"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceLocation":{"Comparable":["SourceLocation"]},"SourceLocationMixin":{"SourceLocation":[],"Comparable":["SourceLocation"]},"SourceSpan":{"Comparable":["SourceSpan"]},"SourceSpanBase":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanException":{"Exception":[]},"SourceSpanFormatException":{"FormatException":[],"Exception":[]},"SourceSpanMixin":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanWithContext":{"SourceSpan":[],"Comparable":["SourceSpan"]},"StringScannerException":{"FormatException":[],"Exception":[]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"TypedData":[]}}'));
+  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","BufferModule":"JavaScriptObject","BufferConstants":"JavaScriptObject","Buffer":"JavaScriptObject","ConsoleModule":"JavaScriptObject","Console":"JavaScriptObject","EventEmitter":"JavaScriptObject","FS":"JavaScriptObject","FSConstants":"JavaScriptObject","FSWatcher":"JavaScriptObject","ReadStream":"JavaScriptObject","ReadStreamOptions":"JavaScriptObject","WriteStream":"JavaScriptObject","WriteStreamOptions":"JavaScriptObject","FileOptions":"JavaScriptObject","StatOptions":"JavaScriptObject","MkdirOptions":"JavaScriptObject","RmdirOptions":"JavaScriptObject","WatchOptions":"JavaScriptObject","WatchFileOptions":"JavaScriptObject","Stats":"JavaScriptObject","Promise":"JavaScriptObject","Date":"JavaScriptObject","JsError":"JavaScriptObject","Atomics":"JavaScriptObject","Modules":"JavaScriptObject","Module":"JavaScriptObject","Net":"JavaScriptObject","Socket":"JavaScriptObject","NetAddress":"JavaScriptObject","NetServer":"JavaScriptObject","NodeJsError":"JavaScriptObject","JsAssertionError":"JavaScriptObject","JsRangeError":"JavaScriptObject","JsReferenceError":"JavaScriptObject","JsSyntaxError":"JavaScriptObject","JsTypeError":"JavaScriptObject","JsSystemError":"JavaScriptObject","Process":"JavaScriptObject","CPUUsage":"JavaScriptObject","Release":"JavaScriptObject","StreamModule":"JavaScriptObject","Readable":"JavaScriptObject","Writable":"JavaScriptObject","Duplex":"JavaScriptObject","Transform":"JavaScriptObject","WritableOptions":"JavaScriptObject","ReadableOptions":"JavaScriptObject","Immediate":"JavaScriptObject","Timeout":"JavaScriptObject","TTY":"JavaScriptObject","TTYReadStream":"JavaScriptObject","TTYWriteStream":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","AElement":"Element","GraphicsElement":"Element","SvgElement":"Element","_ResourceProgressEvent":"ProgressEvent","AudioElement":"HtmlElement","MediaElement":"HtmlElement","ShadowRoot":"Node","DocumentFragment":"Node","HtmlDocument":"Document","PointerEvent":"MouseEvent","CompositionEvent":"UIEvent","CDataSection":"CharacterData","Text":"CharacterData","HtmlFormControlsCollection":"HtmlCollection","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"FS":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"num":[],"Comparable":["num"]},"JSInt":{"int":[],"num":[],"Comparable":["num"]},"JSNumNotInt":{"num":[],"Comparable":["num"]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[],"JSIndexable":["@"]},"LateError":{"Error":[]},"ReachabilityError":{"Error":[]},"CodeUnits":{"ListMixin":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListMixin.E":"int","UnmodifiableListMixin.E":"int"},"NotNullableError":{"Error":[]},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"ListIterable.E":"2","Iterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"NullError":{"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteBuffer":{"ByteBuffer":[]},"NativeTypedData":{"TypedData":[]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"TypedData":[],"JSIndexable":["1"]},"NativeTypedArrayOfInt":{"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint32List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint8List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"Error":[]},"_Future":{"Future":["1"]},"_IterablePendingEvents":{"_PendingEvents":["1"]},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"StreamView":{"Stream":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventDispatch":["1"]},"_StreamImpl":{"Stream":["1"]},"_GeneratedStreamImpl":{"_StreamImpl":["1"],"Stream":["1"],"Stream.T":"1"},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_EmptyStream":{"Stream":["1"],"Stream.T":"1"},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_LinkedIdentityHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedCustomHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedHashSet":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"SetMixin.E":"1"},"_LinkedHashSetIterator":{"Iterator":["1"]},"IterableBase":{"Iterable":["1"]},"ListBase":{"ListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"_SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"Encoding":{"Codec":["String","List<int>"]},"_JsonMap":{"MapMixin":["String","@"],"Map":["String","@"],"MapMixin.K":"String","MapMixin.V":"@"},"_JsonMapKeyIterable":{"ListIterable":["String"],"EfficientLengthIterable":["String"],"Iterable":["String"],"ListIterable.E":"String","Iterable.E":"String"},"AsciiCodec":{"Encoding":[],"Codec":["String","List<int>"]},"_UnicodeSubsetDecoder":{"Converter":["List<int>","String"]},"AsciiDecoder":{"Converter":["List<int>","String"]},"Base64Codec":{"Codec":["List<int>","String"]},"Base64Encoder":{"Converter":["List<int>","String"]},"ByteConversionSink":{"ChunkedConversionSink":["List<int>"]},"ByteConversionSinkBase":{"ChunkedConversionSink":["List<int>"]},"_ByteCallbackSink":{"ChunkedConversionSink":["List<int>"]},"JsonCodec":{"Codec":["Object?","String"]},"JsonDecoder":{"Converter":["String","Object?"]},"Latin1Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Latin1Decoder":{"Converter":["List<int>","String"]},"Utf8Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"DateTime":{"Comparable":["DateTime"]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"String":{"Comparable":["String"],"Pattern":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"_StringStackTrace":{"StackTrace":[]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"HttpRequest":{"EventTarget":[]},"HttpRequestEventTarget":{"EventTarget":[]},"MouseEvent":{"Event":[]},"Node":{"EventTarget":[]},"ProgressEvent":{"Event":[]},"UIEvent":{"Event":[]},"HtmlElement":{"Element":[],"Node":[],"EventTarget":[]},"AnchorElement":{"Element":[],"Node":[],"EventTarget":[]},"AreaElement":{"Element":[],"Node":[],"EventTarget":[]},"ButtonElement":{"Element":[],"Node":[],"EventTarget":[]},"CharacterData":{"Node":[],"EventTarget":[]},"DivElement":{"Element":[],"Node":[],"EventTarget":[]},"Document":{"Node":[],"EventTarget":[]},"Element":{"Node":[],"EventTarget":[]},"FormElement":{"Element":[],"Node":[],"EventTarget":[]},"HtmlCollection":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"JSIndexable":["Node"],"ImmutableListMixin.E":"Node","ListMixin.E":"Node"},"ImageElement":{"Element":[],"Node":[],"EventTarget":[]},"InputElement":{"TextInputElement":[],"Element":[],"Node":[],"EventTarget":[]},"NodeList":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"JSIndexable":["Node"],"ImmutableListMixin.E":"Node","ListMixin.E":"Node"},"SelectElement":{"Element":[],"Node":[],"EventTarget":[]},"_EventStream":{"Stream":["1"],"Stream.T":"1"},"_ElementEventStreamImpl":{"_EventStream":["1"],"Stream":["1"],"Stream.T":"1"},"_EventStreamSubscription":{"StreamSubscription":["1"]},"FixedSizeListIterator":{"Iterator":["1"]},"NullRejectionException":{"Exception":[]},"CanonicalizedMap":{"Map":["2","3"]},"BaseClient":{"Client":[]},"BrowserClient":{"Client":[]},"ByteStream":{"StreamView":["List<int>"],"Stream":["List<int>"],"Stream.T":"List<int>","StreamView.T":"List<int>"},"ClientException":{"Exception":[]},"Request":{"BaseRequest":[]},"CaseInsensitiveMap":{"CanonicalizedMap":["String","String","1"],"Map":["String","1"],"CanonicalizedMap.K":"String","CanonicalizedMap.V":"1","CanonicalizedMap.C":"String"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"FileLocation":{"SourceLocation":[],"Comparable":["SourceLocation"]},"_FileSpan":{"FileSpan":[],"SourceSpanWithContext":[],"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceLocation":{"Comparable":["SourceLocation"]},"SourceLocationMixin":{"SourceLocation":[],"Comparable":["SourceLocation"]},"SourceSpan":{"Comparable":["SourceSpan"]},"SourceSpanBase":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanException":{"Exception":[]},"SourceSpanFormatException":{"FormatException":[],"Exception":[]},"SourceSpanMixin":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanWithContext":{"SourceSpan":[],"Comparable":["SourceSpan"]},"StringScannerException":{"FormatException":[],"Exception":[]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"TypedData":[]}}'));
   H._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"UnmodifiableListBase":1,"NativeTypedArray":1,"StreamTransformerBase":2,"IterableBase":1,"ListBase":1,"MapBase":2,"_SetBase":1,"_ListBase_Object_ListMixin":1,"__SetBase_Object_SetMixin":1}'));
   var string$ = {
     x20must_: " must not be greater than the number of characters in the file, ",
@@ -14127,6 +14304,7 @@
       JSArray__Line: findType("JSArray<_Line>"),
       JSArray_dynamic: findType("JSArray<@>"),
       JSArray_int: findType("JSArray<int>"),
+      JSArray_legacy_LegoSet: findType("JSArray<LegoSet*>"),
       JSArray_legacy_int: findType("JSArray<int*>"),
       JSArray_nullable_String: findType("JSArray<String?>"),
       JSIndexable_dynamic: findType("JSIndexable<@>"),
@@ -14192,6 +14370,7 @@
       legacy_Event: findType("Event*"),
       legacy_Future_legacy_String: findType("Future<String*>*"),
       legacy_List_dynamic: findType("List<@>*"),
+      legacy_List_legacy_LegoSet: findType("List<LegoSet*>*"),
       legacy_Map_of_legacy_LegoPiece_and_legacy_int: findType("Map<LegoPiece*,int*>*"),
       legacy_MouseEvent: findType("MouseEvent*"),
       legacy_Never: findType("0&*"),
@@ -14200,6 +14379,7 @@
       legacy_TextInputElement: findType("TextInputElement*"),
       legacy_bool: findType("bool*"),
       nullable_EventTarget: findType("EventTarget?"),
+      nullable_FS: findType("FS?"),
       nullable_Future_Null: findType("Future<Null>?"),
       nullable_List_String: findType("List<String>?"),
       nullable_List_dynamic: findType("List<@>?"),
@@ -14404,6 +14584,7 @@
     $.Zone__current = C.C__RootZone;
     $._toStringVisiting = H.setRuntimeTypeInfo([], H.findType("JSArray<Object>"));
     $.Encoding__nameToEncoding = P.LinkedHashMap_LinkedHashMap$_literal(["iso_8859-1:1987", C.C_Latin1Codec, "iso-ir-100", C.C_Latin1Codec, "iso_8859-1", C.C_Latin1Codec, "iso-8859-1", C.C_Latin1Codec, "latin1", C.C_Latin1Codec, "l1", C.C_Latin1Codec, "ibm819", C.C_Latin1Codec, "cp819", C.C_Latin1Codec, "csisolatin1", C.C_Latin1Codec, "iso-ir-6", C.C_AsciiCodec, "ansi_x3.4-1968", C.C_AsciiCodec, "ansi_x3.4-1986", C.C_AsciiCodec, "iso_646.irv:1991", C.C_AsciiCodec, "iso646-us", C.C_AsciiCodec, "us-ascii", C.C_AsciiCodec, "us", C.C_AsciiCodec, "ibm367", C.C_AsciiCodec, "cp367", C.C_AsciiCodec, "csascii", C.C_AsciiCodec, "ascii", C.C_AsciiCodec, "csutf8", C.C_Utf8Codec, "utf-8", C.C_Utf8Codec], type$.String, H.findType("Encoding"));
+    $._fs = null;
     $._currentUriBase = null;
     $._current = null;
     $.LegoPiece__registeredPieces = null;
@@ -14575,6 +14756,24 @@
     H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin_FixedLengthListMixin.$nativeSuperclassTag = "ArrayBufferView";
     H.NativeTypedArrayOfInt.$nativeSuperclassTag = "ArrayBufferView";
   })();
+  Function.prototype.call$2 = function(a, b) {
+    return this(a, b);
+  };
+  Function.prototype.call$1 = function(a) {
+    return this(a);
+  };
+  Function.prototype.call$0 = function() {
+    return this();
+  };
+  Function.prototype.call$3 = function(a, b, c) {
+    return this(a, b, c);
+  };
+  Function.prototype.call$4 = function(a, b, c, d) {
+    return this(a, b, c, d);
+  };
+  Function.prototype.call$1$1 = function(a) {
+    return this(a);
+  };
   convertAllToFastObject(holders);
   convertToFastObject($);
   (function(callback) {
