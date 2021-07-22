@@ -74,3 +74,10 @@ typings/
 
 # FuseBox cache
 .fusebox/
+
+# Dart pub generated files and directories
+.dart_tool/
+.packages
+
+# dart2js unecessary files
+.js.deps
