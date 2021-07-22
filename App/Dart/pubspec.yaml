@@ -1,0 +1,9 @@
+name: legoMissingPieces
+version: 1.0.0
+description: >-
+  Application to keep track of missing Lego pieces from various sets
+environment:
+  sdk: ">=2.10.0 <3.0.0"
+dependencies:
+  http: ^0.13.3
+  node_interop: ^2.0.2
