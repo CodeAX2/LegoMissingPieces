@@ -259,6 +259,9 @@
     LateError$fieldADI: function(fieldName) {
       return new H.LateError("Field '" + fieldName + "' has been assigned during initialization.");
     },
+    LateError$localNI: function(localName) {
+      return new H.LateError("Local '" + localName + "' has not been initialized.");
+    },
     ReachabilityError$: function(_message) {
       return new H.ReachabilityError(_message);
     },
@@ -3532,11 +3535,8 @@
     _codeUnitAt$1$s: function(receiver, a0) {
       return J.getInterceptor$s(receiver)._codeUnitAt$1(receiver, a0);
     },
-    _removeEventListener$3$x: function(receiver, a0, a1, a2) {
-      return J.getInterceptor$x(receiver)._removeEventListener$3(receiver, a0, a1, a2);
-    },
-    addEventListener$3$x: function(receiver, a0, a1, a2) {
-      return J.getInterceptor$x(receiver).addEventListener$3(receiver, a0, a1, a2);
+    add$1$ax: function(receiver, a0) {
+      return J.getInterceptor$ax(receiver).add$1(receiver, a0);
     },
     allMatches$1$s: function(receiver, a0) {
       return J.getInterceptor$s(receiver).allMatches$1(receiver, a0);
@@ -3577,6 +3577,9 @@
     then$1$1$z: function(receiver, a0, $T1) {
       return J.getInterceptor$z(receiver).then$1$1(receiver, a0, $T1);
     },
+    then$1$2$onError$z: function(receiver, a0, a1, $T1) {
+      return J.getInterceptor$z(receiver).then$1$2$onError(receiver, a0, a1, $T1);
+    },
     toList$0$ax: function(receiver) {
       return J.getInterceptor$ax(receiver).toList$0(receiver);
     },
@@ -3606,9 +3609,9 @@
     ArrayIterator: function ArrayIterator(t0, t1, t2) {
       var _ = this;
       _._iterable = t0;
-      _.__interceptors$_length = t1;
+      _._length = t1;
       _._index = 0;
-      _.__interceptors$_current = null;
+      _._current = null;
       _.$ti = t2;
     },
     JSNumber: function JSNumber() {
@@ -3717,6 +3720,53 @@
       var t1 = new P._Future($.Zone__current, $T._eval$1("_Future<0>"));
       t1._asyncComplete$1(value);
       return t1;
+    },
+    Future_wait: function(futures, $T) {
+      var _error_get, _error_set, _stackTrace_get, _stackTrace_set, handleError, future, pos, e, st, t2, t3, _i, t4, exception, error, stackTrace, _box_0 = {}, cleanUp = null,
+        eagerError = false,
+        t1 = $T._eval$1("_Future<List<0>>"),
+        _future = new P._Future($.Zone__current, t1);
+      _box_0.values = null;
+      _box_0.remaining = 0;
+      _box_0._error = $;
+      _error_get = new P.Future_wait__error_get(_box_0);
+      _error_set = new P.Future_wait__error_set(_box_0);
+      _box_0._stackTrace = $;
+      _stackTrace_get = new P.Future_wait__stackTrace_get(_box_0);
+      _stackTrace_set = new P.Future_wait__stackTrace_set(_box_0);
+      handleError = new P.Future_wait_handleError(_box_0, cleanUp, eagerError, _future, _error_set, _stackTrace_set, _error_get, _stackTrace_get);
+      try {
+        for (t2 = futures.length, t3 = type$.Null, _i = 0, t4 = 0; _i < futures.length; futures.length === t2 || (0, H.throwConcurrentModificationError)(futures), ++_i) {
+          future = futures[_i];
+          pos = t4;
+          J.then$1$2$onError$z(future, new P.Future_wait_closure(_box_0, pos, _future, cleanUp, eagerError, _error_get, _stackTrace_get, $T), handleError, t3);
+          t4 = ++_box_0.remaining;
+        }
+        if (t4 === 0) {
+          t2 = _future;
+          t2._completeWithValue$1(H.setRuntimeTypeInfo([], $T._eval$1("JSArray<0>")));
+          return t2;
+        }
+        _box_0.values = P.List_List$filled(t4, null, false, $T._eval$1("0?"));
+      } catch (exception) {
+        e = H.unwrapException(exception);
+        st = H.getTraceFromException(exception);
+        if (_box_0.remaining === 0 || H.boolConversionCheck(eagerError)) {
+          error = e;
+          stackTrace = st;
+          H.checkNotNullable(error, "error", type$.Object);
+          $.Zone__current !== C.C__RootZone;
+          if (stackTrace == null)
+            stackTrace = P.AsyncError_defaultStackTrace(error);
+          t1 = new P._Future($.Zone__current, t1);
+          t1._asyncCompleteError$2(error, stackTrace);
+          return t1;
+        } else {
+          _error_set.call$1(e);
+          _stackTrace_set.call$1(st);
+        }
+      }
+      return _future;
     },
     _Future__chainCoreFuture: function(source, target) {
       var t1, t2, listeners;
@@ -4033,6 +4083,40 @@
     AsyncError: function AsyncError(t0, t1) {
       this.error = t0;
       this.stackTrace = t1;
+    },
+    Future_wait__error_set: function Future_wait__error_set(t0) {
+      this._box_0 = t0;
+    },
+    Future_wait__stackTrace_set: function Future_wait__stackTrace_set(t0) {
+      this._box_0 = t0;
+    },
+    Future_wait__error_get: function Future_wait__error_get(t0) {
+      this._box_0 = t0;
+    },
+    Future_wait__stackTrace_get: function Future_wait__stackTrace_get(t0) {
+      this._box_0 = t0;
+    },
+    Future_wait_handleError: function Future_wait_handleError(t0, t1, t2, t3, t4, t5, t6, t7) {
+      var _ = this;
+      _._box_0 = t0;
+      _.cleanUp = t1;
+      _.eagerError = t2;
+      _._future = t3;
+      _._error_set = t4;
+      _._stackTrace_set = t5;
+      _._error_get = t6;
+      _._stackTrace_get = t7;
+    },
+    Future_wait_closure: function Future_wait_closure(t0, t1, t2, t3, t4, t5, t6, t7) {
+      var _ = this;
+      _._box_0 = t0;
+      _.pos = t1;
+      _._future = t2;
+      _.cleanUp = t3;
+      _.eagerError = t4;
+      _._error_get = t5;
+      _._stackTrace_get = t6;
+      _.T = t7;
     },
     _Completer: function _Completer() {
     },
@@ -4820,8 +4904,6 @@
       return $length;
     },
     RangeError_checkNotNegative: function(value, $name) {
-      if (typeof value !== "number")
-        return value.$lt();
       if (value < 0)
         throw H.wrapException(P.RangeError$range(value, 0, null, $name, null));
       return value;
@@ -6217,15 +6299,9 @@
     },
     ButtonElement: function ButtonElement() {
     },
-    CharacterData: function CharacterData() {
-    },
-    DivElement: function DivElement() {
-    },
     Document: function Document() {
     },
     DomException: function DomException() {
-    },
-    DomTokenList: function DomTokenList() {
     },
     Element: function Element() {
     },
@@ -6235,40 +6311,23 @@
     },
     FormElement: function FormElement() {
     },
-    HtmlCollection: function HtmlCollection() {
-    },
     HttpRequest: function HttpRequest() {
     },
     HttpRequestEventTarget: function HttpRequestEventTarget() {
     },
-    ImageElement: function ImageElement() {
-    },
     InputElement: function InputElement() {
     },
-    MouseEvent: function MouseEvent() {
-    },
     Node: function Node() {
-    },
-    NodeList: function NodeList() {
     },
     ProgressEvent: function ProgressEvent() {
     },
     SelectElement: function SelectElement() {
-    },
-    UIEvent: function UIEvent() {
     },
     EventStreamProvider: function EventStreamProvider(t0, t1) {
       this._eventType = t0;
       this.$ti = t1;
     },
     _EventStream: function _EventStream(t0, t1, t2, t3) {
-      var _ = this;
-      _._html$_target = t0;
-      _._eventType = t1;
-      _._useCapture = t2;
-      _.$ti = t3;
-    },
-    _ElementEventStreamImpl: function _ElementEventStreamImpl(t0, t1, t2, t3) {
       var _ = this;
       _._html$_target = t0;
       _._eventType = t1;
@@ -6288,24 +6347,6 @@
     },
     _EventStreamSubscription_onData_closure: function _EventStreamSubscription_onData_closure(t0) {
       this.handleData = t0;
-    },
-    ImmutableListMixin: function ImmutableListMixin() {
-    },
-    FixedSizeListIterator: function FixedSizeListIterator(t0, t1, t2) {
-      var _ = this;
-      _._array = t0;
-      _._length = t1;
-      _._position = -1;
-      _._current = null;
-      _.$ti = t2;
-    },
-    _HtmlCollection_Interceptor_ListMixin: function _HtmlCollection_Interceptor_ListMixin() {
-    },
-    _HtmlCollection_Interceptor_ListMixin_ImmutableListMixin: function _HtmlCollection_Interceptor_ListMixin_ImmutableListMixin() {
-    },
-    _NodeList_Interceptor_ListMixin: function _NodeList_Interceptor_ListMixin() {
-    },
-    _NodeList_Interceptor_ListMixin_ImmutableListMixin: function _NodeList_Interceptor_ListMixin_ImmutableListMixin() {
     }
   },
   M = {CanonicalizedMap: function CanonicalizedMap() {
@@ -6466,33 +6507,19 @@
     CaseInsensitiveMap$from_closure: function CaseInsensitiveMap$from_closure() {
     },
     main: function() {
-      var t1, submitButton,
-        project = new S.LegoSetProject();
-      project._filePath = "TestProject.lego";
-      project.set$_sets(H.setRuntimeTypeInfo([], type$.JSArray_legacy_LegoSet));
-      t1 = $._fs;
-      if (t1 == null)
-        t1 = $._fs = type$.nullable_FS._as(self.require("fs"));
-      P.print(J.$index$asx(C.C_JsonCodec.decode$2$reviver(0, H._asStringS(J.readFileSync$2$x(t1, project._filePath, "utf-8")), null), "api-key"));
-      submitButton = type$.legacy_ButtonElement._as(document.getElementById("inputButton"));
+      var project,
+        submitButton = type$.legacy_ButtonElement._as(document.getElementById("inputButton"));
       (submitButton && C.ButtonElement_methods).addEventListener$2(submitButton, "click", new Z.main_closure());
+      project = new S.LegoSetProject();
+      project._filePath = "TestProject.json";
+      project.set$_sets(H.setRuntimeTypeInfo([], type$.JSArray_legacy_LegoSet));
+      project.loadProject$0().then$1$1(0, new Z.main_closure0(project), type$.void);
       return 0;
     },
     main_closure: function main_closure() {
     },
-    main__closure: function main__closure(t0) {
-      this.apiAccess = t0;
-    },
-    main___closure: function main___closure(t0, t1) {
-      this.curID = t0;
-      this.apiAccess = t1;
-    },
-    main____closure: function main____closure(t0) {
-      this.set = t0;
-    },
-    main_____closure: function main_____closure(t0, t1) {
-      this.pieces = t0;
-      this.key = t1;
+    main_closure0: function main_closure0(t0) {
+      this.project = t0;
     }
   },
   U = {
@@ -6769,39 +6796,6 @@
       _.url = t2;
       _.highlights = t3;
     },
-    LegoSet_searchSets: function(search, apiAccess) {
-      var $async$goto = 0,
-        $async$completer = P._makeAsyncAwaitCompleter(type$.dynamic),
-        $async$returnValue, response;
-      var $async$LegoSet_searchSets = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
-        if ($async$errorCode === 1)
-          return P._asyncRethrow($async$result, $async$completer);
-        while (true)
-          switch ($async$goto) {
-            case 0:
-              // Function start
-              $async$goto = 3;
-              return P._asyncAwait(apiAccess.$get$2("sets", "search=" + H.S(search)), $async$LegoSet_searchSets);
-            case 3:
-              // returning from await.
-              response = $async$result;
-              if (response.statusCode !== 200) {
-                $async$returnValue = null;
-                // goto return
-                $async$goto = 1;
-                break;
-              }
-              $async$returnValue = C.C_JsonCodec.decode$2$reviver(0, B.encodingForCharset(U._contentTypeForHeaders(response.headers).parameters._map.$index(0, "charset")).decode$1(0, response.bodyBytes), null);
-              // goto return
-              $async$goto = 1;
-              break;
-            case 1:
-              // return
-              return P._asyncReturn($async$returnValue, $async$completer);
-          }
-      });
-      return P._asyncStartSync($async$LegoSet_searchSets, $async$completer);
-    },
     LegoSet: function LegoSet() {
       this._piecesOwned = this._pieces = this._setID = null;
     }
@@ -6891,7 +6885,7 @@
       var _ = this;
       _.sourceUrl = t0;
       _.string = t1;
-      _._string_scanner$_position = 0;
+      _._position = 0;
       _._lastMatchPosition = _._lastMatch = null;
     }
   },
@@ -6919,8 +6913,31 @@
     },
     MediaType_toString__closure: function MediaType_toString__closure() {
     },
+    LegoPiece_getPiece: function(partID, colorID, apiAccess) {
+      var t1 = $.LegoPiece__registeredPieces;
+      if (t1 == null)
+        t1 = $.LegoPiece__registeredPieces = new H.JsLinkedHashMap(type$.JsLinkedHashMap_of_legacy_String_and_legacy_Map_of_legacy_int_and_legacy_LegoPiece);
+      if (t1.$index(0, partID) == null) {
+        t1 = $.LegoPiece__registeredPieces;
+        t1.$indexSet(0, partID, new H.JsLinkedHashMap(type$.JsLinkedHashMap_of_legacy_int_and_legacy_LegoPiece));
+      }
+      if (J.$index$asx($.LegoPiece__registeredPieces.$index(0, partID), colorID) == null) {
+        if (apiAccess == null)
+          return null;
+        J.$indexSet$ax($.LegoPiece__registeredPieces.$index(0, partID), colorID, R.LegoPiece$_(partID, colorID, apiAccess));
+      }
+      return J.$index$asx($.LegoPiece__registeredPieces.$index(0, partID), colorID);
+    },
+    LegoPiece$_: function(partID, colorID, apiAccess) {
+      var t1 = new R.LegoPiece();
+      t1.LegoPiece$_$3(partID, colorID, apiAccess);
+      return t1;
+    },
     LegoPiece: function LegoPiece() {
-      this._imageURLDone = this._imageURL = null;
+      this._colorID = this._partID = null;
+    },
+    LegoPiece$__closure: function LegoPiece$__closure(t0) {
+      this.$this = t0;
     }
   },
   N = {
@@ -7194,7 +7211,11 @@
     }
   },
   S = {LegoSetProject: function LegoSetProject() {
-      this._filePath = null;
+      this._apiAccess = this._filePath = this._sets = null;
+    }, LegoSetProject_loadProject_closure: function LegoSetProject_loadProject_closure(t0, t1, t2) {
+      this.$this = t0;
+      this.curSet = t1;
+      this.curSetJson = t2;
     }};
   var holders = [C, H, J, P, W, M, E, G, T, O, Z, U, X, R, N, V, F, D, Y, L, B, S];
   hunkHelpers.setFunctionNamesIfNecessary(holders);
@@ -7367,7 +7388,9 @@
       return H.SubListIterable$(receiver, n, null, H._arrayInstanceType(receiver)._precomputed1);
     },
     elementAt$1: function(receiver, index) {
-      return this.$index(receiver, index);
+      if (index < 0 || index >= receiver.length)
+        return H.ioore(receiver, index);
+      return receiver[index];
     },
     get$first: function(receiver) {
       if (receiver.length > 0)
@@ -7502,25 +7525,25 @@
   J.JSUnmodifiableArray.prototype = {};
   J.ArrayIterator.prototype = {
     get$current: function() {
-      return this.__interceptors$_current;
+      return this._current;
     },
     moveNext$0: function() {
       var t2, _this = this,
         t1 = _this._iterable,
         $length = t1.length;
-      if (_this.__interceptors$_length !== $length)
+      if (_this._length !== $length)
         throw H.wrapException(H.throwConcurrentModificationError(t1));
       t2 = _this._index;
       if (t2 >= $length) {
-        _this.set$__interceptors$_current(null);
+        _this.set$_current(null);
         return false;
       }
-      _this.set$__interceptors$_current(t1[t2]);
+      _this.set$_current(t1[t2]);
       ++_this._index;
       return true;
     },
-    set$__interceptors$_current: function(_current) {
-      this.__interceptors$_current = this.$ti._eval$1("1?")._as(_current);
+    set$_current: function(_current) {
+      this._current = this.$ti._eval$1("1?")._as(_current);
     },
     $isIterator: 1
   };
@@ -7621,8 +7644,6 @@
   J.JSNumNotInt.prototype = {};
   J.JSString.prototype = {
     codeUnitAt$1: function(receiver, index) {
-      if (!H._isInt(index))
-        throw H.wrapException(H.diagnoseIndexError(receiver, index));
       if (index < 0)
         throw H.wrapException(H.diagnoseIndexError(receiver, index));
       if (index >= receiver.length)
@@ -7815,7 +7836,7 @@
     call$0: function() {
       return P.Future_Future$value(null, type$.Null);
     },
-    $signature: 18
+    $signature: 19
   };
   H.NotNullableError.prototype = {
     toString$0: function(_) {
@@ -7915,11 +7936,8 @@
       return endOrLength - t1;
     },
     elementAt$1: function(_, index) {
-      var realIndex, _this = this,
-        t1 = _this.get$_startIndex();
-      if (typeof index !== "number")
-        return H.iae(index);
-      realIndex = t1 + index;
+      var _this = this,
+        realIndex = _this.get$_startIndex() + index;
       if (index < 0 || realIndex >= _this.get$_endIndex())
         throw H.wrapException(P.IndexError$(index, _this, "index", null, null));
       return J.elementAt$1$ax(_this.__internal$_iterable, realIndex);
@@ -8165,11 +8183,8 @@
     },
     elementAt$1: function(_, index) {
       var t1 = this._source,
-        t2 = J.getInterceptor$asx(t1),
-        t3 = t2.get$length(t1);
-      if (typeof index !== "number")
-        return H.iae(index);
-      return t2.elementAt$1(t1, t3 - 1 - index);
+        t2 = J.getInterceptor$asx(t1);
+      return t2.elementAt$1(t1, t2.get$length(t1) - 1 - index);
     }
   };
   H.ConstantMap.prototype = {
@@ -8592,19 +8607,19 @@
     call$1: function(o) {
       return this.getTag(o);
     },
-    $signature: 38
+    $signature: 54
   };
   H.initHooks_closure0.prototype = {
     call$2: function(o, tag) {
       return this.getUnknownTag(o, tag);
     },
-    $signature: 51
+    $signature: 53
   };
   H.initHooks_closure1.prototype = {
     call$1: function(tag) {
       return this.prototypeForTag(H._asStringS(tag));
     },
-    $signature: 50
+    $signature: 42
   };
   H.JSSyntaxRegExp.prototype = {
     toString$0: function(_) {
@@ -8890,7 +8905,7 @@
       t1.storedCallback = null;
       f.call$0();
     },
-    $signature: 3
+    $signature: 8
   };
   P._AsyncRun__initializeScheduleImmediate_closure.prototype = {
     call$1: function(callback) {
@@ -8900,19 +8915,19 @@
       t2 = this.span;
       t1.firstChild ? t1.removeChild(t2) : t1.appendChild(t2);
     },
-    $signature: 49
+    $signature: 55
   };
   P._AsyncRun__scheduleImmediateJsOverride_internalCallback.prototype = {
     call$0: function() {
       this.callback.call$0();
     },
-    $signature: 6
+    $signature: 5
   };
   P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback.prototype = {
     call$0: function() {
       this.callback.call$0();
     },
-    $signature: 6
+    $signature: 5
   };
   P._TimerImpl.prototype = {
     _TimerImpl$2: function(milliseconds, callback) {
@@ -8964,13 +8979,13 @@
     call$2: function(error, stackTrace) {
       this.bodyFunction.call$2(1, new H.ExceptionAndStackTrace(error, type$.StackTrace._as(stackTrace)));
     },
-    $signature: 48
+    $signature: 56
   };
   P._wrapJsFunctionForAsync_closure.prototype = {
     call$2: function(errorCode, result) {
       this.$protected(H._asIntS(errorCode), result);
     },
-    $signature: 33
+    $signature: 52
   };
   P.AsyncError.prototype = {
     toString$0: function(_) {
@@ -8979,6 +8994,70 @@
     $isError: 1,
     get$stackTrace: function() {
       return this.stackTrace;
+    }
+  };
+  P.Future_wait__error_set.prototype = {
+    call$1: function(t1) {
+      return this._box_0._error = t1;
+    },
+    $signature: 38
+  };
+  P.Future_wait__stackTrace_set.prototype = {
+    call$1: function(t1) {
+      return this._box_0._stackTrace = type$.StackTrace._as(t1);
+    },
+    $signature: 35
+  };
+  P.Future_wait__error_get.prototype = {
+    call$0: function() {
+      var t1 = this._box_0._error;
+      return t1 === $ ? H.throwExpression(H.LateError$localNI("error")) : t1;
+    },
+    $signature: 33
+  };
+  P.Future_wait__stackTrace_get.prototype = {
+    call$0: function() {
+      var t1 = this._box_0._stackTrace;
+      return t1 === $ ? H.throwExpression(H.LateError$localNI("stackTrace")) : t1;
+    },
+    $signature: 29
+  };
+  P.Future_wait_handleError.prototype = {
+    call$2: function(theError, theStackTrace) {
+      var t1, t2, _this = this;
+      type$.StackTrace._as(theStackTrace);
+      t1 = _this._box_0;
+      t2 = --t1.remaining;
+      if (t1.values != null) {
+        t1.values = null;
+        if (t1.remaining === 0 || _this.eagerError)
+          _this._future._completeError$2(theError, theStackTrace);
+        else {
+          _this._error_set.call$1(theError);
+          _this._stackTrace_set.call$1(theStackTrace);
+        }
+      } else if (t2 === 0 && !_this.eagerError)
+        _this._future._completeError$2(_this._error_get.call$0(), _this._stackTrace_get.call$0());
+    },
+    $signature: 7
+  };
+  P.Future_wait_closure.prototype = {
+    call$1: function(value) {
+      var valueList, t2, _this = this,
+        t1 = _this.T;
+      t1._as(value);
+      t2 = _this._box_0;
+      --t2.remaining;
+      valueList = t2.values;
+      if (valueList != null) {
+        J.$indexSet$ax(valueList, _this.pos, value);
+        if (t2.remaining === 0)
+          _this._future._completeWithValue$1(P.List_List$from(valueList, true, t1));
+      } else if (t2.remaining === 0 && !_this.eagerError)
+        _this._future._completeError$2(_this._error_get.call$0(), _this._stackTrace_get.call$0());
+    },
+    $signature: function() {
+      return this.T._eval$1("Null(0)");
     }
   };
   P._Completer.prototype = {
@@ -9191,6 +9270,7 @@
       _this._chainForeignFuture$1(value);
     },
     _asyncCompleteError$2: function(error, stackTrace) {
+      type$.StackTrace._as(stackTrace);
       this._state = 1;
       P._rootScheduleMicrotask(null, null, this._zone, type$.void_Function._as(new P._Future__asyncCompleteError_closure(this, error, stackTrace)));
     },
@@ -9221,13 +9301,13 @@
         t1._completeError$2(error, stackTrace);
       }
     },
-    $signature: 3
+    $signature: 8
   };
   P._Future__chainForeignFuture_closure0.prototype = {
     call$2: function(error, stackTrace) {
       this.$this._completeError$2(error, type$.StackTrace._as(stackTrace));
     },
-    $signature: 25
+    $signature: 21
   };
   P._Future__chainForeignFuture_closure1.prototype = {
     call$0: function() {
@@ -9298,7 +9378,7 @@
     call$1: function(_) {
       return this.originalSource;
     },
-    $signature: 24
+    $signature: 18
   };
   P._Future__propagateToListeners_handleValueCallback.prototype = {
     call$0: function() {
@@ -9823,12 +9903,12 @@
     call$1: function(v) {
       return this.K._is(v);
     },
-    $signature: 23
+    $signature: 28
   };
   P._LinkedHashSet.prototype = {
     get$iterator: function(_) {
       var _this = this,
-        t1 = new P._LinkedHashSetIterator(_this, _this._collection$_modifications, H._instanceType(_this)._eval$1("_LinkedHashSetIterator<1>"));
+        t1 = new P._LinkedHashSetIterator(_this, _this._collection$_modifications, _this.$ti._eval$1("_LinkedHashSetIterator<1>"));
       t1._collection$_cell = _this._collection$_first;
       return t1;
     },
@@ -9837,7 +9917,7 @@
     },
     add$1: function(_, element) {
       var strings, nums, _this = this;
-      H._instanceType(_this)._precomputed1._as(element);
+      _this.$ti._precomputed1._as(element);
       if (typeof element == "string" && element !== "__proto__") {
         strings = _this._collection$_strings;
         return _this._collection$_addHashTableEntry$2(strings == null ? _this._collection$_strings = P._LinkedHashSet__newHashTable() : strings, element);
@@ -9849,11 +9929,11 @@
     },
     _add$1: function(element) {
       var rest, hash, bucket, _this = this;
-      H._instanceType(_this)._precomputed1._as(element);
+      _this.$ti._precomputed1._as(element);
       rest = _this._collection$_rest;
       if (rest == null)
         rest = _this._collection$_rest = P._LinkedHashSet__newHashTable();
-      hash = _this._computeHashCode$1(element);
+      hash = J.get$hashCode$(element) & 1073741823;
       bucket = rest[hash];
       if (bucket == null)
         rest[hash] = [_this._collection$_newLinkedCell$1(element)];
@@ -9869,23 +9949,23 @@
       return t1;
     },
     _remove$1: function(object) {
-      var hash, bucket, index, cell, _this = this,
-        rest = _this._collection$_rest;
+      var hash, bucket, index, cell,
+        rest = this._collection$_rest;
       if (rest == null)
         return false;
-      hash = _this._computeHashCode$1(object);
+      hash = C.HttpRequest_methods.get$hashCode(object) & 1073741823;
       bucket = rest[hash];
-      index = _this._findBucketIndex$2(bucket, object);
+      index = this._findBucketIndex$2(bucket, object);
       if (index < 0)
         return false;
       cell = bucket.splice(index, 1)[0];
       if (0 === bucket.length)
         delete rest[hash];
-      _this._unlinkCell$1(cell);
+      this._unlinkCell$1(cell);
       return true;
     },
     _collection$_addHashTableEntry$2: function(table, element) {
-      H._instanceType(this)._precomputed1._as(element);
+      this.$ti._precomputed1._as(element);
       if (type$.nullable__LinkedHashSetCell._as(table[element]) != null)
         return false;
       table[element] = this._collection$_newLinkedCell$1(element);
@@ -9896,7 +9976,7 @@
     },
     _collection$_newLinkedCell$1: function(element) {
       var t1, _this = this,
-        cell = new P._LinkedHashSetCell(H._instanceType(_this)._precomputed1._as(element));
+        cell = new P._LinkedHashSetCell(_this.$ti._precomputed1._as(element));
       if (_this._collection$_first == null)
         _this._collection$_first = _this._collection$_last = cell;
       else {
@@ -9923,9 +10003,6 @@
         next._collection$_previous = previous;
       --_this._collection$_length;
       _this._collection$_modified$0();
-    },
-    _computeHashCode$1: function(element) {
-      return J.get$hashCode$(element) & 1073741823;
     },
     _findBucketIndex$2: function(bucket, element) {
       var $length, i;
@@ -10050,7 +10127,7 @@
       t1._contents = t2 + ": ";
       t1._contents += H.S(v);
     },
-    $signature: 17
+    $signature: 20
   };
   P.MapMixin.prototype = {
     forEach$1: function(_, action) {
@@ -10101,7 +10178,7 @@
       return P.IterableBase_iterableToFullString(this, "{", "}");
     },
     skip$1: function(_, n) {
-      return H.SkipIterable_SkipIterable(this, n, H._instanceType(this)._eval$1("SetMixin.E"));
+      return H.SkipIterable_SkipIterable(this, n, this.$ti._precomputed1);
     }
   };
   P._SetBase.prototype = {$isEfficientLengthIterable: 1, $isIterable: 1, $isSet: 1};
@@ -10215,7 +10292,15 @@
     },
     elementAt$1: function(_, index) {
       var t1 = this._parent;
-      return t1._processed == null ? t1.get$keys(t1).elementAt$1(0, index) : C.JSArray_methods.$index(t1._computeKeys$0(), index);
+      if (t1._processed == null)
+        t1 = t1.get$keys(t1).elementAt$1(0, index);
+      else {
+        t1 = t1._computeKeys$0();
+        if (index < 0 || index >= t1.length)
+          return H.ioore(t1, index);
+        t1 = t1[index];
+      }
+      return t1;
     },
     get$iterator: function(_) {
       var t1 = this._parent;
@@ -10240,7 +10325,7 @@
       }
       return null;
     },
-    $signature: 16
+    $signature: 17
   };
   P.Utf8Decoder__decoderNonfatal_closure.prototype = {
     call$0: function() {
@@ -10253,7 +10338,7 @@
       }
       return null;
     },
-    $signature: 16
+    $signature: 17
   };
   P.AsciiCodec.prototype = {
     decode$1: function(_, bytes) {
@@ -10921,7 +11006,7 @@
     call$2: function(msg, position) {
       throw H.wrapException(P.FormatException$("Illegal IPv4 address, " + msg, this.host, position));
     },
-    $signature: 19
+    $signature: 23
   };
   P.Uri_parseIPv6Address_error.prototype = {
     call$2: function(msg, position) {
@@ -10930,7 +11015,7 @@
     call$1: function(msg) {
       return this.call$2(msg, null);
     },
-    $signature: 20
+    $signature: 24
   };
   P.Uri_parseIPv6Address_parseHex.prototype = {
     call$2: function(start, end) {
@@ -10942,7 +11027,7 @@
         this.error.call$2("each part must be in the range of `0x0..0xFFFF`", start);
       return value;
     },
-    $signature: 21
+    $signature: 25
   };
   P._Uri.prototype = {
     get$_text: function() {
@@ -11263,7 +11348,7 @@
       C.NativeUint8List_methods.fillRange$3(t1, 0, 96, defaultTransition);
       return t1;
     },
-    $signature: 22
+    $signature: 26
   };
   P._createTables_setChars.prototype = {
     call$3: function(target, chars, transition) {
@@ -11275,7 +11360,7 @@
         target[t2] = transition;
       }
     },
-    $signature: 15
+    $signature: 16
   };
   P._createTables_setRange.prototype = {
     call$3: function(target, range, transition) {
@@ -11287,7 +11372,7 @@
         target[t1] = transition;
       }
     },
-    $signature: 15
+    $signature: 16
   };
   P._SimpleUri.prototype = {
     get$hasAuthority: function() {
@@ -11553,28 +11638,16 @@
     }
   };
   W.ButtonElement.prototype = {$isButtonElement: 1};
-  W.CharacterData.prototype = {
-    get$length: function(receiver) {
-      return receiver.length;
-    }
-  };
-  W.DivElement.prototype = {$isDivElement: 1};
   W.Document.prototype = {$isDocument: 1};
   W.DomException.prototype = {
     toString$0: function(receiver) {
       return String(receiver);
     }
   };
-  W.DomTokenList.prototype = {
-    get$length: function(receiver) {
-      return receiver.length;
-    }
-  };
   W.Element.prototype = {
     toString$0: function(receiver) {
       return receiver.localName;
-    },
-    $isElement: 1
+    }
   };
   W.Event.prototype = {$isEvent: 1};
   W.EventTarget.prototype = {
@@ -11598,30 +11671,6 @@
     get$length: function(receiver) {
       return receiver.length;
     }
-  };
-  W.HtmlCollection.prototype = {
-    get$length: function(receiver) {
-      return receiver.length;
-    },
-    $index: function(receiver, index) {
-      H._asIntS(index);
-      if (index >>> 0 !== index || index >= receiver.length)
-        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
-      return receiver[index];
-    },
-    $indexSet: function(receiver, index, value) {
-      H._asIntS(index);
-      type$.Node._as(value);
-      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
-    },
-    elementAt$1: function(receiver, index) {
-      return this.$index(receiver, index);
-    },
-    $isJSIndexable: 1,
-    $isEfficientLengthIterable: 1,
-    $isJavaScriptIndexingBehavior: 1,
-    $isIterable: 1,
-    $isList: 1
   };
   W.HttpRequest.prototype = {
     get$responseHeaders: function(receiver) {
@@ -11665,51 +11714,12 @@
     $isHttpRequest: 1
   };
   W.HttpRequestEventTarget.prototype = {};
-  W.ImageElement.prototype = {
-    set$src: function(receiver, value) {
-      receiver.src = value;
-    }
-  };
   W.InputElement.prototype = {$isTextInputElement: 1};
-  W.MouseEvent.prototype = {$isMouseEvent: 1};
   W.Node.prototype = {
-    _clearChildren$0: function(receiver) {
-      var t1;
-      for (; t1 = receiver.firstChild, t1 != null;)
-        receiver.removeChild(t1);
-    },
     toString$0: function(receiver) {
       var value = receiver.nodeValue;
       return value == null ? this.super$Interceptor$toString(receiver) : value;
-    },
-    set$text: function(receiver, value) {
-      receiver.textContent = value;
-    },
-    $isNode: 1
-  };
-  W.NodeList.prototype = {
-    get$length: function(receiver) {
-      return receiver.length;
-    },
-    $index: function(receiver, index) {
-      H._asIntS(index);
-      if (index >>> 0 !== index || index >= receiver.length)
-        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
-      return receiver[index];
-    },
-    $indexSet: function(receiver, index, value) {
-      H._asIntS(index);
-      type$.Node._as(value);
-      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
-    },
-    elementAt$1: function(receiver, index) {
-      return this.$index(receiver, index);
-    },
-    $isJSIndexable: 1,
-    $isEfficientLengthIterable: 1,
-    $isJavaScriptIndexingBehavior: 1,
-    $isIterable: 1,
-    $isList: 1
+    }
   };
   W.ProgressEvent.prototype = {$isProgressEvent: 1};
   W.SelectElement.prototype = {
@@ -11717,17 +11727,15 @@
       return receiver.length;
     }
   };
-  W.UIEvent.prototype = {};
   W.EventStreamProvider.prototype = {};
   W._EventStream.prototype = {
     listen$4$cancelOnError$onDone$onError: function(_, onData, cancelOnError, onDone, onError) {
-      var t1 = H._instanceType(this);
+      var t1 = this.$ti;
       t1._eval$1("~(1)?")._as(onData);
       type$.nullable_void_Function._as(onDone);
       return W._EventStreamSubscription$(this._html$_target, this._eventType, onData, false, t1._precomputed1);
     }
   };
-  W._ElementEventStreamImpl.prototype = {};
   W._EventStreamSubscription.prototype = {
     cancel$0: function() {
       var _this = this;
@@ -11754,7 +11762,7 @@
       if (t1 != null && true) {
         t2 = this._html$_target;
         t2.toString;
-        J.addEventListener$3$x(t2, this._eventType, t1, false);
+        C.HttpRequest_methods.addEventListener$3(t2, this._eventType, t1, false);
       }
     },
     _unlisten$0: function() {
@@ -11763,7 +11771,7 @@
       if (t1 != null) {
         t2 = this._html$_target;
         t2.toString;
-        J._removeEventListener$3$x(t2, this._eventType, type$.nullable_dynamic_Function_Event._as(t1), false);
+        C.HttpRequest_methods._removeEventListener$3(t2, this._eventType, type$.nullable_dynamic_Function_Event._as(t1), false);
       }
     },
     set$_onData: function(_onData) {
@@ -11774,49 +11782,14 @@
     call$1: function(e) {
       return this.onData.call$1(type$.Event._as(e));
     },
-    $signature: 13
+    $signature: 14
   };
   W._EventStreamSubscription_onData_closure.prototype = {
     call$1: function(e) {
       return this.handleData.call$1(type$.Event._as(e));
     },
-    $signature: 13
+    $signature: 14
   };
-  W.ImmutableListMixin.prototype = {
-    get$iterator: function(receiver) {
-      return new W.FixedSizeListIterator(receiver, this.get$length(receiver), H.instanceType(receiver)._eval$1("FixedSizeListIterator<ImmutableListMixin.E>"));
-    },
-    sort$1: function(receiver, compare) {
-      H.instanceType(receiver)._eval$1("int(ImmutableListMixin.E,ImmutableListMixin.E)?")._as(compare);
-      throw H.wrapException(P.UnsupportedError$("Cannot sort immutable List."));
-    }
-  };
-  W.FixedSizeListIterator.prototype = {
-    moveNext$0: function() {
-      var _this = this,
-        nextPosition = _this._position + 1,
-        t1 = _this._length;
-      if (nextPosition < t1) {
-        _this.set$_current(J.$index$asx(_this._array, nextPosition));
-        _this._position = nextPosition;
-        return true;
-      }
-      _this.set$_current(null);
-      _this._position = t1;
-      return false;
-    },
-    get$current: function() {
-      return this._current;
-    },
-    set$_current: function(_current) {
-      this._current = this.$ti._eval$1("1?")._as(_current);
-    },
-    $isIterator: 1
-  };
-  W._HtmlCollection_Interceptor_ListMixin.prototype = {};
-  W._HtmlCollection_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
-  W._NodeList_Interceptor_ListMixin.prototype = {};
-  W._NodeList_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
   P._AcceptStructuredClone.prototype = {
     findSlot$1: function(value) {
       var i,
@@ -11897,7 +11870,7 @@
       J.$indexSet$ax(t1, key, t2);
       return t2;
     },
-    $signature: 52
+    $signature: 30
   };
   P._AcceptStructuredCloneDart2Js.prototype = {
     forEachJsField$2: function(object, action) {
@@ -12045,13 +12018,13 @@
       H._asStringS(key2);
       return key1.toLowerCase() === key2.toLowerCase();
     },
-    $signature: 27
+    $signature: 31
   };
   G.BaseRequest_closure0.prototype = {
     call$1: function(key) {
       return C.JSString_methods.get$hashCode(H._asStringS(key).toLowerCase());
     },
-    $signature: 28
+    $signature: 32
   };
   T.BaseResponse.prototype = {
     BaseResponse$7$contentLength$headers$isRedirect$persistentConnection$reasonPhrase$request: function(statusCode, contentLength, headers, isRedirect, persistentConnection, reasonPhrase, request) {
@@ -12157,14 +12130,14 @@
       t2.BaseResponse$7$contentLength$headers$isRedirect$persistentConnection$reasonPhrase$request(t3, t4, t6, false, true, t1, t5);
       this.completer.complete$1(0, t2);
     },
-    $signature: 12
+    $signature: 13
   };
   O.BrowserClient_send_closure0.prototype = {
     call$1: function(_) {
       type$.ProgressEvent._as(_);
       this.completer.completeError$2(new E.ClientException("XMLHttpRequest error."), P.StackTrace_current());
     },
-    $signature: 12
+    $signature: 13
   };
   Z.ByteStream.prototype = {
     toBytes$0: function() {
@@ -12179,7 +12152,7 @@
     call$1: function(bytes) {
       return this.completer.complete$1(0, new Uint8Array(H._ensureNativeList(type$.List_int._as(bytes))));
     },
-    $signature: 30
+    $signature: 34
   };
   E.ClientException.prototype = {
     toString$0: function(_) {
@@ -12195,7 +12168,7 @@
     call$1: function(key) {
       return H._asStringS(key).toLowerCase();
     },
-    $signature: 11
+    $signature: 12
   };
   R.MediaType.prototype = {
     toString$0: function(_) {
@@ -12230,27 +12203,27 @@
       t6 = type$.String;
       parameters = P.LinkedHashMap_LinkedHashMap$_empty(t6, t6);
       while (true) {
-        t6 = scanner._lastMatch = C.JSString_methods.matchAsPrefix$2(";", t1, scanner._string_scanner$_position);
-        t7 = scanner._lastMatchPosition = scanner._string_scanner$_position;
+        t6 = scanner._lastMatch = C.JSString_methods.matchAsPrefix$2(";", t1, scanner._position);
+        t7 = scanner._lastMatchPosition = scanner._position;
         success = t6 != null;
-        t6 = success ? scanner._lastMatchPosition = scanner._string_scanner$_position = t6.get$end(t6) : t7;
+        t6 = success ? scanner._lastMatchPosition = scanner._position = t6.get$end(t6) : t7;
         if (!success)
           break;
         t6 = scanner._lastMatch = t2.matchAsPrefix$2(0, t1, t6);
-        scanner._lastMatchPosition = scanner._string_scanner$_position;
+        scanner._lastMatchPosition = scanner._position;
         if (t6 != null)
-          scanner._lastMatchPosition = scanner._string_scanner$_position = t6.get$end(t6);
+          scanner._lastMatchPosition = scanner._position = t6.get$end(t6);
         scanner.expect$1(t3);
-        if (scanner._string_scanner$_position !== scanner._lastMatchPosition)
+        if (scanner._position !== scanner._lastMatchPosition)
           scanner._lastMatch = null;
         t6 = scanner._lastMatch.$index(0, 0);
         t6.toString;
         scanner.expect$1("=");
-        t7 = scanner._lastMatch = t3.matchAsPrefix$2(0, t1, scanner._string_scanner$_position);
-        t8 = scanner._lastMatchPosition = scanner._string_scanner$_position;
+        t7 = scanner._lastMatch = t3.matchAsPrefix$2(0, t1, scanner._position);
+        t8 = scanner._lastMatchPosition = scanner._position;
         success = t7 != null;
         if (success) {
-          t7 = scanner._lastMatchPosition = scanner._string_scanner$_position = t7.get$end(t7);
+          t7 = scanner._lastMatchPosition = scanner._position = t7.get$end(t7);
           t8 = t7;
         } else
           t7 = t8;
@@ -12262,16 +12235,16 @@
           value = t7;
         } else
           value = N.expectQuotedString(scanner);
-        t7 = scanner._lastMatch = t2.matchAsPrefix$2(0, t1, scanner._string_scanner$_position);
-        scanner._lastMatchPosition = scanner._string_scanner$_position;
+        t7 = scanner._lastMatch = t2.matchAsPrefix$2(0, t1, scanner._position);
+        scanner._lastMatchPosition = scanner._position;
         if (t7 != null)
-          scanner._lastMatchPosition = scanner._string_scanner$_position = t7.get$end(t7);
+          scanner._lastMatchPosition = scanner._position = t7.get$end(t7);
         parameters.$indexSet(0, t6, value);
       }
       scanner.expectDone$0();
       return R.MediaType$(t4, t5, parameters);
     },
-    $signature: 32
+    $signature: 36
   };
   R.MediaType_toString_closure.prototype = {
     call$2: function(attribute, value) {
@@ -12292,13 +12265,13 @@
       } else
         t1._contents += H.S(value);
     },
-    $signature: 14
+    $signature: 6
   };
   R.MediaType_toString__closure.prototype = {
     call$1: function(match) {
       return "\\" + H.S(match.$index(0, 0));
     },
-    $signature: 10
+    $signature: 4
   };
   N.expectQuotedString_closure.prototype = {
     call$1: function(match) {
@@ -12306,7 +12279,7 @@
       t1.toString;
       return t1;
     },
-    $signature: 10
+    $signature: 4
   };
   V.BufferModule.prototype = {};
   V.BufferConstants.prototype = {};
@@ -12579,20 +12552,20 @@
     call$1: function(part) {
       return H._asStringS(part) !== "";
     },
-    $signature: 5
+    $signature: 11
   };
   M.Context_split_closure.prototype = {
     call$1: function(part) {
       return H._asStringS(part).length !== 0;
     },
-    $signature: 5
+    $signature: 11
   };
   M._validateArgList_closure.prototype = {
     call$1: function(arg) {
       H._asStringQ(arg);
       return arg == null ? "null" : '"' + arg + '"';
     },
-    $signature: 35
+    $signature: 39
   };
   B.InternalStyle.prototype = {
     getRoot$1: function(path) {
@@ -13339,7 +13312,7 @@
     call$0: function() {
       return this.color;
     },
-    $signature: 36
+    $signature: 40
   };
   U.Highlighter$__closure.prototype = {
     call$1: function(line) {
@@ -13348,27 +13321,27 @@
       t2 = new H.WhereIterable(t1, t2._eval$1("bool(1)")._as(new U.Highlighter$___closure()), t2._eval$1("WhereIterable<1>"));
       return t2.get$length(t2);
     },
-    $signature: 37
+    $signature: 41
   };
   U.Highlighter$___closure.prototype = {
     call$1: function(highlight) {
       var t1 = type$._Highlight._as(highlight).span;
       return t1.get$start(t1).get$line() != t1.get$end(t1).get$line();
     },
-    $signature: 4
+    $signature: 3
   };
   U.Highlighter$__closure0.prototype = {
     call$1: function(line) {
       return type$._Line._as(line).url;
     },
-    $signature: 39
+    $signature: 43
   };
   U.Highlighter__collateLines_closure.prototype = {
     call$1: function(highlight) {
       var t1 = type$._Highlight._as(highlight).span;
       return t1.get$sourceUrl(t1);
     },
-    $signature: 40
+    $signature: 44
   };
   U.Highlighter__collateLines_closure0.prototype = {
     call$2: function(highlight1, highlight2) {
@@ -13377,7 +13350,7 @@
       t1._as(highlight2);
       return highlight1.span.compareTo$1(0, highlight2.span);
     },
-    $signature: 41
+    $signature: 45
   };
   U.Highlighter__collateLines_closure1.prototype = {
     call$1: function(highlightsForFile) {
@@ -13429,7 +13402,7 @@
       }
       return lines;
     },
-    $signature: 42
+    $signature: 46
   };
   U.Highlighter__collateLines__closure.prototype = {
     call$1: function(highlight) {
@@ -13446,14 +13419,14 @@
         t1 = true;
       return t1;
     },
-    $signature: 4
+    $signature: 3
   };
   U.Highlighter_highlight_closure.prototype = {
     call$1: function(highlight) {
       type$._Highlight._as(highlight).toString;
       return true;
     },
-    $signature: 4
+    $signature: 3
   };
   U.Highlighter__writeFileStart_closure.prototype = {
     call$0: function() {
@@ -13607,7 +13580,7 @@
       }
       return U._Highlight__normalizeEndOfLine(U._Highlight__normalizeTrailingNewline(U._Highlight__normalizeNewlines(t1)));
     },
-    $signature: 43
+    $signature: 47
   };
   U._Line.prototype = {
     toString$0: function(_) {
@@ -13817,17 +13790,17 @@
   X.StringScanner.prototype = {
     get$lastMatch: function() {
       var _this = this;
-      if (_this._string_scanner$_position !== _this._lastMatchPosition)
+      if (_this._position !== _this._lastMatchPosition)
         _this._lastMatch = null;
       return _this._lastMatch;
     },
     scan$1: function(pattern) {
       var success, _this = this,
-        t1 = _this._lastMatch = J.matchAsPrefix$2$s(pattern, _this.string, _this._string_scanner$_position);
-      _this._lastMatchPosition = _this._string_scanner$_position;
+        t1 = _this._lastMatch = J.matchAsPrefix$2$s(pattern, _this.string, _this._position);
+      _this._lastMatchPosition = _this._position;
       success = t1 != null;
       if (success)
-        _this._lastMatchPosition = _this._string_scanner$_position = t1.get$end(t1);
+        _this._lastMatchPosition = _this._position = t1.get$end(t1);
       return success;
     },
     expect$2$name: function(pattern, $name) {
@@ -13849,7 +13822,7 @@
       return this.expect$2$name(pattern, null);
     },
     expectDone$0: function() {
-      if (this._string_scanner$_position === this.string.length)
+      if (this._position === this.string.length)
         return;
       this._fail$1("no more input");
       H.ReachabilityError$(string$.x60null_);
@@ -13878,17 +13851,32 @@
       throw H.wrapException(new E.StringScannerException(t1, message, new Y._FileSpan(sourceFile, position, end)));
     },
     _fail$1: function($name) {
-      this.error$3$length$position(0, "expected " + $name + ".", 0, this._string_scanner$_position);
+      this.error$3$length$position(0, "expected " + $name + ".", 0, this._position);
       H.ReachabilityError$(string$.x60null_);
     }
   };
   R.LegoPiece.prototype = {
+    LegoPiece$_$3: function(partID, colorID, apiAccess) {
+      var _this = this;
+      _this._partID = partID;
+      _this._colorID = colorID;
+      _this.set$_imageURL(apiAccess.$get$2("parts/" + H.S(partID) + "/colors/" + H.S(_this._colorID), "").then$1$1(0, new R.LegoPiece$__closure(_this), type$.legacy_String));
+    },
     toString$0: function(_) {
-      return this._imageURLDone;
+      return this._partID;
     },
     set$_imageURL: function(_imageURL) {
-      this._imageURL = type$.legacy_Future_legacy_String._as(_imageURL);
+      type$.legacy_Future_legacy_String._as(_imageURL);
     }
+  };
+  R.LegoPiece$__closure.prototype = {
+    call$1: function(value) {
+      type$.legacy_Response._as(value);
+      if (value.statusCode !== 200)
+        return "";
+      return H._asStringS(J.$index$asx(C.C_JsonCodec.decode$2$reviver(0, B.encodingForCharset(U._contentTypeForHeaders(value.headers).parameters._map.$index(0, "charset")).decode$1(0, value.bodyBytes), null), "part_img_url"));
+    },
+    $signature: 48
   };
   U.LegoSet.prototype = {
     loadSet$1: function(apiAccess) {
@@ -13960,7 +13948,8 @@
                 if (J.$index$asx($.LegoPiece__registeredPieces.$index(0, partID), colorID) == null) {
                   t6 = $.LegoPiece__registeredPieces.$index(0, partID);
                   t7 = new R.LegoPiece();
-                  t7._imageURLDone = imageURL;
+                  t7._partID = partID;
+                  t7._colorID = colorID;
                   t8 = new P._Future($.Zone__current, t3);
                   t8._asyncComplete$1(imageURL);
                   t7.set$_imageURL(t8);
@@ -13996,9 +13985,135 @@
     }
   };
   S.LegoSetProject.prototype = {
+    loadProject$0: function() {
+      var $async$goto = 0,
+        $async$completer = P._makeAsyncAwaitCompleter(type$.legacy_bool),
+        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], $async$self = this, fileContentsJson, loadedAwaits, setsJson, i, curSetJson, curSet, e, t1, t2, t3, curSet0, exception, $async$exception;
+      var $async$loadProject$0 = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
+        if ($async$errorCode === 1) {
+          $async$currentError = $async$result;
+          $async$goto = $async$handler;
+        }
+        while (true)
+          $async$outer:
+            switch ($async$goto) {
+              case 0:
+                // Function start
+                $async$handler = 4;
+                t1 = $._fs;
+                if (t1 == null)
+                  t1 = $._fs = type$.nullable_FS._as(self.require("fs"));
+                fileContentsJson = C.C_JsonCodec.decode$2$reviver(0, H._asStringS(J.readFileSync$2$x(t1, $async$self._filePath, "utf-8")), null);
+                t1 = new T.RebrickableAccess();
+                t1._apiKey = H._asStringS(J.$index$asx(fileContentsJson, "apiKey"));
+                t1._client = new O.BrowserClient(P.LinkedHashSet_LinkedHashSet$_empty(type$.HttpRequest));
+                $async$self._apiAccess = t1;
+                loadedAwaits = H.setRuntimeTypeInfo([], type$.JSArray_legacy_Future_dynamic);
+                setsJson = type$.legacy_List_dynamic._as(J.$index$asx(fileContentsJson, "sets"));
+                i = 0;
+                t1 = type$.dynamic;
+                while (true) {
+                  t2 = i;
+                  t3 = J.get$length$asx(setsJson);
+                  if (typeof t2 !== "number") {
+                    $async$returnValue = t2.$lt();
+                    // goto return
+                    $async$goto = 1;
+                    break $async$outer;
+                  }
+                  if (!(t2 < t3))
+                    break;
+                  curSetJson = J.$index$asx(setsJson, i);
+                  curSet0 = new U.LegoSet();
+                  curSet0._setID = H._asStringS(J.$index$asx(curSetJson, "setID"));
+                  curSet = curSet0;
+                  J.add$1$ax(loadedAwaits, curSet.loadSet$1($async$self._apiAccess).then$1$1(0, new S.LegoSetProject_loadProject_closure($async$self, curSet, curSetJson), t1));
+                  t2 = i;
+                  if (typeof t2 !== "number") {
+                    $async$returnValue = t2.$add();
+                    // goto return
+                    $async$goto = 1;
+                    break $async$outer;
+                  }
+                  i = t2 + 1;
+                }
+                $async$goto = 7;
+                return P._asyncAwait(P.Future_wait(loadedAwaits, t1), $async$loadProject$0);
+              case 7:
+                // returning from await.
+                $async$handler = 2;
+                // goto after finally
+                $async$goto = 6;
+                break;
+              case 4:
+                // catch
+                $async$handler = 3;
+                $async$exception = $async$currentError;
+                e = H.unwrapException($async$exception);
+                P.print(e);
+                $async$returnValue = false;
+                // goto return
+                $async$goto = 1;
+                break;
+                // goto after finally
+                $async$goto = 6;
+                break;
+              case 3:
+                // uncaught
+                // goto rethrow
+                $async$goto = 2;
+                break;
+              case 6:
+                // after finally
+                $async$returnValue = true;
+                // goto return
+                $async$goto = 1;
+                break;
+              case 1:
+                // return
+                return P._asyncReturn($async$returnValue, $async$completer);
+              case 2:
+                // rethrow
+                return P._asyncRethrow($async$currentError, $async$completer);
+            }
+      });
+      return P._asyncStartSync($async$loadProject$0, $async$completer);
+    },
     set$_sets: function(_sets) {
-      type$.legacy_List_legacy_LegoSet._as(_sets);
+      this._sets = type$.legacy_List_legacy_LegoSet._as(_sets);
     }
+  };
+  S.LegoSetProject_loadProject_closure.prototype = {
+    call$1: function(value) {
+      var piecesOwnedJson, j, curPieceJson, curPiece, t1, t2, t3, t4, t5;
+      if (H.boolConversionCheck(H._asBoolS(value))) {
+        t1 = this.$this;
+        t2 = this.curSet;
+        C.JSArray_methods.add$1(t1._sets, t2);
+        piecesOwnedJson = type$.legacy_List_dynamic._as(J.$index$asx(this.curSetJson, "piecesOwned"));
+        j = 0;
+        t3 = type$.legacy_LegoPiece;
+        while (true) {
+          t4 = j;
+          t5 = J.get$length$asx(piecesOwnedJson);
+          if (typeof t4 !== "number")
+            return t4.$lt();
+          if (!(t4 < t5))
+            break;
+          curPieceJson = J.$index$asx(piecesOwnedJson, j);
+          curPiece = R.LegoPiece_getPiece(H._asStringS(J.$index$asx(curPieceJson, "partID")), H._asIntS(J.$index$asx(curPieceJson, "colorID")), t1._apiAccess);
+          t4 = H._asIntS(J.$index$asx(curPieceJson, "amountOwned"));
+          t5 = t3._as(curPiece);
+          if (t2._pieces.$index(0, t5) != null)
+            t2._piecesOwned.$indexSet(0, t5, t4);
+          t4 = j;
+          if (typeof t4 !== "number")
+            return t4.$add();
+          j = t4 + 1;
+        }
+      }
+    },
+    $signature: 49
   };
   T.RebrickableAccess.prototype = {
     $get$2: function(section, params) {
@@ -14027,88 +14142,21 @@
   };
   Z.main_closure.prototype = {
     call$1: function($event) {
-      var t1, t2, apiAccess, search;
       type$.legacy_Event._as($event);
-      t1 = document;
-      t2 = type$.legacy_TextInputElement;
-      apiAccess = new T.RebrickableAccess();
-      apiAccess._apiKey = t2._as(t1.getElementById("apiInput")).value;
-      apiAccess._client = new O.BrowserClient(P.LinkedHashSet_LinkedHashSet$_empty(type$.HttpRequest));
-      search = t2._as(t1.getElementById("searchInput")).value;
-      if (search !== "")
-        U.LegoSet_searchSets(search, apiAccess).then$1$1(0, new Z.main__closure(apiAccess), type$.Null);
+      type$.legacy_TextInputElement._as(document.getElementById("apiInput"));
     },
-    $signature: 44
+    $signature: 50
   };
-  Z.main__closure.prototype = {
+  Z.main_closure0.prototype = {
     call$1: function(value) {
-      var t1, searchResultsElement, t2, numSets, results, t3, t4, t5, t6, i, curSet, t7, curID, curImageURL, e;
-      if (value != null) {
-        t1 = document;
-        searchResultsElement = type$.legacy_DivElement._as(t1.getElementById("searchResults"));
-        searchResultsElement.toString;
-        C.DivElement_methods._clearChildren$0(searchResultsElement);
-        t2 = J.getInterceptor$asx(value);
-        numSets = H._asIntS(t2.$index(value, "count"));
-        results = t2.$index(value, "results");
-        if (typeof numSets !== "number")
-          return H.iae(numSets);
-        t2 = type$._ElementEventStreamImpl_legacy_MouseEvent;
-        t3 = this.apiAccess;
-        t4 = t2._eval$1("~(1)?");
-        t5 = type$.nullable_void_Function;
-        t2 = t2._precomputed1;
-        t6 = J.getInterceptor$asx(results);
-        i = 0;
-        for (; i < numSets; ++i) {
-          curSet = t6.$index(results, i);
-          t7 = J.getInterceptor$asx(curSet);
-          curID = H._asStringS(t7.$index(curSet, "set_num"));
-          curImageURL = H._asStringS(t7.$index(curSet, "set_img_url"));
-          e = t1.createElement("a");
-          C.AnchorElement_methods.set$text(e, curID);
-          t7 = t4._as(new Z.main___closure(curID, t3));
-          t5._as(null);
-          W._EventStreamSubscription$(e, "click", t7, false, t2);
-          searchResultsElement.appendChild(e);
-          e = t1.createElement("img");
-          C.ImageElement_methods.set$src(e, curImageURL);
-          e.classList.add("setImages");
-          searchResultsElement.appendChild(e);
-        }
-      }
-    },
-    $signature: 3
-  };
-  Z.main___closure.prototype = {
-    call$1: function($event) {
-      var set;
-      type$.legacy_MouseEvent._as($event);
-      set = new U.LegoSet();
-      set._setID = this.curID;
-      set.loadSet$1(this.apiAccess).then$1$1(0, new Z.main____closure(set), type$.Null);
-    },
-    $signature: 45
-  };
-  Z.main____closure.prototype = {
-    call$1: function(value) {
-      var pieces, t1, t2, t3;
+      var t1;
       H._asBoolS(value);
-      pieces = this.set._pieces;
-      for (t1 = pieces.get$keys(pieces), t1 = t1.get$iterator(t1), t2 = type$.Null; t1.moveNext$0();) {
-        t3 = t1.get$current();
-        t3._imageURL.then$1$1(0, new Z.main_____closure(pieces, t3), t2);
-      }
+      t1 = this.project._sets;
+      if (0 >= t1.length)
+        return H.ioore(t1, 0);
+      return P.print(t1[0]._piecesOwned);
     },
-    $signature: 46
-  };
-  Z.main_____closure.prototype = {
-    call$1: function(value) {
-      H._asStringS(value);
-      if (value != null)
-        P.print(value + ":" + J.toString$0$(this.pieces.$index(0, this.key)));
-    },
-    $signature: 47
+    $signature: 51
   };
   (function aliases() {
     var _ = J.Interceptor.prototype;
@@ -14138,36 +14186,36 @@
       _instance_0_i = hunkHelpers._instance_0i,
       _instance_2_i = hunkHelpers._instance_2i,
       _static = hunkHelpers.installStaticTearOff;
-    _static_2(J, "_interceptors_JSArray__compareAny$closure", "JSArray__compareAny", 9);
+    _static_2(J, "_interceptors_JSArray__compareAny$closure", "JSArray__compareAny", 10);
     _static_1(P, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 2);
     _static_1(P, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 2);
     _static_1(P, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 2);
     _static_0(P, "async___startMicrotaskLoop$closure", "_startMicrotaskLoop", 0);
     _static_1(P, "async___nullDataHandler$closure", "_nullDataHandler", 1);
-    _instance(P._Completer.prototype, "get$completeError", 0, 1, null, ["call$2", "call$1"], ["completeError$2", "completeError$1"], 31, 0);
-    _instance_2_u(P._Future.prototype, "get$_completeError", "_completeError$2", 29);
+    _instance(P._Completer.prototype, "get$completeError", 0, 1, null, ["call$2", "call$1"], ["completeError$2", "completeError$1"], 27, 0);
+    _instance_2_u(P._Future.prototype, "get$_completeError", "_completeError$2", 7);
     _instance_0_u(P._DoneStreamSubscription.prototype, "get$_sendDone", "_sendDone$0", 0);
-    _static_2(P, "collection___defaultEquals$closure", "_defaultEquals", 8);
-    _static_1(P, "collection___defaultHashCode$closure", "_defaultHashCode", 7);
-    _static_2(P, "collection_ListMixin__compareAny$closure", "ListMixin__compareAny", 9);
+    _static_2(P, "collection___defaultEquals$closure", "_defaultEquals", 15);
+    _static_1(P, "collection___defaultHashCode$closure", "_defaultHashCode", 9);
+    _static_2(P, "collection_ListMixin__compareAny$closure", "ListMixin__compareAny", 10);
     var _;
-    _instance_1_i(_ = P._ByteCallbackSink.prototype, "get$add", "add$1", 26);
+    _instance_1_i(_ = P._ByteCallbackSink.prototype, "get$add", "add$1", 22);
     _instance_0_i(_, "get$close", "close$0", 0);
-    _static_1(P, "core__identityHashCode$closure", "identityHashCode", 7);
-    _static_2(P, "core__identical$closure", "identical", 8);
-    _static_1(P, "core_Uri_decodeComponent$closure", "Uri_decodeComponent", 11);
-    _instance_2_i(W.HttpRequest.prototype, "get$setRequestHeader", "setRequestHeader$2", 14);
+    _static_1(P, "core__identityHashCode$closure", "identityHashCode", 9);
+    _static_2(P, "core__identical$closure", "identical", 15);
+    _static_1(P, "core_Uri_decodeComponent$closure", "Uri_decodeComponent", 12);
+    _instance_2_i(W.HttpRequest.prototype, "get$setRequestHeader", "setRequestHeader$2", 6);
     _static(P, "math__max$closure", 2, null, ["call$1$2", "call$2"], ["max", function(a, b) {
       return P.max(a, b, type$.num);
-    }], 34, 0);
+    }], 37, 0);
   })();
   (function inheritance() {
     var _mixin = hunkHelpers.mixin,
       _inherit = hunkHelpers.inherit,
       _inheritMany = hunkHelpers.inheritMany;
     _inherit(P.Object, null);
-    _inheritMany(P.Object, [H.JS_CONST, J.Interceptor, J.ArrayIterator, P.Error, P._ListBase_Object_ListMixin, H.Closure, P.Iterable, H.ListIterator, P.Iterator, H.ExpandIterator, H.EmptyIterator, H.WhereTypeIterator, H.FixedLengthListMixin, H.UnmodifiableListMixin, H.ConstantMap, H.TypeErrorDecoder, H.NullThrownFromJavaScriptException, H.ExceptionAndStackTrace, H._StackTrace, P.MapMixin, H.LinkedHashMapCell, H.LinkedHashMapKeyIterator, H.JSSyntaxRegExp, H._MatchImplementation, H._AllMatchesIterator, H.StringMatch, H._StringAllMatchesIterator, H.Rti, H._FunctionParameters, H._Type, P._TimerImpl, P._AsyncAwaitCompleter, P.AsyncError, P._Completer, P._FutureListener, P._Future, P._AsyncCallbackEntry, P.Stream, P.StreamSubscription, P.StreamTransformerBase, P._BufferingStreamSubscription, P._PendingEvents, P._DoneStreamSubscription, P._StreamIterator, P._Zone, P.__SetBase_Object_SetMixin, P._LinkedHashSetCell, P._LinkedHashSetIterator, P.ListMixin, P._UnmodifiableMapMixin, P.MapView, P.SetMixin, P.Codec, P.ChunkedConversionSink, P._Utf8Decoder, P.DateTime, P.OutOfMemoryError, P.StackOverflowError, P._Exception, P.FormatException, P.MapEntry, P.Null, P._StringStackTrace, P.StringBuffer, P._Uri, P.UriData, P._SimpleUri, W.EventStreamProvider, W.ImmutableListMixin, W.FixedSizeListIterator, P._AcceptStructuredClone, P.NullRejectionException, M.CanonicalizedMap, E.BaseClient, G.BaseRequest, T.BaseResponse, E.ClientException, R.MediaType, M.Context, O.Style, X.ParsedPath, X.PathException, Y.SourceFile, D.SourceLocationMixin, Y.SourceSpanMixin, U.Highlighter, U._Highlight, U._Line, V.SourceLocation, G.SourceSpanException, X.StringScanner, R.LegoPiece, U.LegoSet, S.LegoSetProject, T.RebrickableAccess]);
-    _inheritMany(J.Interceptor, [J.JSBool, J.JSNull, J.JavaScriptObject, J.JSArray, J.JSNumber, J.JSString, H.NativeByteBuffer, H.NativeTypedData, W.EventTarget, W.DomException, W.DomTokenList, W.Event, W._HtmlCollection_Interceptor_ListMixin, W._NodeList_Interceptor_ListMixin]);
+    _inheritMany(P.Object, [H.JS_CONST, J.Interceptor, J.ArrayIterator, P.Error, P._ListBase_Object_ListMixin, H.Closure, P.Iterable, H.ListIterator, P.Iterator, H.ExpandIterator, H.EmptyIterator, H.WhereTypeIterator, H.FixedLengthListMixin, H.UnmodifiableListMixin, H.ConstantMap, H.TypeErrorDecoder, H.NullThrownFromJavaScriptException, H.ExceptionAndStackTrace, H._StackTrace, P.MapMixin, H.LinkedHashMapCell, H.LinkedHashMapKeyIterator, H.JSSyntaxRegExp, H._MatchImplementation, H._AllMatchesIterator, H.StringMatch, H._StringAllMatchesIterator, H.Rti, H._FunctionParameters, H._Type, P._TimerImpl, P._AsyncAwaitCompleter, P.AsyncError, P._Completer, P._FutureListener, P._Future, P._AsyncCallbackEntry, P.Stream, P.StreamSubscription, P.StreamTransformerBase, P._BufferingStreamSubscription, P._PendingEvents, P._DoneStreamSubscription, P._StreamIterator, P._Zone, P.__SetBase_Object_SetMixin, P._LinkedHashSetCell, P._LinkedHashSetIterator, P.ListMixin, P._UnmodifiableMapMixin, P.MapView, P.SetMixin, P.Codec, P.ChunkedConversionSink, P._Utf8Decoder, P.DateTime, P.OutOfMemoryError, P.StackOverflowError, P._Exception, P.FormatException, P.MapEntry, P.Null, P._StringStackTrace, P.StringBuffer, P._Uri, P.UriData, P._SimpleUri, W.EventStreamProvider, P._AcceptStructuredClone, P.NullRejectionException, M.CanonicalizedMap, E.BaseClient, G.BaseRequest, T.BaseResponse, E.ClientException, R.MediaType, M.Context, O.Style, X.ParsedPath, X.PathException, Y.SourceFile, D.SourceLocationMixin, Y.SourceSpanMixin, U.Highlighter, U._Highlight, U._Line, V.SourceLocation, G.SourceSpanException, X.StringScanner, R.LegoPiece, U.LegoSet, S.LegoSetProject, T.RebrickableAccess]);
+    _inheritMany(J.Interceptor, [J.JSBool, J.JSNull, J.JavaScriptObject, J.JSArray, J.JSNumber, J.JSString, H.NativeByteBuffer, H.NativeTypedData, W.EventTarget, W.DomException, W.Event]);
     _inheritMany(J.JavaScriptObject, [J.PlainJavaScriptObject, J.UnknownJavaScriptObject, J.JavaScriptFunction, V.BufferModule, V.BufferConstants, V.Buffer, F.ConsoleModule, F.Console, F.EventEmitter, D.FS, D.FSConstants, D.FSWatcher, D.ReadStream, D.ReadStreamOptions, D.WriteStream, D.WriteStreamOptions, D.FileOptions, D.StatOptions, D.MkdirOptions, D.RmdirOptions, D.WatchOptions, D.WatchFileOptions, D.Stats, E.Promise, E.Date, E.JsError, E.Atomics, Y.Modules, Y.Module, Y.Net, Y.Socket, Y.NetAddress, Y.NetServer, X.NodeJsError, X.Process, X.CPUUsage, X.Release, D.StreamModule, D.Readable, D.Writable, D.Duplex, D.Transform, D.WritableOptions, D.ReadableOptions, L.Immediate, L.Timeout, N.TTY]);
     _inherit(J.JSUnmodifiableArray, J.JSArray);
     _inheritMany(J.JSNumber, [J.JSInt, J.JSNumNotInt]);
@@ -14175,7 +14223,7 @@
     _inherit(P.ListBase, P._ListBase_Object_ListMixin);
     _inherit(H.UnmodifiableListBase, P.ListBase);
     _inherit(H.CodeUnits, H.UnmodifiableListBase);
-    _inheritMany(H.Closure, [H.nullFuture_closure, H.Instantiation, H.TearOffClosure, H.JsLinkedHashMap_values_closure, H.initHooks_closure, H.initHooks_closure0, H.initHooks_closure1, P._AsyncRun__initializeScheduleImmediate_internalCallback, P._AsyncRun__initializeScheduleImmediate_closure, P._AsyncRun__scheduleImmediateJsOverride_internalCallback, P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, P._TimerImpl_internalCallback, P._awaitOnObject_closure, P._awaitOnObject_closure0, P._wrapJsFunctionForAsync_closure, P._Future__addListener_closure, P._Future__prependListeners_closure, P._Future__chainForeignFuture_closure, P._Future__chainForeignFuture_closure0, P._Future__chainForeignFuture_closure1, P._Future__asyncCompleteWithValue_closure, P._Future__chainFuture_closure, P._Future__asyncCompleteError_closure, P._Future__propagateToListeners_handleWhenCompleteCallback, P._Future__propagateToListeners_handleWhenCompleteCallback_closure, P._Future__propagateToListeners_handleValueCallback, P._Future__propagateToListeners_handleError, P.Stream_Stream$fromIterable_closure, P.Stream_length_closure, P.Stream_length_closure0, P.Stream_first_closure, P.Stream_first_closure0, P._BufferingStreamSubscription__sendError_sendError, P._BufferingStreamSubscription__sendDone_sendDone, P._PendingEvents_schedule_closure, P._cancelAndValue_closure, P._rootHandleUncaughtError_closure, P._RootZone_bindCallbackGuarded_closure, P._RootZone_bindUnaryCallbackGuarded_closure, P._LinkedCustomHashMap_closure, P.MapBase_mapToString_closure, P.Utf8Decoder__decoder_closure, P.Utf8Decoder__decoderNonfatal_closure, P.Uri__parseIPv4Address_error, P.Uri_parseIPv6Address_error, P.Uri_parseIPv6Address_parseHex, P._createTables_build, P._createTables_setChars, P._createTables_setRange, W._EventStreamSubscription_closure, W._EventStreamSubscription_onData_closure, P._AcceptStructuredClone_walk_closure, P.promiseToFuture_closure, P.promiseToFuture_closure0, M.CanonicalizedMap_addAll_closure, M.CanonicalizedMap_forEach_closure, G.BaseRequest_closure, G.BaseRequest_closure0, O.BrowserClient_send_closure, O.BrowserClient_send_closure0, Z.ByteStream_toBytes_closure, Z.CaseInsensitiveMap$from_closure, R.MediaType_MediaType$parse_closure, R.MediaType_toString_closure, R.MediaType_toString__closure, N.expectQuotedString_closure, M.Context_joinAll_closure, M.Context_split_closure, M._validateArgList_closure, U.Highlighter_closure, U.Highlighter$__closure, U.Highlighter$___closure, U.Highlighter$__closure0, U.Highlighter__collateLines_closure, U.Highlighter__collateLines_closure0, U.Highlighter__collateLines_closure1, U.Highlighter__collateLines__closure, U.Highlighter_highlight_closure, U.Highlighter__writeFileStart_closure, U.Highlighter__writeMultilineHighlights_closure, U.Highlighter__writeMultilineHighlights_closure0, U.Highlighter__writeMultilineHighlights_closure1, U.Highlighter__writeMultilineHighlights_closure2, U.Highlighter__writeMultilineHighlights__closure, U.Highlighter__writeMultilineHighlights__closure0, U.Highlighter__writeHighlightedText_closure, U.Highlighter__writeIndicator_closure, U.Highlighter__writeIndicator_closure0, U.Highlighter__writeIndicator_closure1, U.Highlighter__writeSidebar_closure, U._Highlight_closure, Z.main_closure, Z.main__closure, Z.main___closure, Z.main____closure, Z.main_____closure]);
+    _inheritMany(H.Closure, [H.nullFuture_closure, H.Instantiation, H.TearOffClosure, H.JsLinkedHashMap_values_closure, H.initHooks_closure, H.initHooks_closure0, H.initHooks_closure1, P._AsyncRun__initializeScheduleImmediate_internalCallback, P._AsyncRun__initializeScheduleImmediate_closure, P._AsyncRun__scheduleImmediateJsOverride_internalCallback, P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, P._TimerImpl_internalCallback, P._awaitOnObject_closure, P._awaitOnObject_closure0, P._wrapJsFunctionForAsync_closure, P.Future_wait__error_set, P.Future_wait__stackTrace_set, P.Future_wait__error_get, P.Future_wait__stackTrace_get, P.Future_wait_handleError, P.Future_wait_closure, P._Future__addListener_closure, P._Future__prependListeners_closure, P._Future__chainForeignFuture_closure, P._Future__chainForeignFuture_closure0, P._Future__chainForeignFuture_closure1, P._Future__asyncCompleteWithValue_closure, P._Future__chainFuture_closure, P._Future__asyncCompleteError_closure, P._Future__propagateToListeners_handleWhenCompleteCallback, P._Future__propagateToListeners_handleWhenCompleteCallback_closure, P._Future__propagateToListeners_handleValueCallback, P._Future__propagateToListeners_handleError, P.Stream_Stream$fromIterable_closure, P.Stream_length_closure, P.Stream_length_closure0, P.Stream_first_closure, P.Stream_first_closure0, P._BufferingStreamSubscription__sendError_sendError, P._BufferingStreamSubscription__sendDone_sendDone, P._PendingEvents_schedule_closure, P._cancelAndValue_closure, P._rootHandleUncaughtError_closure, P._RootZone_bindCallbackGuarded_closure, P._RootZone_bindUnaryCallbackGuarded_closure, P._LinkedCustomHashMap_closure, P.MapBase_mapToString_closure, P.Utf8Decoder__decoder_closure, P.Utf8Decoder__decoderNonfatal_closure, P.Uri__parseIPv4Address_error, P.Uri_parseIPv6Address_error, P.Uri_parseIPv6Address_parseHex, P._createTables_build, P._createTables_setChars, P._createTables_setRange, W._EventStreamSubscription_closure, W._EventStreamSubscription_onData_closure, P._AcceptStructuredClone_walk_closure, P.promiseToFuture_closure, P.promiseToFuture_closure0, M.CanonicalizedMap_addAll_closure, M.CanonicalizedMap_forEach_closure, G.BaseRequest_closure, G.BaseRequest_closure0, O.BrowserClient_send_closure, O.BrowserClient_send_closure0, Z.ByteStream_toBytes_closure, Z.CaseInsensitiveMap$from_closure, R.MediaType_MediaType$parse_closure, R.MediaType_toString_closure, R.MediaType_toString__closure, N.expectQuotedString_closure, M.Context_joinAll_closure, M.Context_split_closure, M._validateArgList_closure, U.Highlighter_closure, U.Highlighter$__closure, U.Highlighter$___closure, U.Highlighter$__closure0, U.Highlighter__collateLines_closure, U.Highlighter__collateLines_closure0, U.Highlighter__collateLines_closure1, U.Highlighter__collateLines__closure, U.Highlighter_highlight_closure, U.Highlighter__writeFileStart_closure, U.Highlighter__writeMultilineHighlights_closure, U.Highlighter__writeMultilineHighlights_closure0, U.Highlighter__writeMultilineHighlights_closure1, U.Highlighter__writeMultilineHighlights_closure2, U.Highlighter__writeMultilineHighlights__closure, U.Highlighter__writeMultilineHighlights__closure0, U.Highlighter__writeHighlightedText_closure, U.Highlighter__writeIndicator_closure, U.Highlighter__writeIndicator_closure0, U.Highlighter__writeIndicator_closure1, U.Highlighter__writeSidebar_closure, U._Highlight_closure, R.LegoPiece$__closure, S.LegoSetProject_loadProject_closure, Z.main_closure, Z.main_closure0]);
     _inheritMany(P.Iterable, [H.EfficientLengthIterable, H.MappedIterable, H.WhereIterable, H.ExpandIterable, H.SkipIterable, H.WhereTypeIterable, P.IterableBase, H._StringAllMatchesIterable]);
     _inheritMany(H.EfficientLengthIterable, [H.ListIterable, H.EmptyIterable, H.LinkedHashMapKeyIterable]);
     _inheritMany(H.ListIterable, [H.SubListIterable, H.MappedListIterable, H.ReversedListIterable, P._JsonMapKeyIterable]);
@@ -14217,17 +14265,11 @@
     _inheritMany(P.ArgumentError, [P.RangeError, P.IndexError]);
     _inherit(P._DataUri, P._Uri);
     _inheritMany(W.EventTarget, [W.Node, W.HttpRequestEventTarget]);
-    _inheritMany(W.Node, [W.Element, W.CharacterData, W.Document]);
+    _inheritMany(W.Node, [W.Element, W.Document]);
     _inherit(W.HtmlElement, W.Element);
-    _inheritMany(W.HtmlElement, [W.AnchorElement, W.AreaElement, W.ButtonElement, W.DivElement, W.FormElement, W.ImageElement, W.InputElement, W.SelectElement]);
-    _inherit(W._HtmlCollection_Interceptor_ListMixin_ImmutableListMixin, W._HtmlCollection_Interceptor_ListMixin);
-    _inherit(W.HtmlCollection, W._HtmlCollection_Interceptor_ListMixin_ImmutableListMixin);
+    _inheritMany(W.HtmlElement, [W.AnchorElement, W.AreaElement, W.ButtonElement, W.FormElement, W.InputElement, W.SelectElement]);
     _inherit(W.HttpRequest, W.HttpRequestEventTarget);
-    _inheritMany(W.Event, [W.UIEvent, W.ProgressEvent]);
-    _inherit(W.MouseEvent, W.UIEvent);
-    _inherit(W._NodeList_Interceptor_ListMixin_ImmutableListMixin, W._NodeList_Interceptor_ListMixin);
-    _inherit(W.NodeList, W._NodeList_Interceptor_ListMixin_ImmutableListMixin);
-    _inherit(W._ElementEventStreamImpl, W._EventStream);
+    _inherit(W.ProgressEvent, W.Event);
     _inherit(W._EventStreamSubscription, P.StreamSubscription);
     _inherit(P._AcceptStructuredCloneDart2Js, P._AcceptStructuredClone);
     _inherit(O.BrowserClient, E.BaseClient);
@@ -14250,10 +14292,6 @@
     _mixin(P._ListBase_Object_ListMixin, P.ListMixin);
     _mixin(P._UnmodifiableMapView_MapView__UnmodifiableMapMixin, P._UnmodifiableMapMixin);
     _mixin(P.__SetBase_Object_SetMixin, P.SetMixin);
-    _mixin(W._HtmlCollection_Interceptor_ListMixin, P.ListMixin);
-    _mixin(W._HtmlCollection_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
-    _mixin(W._NodeList_Interceptor_ListMixin, P.ListMixin);
-    _mixin(W._NodeList_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
   })();
   var init = {
     typeUniverse: {eC: new Map(), tR: {}, eT: {}, tPV: {}, sEA: []},
@@ -14261,12 +14299,12 @@
     mangledNames: {},
     getTypeFromName: getGlobalFromName,
     metadata: [],
-    types: ["~()", "~(@)", "~(~())", "Null(@)", "bool(_Highlight)", "bool(String)", "Null()", "int(Object?)", "bool(Object?,Object?)", "int(@,@)", "String(Match)", "String(String)", "Null(ProgressEvent)", "~(Event)", "~(String,String)", "~(Uint8List,String,int)", "@()", "~(Object?,Object?)", "Future<Null>()", "~(String,int)", "~(String[@])", "int(int,int)", "Uint8List(@,@)", "bool(@)", "_Future<@>(@)", "Null(Object,StackTrace)", "~(Object?)", "bool(String,String)", "int(String)", "~(Object,StackTrace)", "~(List<int>)", "~(Object[StackTrace?])", "MediaType()", "~(int,@)", "0^(0^,0^)<num>", "String(String?)", "String?()", "int(_Line)", "@(@)", "Uri?(_Line)", "Uri?(_Highlight)", "int(_Highlight,_Highlight)", "List<_Line>(List<_Highlight>)", "SourceSpanWithContext()", "Null(Event*)", "Null(MouseEvent*)", "Null(bool*)", "Null(String*)", "Null(@,StackTrace)", "Null(~())", "@(String)", "@(@,String)", "@(@,@)"],
+    types: ["~()", "~(@)", "~(~())", "bool(_Highlight)", "String(Match)", "Null()", "~(String,String)", "~(Object,StackTrace)", "Null(@)", "int(Object?)", "int(@,@)", "bool(String)", "String(String)", "Null(ProgressEvent)", "~(Event)", "bool(Object?,Object?)", "~(Uint8List,String,int)", "@()", "_Future<@>(@)", "Future<Null>()", "~(Object?,Object?)", "Null(Object,StackTrace)", "~(Object?)", "~(String,int)", "~(String[@])", "int(int,int)", "Uint8List(@,@)", "~(Object[StackTrace?])", "bool(@)", "StackTrace()", "@(@,@)", "bool(String,String)", "int(String)", "Object()", "~(List<int>)", "@(StackTrace)", "MediaType()", "0^(0^,0^)<num>", "@(Object)", "String(String?)", "String?()", "int(_Line)", "@(String)", "Uri?(_Line)", "Uri?(_Highlight)", "int(_Highlight,_Highlight)", "List<_Line>(List<_Highlight>)", "SourceSpanWithContext()", "String*(Response*)", "Null(bool*)", "Null(Event*)", "~(bool*)", "~(int,@)", "@(@,String)", "@(@)", "Null(~())", "Null(@,StackTrace)"],
     interceptorsByTag: null,
     leafTags: null,
     arrayRti: typeof Symbol == "function" && typeof Symbol() == "symbol" ? Symbol("$ti") : "$ti"
   };
-  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","BufferModule":"JavaScriptObject","BufferConstants":"JavaScriptObject","Buffer":"JavaScriptObject","ConsoleModule":"JavaScriptObject","Console":"JavaScriptObject","EventEmitter":"JavaScriptObject","FS":"JavaScriptObject","FSConstants":"JavaScriptObject","FSWatcher":"JavaScriptObject","ReadStream":"JavaScriptObject","ReadStreamOptions":"JavaScriptObject","WriteStream":"JavaScriptObject","WriteStreamOptions":"JavaScriptObject","FileOptions":"JavaScriptObject","StatOptions":"JavaScriptObject","MkdirOptions":"JavaScriptObject","RmdirOptions":"JavaScriptObject","WatchOptions":"JavaScriptObject","WatchFileOptions":"JavaScriptObject","Stats":"JavaScriptObject","Promise":"JavaScriptObject","Date":"JavaScriptObject","JsError":"JavaScriptObject","Atomics":"JavaScriptObject","Modules":"JavaScriptObject","Module":"JavaScriptObject","Net":"JavaScriptObject","Socket":"JavaScriptObject","NetAddress":"JavaScriptObject","NetServer":"JavaScriptObject","NodeJsError":"JavaScriptObject","JsAssertionError":"JavaScriptObject","JsRangeError":"JavaScriptObject","JsReferenceError":"JavaScriptObject","JsSyntaxError":"JavaScriptObject","JsTypeError":"JavaScriptObject","JsSystemError":"JavaScriptObject","Process":"JavaScriptObject","CPUUsage":"JavaScriptObject","Release":"JavaScriptObject","StreamModule":"JavaScriptObject","Readable":"JavaScriptObject","Writable":"JavaScriptObject","Duplex":"JavaScriptObject","Transform":"JavaScriptObject","WritableOptions":"JavaScriptObject","ReadableOptions":"JavaScriptObject","Immediate":"JavaScriptObject","Timeout":"JavaScriptObject","TTY":"JavaScriptObject","TTYReadStream":"JavaScriptObject","TTYWriteStream":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","AElement":"Element","GraphicsElement":"Element","SvgElement":"Element","_ResourceProgressEvent":"ProgressEvent","AudioElement":"HtmlElement","MediaElement":"HtmlElement","ShadowRoot":"Node","DocumentFragment":"Node","HtmlDocument":"Document","PointerEvent":"MouseEvent","CompositionEvent":"UIEvent","CDataSection":"CharacterData","Text":"CharacterData","HtmlFormControlsCollection":"HtmlCollection","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"FS":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"num":[],"Comparable":["num"]},"JSInt":{"int":[],"num":[],"Comparable":["num"]},"JSNumNotInt":{"num":[],"Comparable":["num"]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[],"JSIndexable":["@"]},"LateError":{"Error":[]},"ReachabilityError":{"Error":[]},"CodeUnits":{"ListMixin":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListMixin.E":"int","UnmodifiableListMixin.E":"int"},"NotNullableError":{"Error":[]},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"ListIterable.E":"2","Iterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"NullError":{"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteBuffer":{"ByteBuffer":[]},"NativeTypedData":{"TypedData":[]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"TypedData":[],"JSIndexable":["1"]},"NativeTypedArrayOfInt":{"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint32List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint8List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"Error":[]},"_Future":{"Future":["1"]},"_IterablePendingEvents":{"_PendingEvents":["1"]},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"StreamView":{"Stream":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventDispatch":["1"]},"_StreamImpl":{"Stream":["1"]},"_GeneratedStreamImpl":{"_StreamImpl":["1"],"Stream":["1"],"Stream.T":"1"},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_EmptyStream":{"Stream":["1"],"Stream.T":"1"},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_LinkedIdentityHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedCustomHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedHashSet":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"SetMixin.E":"1"},"_LinkedHashSetIterator":{"Iterator":["1"]},"IterableBase":{"Iterable":["1"]},"ListBase":{"ListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"_SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"Encoding":{"Codec":["String","List<int>"]},"_JsonMap":{"MapMixin":["String","@"],"Map":["String","@"],"MapMixin.K":"String","MapMixin.V":"@"},"_JsonMapKeyIterable":{"ListIterable":["String"],"EfficientLengthIterable":["String"],"Iterable":["String"],"ListIterable.E":"String","Iterable.E":"String"},"AsciiCodec":{"Encoding":[],"Codec":["String","List<int>"]},"_UnicodeSubsetDecoder":{"Converter":["List<int>","String"]},"AsciiDecoder":{"Converter":["List<int>","String"]},"Base64Codec":{"Codec":["List<int>","String"]},"Base64Encoder":{"Converter":["List<int>","String"]},"ByteConversionSink":{"ChunkedConversionSink":["List<int>"]},"ByteConversionSinkBase":{"ChunkedConversionSink":["List<int>"]},"_ByteCallbackSink":{"ChunkedConversionSink":["List<int>"]},"JsonCodec":{"Codec":["Object?","String"]},"JsonDecoder":{"Converter":["String","Object?"]},"Latin1Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Latin1Decoder":{"Converter":["List<int>","String"]},"Utf8Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"DateTime":{"Comparable":["DateTime"]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"String":{"Comparable":["String"],"Pattern":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"_StringStackTrace":{"StackTrace":[]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"HttpRequest":{"EventTarget":[]},"HttpRequestEventTarget":{"EventTarget":[]},"MouseEvent":{"Event":[]},"Node":{"EventTarget":[]},"ProgressEvent":{"Event":[]},"UIEvent":{"Event":[]},"HtmlElement":{"Element":[],"Node":[],"EventTarget":[]},"AnchorElement":{"Element":[],"Node":[],"EventTarget":[]},"AreaElement":{"Element":[],"Node":[],"EventTarget":[]},"ButtonElement":{"Element":[],"Node":[],"EventTarget":[]},"CharacterData":{"Node":[],"EventTarget":[]},"DivElement":{"Element":[],"Node":[],"EventTarget":[]},"Document":{"Node":[],"EventTarget":[]},"Element":{"Node":[],"EventTarget":[]},"FormElement":{"Element":[],"Node":[],"EventTarget":[]},"HtmlCollection":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"JSIndexable":["Node"],"ImmutableListMixin.E":"Node","ListMixin.E":"Node"},"ImageElement":{"Element":[],"Node":[],"EventTarget":[]},"InputElement":{"TextInputElement":[],"Element":[],"Node":[],"EventTarget":[]},"NodeList":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"JSIndexable":["Node"],"ImmutableListMixin.E":"Node","ListMixin.E":"Node"},"SelectElement":{"Element":[],"Node":[],"EventTarget":[]},"_EventStream":{"Stream":["1"],"Stream.T":"1"},"_ElementEventStreamImpl":{"_EventStream":["1"],"Stream":["1"],"Stream.T":"1"},"_EventStreamSubscription":{"StreamSubscription":["1"]},"FixedSizeListIterator":{"Iterator":["1"]},"NullRejectionException":{"Exception":[]},"CanonicalizedMap":{"Map":["2","3"]},"BaseClient":{"Client":[]},"BrowserClient":{"Client":[]},"ByteStream":{"StreamView":["List<int>"],"Stream":["List<int>"],"Stream.T":"List<int>","StreamView.T":"List<int>"},"ClientException":{"Exception":[]},"Request":{"BaseRequest":[]},"CaseInsensitiveMap":{"CanonicalizedMap":["String","String","1"],"Map":["String","1"],"CanonicalizedMap.K":"String","CanonicalizedMap.V":"1","CanonicalizedMap.C":"String"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"FileLocation":{"SourceLocation":[],"Comparable":["SourceLocation"]},"_FileSpan":{"FileSpan":[],"SourceSpanWithContext":[],"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceLocation":{"Comparable":["SourceLocation"]},"SourceLocationMixin":{"SourceLocation":[],"Comparable":["SourceLocation"]},"SourceSpan":{"Comparable":["SourceSpan"]},"SourceSpanBase":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanException":{"Exception":[]},"SourceSpanFormatException":{"FormatException":[],"Exception":[]},"SourceSpanMixin":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanWithContext":{"SourceSpan":[],"Comparable":["SourceSpan"]},"StringScannerException":{"FormatException":[],"Exception":[]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"TypedData":[]}}'));
+  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","BufferModule":"JavaScriptObject","BufferConstants":"JavaScriptObject","Buffer":"JavaScriptObject","ConsoleModule":"JavaScriptObject","Console":"JavaScriptObject","EventEmitter":"JavaScriptObject","FS":"JavaScriptObject","FSConstants":"JavaScriptObject","FSWatcher":"JavaScriptObject","ReadStream":"JavaScriptObject","ReadStreamOptions":"JavaScriptObject","WriteStream":"JavaScriptObject","WriteStreamOptions":"JavaScriptObject","FileOptions":"JavaScriptObject","StatOptions":"JavaScriptObject","MkdirOptions":"JavaScriptObject","RmdirOptions":"JavaScriptObject","WatchOptions":"JavaScriptObject","WatchFileOptions":"JavaScriptObject","Stats":"JavaScriptObject","Promise":"JavaScriptObject","Date":"JavaScriptObject","JsError":"JavaScriptObject","Atomics":"JavaScriptObject","Modules":"JavaScriptObject","Module":"JavaScriptObject","Net":"JavaScriptObject","Socket":"JavaScriptObject","NetAddress":"JavaScriptObject","NetServer":"JavaScriptObject","NodeJsError":"JavaScriptObject","JsAssertionError":"JavaScriptObject","JsRangeError":"JavaScriptObject","JsReferenceError":"JavaScriptObject","JsSyntaxError":"JavaScriptObject","JsTypeError":"JavaScriptObject","JsSystemError":"JavaScriptObject","Process":"JavaScriptObject","CPUUsage":"JavaScriptObject","Release":"JavaScriptObject","StreamModule":"JavaScriptObject","Readable":"JavaScriptObject","Writable":"JavaScriptObject","Duplex":"JavaScriptObject","Transform":"JavaScriptObject","WritableOptions":"JavaScriptObject","ReadableOptions":"JavaScriptObject","Immediate":"JavaScriptObject","Timeout":"JavaScriptObject","TTY":"JavaScriptObject","TTYReadStream":"JavaScriptObject","TTYWriteStream":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","AElement":"Element","GraphicsElement":"Element","SvgElement":"Element","_ResourceProgressEvent":"ProgressEvent","AudioElement":"HtmlElement","MediaElement":"HtmlElement","HtmlDocument":"Document","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"FS":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"num":[],"Comparable":["num"]},"JSInt":{"int":[],"num":[],"Comparable":["num"]},"JSNumNotInt":{"num":[],"Comparable":["num"]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[],"JSIndexable":["@"]},"LateError":{"Error":[]},"ReachabilityError":{"Error":[]},"CodeUnits":{"ListMixin":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListMixin.E":"int","UnmodifiableListMixin.E":"int"},"NotNullableError":{"Error":[]},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"ListIterable.E":"2","Iterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"NullError":{"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteBuffer":{"ByteBuffer":[]},"NativeTypedData":{"TypedData":[]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"TypedData":[],"JSIndexable":["1"]},"NativeTypedArrayOfInt":{"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint32List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint8List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"Error":[]},"_Future":{"Future":["1"]},"_IterablePendingEvents":{"_PendingEvents":["1"]},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"StreamView":{"Stream":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventDispatch":["1"]},"_StreamImpl":{"Stream":["1"]},"_GeneratedStreamImpl":{"_StreamImpl":["1"],"Stream":["1"],"Stream.T":"1"},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_EmptyStream":{"Stream":["1"],"Stream.T":"1"},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_LinkedIdentityHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedCustomHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedHashSet":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_LinkedHashSetIterator":{"Iterator":["1"]},"IterableBase":{"Iterable":["1"]},"ListBase":{"ListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"_SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"Encoding":{"Codec":["String","List<int>"]},"_JsonMap":{"MapMixin":["String","@"],"Map":["String","@"],"MapMixin.K":"String","MapMixin.V":"@"},"_JsonMapKeyIterable":{"ListIterable":["String"],"EfficientLengthIterable":["String"],"Iterable":["String"],"ListIterable.E":"String","Iterable.E":"String"},"AsciiCodec":{"Encoding":[],"Codec":["String","List<int>"]},"_UnicodeSubsetDecoder":{"Converter":["List<int>","String"]},"AsciiDecoder":{"Converter":["List<int>","String"]},"Base64Codec":{"Codec":["List<int>","String"]},"Base64Encoder":{"Converter":["List<int>","String"]},"ByteConversionSink":{"ChunkedConversionSink":["List<int>"]},"ByteConversionSinkBase":{"ChunkedConversionSink":["List<int>"]},"_ByteCallbackSink":{"ChunkedConversionSink":["List<int>"]},"JsonCodec":{"Codec":["Object?","String"]},"JsonDecoder":{"Converter":["String","Object?"]},"Latin1Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Latin1Decoder":{"Converter":["List<int>","String"]},"Utf8Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"DateTime":{"Comparable":["DateTime"]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"String":{"Comparable":["String"],"Pattern":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"_StringStackTrace":{"StackTrace":[]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"HttpRequest":{"EventTarget":[]},"HttpRequestEventTarget":{"EventTarget":[]},"ProgressEvent":{"Event":[]},"HtmlElement":{"EventTarget":[]},"AnchorElement":{"EventTarget":[]},"AreaElement":{"EventTarget":[]},"ButtonElement":{"EventTarget":[]},"Document":{"EventTarget":[]},"Element":{"EventTarget":[]},"FormElement":{"EventTarget":[]},"InputElement":{"TextInputElement":[],"EventTarget":[]},"Node":{"EventTarget":[]},"SelectElement":{"EventTarget":[]},"_EventStream":{"Stream":["1"],"Stream.T":"1"},"_EventStreamSubscription":{"StreamSubscription":["1"]},"NullRejectionException":{"Exception":[]},"CanonicalizedMap":{"Map":["2","3"]},"BaseClient":{"Client":[]},"BrowserClient":{"Client":[]},"ByteStream":{"StreamView":["List<int>"],"Stream":["List<int>"],"StreamView.T":"List<int>","Stream.T":"List<int>"},"ClientException":{"Exception":[]},"Request":{"BaseRequest":[]},"CaseInsensitiveMap":{"CanonicalizedMap":["String","String","1"],"Map":["String","1"],"CanonicalizedMap.K":"String","CanonicalizedMap.V":"1","CanonicalizedMap.C":"String"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"FileLocation":{"SourceLocation":[],"Comparable":["SourceLocation"]},"_FileSpan":{"FileSpan":[],"SourceSpanWithContext":[],"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceLocation":{"Comparable":["SourceLocation"]},"SourceLocationMixin":{"SourceLocation":[],"Comparable":["SourceLocation"]},"SourceSpan":{"Comparable":["SourceSpan"]},"SourceSpanBase":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanException":{"Exception":[]},"SourceSpanFormatException":{"FormatException":[],"Exception":[]},"SourceSpanMixin":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanWithContext":{"SourceSpan":[],"Comparable":["SourceSpan"]},"StringScannerException":{"FormatException":[],"Exception":[]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"TypedData":[]}}'));
   H._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"UnmodifiableListBase":1,"NativeTypedArray":1,"StreamTransformerBase":2,"IterableBase":1,"ListBase":1,"MapBase":2,"_SetBase":1,"_ListBase_Object_ListMixin":1,"__SetBase_Object_SetMixin":1}'));
   var string$ = {
     x20must_: " must not be greater than the number of characters in the file, ",
@@ -14304,6 +14342,7 @@
       JSArray__Line: findType("JSArray<_Line>"),
       JSArray_dynamic: findType("JSArray<@>"),
       JSArray_int: findType("JSArray<int>"),
+      JSArray_legacy_Future_dynamic: findType("JSArray<Future<@>*>"),
       JSArray_legacy_LegoSet: findType("JSArray<LegoSet*>"),
       JSArray_legacy_int: findType("JSArray<int*>"),
       JSArray_nullable_String: findType("JSArray<String?>"),
@@ -14323,7 +14362,6 @@
       MediaType: findType("MediaType"),
       NativeTypedArrayOfInt: findType("NativeTypedArrayOfInt"),
       NativeUint8List: findType("NativeUint8List"),
-      Node: findType("Node"),
       Null: findType("Null"),
       Object: findType("Object"),
       Pattern: findType("Pattern"),
@@ -14345,7 +14383,6 @@
       WhereTypeIterable_String: findType("WhereTypeIterable<String>"),
       _AsyncCompleter_StreamedResponse: findType("_AsyncCompleter<StreamedResponse>"),
       _AsyncCompleter_Uint8List: findType("_AsyncCompleter<Uint8List>"),
-      _ElementEventStreamImpl_legacy_MouseEvent: findType("_ElementEventStreamImpl<MouseEvent*>"),
       _EventStream_legacy_ProgressEvent: findType("_EventStream<ProgressEvent*>"),
       _Future_StreamedResponse: findType("_Future<StreamedResponse>"),
       _Future_Uint8List: findType("_Future<Uint8List>"),
@@ -14366,16 +14403,16 @@
       dynamic_Function_dynamic_dynamic: findType("@(@,@)"),
       int: findType("int"),
       legacy_ButtonElement: findType("ButtonElement*"),
-      legacy_DivElement: findType("DivElement*"),
       legacy_Event: findType("Event*"),
       legacy_Future_legacy_String: findType("Future<String*>*"),
+      legacy_LegoPiece: findType("LegoPiece*"),
       legacy_List_dynamic: findType("List<@>*"),
       legacy_List_legacy_LegoSet: findType("List<LegoSet*>*"),
       legacy_Map_of_legacy_LegoPiece_and_legacy_int: findType("Map<LegoPiece*,int*>*"),
-      legacy_MouseEvent: findType("MouseEvent*"),
       legacy_Never: findType("0&*"),
       legacy_Object: findType("Object*"),
       legacy_Response: findType("Response*"),
+      legacy_String: findType("String*"),
       legacy_TextInputElement: findType("TextInputElement*"),
       legacy_bool: findType("bool*"),
       nullable_EventTarget: findType("EventTarget?"),
@@ -14404,11 +14441,8 @@
   })();
   (function constants() {
     var makeConstList = hunkHelpers.makeConstList;
-    C.AnchorElement_methods = W.AnchorElement.prototype;
     C.ButtonElement_methods = W.ButtonElement.prototype;
-    C.DivElement_methods = W.DivElement.prototype;
     C.HttpRequest_methods = W.HttpRequest.prototype;
-    C.ImageElement_methods = W.ImageElement.prototype;
     C.Interceptor_methods = J.Interceptor.prototype;
     C.JSArray_methods = J.JSArray.prototype;
     C.JSInt_methods = J.JSInt.prototype;
@@ -14749,8 +14783,8 @@
       }
       init.dispatchPropertyName = init.getIsolateTag("dispatch_record");
     }();
-    hunkHelpers.setOrUpdateInterceptorsByTag({Blob: J.Interceptor, DOMError: J.Interceptor, File: J.Interceptor, MediaError: J.Interceptor, NavigatorUserMediaError: J.Interceptor, OverconstrainedError: J.Interceptor, PositionError: J.Interceptor, SQLError: J.Interceptor, ArrayBuffer: H.NativeByteBuffer, ArrayBufferView: H.NativeTypedData, Int8Array: H.NativeInt8List, Uint32Array: H.NativeUint32List, Uint8Array: H.NativeUint8List, HTMLAudioElement: W.HtmlElement, HTMLBRElement: W.HtmlElement, HTMLBaseElement: W.HtmlElement, HTMLBodyElement: W.HtmlElement, HTMLCanvasElement: W.HtmlElement, HTMLContentElement: W.HtmlElement, HTMLDListElement: W.HtmlElement, HTMLDataElement: W.HtmlElement, HTMLDataListElement: W.HtmlElement, HTMLDetailsElement: W.HtmlElement, HTMLDialogElement: W.HtmlElement, HTMLEmbedElement: W.HtmlElement, HTMLFieldSetElement: W.HtmlElement, HTMLHRElement: W.HtmlElement, HTMLHeadElement: W.HtmlElement, HTMLHeadingElement: W.HtmlElement, HTMLHtmlElement: W.HtmlElement, HTMLIFrameElement: W.HtmlElement, HTMLLIElement: W.HtmlElement, HTMLLabelElement: W.HtmlElement, HTMLLegendElement: W.HtmlElement, HTMLLinkElement: W.HtmlElement, HTMLMapElement: W.HtmlElement, HTMLMediaElement: W.HtmlElement, HTMLMenuElement: W.HtmlElement, HTMLMetaElement: W.HtmlElement, HTMLMeterElement: W.HtmlElement, HTMLModElement: W.HtmlElement, HTMLOListElement: W.HtmlElement, HTMLObjectElement: W.HtmlElement, HTMLOptGroupElement: W.HtmlElement, HTMLOptionElement: W.HtmlElement, HTMLOutputElement: W.HtmlElement, HTMLParagraphElement: W.HtmlElement, HTMLParamElement: W.HtmlElement, HTMLPictureElement: W.HtmlElement, HTMLPreElement: W.HtmlElement, HTMLProgressElement: W.HtmlElement, HTMLQuoteElement: W.HtmlElement, HTMLScriptElement: W.HtmlElement, HTMLShadowElement: W.HtmlElement, HTMLSlotElement: W.HtmlElement, HTMLSourceElement: W.HtmlElement, HTMLSpanElement: W.HtmlElement, HTMLStyleElement: W.HtmlElement, HTMLTableCaptionElement: W.HtmlElement, HTMLTableCellElement: W.HtmlElement, HTMLTableDataCellElement: W.HtmlElement, HTMLTableHeaderCellElement: W.HtmlElement, HTMLTableColElement: W.HtmlElement, HTMLTableElement: W.HtmlElement, HTMLTableRowElement: W.HtmlElement, HTMLTableSectionElement: W.HtmlElement, HTMLTemplateElement: W.HtmlElement, HTMLTextAreaElement: W.HtmlElement, HTMLTimeElement: W.HtmlElement, HTMLTitleElement: W.HtmlElement, HTMLTrackElement: W.HtmlElement, HTMLUListElement: W.HtmlElement, HTMLUnknownElement: W.HtmlElement, HTMLVideoElement: W.HtmlElement, HTMLDirectoryElement: W.HtmlElement, HTMLFontElement: W.HtmlElement, HTMLFrameElement: W.HtmlElement, HTMLFrameSetElement: W.HtmlElement, HTMLMarqueeElement: W.HtmlElement, HTMLElement: W.HtmlElement, HTMLAnchorElement: W.AnchorElement, HTMLAreaElement: W.AreaElement, HTMLButtonElement: W.ButtonElement, CDATASection: W.CharacterData, CharacterData: W.CharacterData, Comment: W.CharacterData, ProcessingInstruction: W.CharacterData, Text: W.CharacterData, HTMLDivElement: W.DivElement, Document: W.Document, HTMLDocument: W.Document, XMLDocument: W.Document, DOMException: W.DomException, DOMTokenList: W.DomTokenList, SVGAElement: W.Element, SVGAnimateElement: W.Element, SVGAnimateMotionElement: W.Element, SVGAnimateTransformElement: W.Element, SVGAnimationElement: W.Element, SVGCircleElement: W.Element, SVGClipPathElement: W.Element, SVGDefsElement: W.Element, SVGDescElement: W.Element, SVGDiscardElement: W.Element, SVGEllipseElement: W.Element, SVGFEBlendElement: W.Element, SVGFEColorMatrixElement: W.Element, SVGFEComponentTransferElement: W.Element, SVGFECompositeElement: W.Element, SVGFEConvolveMatrixElement: W.Element, SVGFEDiffuseLightingElement: W.Element, SVGFEDisplacementMapElement: W.Element, SVGFEDistantLightElement: W.Element, SVGFEFloodElement: W.Element, SVGFEFuncAElement: W.Element, SVGFEFuncBElement: W.Element, SVGFEFuncGElement: W.Element, SVGFEFuncRElement: W.Element, SVGFEGaussianBlurElement: W.Element, SVGFEImageElement: W.Element, SVGFEMergeElement: W.Element, SVGFEMergeNodeElement: W.Element, SVGFEMorphologyElement: W.Element, SVGFEOffsetElement: W.Element, SVGFEPointLightElement: W.Element, SVGFESpecularLightingElement: W.Element, SVGFESpotLightElement: W.Element, SVGFETileElement: W.Element, SVGFETurbulenceElement: W.Element, SVGFilterElement: W.Element, SVGForeignObjectElement: W.Element, SVGGElement: W.Element, SVGGeometryElement: W.Element, SVGGraphicsElement: W.Element, SVGImageElement: W.Element, SVGLineElement: W.Element, SVGLinearGradientElement: W.Element, SVGMarkerElement: W.Element, SVGMaskElement: W.Element, SVGMetadataElement: W.Element, SVGPathElement: W.Element, SVGPatternElement: W.Element, SVGPolygonElement: W.Element, SVGPolylineElement: W.Element, SVGRadialGradientElement: W.Element, SVGRectElement: W.Element, SVGScriptElement: W.Element, SVGSetElement: W.Element, SVGStopElement: W.Element, SVGStyleElement: W.Element, SVGElement: W.Element, SVGSVGElement: W.Element, SVGSwitchElement: W.Element, SVGSymbolElement: W.Element, SVGTSpanElement: W.Element, SVGTextContentElement: W.Element, SVGTextElement: W.Element, SVGTextPathElement: W.Element, SVGTextPositioningElement: W.Element, SVGTitleElement: W.Element, SVGUseElement: W.Element, SVGViewElement: W.Element, SVGGradientElement: W.Element, SVGComponentTransferFunctionElement: W.Element, SVGFEDropShadowElement: W.Element, SVGMPathElement: W.Element, Element: W.Element, AbortPaymentEvent: W.Event, AnimationEvent: W.Event, AnimationPlaybackEvent: W.Event, ApplicationCacheErrorEvent: W.Event, BackgroundFetchClickEvent: W.Event, BackgroundFetchEvent: W.Event, BackgroundFetchFailEvent: W.Event, BackgroundFetchedEvent: W.Event, BeforeInstallPromptEvent: W.Event, BeforeUnloadEvent: W.Event, BlobEvent: W.Event, CanMakePaymentEvent: W.Event, ClipboardEvent: W.Event, CloseEvent: W.Event, CustomEvent: W.Event, DeviceMotionEvent: W.Event, DeviceOrientationEvent: W.Event, ErrorEvent: W.Event, ExtendableEvent: W.Event, ExtendableMessageEvent: W.Event, FetchEvent: W.Event, FontFaceSetLoadEvent: W.Event, ForeignFetchEvent: W.Event, GamepadEvent: W.Event, HashChangeEvent: W.Event, InstallEvent: W.Event, MediaEncryptedEvent: W.Event, MediaKeyMessageEvent: W.Event, MediaQueryListEvent: W.Event, MediaStreamEvent: W.Event, MediaStreamTrackEvent: W.Event, MessageEvent: W.Event, MIDIConnectionEvent: W.Event, MIDIMessageEvent: W.Event, MutationEvent: W.Event, NotificationEvent: W.Event, PageTransitionEvent: W.Event, PaymentRequestEvent: W.Event, PaymentRequestUpdateEvent: W.Event, PopStateEvent: W.Event, PresentationConnectionAvailableEvent: W.Event, PresentationConnectionCloseEvent: W.Event, PromiseRejectionEvent: W.Event, PushEvent: W.Event, RTCDataChannelEvent: W.Event, RTCDTMFToneChangeEvent: W.Event, RTCPeerConnectionIceEvent: W.Event, RTCTrackEvent: W.Event, SecurityPolicyViolationEvent: W.Event, SensorErrorEvent: W.Event, SpeechRecognitionError: W.Event, SpeechRecognitionEvent: W.Event, SpeechSynthesisEvent: W.Event, StorageEvent: W.Event, SyncEvent: W.Event, TrackEvent: W.Event, TransitionEvent: W.Event, WebKitTransitionEvent: W.Event, VRDeviceEvent: W.Event, VRDisplayEvent: W.Event, VRSessionEvent: W.Event, MojoInterfaceRequestEvent: W.Event, USBConnectionEvent: W.Event, IDBVersionChangeEvent: W.Event, AudioProcessingEvent: W.Event, OfflineAudioCompletionEvent: W.Event, WebGLContextEvent: W.Event, Event: W.Event, InputEvent: W.Event, SubmitEvent: W.Event, EventTarget: W.EventTarget, HTMLFormElement: W.FormElement, HTMLCollection: W.HtmlCollection, HTMLFormControlsCollection: W.HtmlCollection, HTMLOptionsCollection: W.HtmlCollection, XMLHttpRequest: W.HttpRequest, XMLHttpRequestEventTarget: W.HttpRequestEventTarget, HTMLImageElement: W.ImageElement, HTMLInputElement: W.InputElement, MouseEvent: W.MouseEvent, DragEvent: W.MouseEvent, PointerEvent: W.MouseEvent, WheelEvent: W.MouseEvent, DocumentFragment: W.Node, ShadowRoot: W.Node, Attr: W.Node, DocumentType: W.Node, Node: W.Node, NodeList: W.NodeList, RadioNodeList: W.NodeList, ProgressEvent: W.ProgressEvent, ResourceProgressEvent: W.ProgressEvent, HTMLSelectElement: W.SelectElement, CompositionEvent: W.UIEvent, FocusEvent: W.UIEvent, KeyboardEvent: W.UIEvent, TextEvent: W.UIEvent, TouchEvent: W.UIEvent, UIEvent: W.UIEvent});
-    hunkHelpers.setOrUpdateLeafTags({Blob: true, DOMError: true, File: true, MediaError: true, NavigatorUserMediaError: true, OverconstrainedError: true, PositionError: true, SQLError: true, ArrayBuffer: true, ArrayBufferView: false, Int8Array: true, Uint32Array: true, Uint8Array: false, HTMLAudioElement: true, HTMLBRElement: true, HTMLBaseElement: true, HTMLBodyElement: true, HTMLCanvasElement: true, HTMLContentElement: true, HTMLDListElement: true, HTMLDataElement: true, HTMLDataListElement: true, HTMLDetailsElement: true, HTMLDialogElement: true, HTMLEmbedElement: true, HTMLFieldSetElement: true, HTMLHRElement: true, HTMLHeadElement: true, HTMLHeadingElement: true, HTMLHtmlElement: true, HTMLIFrameElement: true, HTMLLIElement: true, HTMLLabelElement: true, HTMLLegendElement: true, HTMLLinkElement: true, HTMLMapElement: true, HTMLMediaElement: true, HTMLMenuElement: true, HTMLMetaElement: true, HTMLMeterElement: true, HTMLModElement: true, HTMLOListElement: true, HTMLObjectElement: true, HTMLOptGroupElement: true, HTMLOptionElement: true, HTMLOutputElement: true, HTMLParagraphElement: true, HTMLParamElement: true, HTMLPictureElement: true, HTMLPreElement: true, HTMLProgressElement: true, HTMLQuoteElement: true, HTMLScriptElement: true, HTMLShadowElement: true, HTMLSlotElement: true, HTMLSourceElement: true, HTMLSpanElement: true, HTMLStyleElement: true, HTMLTableCaptionElement: true, HTMLTableCellElement: true, HTMLTableDataCellElement: true, HTMLTableHeaderCellElement: true, HTMLTableColElement: true, HTMLTableElement: true, HTMLTableRowElement: true, HTMLTableSectionElement: true, HTMLTemplateElement: true, HTMLTextAreaElement: true, HTMLTimeElement: true, HTMLTitleElement: true, HTMLTrackElement: true, HTMLUListElement: true, HTMLUnknownElement: true, HTMLVideoElement: true, HTMLDirectoryElement: true, HTMLFontElement: true, HTMLFrameElement: true, HTMLFrameSetElement: true, HTMLMarqueeElement: true, HTMLElement: false, HTMLAnchorElement: true, HTMLAreaElement: true, HTMLButtonElement: true, CDATASection: true, CharacterData: true, Comment: true, ProcessingInstruction: true, Text: true, HTMLDivElement: true, Document: true, HTMLDocument: true, XMLDocument: true, DOMException: true, DOMTokenList: true, SVGAElement: true, SVGAnimateElement: true, SVGAnimateMotionElement: true, SVGAnimateTransformElement: true, SVGAnimationElement: true, SVGCircleElement: true, SVGClipPathElement: true, SVGDefsElement: true, SVGDescElement: true, SVGDiscardElement: true, SVGEllipseElement: true, SVGFEBlendElement: true, SVGFEColorMatrixElement: true, SVGFEComponentTransferElement: true, SVGFECompositeElement: true, SVGFEConvolveMatrixElement: true, SVGFEDiffuseLightingElement: true, SVGFEDisplacementMapElement: true, SVGFEDistantLightElement: true, SVGFEFloodElement: true, SVGFEFuncAElement: true, SVGFEFuncBElement: true, SVGFEFuncGElement: true, SVGFEFuncRElement: true, SVGFEGaussianBlurElement: true, SVGFEImageElement: true, SVGFEMergeElement: true, SVGFEMergeNodeElement: true, SVGFEMorphologyElement: true, SVGFEOffsetElement: true, SVGFEPointLightElement: true, SVGFESpecularLightingElement: true, SVGFESpotLightElement: true, SVGFETileElement: true, SVGFETurbulenceElement: true, SVGFilterElement: true, SVGForeignObjectElement: true, SVGGElement: true, SVGGeometryElement: true, SVGGraphicsElement: true, SVGImageElement: true, SVGLineElement: true, SVGLinearGradientElement: true, SVGMarkerElement: true, SVGMaskElement: true, SVGMetadataElement: true, SVGPathElement: true, SVGPatternElement: true, SVGPolygonElement: true, SVGPolylineElement: true, SVGRadialGradientElement: true, SVGRectElement: true, SVGScriptElement: true, SVGSetElement: true, SVGStopElement: true, SVGStyleElement: true, SVGElement: true, SVGSVGElement: true, SVGSwitchElement: true, SVGSymbolElement: true, SVGTSpanElement: true, SVGTextContentElement: true, SVGTextElement: true, SVGTextPathElement: true, SVGTextPositioningElement: true, SVGTitleElement: true, SVGUseElement: true, SVGViewElement: true, SVGGradientElement: true, SVGComponentTransferFunctionElement: true, SVGFEDropShadowElement: true, SVGMPathElement: true, Element: false, AbortPaymentEvent: true, AnimationEvent: true, AnimationPlaybackEvent: true, ApplicationCacheErrorEvent: true, BackgroundFetchClickEvent: true, BackgroundFetchEvent: true, BackgroundFetchFailEvent: true, BackgroundFetchedEvent: true, BeforeInstallPromptEvent: true, BeforeUnloadEvent: true, BlobEvent: true, CanMakePaymentEvent: true, ClipboardEvent: true, CloseEvent: true, CustomEvent: true, DeviceMotionEvent: true, DeviceOrientationEvent: true, ErrorEvent: true, ExtendableEvent: true, ExtendableMessageEvent: true, FetchEvent: true, FontFaceSetLoadEvent: true, ForeignFetchEvent: true, GamepadEvent: true, HashChangeEvent: true, InstallEvent: true, MediaEncryptedEvent: true, MediaKeyMessageEvent: true, MediaQueryListEvent: true, MediaStreamEvent: true, MediaStreamTrackEvent: true, MessageEvent: true, MIDIConnectionEvent: true, MIDIMessageEvent: true, MutationEvent: true, NotificationEvent: true, PageTransitionEvent: true, PaymentRequestEvent: true, PaymentRequestUpdateEvent: true, PopStateEvent: true, PresentationConnectionAvailableEvent: true, PresentationConnectionCloseEvent: true, PromiseRejectionEvent: true, PushEvent: true, RTCDataChannelEvent: true, RTCDTMFToneChangeEvent: true, RTCPeerConnectionIceEvent: true, RTCTrackEvent: true, SecurityPolicyViolationEvent: true, SensorErrorEvent: true, SpeechRecognitionError: true, SpeechRecognitionEvent: true, SpeechSynthesisEvent: true, StorageEvent: true, SyncEvent: true, TrackEvent: true, TransitionEvent: true, WebKitTransitionEvent: true, VRDeviceEvent: true, VRDisplayEvent: true, VRSessionEvent: true, MojoInterfaceRequestEvent: true, USBConnectionEvent: true, IDBVersionChangeEvent: true, AudioProcessingEvent: true, OfflineAudioCompletionEvent: true, WebGLContextEvent: true, Event: false, InputEvent: false, SubmitEvent: false, EventTarget: false, HTMLFormElement: true, HTMLCollection: true, HTMLFormControlsCollection: true, HTMLOptionsCollection: true, XMLHttpRequest: true, XMLHttpRequestEventTarget: false, HTMLImageElement: true, HTMLInputElement: true, MouseEvent: true, DragEvent: true, PointerEvent: true, WheelEvent: true, DocumentFragment: true, ShadowRoot: true, Attr: true, DocumentType: true, Node: false, NodeList: true, RadioNodeList: true, ProgressEvent: true, ResourceProgressEvent: true, HTMLSelectElement: true, CompositionEvent: true, FocusEvent: true, KeyboardEvent: true, TextEvent: true, TouchEvent: true, UIEvent: false});
+    hunkHelpers.setOrUpdateInterceptorsByTag({Blob: J.Interceptor, DOMError: J.Interceptor, File: J.Interceptor, MediaError: J.Interceptor, NavigatorUserMediaError: J.Interceptor, OverconstrainedError: J.Interceptor, PositionError: J.Interceptor, SQLError: J.Interceptor, ArrayBuffer: H.NativeByteBuffer, ArrayBufferView: H.NativeTypedData, Int8Array: H.NativeInt8List, Uint32Array: H.NativeUint32List, Uint8Array: H.NativeUint8List, HTMLAudioElement: W.HtmlElement, HTMLBRElement: W.HtmlElement, HTMLBaseElement: W.HtmlElement, HTMLBodyElement: W.HtmlElement, HTMLCanvasElement: W.HtmlElement, HTMLContentElement: W.HtmlElement, HTMLDListElement: W.HtmlElement, HTMLDataElement: W.HtmlElement, HTMLDataListElement: W.HtmlElement, HTMLDetailsElement: W.HtmlElement, HTMLDialogElement: W.HtmlElement, HTMLDivElement: W.HtmlElement, HTMLEmbedElement: W.HtmlElement, HTMLFieldSetElement: W.HtmlElement, HTMLHRElement: W.HtmlElement, HTMLHeadElement: W.HtmlElement, HTMLHeadingElement: W.HtmlElement, HTMLHtmlElement: W.HtmlElement, HTMLIFrameElement: W.HtmlElement, HTMLImageElement: W.HtmlElement, HTMLLIElement: W.HtmlElement, HTMLLabelElement: W.HtmlElement, HTMLLegendElement: W.HtmlElement, HTMLLinkElement: W.HtmlElement, HTMLMapElement: W.HtmlElement, HTMLMediaElement: W.HtmlElement, HTMLMenuElement: W.HtmlElement, HTMLMetaElement: W.HtmlElement, HTMLMeterElement: W.HtmlElement, HTMLModElement: W.HtmlElement, HTMLOListElement: W.HtmlElement, HTMLObjectElement: W.HtmlElement, HTMLOptGroupElement: W.HtmlElement, HTMLOptionElement: W.HtmlElement, HTMLOutputElement: W.HtmlElement, HTMLParagraphElement: W.HtmlElement, HTMLParamElement: W.HtmlElement, HTMLPictureElement: W.HtmlElement, HTMLPreElement: W.HtmlElement, HTMLProgressElement: W.HtmlElement, HTMLQuoteElement: W.HtmlElement, HTMLScriptElement: W.HtmlElement, HTMLShadowElement: W.HtmlElement, HTMLSlotElement: W.HtmlElement, HTMLSourceElement: W.HtmlElement, HTMLSpanElement: W.HtmlElement, HTMLStyleElement: W.HtmlElement, HTMLTableCaptionElement: W.HtmlElement, HTMLTableCellElement: W.HtmlElement, HTMLTableDataCellElement: W.HtmlElement, HTMLTableHeaderCellElement: W.HtmlElement, HTMLTableColElement: W.HtmlElement, HTMLTableElement: W.HtmlElement, HTMLTableRowElement: W.HtmlElement, HTMLTableSectionElement: W.HtmlElement, HTMLTemplateElement: W.HtmlElement, HTMLTextAreaElement: W.HtmlElement, HTMLTimeElement: W.HtmlElement, HTMLTitleElement: W.HtmlElement, HTMLTrackElement: W.HtmlElement, HTMLUListElement: W.HtmlElement, HTMLUnknownElement: W.HtmlElement, HTMLVideoElement: W.HtmlElement, HTMLDirectoryElement: W.HtmlElement, HTMLFontElement: W.HtmlElement, HTMLFrameElement: W.HtmlElement, HTMLFrameSetElement: W.HtmlElement, HTMLMarqueeElement: W.HtmlElement, HTMLElement: W.HtmlElement, HTMLAnchorElement: W.AnchorElement, HTMLAreaElement: W.AreaElement, HTMLButtonElement: W.ButtonElement, Document: W.Document, HTMLDocument: W.Document, XMLDocument: W.Document, DOMException: W.DomException, SVGAElement: W.Element, SVGAnimateElement: W.Element, SVGAnimateMotionElement: W.Element, SVGAnimateTransformElement: W.Element, SVGAnimationElement: W.Element, SVGCircleElement: W.Element, SVGClipPathElement: W.Element, SVGDefsElement: W.Element, SVGDescElement: W.Element, SVGDiscardElement: W.Element, SVGEllipseElement: W.Element, SVGFEBlendElement: W.Element, SVGFEColorMatrixElement: W.Element, SVGFEComponentTransferElement: W.Element, SVGFECompositeElement: W.Element, SVGFEConvolveMatrixElement: W.Element, SVGFEDiffuseLightingElement: W.Element, SVGFEDisplacementMapElement: W.Element, SVGFEDistantLightElement: W.Element, SVGFEFloodElement: W.Element, SVGFEFuncAElement: W.Element, SVGFEFuncBElement: W.Element, SVGFEFuncGElement: W.Element, SVGFEFuncRElement: W.Element, SVGFEGaussianBlurElement: W.Element, SVGFEImageElement: W.Element, SVGFEMergeElement: W.Element, SVGFEMergeNodeElement: W.Element, SVGFEMorphologyElement: W.Element, SVGFEOffsetElement: W.Element, SVGFEPointLightElement: W.Element, SVGFESpecularLightingElement: W.Element, SVGFESpotLightElement: W.Element, SVGFETileElement: W.Element, SVGFETurbulenceElement: W.Element, SVGFilterElement: W.Element, SVGForeignObjectElement: W.Element, SVGGElement: W.Element, SVGGeometryElement: W.Element, SVGGraphicsElement: W.Element, SVGImageElement: W.Element, SVGLineElement: W.Element, SVGLinearGradientElement: W.Element, SVGMarkerElement: W.Element, SVGMaskElement: W.Element, SVGMetadataElement: W.Element, SVGPathElement: W.Element, SVGPatternElement: W.Element, SVGPolygonElement: W.Element, SVGPolylineElement: W.Element, SVGRadialGradientElement: W.Element, SVGRectElement: W.Element, SVGScriptElement: W.Element, SVGSetElement: W.Element, SVGStopElement: W.Element, SVGStyleElement: W.Element, SVGElement: W.Element, SVGSVGElement: W.Element, SVGSwitchElement: W.Element, SVGSymbolElement: W.Element, SVGTSpanElement: W.Element, SVGTextContentElement: W.Element, SVGTextElement: W.Element, SVGTextPathElement: W.Element, SVGTextPositioningElement: W.Element, SVGTitleElement: W.Element, SVGUseElement: W.Element, SVGViewElement: W.Element, SVGGradientElement: W.Element, SVGComponentTransferFunctionElement: W.Element, SVGFEDropShadowElement: W.Element, SVGMPathElement: W.Element, Element: W.Element, AbortPaymentEvent: W.Event, AnimationEvent: W.Event, AnimationPlaybackEvent: W.Event, ApplicationCacheErrorEvent: W.Event, BackgroundFetchClickEvent: W.Event, BackgroundFetchEvent: W.Event, BackgroundFetchFailEvent: W.Event, BackgroundFetchedEvent: W.Event, BeforeInstallPromptEvent: W.Event, BeforeUnloadEvent: W.Event, BlobEvent: W.Event, CanMakePaymentEvent: W.Event, ClipboardEvent: W.Event, CloseEvent: W.Event, CompositionEvent: W.Event, CustomEvent: W.Event, DeviceMotionEvent: W.Event, DeviceOrientationEvent: W.Event, ErrorEvent: W.Event, ExtendableEvent: W.Event, ExtendableMessageEvent: W.Event, FetchEvent: W.Event, FocusEvent: W.Event, FontFaceSetLoadEvent: W.Event, ForeignFetchEvent: W.Event, GamepadEvent: W.Event, HashChangeEvent: W.Event, InstallEvent: W.Event, KeyboardEvent: W.Event, MediaEncryptedEvent: W.Event, MediaKeyMessageEvent: W.Event, MediaQueryListEvent: W.Event, MediaStreamEvent: W.Event, MediaStreamTrackEvent: W.Event, MessageEvent: W.Event, MIDIConnectionEvent: W.Event, MIDIMessageEvent: W.Event, MouseEvent: W.Event, DragEvent: W.Event, MutationEvent: W.Event, NotificationEvent: W.Event, PageTransitionEvent: W.Event, PaymentRequestEvent: W.Event, PaymentRequestUpdateEvent: W.Event, PointerEvent: W.Event, PopStateEvent: W.Event, PresentationConnectionAvailableEvent: W.Event, PresentationConnectionCloseEvent: W.Event, PromiseRejectionEvent: W.Event, PushEvent: W.Event, RTCDataChannelEvent: W.Event, RTCDTMFToneChangeEvent: W.Event, RTCPeerConnectionIceEvent: W.Event, RTCTrackEvent: W.Event, SecurityPolicyViolationEvent: W.Event, SensorErrorEvent: W.Event, SpeechRecognitionError: W.Event, SpeechRecognitionEvent: W.Event, SpeechSynthesisEvent: W.Event, StorageEvent: W.Event, SyncEvent: W.Event, TextEvent: W.Event, TouchEvent: W.Event, TrackEvent: W.Event, TransitionEvent: W.Event, WebKitTransitionEvent: W.Event, UIEvent: W.Event, VRDeviceEvent: W.Event, VRDisplayEvent: W.Event, VRSessionEvent: W.Event, WheelEvent: W.Event, MojoInterfaceRequestEvent: W.Event, USBConnectionEvent: W.Event, IDBVersionChangeEvent: W.Event, AudioProcessingEvent: W.Event, OfflineAudioCompletionEvent: W.Event, WebGLContextEvent: W.Event, Event: W.Event, InputEvent: W.Event, SubmitEvent: W.Event, EventTarget: W.EventTarget, HTMLFormElement: W.FormElement, XMLHttpRequest: W.HttpRequest, XMLHttpRequestEventTarget: W.HttpRequestEventTarget, HTMLInputElement: W.InputElement, Node: W.Node, ProgressEvent: W.ProgressEvent, ResourceProgressEvent: W.ProgressEvent, HTMLSelectElement: W.SelectElement});
+    hunkHelpers.setOrUpdateLeafTags({Blob: true, DOMError: true, File: true, MediaError: true, NavigatorUserMediaError: true, OverconstrainedError: true, PositionError: true, SQLError: true, ArrayBuffer: true, ArrayBufferView: false, Int8Array: true, Uint32Array: true, Uint8Array: false, HTMLAudioElement: true, HTMLBRElement: true, HTMLBaseElement: true, HTMLBodyElement: true, HTMLCanvasElement: true, HTMLContentElement: true, HTMLDListElement: true, HTMLDataElement: true, HTMLDataListElement: true, HTMLDetailsElement: true, HTMLDialogElement: true, HTMLDivElement: true, HTMLEmbedElement: true, HTMLFieldSetElement: true, HTMLHRElement: true, HTMLHeadElement: true, HTMLHeadingElement: true, HTMLHtmlElement: true, HTMLIFrameElement: true, HTMLImageElement: true, HTMLLIElement: true, HTMLLabelElement: true, HTMLLegendElement: true, HTMLLinkElement: true, HTMLMapElement: true, HTMLMediaElement: true, HTMLMenuElement: true, HTMLMetaElement: true, HTMLMeterElement: true, HTMLModElement: true, HTMLOListElement: true, HTMLObjectElement: true, HTMLOptGroupElement: true, HTMLOptionElement: true, HTMLOutputElement: true, HTMLParagraphElement: true, HTMLParamElement: true, HTMLPictureElement: true, HTMLPreElement: true, HTMLProgressElement: true, HTMLQuoteElement: true, HTMLScriptElement: true, HTMLShadowElement: true, HTMLSlotElement: true, HTMLSourceElement: true, HTMLSpanElement: true, HTMLStyleElement: true, HTMLTableCaptionElement: true, HTMLTableCellElement: true, HTMLTableDataCellElement: true, HTMLTableHeaderCellElement: true, HTMLTableColElement: true, HTMLTableElement: true, HTMLTableRowElement: true, HTMLTableSectionElement: true, HTMLTemplateElement: true, HTMLTextAreaElement: true, HTMLTimeElement: true, HTMLTitleElement: true, HTMLTrackElement: true, HTMLUListElement: true, HTMLUnknownElement: true, HTMLVideoElement: true, HTMLDirectoryElement: true, HTMLFontElement: true, HTMLFrameElement: true, HTMLFrameSetElement: true, HTMLMarqueeElement: true, HTMLElement: false, HTMLAnchorElement: true, HTMLAreaElement: true, HTMLButtonElement: true, Document: true, HTMLDocument: true, XMLDocument: true, DOMException: true, SVGAElement: true, SVGAnimateElement: true, SVGAnimateMotionElement: true, SVGAnimateTransformElement: true, SVGAnimationElement: true, SVGCircleElement: true, SVGClipPathElement: true, SVGDefsElement: true, SVGDescElement: true, SVGDiscardElement: true, SVGEllipseElement: true, SVGFEBlendElement: true, SVGFEColorMatrixElement: true, SVGFEComponentTransferElement: true, SVGFECompositeElement: true, SVGFEConvolveMatrixElement: true, SVGFEDiffuseLightingElement: true, SVGFEDisplacementMapElement: true, SVGFEDistantLightElement: true, SVGFEFloodElement: true, SVGFEFuncAElement: true, SVGFEFuncBElement: true, SVGFEFuncGElement: true, SVGFEFuncRElement: true, SVGFEGaussianBlurElement: true, SVGFEImageElement: true, SVGFEMergeElement: true, SVGFEMergeNodeElement: true, SVGFEMorphologyElement: true, SVGFEOffsetElement: true, SVGFEPointLightElement: true, SVGFESpecularLightingElement: true, SVGFESpotLightElement: true, SVGFETileElement: true, SVGFETurbulenceElement: true, SVGFilterElement: true, SVGForeignObjectElement: true, SVGGElement: true, SVGGeometryElement: true, SVGGraphicsElement: true, SVGImageElement: true, SVGLineElement: true, SVGLinearGradientElement: true, SVGMarkerElement: true, SVGMaskElement: true, SVGMetadataElement: true, SVGPathElement: true, SVGPatternElement: true, SVGPolygonElement: true, SVGPolylineElement: true, SVGRadialGradientElement: true, SVGRectElement: true, SVGScriptElement: true, SVGSetElement: true, SVGStopElement: true, SVGStyleElement: true, SVGElement: true, SVGSVGElement: true, SVGSwitchElement: true, SVGSymbolElement: true, SVGTSpanElement: true, SVGTextContentElement: true, SVGTextElement: true, SVGTextPathElement: true, SVGTextPositioningElement: true, SVGTitleElement: true, SVGUseElement: true, SVGViewElement: true, SVGGradientElement: true, SVGComponentTransferFunctionElement: true, SVGFEDropShadowElement: true, SVGMPathElement: true, Element: false, AbortPaymentEvent: true, AnimationEvent: true, AnimationPlaybackEvent: true, ApplicationCacheErrorEvent: true, BackgroundFetchClickEvent: true, BackgroundFetchEvent: true, BackgroundFetchFailEvent: true, BackgroundFetchedEvent: true, BeforeInstallPromptEvent: true, BeforeUnloadEvent: true, BlobEvent: true, CanMakePaymentEvent: true, ClipboardEvent: true, CloseEvent: true, CompositionEvent: true, CustomEvent: true, DeviceMotionEvent: true, DeviceOrientationEvent: true, ErrorEvent: true, ExtendableEvent: true, ExtendableMessageEvent: true, FetchEvent: true, FocusEvent: true, FontFaceSetLoadEvent: true, ForeignFetchEvent: true, GamepadEvent: true, HashChangeEvent: true, InstallEvent: true, KeyboardEvent: true, MediaEncryptedEvent: true, MediaKeyMessageEvent: true, MediaQueryListEvent: true, MediaStreamEvent: true, MediaStreamTrackEvent: true, MessageEvent: true, MIDIConnectionEvent: true, MIDIMessageEvent: true, MouseEvent: true, DragEvent: true, MutationEvent: true, NotificationEvent: true, PageTransitionEvent: true, PaymentRequestEvent: true, PaymentRequestUpdateEvent: true, PointerEvent: true, PopStateEvent: true, PresentationConnectionAvailableEvent: true, PresentationConnectionCloseEvent: true, PromiseRejectionEvent: true, PushEvent: true, RTCDataChannelEvent: true, RTCDTMFToneChangeEvent: true, RTCPeerConnectionIceEvent: true, RTCTrackEvent: true, SecurityPolicyViolationEvent: true, SensorErrorEvent: true, SpeechRecognitionError: true, SpeechRecognitionEvent: true, SpeechSynthesisEvent: true, StorageEvent: true, SyncEvent: true, TextEvent: true, TouchEvent: true, TrackEvent: true, TransitionEvent: true, WebKitTransitionEvent: true, UIEvent: true, VRDeviceEvent: true, VRDisplayEvent: true, VRSessionEvent: true, WheelEvent: true, MojoInterfaceRequestEvent: true, USBConnectionEvent: true, IDBVersionChangeEvent: true, AudioProcessingEvent: true, OfflineAudioCompletionEvent: true, WebGLContextEvent: true, Event: false, InputEvent: false, SubmitEvent: false, EventTarget: false, HTMLFormElement: true, XMLHttpRequest: true, XMLHttpRequestEventTarget: false, HTMLInputElement: true, Node: false, ProgressEvent: true, ResourceProgressEvent: true, HTMLSelectElement: true});
     H.NativeTypedArray.$nativeSuperclassTag = "ArrayBufferView";
     H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin.$nativeSuperclassTag = "ArrayBufferView";
     H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin_FixedLengthListMixin.$nativeSuperclassTag = "ArrayBufferView";
@@ -14758,6 +14792,9 @@
   })();
   Function.prototype.call$2 = function(a, b) {
     return this(a, b);
+  };
+  Function.prototype.call$1$1 = function(a) {
+    return this(a);
   };
   Function.prototype.call$1 = function(a) {
     return this(a);
@@ -14770,9 +14807,6 @@
   };
   Function.prototype.call$4 = function(a, b, c, d) {
     return this(a, b, c, d);
-  };
-  Function.prototype.call$1$1 = function(a) {
-    return this(a);
   };
   convertAllToFastObject(holders);
   convertToFastObject($);

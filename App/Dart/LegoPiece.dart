@@ -77,8 +77,16 @@ class LegoPiece {
     return _imageURL;
   }
 
+  String getPartID() {
+    return _partID;
+  }
+
+  int getColorID() {
+    return _colorID;
+  }
+
   @override
   String toString() {
-    return _imageURLDone;
+    return _partID;
   }
 }

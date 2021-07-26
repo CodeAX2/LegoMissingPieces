@@ -20,4 +20,8 @@ class RebrickableAccess {
     Uri requestURL = Uri.parse("https://rebrickable.com/api/v3/lego/$section/?key=$_apiKey&$params");
     return _client.get(requestURL);
   }
+
+  String getAPIKey() {
+    return _apiKey;
+  }
 }
