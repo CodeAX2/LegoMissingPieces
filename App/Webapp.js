@@ -305,6 +305,9 @@
     IterableElementError_noElement: function() {
       return new P.StateError("No element");
     },
+    IterableElementError_tooMany: function() {
+      return new P.StateError("Too many elements");
+    },
     IterableElementError_tooFew: function() {
       return new P.StateError("Too few elements");
     },
@@ -1720,7 +1723,7 @@
       _._self = t0;
       _._target = t1;
       _._receiver = t2;
-      _._name = t3;
+      _.__js_helper$_name = t3;
     },
     RuntimeError: function RuntimeError(t0) {
       this.message = t0;
@@ -1745,12 +1748,12 @@
       _._previous = _._next = null;
     },
     LinkedHashMapKeyIterable: function LinkedHashMapKeyIterable(t0, t1) {
-      this.__js_helper$_map = t0;
+      this._map = t0;
       this.$ti = t1;
     },
     LinkedHashMapKeyIterator: function LinkedHashMapKeyIterator(t0, t1, t2) {
       var _ = this;
-      _.__js_helper$_map = t0;
+      _._map = t0;
       _._modifications = t1;
       _.__js_helper$_current = _._cell = null;
       _.$ti = t2;
@@ -3489,6 +3492,12 @@
         return J.UnknownJavaScriptObject.prototype;
       return receiver;
     },
+    set$_innerHtml$x: function(receiver, value) {
+      return J.getInterceptor$x(receiver).set$_innerHtml(receiver, value);
+    },
+    get$attributes$x: function(receiver) {
+      return J.getInterceptor$x(receiver).get$attributes(receiver);
+    },
     get$hashCode$: function(receiver) {
       return J.getInterceptor$(receiver).get$hashCode(receiver);
     },
@@ -3553,11 +3562,17 @@
     elementAt$1$ax: function(receiver, a0) {
       return J.getInterceptor$ax(receiver).elementAt$1(receiver, a0);
     },
+    insertBefore$2$x: function(receiver, a0, a1) {
+      return J.getInterceptor$x(receiver).insertBefore$2(receiver, a0, a1);
+    },
     matchAsPrefix$2$s: function(receiver, a0, a1) {
       return J.getInterceptor$s(receiver).matchAsPrefix$2(receiver, a0, a1);
     },
     readFileSync$2$x: function(receiver, a0, a1) {
       return J.getInterceptor$x(receiver).readFileSync$2(receiver, a0, a1);
+    },
+    remove$0$x: function(receiver) {
+      return J.getInterceptor$x(receiver).remove$0(receiver);
     },
     send$1$x: function(receiver, a0) {
       return J.getInterceptor$x(receiver).send$1(receiver, a0);
@@ -3582,6 +3597,9 @@
     },
     toList$0$ax: function(receiver) {
       return J.getInterceptor$ax(receiver).toList$0(receiver);
+    },
+    toLowerCase$0$s: function(receiver) {
+      return J.getInterceptor$s(receiver).toLowerCase$0(receiver);
     },
     toString$0$: function(receiver) {
       return J.getInterceptor$(receiver).toString$0(receiver);
@@ -3609,9 +3627,9 @@
     ArrayIterator: function ArrayIterator(t0, t1, t2) {
       var _ = this;
       _._iterable = t0;
-      _._length = t1;
+      _.__interceptors$_length = t1;
       _._index = 0;
-      _._current = null;
+      _.__interceptors$_current = null;
       _.$ti = t2;
     },
     JSNumber: function JSNumber() {
@@ -4312,6 +4330,9 @@
     _LinkedCustomHashMap$: function(_equals, _hashCode, validKey, $K, $V) {
       return new P._LinkedCustomHashMap(_equals, _hashCode, new P._LinkedCustomHashMap_closure($K), $K._eval$1("@<0>")._bind$1($V)._eval$1("_LinkedCustomHashMap<1,2>"));
     },
+    LinkedHashSet_LinkedHashSet: function($E) {
+      return new P._LinkedHashSet($E._eval$1("_LinkedHashSet<0>"));
+    },
     LinkedHashSet_LinkedHashSet$_empty: function($E) {
       return new P._LinkedHashSet($E._eval$1("_LinkedHashSet<0>"));
     },
@@ -4452,6 +4473,13 @@
       C.JSArray_methods.add$1(parts, penultimateString);
       C.JSArray_methods.add$1(parts, ultimateString);
     },
+    LinkedHashSet_LinkedHashSet$from: function(elements, $E) {
+      var t1, _i,
+        result = P.LinkedHashSet_LinkedHashSet($E);
+      for (t1 = elements.length, _i = 0; _i < elements.length; elements.length === t1 || (0, H.throwConcurrentModificationError)(elements), ++_i)
+        result.add$1(0, $E._as(elements[_i]));
+      return result;
+    },
     ListMixin__compareAny: function(a, b) {
       var t1 = type$.Comparable_dynamic;
       return J.compareTo$1$ns(t1._as(a), t1._as(b));
@@ -4532,7 +4560,7 @@
     MapView: function MapView() {
     },
     UnmodifiableMapView: function UnmodifiableMapView(t0, t1) {
-      this._map = t0;
+      this._collection$_map = t0;
       this.$ti = t1;
     },
     SetMixin: function SetMixin() {
@@ -4904,6 +4932,8 @@
       return $length;
     },
     RangeError_checkNotNegative: function(value, $name) {
+      if (typeof value !== "number")
+        return value.$lt();
       if (value < 0)
         throw H.wrapException(P.RangeError$range(value, 0, null, $name, null));
       return value;
@@ -4926,9 +4956,6 @@
     },
     FormatException$: function(message, source, offset) {
       return new P.FormatException(message, source, offset);
-    },
-    print: function(object) {
-      H.printString(H.S(J.toString$0$(object)));
     },
     Uri_parse: function(uri) {
       var delta, indices, schemeEnd, hostStart, portStart, pathStart, queryStart, fragmentStart, isSimple, scheme, t1, t2, schemeAuth, queryStart0, pathStart0, userInfoStart, userInfo, host, portNumber, port, path, query, _null = null,
@@ -6263,6 +6290,10 @@
     promiseToFuture_closure0: function promiseToFuture_closure0(t0) {
       this.completer = t0;
     },
+    ScriptElement0: function ScriptElement0() {
+    },
+    SvgElement: function SvgElement() {
+    },
     max: function(a, b, $T) {
       H.checkTypeBound($T, type$.num, "T", "max");
       $T._as(a);
@@ -6271,10 +6302,78 @@
     }
   },
   W = {
+    Element_Element$html: function(html, treeSanitizer, validator) {
+      var fragment,
+        t1 = document.body;
+      t1.toString;
+      fragment = C.BodyElement_methods.createFragment$3$treeSanitizer$validator(t1, html, treeSanitizer, validator);
+      fragment.toString;
+      t1 = type$._ChildNodeListLazy;
+      t1 = new H.WhereIterable(new W._ChildNodeListLazy(fragment), t1._eval$1("bool(ListMixin.E)")._as(new W.Element_Element$html_closure()), t1._eval$1("WhereIterable<ListMixin.E>"));
+      return type$.Element._as(t1.get$single(t1));
+    },
+    Element__safeTagName: function(element) {
+      var t1, exception,
+        result = "element tag unavailable";
+      try {
+        t1 = J.getInterceptor$x(element);
+        if (typeof t1.get$tagName(element) == "string")
+          result = t1.get$tagName(element);
+      } catch (exception) {
+        H.unwrapException(exception);
+      }
+      return result;
+    },
     _EventStreamSubscription$: function(_target, _eventType, onData, _useCapture, $T) {
       var t1 = onData == null ? null : W._wrapZone(new W._EventStreamSubscription_closure(onData), type$.Event);
       t1 = new W._EventStreamSubscription(_target, _eventType, t1, false, $T._eval$1("_EventStreamSubscription<0>"));
       t1._tryResume$0();
+      return t1;
+    },
+    _Html5NodeValidator$: function(uriPolicy) {
+      var e = document.createElement("a"),
+        t1 = new W._SameOriginUriPolicy(e, window.location);
+      t1 = new W._Html5NodeValidator(t1);
+      t1._Html5NodeValidator$1$uriPolicy(uriPolicy);
+      return t1;
+    },
+    _Html5NodeValidator__standardAttributeValidator: function(element, attributeName, value, context) {
+      type$.Element._as(element);
+      H._asStringS(attributeName);
+      H._asStringS(value);
+      type$._Html5NodeValidator._as(context);
+      return true;
+    },
+    _Html5NodeValidator__uriAttributeValidator: function(element, attributeName, value, context) {
+      var t1, t2, t3;
+      type$.Element._as(element);
+      H._asStringS(attributeName);
+      H._asStringS(value);
+      t1 = type$._Html5NodeValidator._as(context).uriPolicy;
+      t2 = t1._hiddenAnchor;
+      C.AnchorElement_methods.set$href(t2, value);
+      t3 = t2.hostname;
+      t1 = t1._loc;
+      if (!(t3 == t1.hostname && t2.port == t1.port && t2.protocol == t1.protocol))
+        if (t3 === "")
+          if (t2.port === "") {
+            t1 = t2.protocol;
+            t1 = t1 === ":" || t1 === "";
+          } else
+            t1 = false;
+        else
+          t1 = false;
+      else
+        t1 = true;
+      return t1;
+    },
+    _TemplatingNodeValidator$: function() {
+      var t1 = type$.String,
+        t2 = P.LinkedHashSet_LinkedHashSet$from(C.List_wSV, t1),
+        t3 = type$.String_Function_legacy_String._as(new W._TemplatingNodeValidator_closure()),
+        t4 = H.setRuntimeTypeInfo(["TEMPLATE"], type$.JSArray_String);
+      t1 = new W._TemplatingNodeValidator(t2, P.LinkedHashSet_LinkedHashSet(t1), P.LinkedHashSet_LinkedHashSet(t1), P.LinkedHashSet_LinkedHashSet(t1), null);
+      t1._SimpleNodeValidator$4$allowedAttributes$allowedElements$allowedUriAttributes(null, new H.MappedListIterable(C.List_wSV, t3, type$.MappedListIterable_of_legacy_String_and_String), t4, null);
       return t1;
     },
     _convertNativeToDart_XHR_Response: function(o) {
@@ -6297,13 +6396,25 @@
     },
     AreaElement: function AreaElement() {
     },
-    ButtonElement: function ButtonElement() {
+    BaseElement: function BaseElement() {
+    },
+    BodyElement: function BodyElement() {
+    },
+    CharacterData: function CharacterData() {
+    },
+    DivElement: function DivElement() {
     },
     Document: function Document() {
     },
     DomException: function DomException() {
     },
+    DomImplementation: function DomImplementation() {
+    },
+    DomTokenList: function DomTokenList() {
+    },
     Element: function Element() {
+    },
+    Element_Element$html_closure: function Element_Element$html_closure() {
     },
     Event: function Event() {
     },
@@ -6311,17 +6422,47 @@
     },
     FormElement: function FormElement() {
     },
+    HeadingElement: function HeadingElement() {
+    },
+    HtmlCollection: function HtmlCollection() {
+    },
+    HtmlDocument: function HtmlDocument() {
+    },
     HttpRequest: function HttpRequest() {
     },
     HttpRequestEventTarget: function HttpRequestEventTarget() {
     },
-    InputElement: function InputElement() {
+    ImageElement: function ImageElement() {
+    },
+    Location: function Location() {
+    },
+    _ChildNodeListLazy: function _ChildNodeListLazy(t0) {
+      this._this = t0;
     },
     Node: function Node() {
+    },
+    NodeList: function NodeList() {
     },
     ProgressEvent: function ProgressEvent() {
     },
     SelectElement: function SelectElement() {
+    },
+    TableElement: function TableElement() {
+    },
+    TableRowElement: function TableRowElement() {
+    },
+    TableSectionElement: function TableSectionElement() {
+    },
+    TemplateElement: function TemplateElement() {
+    },
+    _Attr: function _Attr() {
+    },
+    _NamedNodeMap: function _NamedNodeMap() {
+    },
+    _AttributeMap: function _AttributeMap() {
+    },
+    _ElementAttributeMap: function _ElementAttributeMap(t0) {
+      this._html$_element = t0;
     },
     EventStreamProvider: function EventStreamProvider(t0, t1) {
       this._eventType = t0;
@@ -6347,6 +6488,71 @@
     },
     _EventStreamSubscription_onData_closure: function _EventStreamSubscription_onData_closure(t0) {
       this.handleData = t0;
+    },
+    _Html5NodeValidator: function _Html5NodeValidator(t0) {
+      this.uriPolicy = t0;
+    },
+    ImmutableListMixin: function ImmutableListMixin() {
+    },
+    NodeValidatorBuilder: function NodeValidatorBuilder(t0) {
+      this._validators = t0;
+    },
+    NodeValidatorBuilder_allowsElement_closure: function NodeValidatorBuilder_allowsElement_closure(t0) {
+      this.element = t0;
+    },
+    NodeValidatorBuilder_allowsAttribute_closure: function NodeValidatorBuilder_allowsAttribute_closure(t0, t1, t2) {
+      this.element = t0;
+      this.attributeName = t1;
+      this.value = t2;
+    },
+    _SimpleNodeValidator: function _SimpleNodeValidator() {
+    },
+    _SimpleNodeValidator_closure: function _SimpleNodeValidator_closure() {
+    },
+    _SimpleNodeValidator_closure0: function _SimpleNodeValidator_closure0() {
+    },
+    _TemplatingNodeValidator: function _TemplatingNodeValidator(t0, t1, t2, t3, t4) {
+      var _ = this;
+      _._templateAttrs = t0;
+      _.allowedElements = t1;
+      _.allowedAttributes = t2;
+      _.allowedUriAttributes = t3;
+      _.uriPolicy = t4;
+    },
+    _TemplatingNodeValidator_closure: function _TemplatingNodeValidator_closure() {
+    },
+    _SvgNodeValidator: function _SvgNodeValidator() {
+    },
+    FixedSizeListIterator: function FixedSizeListIterator(t0, t1, t2) {
+      var _ = this;
+      _._array = t0;
+      _._length = t1;
+      _._position = -1;
+      _._current = null;
+      _.$ti = t2;
+    },
+    _SameOriginUriPolicy: function _SameOriginUriPolicy(t0, t1) {
+      this._hiddenAnchor = t0;
+      this._loc = t1;
+    },
+    _ValidatingTreeSanitizer: function _ValidatingTreeSanitizer(t0) {
+      this.validator = t0;
+      this.numTreeModifications = 0;
+    },
+    _ValidatingTreeSanitizer_sanitizeTree_walk: function _ValidatingTreeSanitizer_sanitizeTree_walk(t0) {
+      this.$this = t0;
+    },
+    _HtmlCollection_Interceptor_ListMixin: function _HtmlCollection_Interceptor_ListMixin() {
+    },
+    _HtmlCollection_Interceptor_ListMixin_ImmutableListMixin: function _HtmlCollection_Interceptor_ListMixin_ImmutableListMixin() {
+    },
+    _NodeList_Interceptor_ListMixin: function _NodeList_Interceptor_ListMixin() {
+    },
+    _NodeList_Interceptor_ListMixin_ImmutableListMixin: function _NodeList_Interceptor_ListMixin_ImmutableListMixin() {
+    },
+    __NamedNodeMap_Interceptor_ListMixin: function __NamedNodeMap_Interceptor_ListMixin() {
+    },
+    __NamedNodeMap_Interceptor_ListMixin_ImmutableListMixin: function __NamedNodeMap_Interceptor_ListMixin_ImmutableListMixin() {
     }
   },
   M = {CanonicalizedMap: function CanonicalizedMap() {
@@ -6507,19 +6713,30 @@
     CaseInsensitiveMap$from_closure: function CaseInsensitiveMap$from_closure() {
     },
     main: function() {
-      var project,
-        submitButton = type$.legacy_ButtonElement._as(document.getElementById("inputButton"));
-      (submitButton && C.ButtonElement_methods).addEventListener$2(submitButton, "click", new Z.main_closure());
+      var t1, t2, project,
+        app = new L.App();
+      app.set$_allStates(new H.JsLinkedHashMap(type$.JsLinkedHashMap_of_legacy_DisplayStateType_and_legacy_DisplayState));
+      t1 = document;
+      t2 = t1.createElement("div");
+      app._appDiv = t2;
+      t2.id = "appDiv";
+      t1.body.appendChild(app._appDiv);
+      t1 = new S.LoadingState();
+      t1._app = app;
+      app._allStates.$indexSet(0, C.DisplayStateType_0, t1);
+      t1 = new S.ProjectViewState();
+      t1._app = app;
+      app._allStates.$indexSet(0, C.DisplayStateType_1, t1);
+      app.setCurrentState$1(C.DisplayStateType_0);
       project = new S.LegoSetProject();
       project._filePath = "TestProject.json";
       project.set$_sets(H.setRuntimeTypeInfo([], type$.JSArray_legacy_LegoSet));
-      project.loadProject$0().then$1$1(0, new Z.main_closure0(project), type$.void);
+      project.loadProject$0().then$1$1(0, new Z.main_closure(app), type$.Null);
+      app._project = project;
       return 0;
     },
-    main_closure: function main_closure() {
-    },
-    main_closure0: function main_closure0(t0) {
-      this.project = t0;
+    main_closure: function main_closure(t0) {
+      this.app = t0;
     }
   },
   U = {
@@ -6797,7 +7014,8 @@
       _.highlights = t3;
     },
     LegoSet: function LegoSet() {
-      this._piecesOwned = this._pieces = this._setID = null;
+      var _ = this;
+      _._piecesOwned = _._pieces = _._imageURL = _._year = _._LegoSet$_name = _._setID = null;
     }
   },
   X = {StreamedResponse: function StreamedResponse(t0, t1, t2, t3, t4, t5, t6, t7) {
@@ -6885,7 +7103,7 @@
       var _ = this;
       _.sourceUrl = t0;
       _.string = t1;
-      _._position = 0;
+      _._string_scanner$_position = 0;
       _._lastMatchPosition = _._lastMatch = null;
     }
   },
@@ -7102,6 +7320,9 @@
       _.needsSeparatorPattern = t1;
       _.rootPattern = t2;
       _.relativeRootPattern = t3;
+    }, App: function App() {
+      var _ = this;
+      _._appDiv = _._allStates = _._currentState = _._project = null;
     }},
   B = {InternalStyle: function InternalStyle() {
     },
@@ -7210,7 +7431,14 @@
       return null;
     }
   },
-  S = {LegoSetProject: function LegoSetProject() {
+  S = {DisplayStateType: function DisplayStateType(t0) {
+      this._name = t0;
+    }, DisplayState: function DisplayState() {
+    }, LoadingState: function LoadingState() {
+      this._app = null;
+    }, ProjectViewState: function ProjectViewState() {
+      this._app = null;
+    }, LegoSetProject: function LegoSetProject() {
       this._apiAccess = this._filePath = this._sets = null;
     }, LegoSetProject_loadProject_closure: function LegoSetProject_loadProject_closure(t0, t1, t2) {
       this.$this = t0;
@@ -7388,9 +7616,7 @@
       return H.SubListIterable$(receiver, n, null, H._arrayInstanceType(receiver)._precomputed1);
     },
     elementAt$1: function(receiver, index) {
-      if (index < 0 || index >= receiver.length)
-        return H.ioore(receiver, index);
-      return receiver[index];
+      return this.$index(receiver, index);
     },
     get$first: function(receiver) {
       if (receiver.length > 0)
@@ -7432,6 +7658,18 @@
     },
     setRange$3: function($receiver, start, end, iterable) {
       return this.setRange$4($receiver, start, end, iterable, 0);
+    },
+    any$1: function(receiver, test) {
+      var end, i;
+      H._arrayInstanceType(receiver)._eval$1("bool(1)")._as(test);
+      end = receiver.length;
+      for (i = 0; i < end; ++i) {
+        if (H.boolConversionCheck(test.call$1(receiver[i])))
+          return true;
+        if (receiver.length !== end)
+          throw H.wrapException(P.ConcurrentModificationError$(receiver));
+      }
+      return false;
     },
     sort$1: function(receiver, compare) {
       var t2,
@@ -7525,25 +7763,25 @@
   J.JSUnmodifiableArray.prototype = {};
   J.ArrayIterator.prototype = {
     get$current: function() {
-      return this._current;
+      return this.__interceptors$_current;
     },
     moveNext$0: function() {
       var t2, _this = this,
         t1 = _this._iterable,
         $length = t1.length;
-      if (_this._length !== $length)
+      if (_this.__interceptors$_length !== $length)
         throw H.wrapException(H.throwConcurrentModificationError(t1));
       t2 = _this._index;
       if (t2 >= $length) {
-        _this.set$_current(null);
+        _this.set$__interceptors$_current(null);
         return false;
       }
-      _this.set$_current(t1[t2]);
+      _this.set$__interceptors$_current(t1[t2]);
       ++_this._index;
       return true;
     },
-    set$_current: function(_current) {
-      this._current = this.$ti._eval$1("1?")._as(_current);
+    set$__interceptors$_current: function(_current) {
+      this.__interceptors$_current = this.$ti._eval$1("1?")._as(_current);
     },
     $isIterator: 1
   };
@@ -7644,6 +7882,8 @@
   J.JSNumNotInt.prototype = {};
   J.JSString.prototype = {
     codeUnitAt$1: function(receiver, index) {
+      if (!H._isInt(index))
+        throw H.wrapException(H.diagnoseIndexError(receiver, index));
       if (index < 0)
         throw H.wrapException(H.diagnoseIndexError(receiver, index));
       if (index >= receiver.length)
@@ -7720,6 +7960,9 @@
     },
     substring$1: function($receiver, startIndex) {
       return this.substring$2($receiver, startIndex, null);
+    },
+    toLowerCase$0: function(receiver) {
+      return receiver.toLowerCase();
     },
     $mul: function(receiver, times) {
       var s, result;
@@ -7836,7 +8079,7 @@
     call$0: function() {
       return P.Future_Future$value(null, type$.Null);
     },
-    $signature: 19
+    $signature: 21
   };
   H.NotNullableError.prototype = {
     toString$0: function(_) {
@@ -7877,6 +8120,9 @@
         }
         return t1.charCodeAt(0) == 0 ? t1 : t1;
       }
+    },
+    where$1: function(_, test) {
+      return this.super$Iterable$where(0, H._instanceType(this)._eval$1("bool(ListIterable.E)")._as(test));
     },
     reduce$1: function(_, combine) {
       var $length, value, i, _this = this;
@@ -7936,8 +8182,11 @@
       return endOrLength - t1;
     },
     elementAt$1: function(_, index) {
-      var _this = this,
-        realIndex = _this.get$_startIndex() + index;
+      var realIndex, _this = this,
+        t1 = _this.get$_startIndex();
+      if (typeof index !== "number")
+        return H.iae(index);
+      realIndex = t1 + index;
       if (index < 0 || realIndex >= _this.get$_endIndex())
         throw H.wrapException(P.IndexError$(index, _this, "index", null, null));
       return J.elementAt$1$ax(_this.__internal$_iterable, realIndex);
@@ -8183,8 +8432,11 @@
     },
     elementAt$1: function(_, index) {
       var t1 = this._source,
-        t2 = J.getInterceptor$asx(t1);
-      return t2.elementAt$1(t1, t2.get$length(t1) - 1 - index);
+        t2 = J.getInterceptor$asx(t1),
+        t3 = t2.get$length(t1);
+      if (typeof index !== "number")
+        return H.iae(index);
+      return t2.elementAt$1(t1, t3 - 1 - index);
     }
   };
   H.ConstantMap.prototype = {
@@ -8365,7 +8617,7 @@
       var receiver = this._receiver;
       if (receiver == null)
         receiver = this._self;
-      return "Closure '" + H.S(this._name) + "' of " + ("Instance of '" + H.S(H.Primitives_objectTypeName(receiver)) + "'");
+      return "Closure '" + H.S(this.__js_helper$_name) + "' of " + ("Instance of '" + H.S(H.Primitives_objectTypeName(receiver)) + "'");
     }
   };
   H.RuntimeError.prototype = {
@@ -8381,6 +8633,9 @@
   H.JsLinkedHashMap.prototype = {
     get$length: function(_) {
       return this.__js_helper$_length;
+    },
+    get$isEmpty: function(_) {
+      return this.__js_helper$_length === 0;
     },
     get$keys: function(_) {
       return new H.LinkedHashMapKeyIterable(this, H._instanceType(this)._eval$1("LinkedHashMapKeyIterable<1>"));
@@ -8570,10 +8825,10 @@
   H.LinkedHashMapCell.prototype = {};
   H.LinkedHashMapKeyIterable.prototype = {
     get$length: function(_) {
-      return this.__js_helper$_map.__js_helper$_length;
+      return this._map.__js_helper$_length;
     },
     get$iterator: function(_) {
-      var t1 = this.__js_helper$_map,
+      var t1 = this._map,
         t2 = new H.LinkedHashMapKeyIterator(t1, t1._modifications, this.$ti._eval$1("LinkedHashMapKeyIterator<1>"));
       t2._cell = t1._first;
       return t2;
@@ -8585,7 +8840,7 @@
     },
     moveNext$0: function() {
       var cell, _this = this,
-        t1 = _this.__js_helper$_map;
+        t1 = _this._map;
       if (_this._modifications !== t1._modifications)
         throw H.wrapException(P.ConcurrentModificationError$(t1));
       cell = _this._cell;
@@ -8607,19 +8862,19 @@
     call$1: function(o) {
       return this.getTag(o);
     },
-    $signature: 54
+    $signature: 57
   };
   H.initHooks_closure0.prototype = {
     call$2: function(o, tag) {
       return this.getUnknownTag(o, tag);
     },
-    $signature: 53
+    $signature: 56
   };
   H.initHooks_closure1.prototype = {
     call$1: function(tag) {
       return this.prototypeForTag(H._asStringS(tag));
     },
-    $signature: 42
+    $signature: 32
   };
   H.JSSyntaxRegExp.prototype = {
     toString$0: function(_) {
@@ -8905,7 +9160,7 @@
       t1.storedCallback = null;
       f.call$0();
     },
-    $signature: 8
+    $signature: 16
   };
   P._AsyncRun__initializeScheduleImmediate_closure.prototype = {
     call$1: function(callback) {
@@ -8915,19 +9170,19 @@
       t2 = this.span;
       t1.firstChild ? t1.removeChild(t2) : t1.appendChild(t2);
     },
-    $signature: 55
+    $signature: 45
   };
   P._AsyncRun__scheduleImmediateJsOverride_internalCallback.prototype = {
     call$0: function() {
       this.callback.call$0();
     },
-    $signature: 5
+    $signature: 11
   };
   P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback.prototype = {
     call$0: function() {
       this.callback.call$0();
     },
-    $signature: 5
+    $signature: 11
   };
   P._TimerImpl.prototype = {
     _TimerImpl$2: function(milliseconds, callback) {
@@ -8979,13 +9234,13 @@
     call$2: function(error, stackTrace) {
       this.bodyFunction.call$2(1, new H.ExceptionAndStackTrace(error, type$.StackTrace._as(stackTrace)));
     },
-    $signature: 56
+    $signature: 58
   };
   P._wrapJsFunctionForAsync_closure.prototype = {
     call$2: function(errorCode, result) {
       this.$protected(H._asIntS(errorCode), result);
     },
-    $signature: 52
+    $signature: 55
   };
   P.AsyncError.prototype = {
     toString$0: function(_) {
@@ -9000,27 +9255,27 @@
     call$1: function(t1) {
       return this._box_0._error = t1;
     },
-    $signature: 38
+    $signature: 54
   };
   P.Future_wait__stackTrace_set.prototype = {
     call$1: function(t1) {
       return this._box_0._stackTrace = type$.StackTrace._as(t1);
     },
-    $signature: 35
+    $signature: 53
   };
   P.Future_wait__error_get.prototype = {
     call$0: function() {
       var t1 = this._box_0._error;
       return t1 === $ ? H.throwExpression(H.LateError$localNI("error")) : t1;
     },
-    $signature: 33
+    $signature: 52
   };
   P.Future_wait__stackTrace_get.prototype = {
     call$0: function() {
       var t1 = this._box_0._stackTrace;
       return t1 === $ ? H.throwExpression(H.LateError$localNI("stackTrace")) : t1;
     },
-    $signature: 29
+    $signature: 41
   };
   P.Future_wait_handleError.prototype = {
     call$2: function(theError, theStackTrace) {
@@ -9039,7 +9294,7 @@
       } else if (t2 === 0 && !_this.eagerError)
         _this._future._completeError$2(_this._error_get.call$0(), _this._stackTrace_get.call$0());
     },
-    $signature: 7
+    $signature: 8
   };
   P.Future_wait_closure.prototype = {
     call$1: function(value) {
@@ -9301,13 +9556,13 @@
         t1._completeError$2(error, stackTrace);
       }
     },
-    $signature: 8
+    $signature: 16
   };
   P._Future__chainForeignFuture_closure0.prototype = {
     call$2: function(error, stackTrace) {
       this.$this._completeError$2(error, type$.StackTrace._as(stackTrace));
     },
-    $signature: 21
+    $signature: 31
   };
   P._Future__chainForeignFuture_closure1.prototype = {
     call$0: function() {
@@ -9378,7 +9633,7 @@
     call$1: function(_) {
       return this.originalSource;
     },
-    $signature: 18
+    $signature: 30
   };
   P._Future__propagateToListeners_handleValueCallback.prototype = {
     call$0: function() {
@@ -9903,21 +10158,39 @@
     call$1: function(v) {
       return this.K._is(v);
     },
-    $signature: 28
+    $signature: 27
   };
   P._LinkedHashSet.prototype = {
     get$iterator: function(_) {
       var _this = this,
-        t1 = new P._LinkedHashSetIterator(_this, _this._collection$_modifications, _this.$ti._eval$1("_LinkedHashSetIterator<1>"));
+        t1 = new P._LinkedHashSetIterator(_this, _this._collection$_modifications, H._instanceType(_this)._eval$1("_LinkedHashSetIterator<1>"));
       t1._collection$_cell = _this._collection$_first;
       return t1;
     },
     get$length: function(_) {
       return this._collection$_length;
     },
+    contains$1: function(_, object) {
+      var strings, t1;
+      if (typeof object == "string" && object !== "__proto__") {
+        strings = this._collection$_strings;
+        if (strings == null)
+          return false;
+        return type$.nullable__LinkedHashSetCell._as(strings[object]) != null;
+      } else {
+        t1 = this._contains$1(object);
+        return t1;
+      }
+    },
+    _contains$1: function(object) {
+      var rest = this._collection$_rest;
+      if (rest == null)
+        return false;
+      return this._findBucketIndex$2(rest[this._computeHashCode$1(object)], object) >= 0;
+    },
     add$1: function(_, element) {
       var strings, nums, _this = this;
-      _this.$ti._precomputed1._as(element);
+      H._instanceType(_this)._precomputed1._as(element);
       if (typeof element == "string" && element !== "__proto__") {
         strings = _this._collection$_strings;
         return _this._collection$_addHashTableEntry$2(strings == null ? _this._collection$_strings = P._LinkedHashSet__newHashTable() : strings, element);
@@ -9929,11 +10202,11 @@
     },
     _add$1: function(element) {
       var rest, hash, bucket, _this = this;
-      _this.$ti._precomputed1._as(element);
+      H._instanceType(_this)._precomputed1._as(element);
       rest = _this._collection$_rest;
       if (rest == null)
         rest = _this._collection$_rest = P._LinkedHashSet__newHashTable();
-      hash = J.get$hashCode$(element) & 1073741823;
+      hash = _this._computeHashCode$1(element);
       bucket = rest[hash];
       if (bucket == null)
         rest[hash] = [_this._collection$_newLinkedCell$1(element)];
@@ -9949,23 +10222,23 @@
       return t1;
     },
     _remove$1: function(object) {
-      var hash, bucket, index, cell,
-        rest = this._collection$_rest;
+      var hash, bucket, index, cell, _this = this,
+        rest = _this._collection$_rest;
       if (rest == null)
         return false;
-      hash = C.HttpRequest_methods.get$hashCode(object) & 1073741823;
+      hash = _this._computeHashCode$1(object);
       bucket = rest[hash];
-      index = this._findBucketIndex$2(bucket, object);
+      index = _this._findBucketIndex$2(bucket, object);
       if (index < 0)
         return false;
       cell = bucket.splice(index, 1)[0];
       if (0 === bucket.length)
         delete rest[hash];
-      this._unlinkCell$1(cell);
+      _this._unlinkCell$1(cell);
       return true;
     },
     _collection$_addHashTableEntry$2: function(table, element) {
-      this.$ti._precomputed1._as(element);
+      H._instanceType(this)._precomputed1._as(element);
       if (type$.nullable__LinkedHashSetCell._as(table[element]) != null)
         return false;
       table[element] = this._collection$_newLinkedCell$1(element);
@@ -9976,7 +10249,7 @@
     },
     _collection$_newLinkedCell$1: function(element) {
       var t1, _this = this,
-        cell = new P._LinkedHashSetCell(_this.$ti._precomputed1._as(element));
+        cell = new P._LinkedHashSetCell(H._instanceType(_this)._precomputed1._as(element));
       if (_this._collection$_first == null)
         _this._collection$_first = _this._collection$_last = cell;
       else {
@@ -10003,6 +10276,9 @@
         next._collection$_previous = previous;
       --_this._collection$_length;
       _this._collection$_modified$0();
+    },
+    _computeHashCode$1: function(element) {
+      return J.get$hashCode$(element) & 1073741823;
     },
     _findBucketIndex$2: function(bucket, element) {
       var $length, i;
@@ -10127,20 +10403,19 @@
       t1._contents = t2 + ": ";
       t1._contents += H.S(v);
     },
-    $signature: 20
+    $signature: 29
   };
   P.MapMixin.prototype = {
     forEach$1: function(_, action) {
       var t1, key, _this = this;
       H._instanceType(_this)._eval$1("~(MapMixin.K,MapMixin.V)")._as(action);
-      for (t1 = _this.get$keys(_this), t1 = t1.get$iterator(t1); t1.moveNext$0();) {
+      for (t1 = J.get$iterator$ax(_this.get$keys(_this)); t1.moveNext$0();) {
         key = t1.get$current();
         action.call$2(key, _this.$index(0, key));
       }
     },
     get$length: function(_) {
-      var t1 = this.get$keys(this);
-      return t1.get$length(t1);
+      return J.get$length$asx(this.get$keys(this));
     },
     toString$0: function(_) {
       return P.MapBase_mapToString(this);
@@ -10157,28 +10432,33 @@
   };
   P.MapView.prototype = {
     $index: function(_, key) {
-      return this._map.$index(0, key);
+      return this._collection$_map.$index(0, key);
     },
     $indexSet: function(_, key, value) {
       var t1 = this.$ti;
-      this._map.$indexSet(0, t1._precomputed1._as(key), t1._rest[1]._as(value));
+      this._collection$_map.$indexSet(0, t1._precomputed1._as(key), t1._rest[1]._as(value));
     },
     get$length: function(_) {
-      var t1 = this._map;
+      var t1 = this._collection$_map;
       return t1.get$length(t1);
     },
     toString$0: function(_) {
-      return this._map.toString$0(0);
+      return this._collection$_map.toString$0(0);
     },
     $isMap: 1
   };
   P.UnmodifiableMapView.prototype = {};
   P.SetMixin.prototype = {
+    addAll$1: function(_, elements) {
+      var t1;
+      for (t1 = J.get$iterator$ax(H._instanceType(this)._eval$1("Iterable<SetMixin.E>")._as(elements)); t1.moveNext$0();)
+        this.add$1(0, t1.get$current());
+    },
     toString$0: function(_) {
       return P.IterableBase_iterableToFullString(this, "{", "}");
     },
     skip$1: function(_, n) {
-      return H.SkipIterable_SkipIterable(this, n, this.$ti._precomputed1);
+      return H.SkipIterable_SkipIterable(this, n, H._instanceType(this)._eval$1("SetMixin.E"));
     }
   };
   P._SetBase.prototype = {$isEfficientLengthIterable: 1, $isIterable: 1, $isSet: 1};
@@ -10292,15 +10572,7 @@
     },
     elementAt$1: function(_, index) {
       var t1 = this._parent;
-      if (t1._processed == null)
-        t1 = t1.get$keys(t1).elementAt$1(0, index);
-      else {
-        t1 = t1._computeKeys$0();
-        if (index < 0 || index >= t1.length)
-          return H.ioore(t1, index);
-        t1 = t1[index];
-      }
-      return t1;
+      return t1._processed == null ? t1.get$keys(t1).elementAt$1(0, index) : C.JSArray_methods.$index(t1._computeKeys$0(), index);
     },
     get$iterator: function(_) {
       var t1 = this._parent;
@@ -10325,7 +10597,7 @@
       }
       return null;
     },
-    $signature: 17
+    $signature: 20
   };
   P.Utf8Decoder__decoderNonfatal_closure.prototype = {
     call$0: function() {
@@ -10338,7 +10610,7 @@
       }
       return null;
     },
-    $signature: 17
+    $signature: 20
   };
   P.AsciiCodec.prototype = {
     decode$1: function(_, bytes) {
@@ -10924,6 +11196,10 @@
     }
   };
   P.Iterable.prototype = {
+    where$1: function(_, test) {
+      var t1 = H._instanceType(this);
+      return new H.WhereIterable(this, t1._eval$1("bool(Iterable.E)")._as(test), t1._eval$1("WhereIterable<Iterable.E>"));
+    },
     toList$1$growable: function(_, growable) {
       return P.List_List$of(this, growable, H._instanceType(this)._eval$1("Iterable.E"));
     },
@@ -10942,6 +11218,16 @@
     },
     skip$1: function(_, count) {
       return H.SkipIterable_SkipIterable(this, count, H._instanceType(this)._eval$1("Iterable.E"));
+    },
+    get$single: function(_) {
+      var result,
+        it = this.get$iterator(this);
+      if (!it.moveNext$0())
+        throw H.wrapException(H.IterableElementError_noElement());
+      result = it.get$current();
+      if (it.moveNext$0())
+        throw H.wrapException(H.IterableElementError_tooMany());
+      return result;
     },
     elementAt$1: function(_, index) {
       var t1, elementIndex, element;
@@ -11360,7 +11646,7 @@
         target[t2] = transition;
       }
     },
-    $signature: 16
+    $signature: 19
   };
   P._createTables_setRange.prototype = {
     call$3: function(target, range, transition) {
@@ -11372,7 +11658,7 @@
         target[t1] = transition;
       }
     },
-    $signature: 16
+    $signature: 19
   };
   P._SimpleUri.prototype = {
     get$hasAuthority: function() {
@@ -11628,39 +11914,164 @@
   P._DataUri.prototype = {};
   W.HtmlElement.prototype = {};
   W.AnchorElement.prototype = {
+    set$href: function(receiver, value) {
+      receiver.href = value;
+    },
     toString$0: function(receiver) {
       return String(receiver);
-    }
+    },
+    $isAnchorElement: 1
   };
   W.AreaElement.prototype = {
     toString$0: function(receiver) {
       return String(receiver);
     }
   };
-  W.ButtonElement.prototype = {$isButtonElement: 1};
+  W.BaseElement.prototype = {$isBaseElement: 1};
+  W.BodyElement.prototype = {$isBodyElement: 1};
+  W.CharacterData.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    }
+  };
+  W.DivElement.prototype = {$isDivElement: 1};
   W.Document.prototype = {$isDocument: 1};
   W.DomException.prototype = {
     toString$0: function(receiver) {
       return String(receiver);
     }
   };
+  W.DomImplementation.prototype = {
+    createHtmlDocument$1: function(receiver, title) {
+      return receiver.createHTMLDocument(title);
+    }
+  };
+  W.DomTokenList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    }
+  };
   W.Element.prototype = {
+    get$attributes: function(receiver) {
+      return new W._ElementAttributeMap(receiver);
+    },
     toString$0: function(receiver) {
       return receiver.localName;
-    }
+    },
+    insertAdjacentHtml$4$treeSanitizer$validator: function(receiver, where, html, treeSanitizer, validator) {
+      var t1,
+        node = this.createFragment$3$treeSanitizer$validator(receiver, html, treeSanitizer, validator);
+      switch (where.toLowerCase()) {
+        case "beforebegin":
+          t1 = receiver.parentNode;
+          t1.toString;
+          J.insertBefore$2$x(t1, node, receiver);
+          break;
+        case "afterbegin":
+          t1 = receiver.childNodes;
+          this.insertBefore$2(receiver, node, t1.length > 0 ? t1[0] : null);
+          break;
+        case "beforeend":
+          receiver.appendChild(node);
+          break;
+        case "afterend":
+          t1 = receiver.parentNode;
+          t1.toString;
+          J.insertBefore$2$x(t1, node, receiver.nextSibling);
+          break;
+        default:
+          H.throwExpression(P.ArgumentError$("Invalid position " + where));
+      }
+    },
+    createFragment$3$treeSanitizer$validator: function(receiver, html, treeSanitizer, validator) {
+      var t1, t2, contextElement, fragment;
+      if (treeSanitizer == null) {
+        t1 = $.Element__defaultValidator;
+        if (t1 == null) {
+          t1 = H.setRuntimeTypeInfo([], type$.JSArray_NodeValidator);
+          t2 = new W.NodeValidatorBuilder(t1);
+          C.JSArray_methods.add$1(t1, W._Html5NodeValidator$(null));
+          C.JSArray_methods.add$1(t1, W._TemplatingNodeValidator$());
+          $.Element__defaultValidator = t2;
+          validator = t2;
+        } else
+          validator = t1;
+        t1 = $.Element__defaultSanitizer;
+        if (t1 == null) {
+          t1 = new W._ValidatingTreeSanitizer(validator);
+          $.Element__defaultSanitizer = t1;
+          treeSanitizer = t1;
+        } else {
+          t1.validator = validator;
+          treeSanitizer = t1;
+        }
+      }
+      if ($.Element__parseDocument == null) {
+        t1 = document;
+        t2 = t1.implementation;
+        t2.toString;
+        t2 = C.DomImplementation_methods.createHtmlDocument$1(t2, "");
+        $.Element__parseDocument = t2;
+        $.Element__parseRange = t2.createRange();
+        t2 = $.Element__parseDocument.createElement("base");
+        type$.BaseElement._as(t2);
+        t1 = t1.baseURI;
+        t1.toString;
+        t2.href = t1;
+        $.Element__parseDocument.head.appendChild(t2);
+      }
+      t1 = $.Element__parseDocument;
+      if (t1.body == null) {
+        t2 = t1.createElement("body");
+        C.HtmlDocument_methods.set$body(t1, type$.BodyElement._as(t2));
+      }
+      t1 = $.Element__parseDocument;
+      if (type$.BodyElement._is(receiver)) {
+        t1 = t1.body;
+        t1.toString;
+        contextElement = t1;
+      } else {
+        t1.toString;
+        contextElement = t1.createElement(receiver.tagName);
+        $.Element__parseDocument.body.appendChild(contextElement);
+      }
+      if ("createContextualFragment" in window.Range.prototype && !C.JSArray_methods.contains$1(C.List_ego, receiver.tagName)) {
+        $.Element__parseRange.selectNodeContents(contextElement);
+        t1 = $.Element__parseRange;
+        fragment = t1.createContextualFragment(html);
+      } else {
+        J.set$_innerHtml$x(contextElement, html);
+        fragment = $.Element__parseDocument.createDocumentFragment();
+        for (; t1 = contextElement.firstChild, t1 != null;)
+          fragment.appendChild(t1);
+      }
+      if (contextElement !== $.Element__parseDocument.body)
+        J.remove$0$x(contextElement);
+      treeSanitizer.sanitizeTree$1(fragment);
+      document.adoptNode(fragment);
+      return fragment;
+    },
+    createFragment$2$treeSanitizer: function($receiver, html, treeSanitizer) {
+      return this.createFragment$3$treeSanitizer$validator($receiver, html, treeSanitizer, null);
+    },
+    set$_innerHtml: function(receiver, value) {
+      receiver.innerHTML = value;
+    },
+    get$tagName: function(receiver) {
+      return receiver.tagName;
+    },
+    $isElement: 1
+  };
+  W.Element_Element$html_closure.prototype = {
+    call$1: function(e) {
+      return type$.Element._is(type$.Node._as(e));
+    },
+    $signature: 28
   };
   W.Event.prototype = {$isEvent: 1};
   W.EventTarget.prototype = {
-    addEventListener$3: function(receiver, type, listener, useCapture) {
-      type$.nullable_dynamic_Function_Event._as(listener);
-      if (listener != null)
-        this._addEventListener$3(receiver, type, listener, useCapture);
-    },
-    addEventListener$2: function($receiver, type, listener) {
-      return this.addEventListener$3($receiver, type, listener, null);
-    },
     _addEventListener$3: function(receiver, type, listener, options) {
-      return receiver.addEventListener(type, H.convertDartClosureToJS(type$.nullable_dynamic_Function_Event._as(listener), 1), options);
+      return receiver.addEventListener(type, H.convertDartClosureToJS(type$.nullable_dynamic_Function_Event._as(listener), 1), false);
     },
     _removeEventListener$3: function(receiver, type, listener, options) {
       return receiver.removeEventListener(type, H.convertDartClosureToJS(type$.nullable_dynamic_Function_Event._as(listener), 1), false);
@@ -11670,6 +12081,36 @@
   W.FormElement.prototype = {
     get$length: function(receiver) {
       return receiver.length;
+    }
+  };
+  W.HeadingElement.prototype = {};
+  W.HtmlCollection.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver[index];
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.Node._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isJSIndexable: 1,
+    $isEfficientLengthIterable: 1,
+    $isJavaScriptIndexingBehavior: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
+  W.HtmlDocument.prototype = {
+    set$body: function(receiver, value) {
+      receiver.body = value;
     }
   };
   W.HttpRequest.prototype = {
@@ -11714,17 +12155,233 @@
     $isHttpRequest: 1
   };
   W.HttpRequestEventTarget.prototype = {};
-  W.InputElement.prototype = {$isTextInputElement: 1};
+  W.ImageElement.prototype = {
+    set$src: function(receiver, value) {
+      receiver.src = value;
+    }
+  };
+  W.Location.prototype = {
+    toString$0: function(receiver) {
+      return String(receiver);
+    },
+    $isLocation: 1
+  };
+  W._ChildNodeListLazy.prototype = {
+    get$single: function(_) {
+      var t1 = this._this,
+        l = t1.childNodes.length;
+      if (l === 0)
+        throw H.wrapException(P.StateError$("No elements"));
+      if (l > 1)
+        throw H.wrapException(P.StateError$("More than one element"));
+      t1 = t1.firstChild;
+      t1.toString;
+      return t1;
+    },
+    addAll$1: function(_, iterable) {
+      var t1, t2, len, i, t3;
+      type$.Iterable_Node._as(iterable);
+      if (iterable instanceof W._ChildNodeListLazy) {
+        t1 = iterable._this;
+        t2 = this._this;
+        if (t1 !== t2)
+          for (len = t1.childNodes.length, i = 0; i < len; ++i) {
+            t3 = t1.firstChild;
+            t3.toString;
+            t2.appendChild(t3);
+          }
+        return;
+      }
+      for (t1 = iterable.get$iterator(iterable), t2 = this._this; t1.moveNext$0();)
+        t2.appendChild(t1.get$current());
+    },
+    $indexSet: function(_, index, value) {
+      var t1;
+      H._asIntS(index);
+      t1 = this._this;
+      t1.replaceChild(type$.Node._as(value), C.NodeList_methods.$index(t1.childNodes, index));
+    },
+    get$iterator: function(_) {
+      var t1 = this._this.childNodes;
+      return new W.FixedSizeListIterator(t1, t1.length, H.instanceType(t1)._eval$1("FixedSizeListIterator<ImmutableListMixin.E>"));
+    },
+    sort$1: function(_, compare) {
+      type$.nullable_int_Function_Node_Node._as(compare);
+      throw H.wrapException(P.UnsupportedError$("Cannot sort Node list"));
+    },
+    get$length: function(_) {
+      return this._this.childNodes.length;
+    },
+    $index: function(_, index) {
+      H._asIntS(index);
+      return C.NodeList_methods.$index(this._this.childNodes, index);
+    }
+  };
   W.Node.prototype = {
+    remove$0: function(receiver) {
+      var t1 = receiver.parentNode;
+      if (t1 != null)
+        t1.removeChild(receiver);
+    },
+    _clearChildren$0: function(receiver) {
+      var t1;
+      for (; t1 = receiver.firstChild, t1 != null;)
+        receiver.removeChild(t1);
+    },
     toString$0: function(receiver) {
       var value = receiver.nodeValue;
       return value == null ? this.super$Interceptor$toString(receiver) : value;
-    }
+    },
+    set$text: function(receiver, value) {
+      receiver.textContent = value;
+    },
+    insertBefore$2: function(receiver, node, child) {
+      return receiver.insertBefore(node, child);
+    },
+    $isNode: 1
+  };
+  W.NodeList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver[index];
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.Node._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isJSIndexable: 1,
+    $isEfficientLengthIterable: 1,
+    $isJavaScriptIndexingBehavior: 1,
+    $isIterable: 1,
+    $isList: 1
   };
   W.ProgressEvent.prototype = {$isProgressEvent: 1};
   W.SelectElement.prototype = {
     get$length: function(receiver) {
       return receiver.length;
+    }
+  };
+  W.TableElement.prototype = {
+    createFragment$3$treeSanitizer$validator: function(receiver, html, treeSanitizer, validator) {
+      var table, fragment;
+      if ("createContextualFragment" in window.Range.prototype)
+        return this.super$Element$createFragment(receiver, html, treeSanitizer, validator);
+      table = W.Element_Element$html("<table>" + html + "</table>", treeSanitizer, validator);
+      fragment = document.createDocumentFragment();
+      fragment.toString;
+      table.toString;
+      new W._ChildNodeListLazy(fragment).addAll$1(0, new W._ChildNodeListLazy(table));
+      return fragment;
+    }
+  };
+  W.TableRowElement.prototype = {
+    createFragment$3$treeSanitizer$validator: function(receiver, html, treeSanitizer, validator) {
+      var t1, fragment, section, row;
+      if ("createContextualFragment" in window.Range.prototype)
+        return this.super$Element$createFragment(receiver, html, treeSanitizer, validator);
+      t1 = document;
+      fragment = t1.createDocumentFragment();
+      t1 = C.TableElement_methods.createFragment$3$treeSanitizer$validator(t1.createElement("table"), html, treeSanitizer, validator);
+      t1.toString;
+      t1 = new W._ChildNodeListLazy(t1);
+      section = t1.get$single(t1);
+      section.toString;
+      t1 = new W._ChildNodeListLazy(section);
+      row = t1.get$single(t1);
+      fragment.toString;
+      row.toString;
+      new W._ChildNodeListLazy(fragment).addAll$1(0, new W._ChildNodeListLazy(row));
+      return fragment;
+    }
+  };
+  W.TableSectionElement.prototype = {
+    createFragment$3$treeSanitizer$validator: function(receiver, html, treeSanitizer, validator) {
+      var t1, fragment, section;
+      if ("createContextualFragment" in window.Range.prototype)
+        return this.super$Element$createFragment(receiver, html, treeSanitizer, validator);
+      t1 = document;
+      fragment = t1.createDocumentFragment();
+      t1 = C.TableElement_methods.createFragment$3$treeSanitizer$validator(t1.createElement("table"), html, treeSanitizer, validator);
+      t1.toString;
+      t1 = new W._ChildNodeListLazy(t1);
+      section = t1.get$single(t1);
+      fragment.toString;
+      section.toString;
+      new W._ChildNodeListLazy(fragment).addAll$1(0, new W._ChildNodeListLazy(section));
+      return fragment;
+    }
+  };
+  W.TemplateElement.prototype = {$isTemplateElement: 1};
+  W._Attr.prototype = {$is_Attr: 1};
+  W._NamedNodeMap.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver[index];
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.Node._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isJSIndexable: 1,
+    $isEfficientLengthIterable: 1,
+    $isJavaScriptIndexingBehavior: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
+  W._AttributeMap.prototype = {
+    forEach$1: function(_, f) {
+      var t1, t2, t3, _i, key;
+      type$.void_Function_String_String._as(f);
+      for (t1 = this.get$keys(this), t2 = t1.length, t3 = this._html$_element, _i = 0; _i < t1.length; t1.length === t2 || (0, H.throwConcurrentModificationError)(t1), ++_i) {
+        key = t1[_i];
+        f.call$2(key, t3.getAttribute(key));
+      }
+    },
+    get$keys: function(_) {
+      var keys, len, t2, i, attr, t3,
+        t1 = this._html$_element.attributes;
+      t1.toString;
+      keys = H.setRuntimeTypeInfo([], type$.JSArray_String);
+      for (len = t1.length, t2 = type$._Attr, i = 0; i < len; ++i) {
+        if (i >= t1.length)
+          return H.ioore(t1, i);
+        attr = t2._as(t1[i]);
+        if (attr.namespaceURI == null) {
+          t3 = attr.name;
+          t3.toString;
+          C.JSArray_methods.add$1(keys, t3);
+        }
+      }
+      return keys;
+    }
+  };
+  W._ElementAttributeMap.prototype = {
+    $index: function(_, key) {
+      return this._html$_element.getAttribute(H._asStringS(key));
+    },
+    $indexSet: function(_, key, value) {
+      this._html$_element.setAttribute(H._asStringS(key), H._asStringS(value));
+    },
+    get$length: function(_) {
+      return this.get$keys(this).length;
     }
   };
   W.EventStreamProvider.prototype = {};
@@ -11757,12 +12414,15 @@
       _this._tryResume$0();
     },
     _tryResume$0: function() {
-      var t2,
-        t1 = this._onData;
-      if (t1 != null && true) {
-        t2 = this._html$_target;
-        t2.toString;
-        C.HttpRequest_methods.addEventListener$3(t2, this._eventType, t1, false);
+      var t3,
+        t1 = this._onData,
+        t2 = t1 != null;
+      if (t2 && true) {
+        t3 = this._html$_target;
+        t3.toString;
+        type$.nullable_dynamic_Function_Event._as(t1);
+        if (t2)
+          C.HttpRequest_methods._addEventListener$3(t3, this._eventType, t1, false);
       }
     },
     _unlisten$0: function() {
@@ -11782,14 +12442,357 @@
     call$1: function(e) {
       return this.onData.call$1(type$.Event._as(e));
     },
-    $signature: 14
+    $signature: 18
   };
   W._EventStreamSubscription_onData_closure.prototype = {
     call$1: function(e) {
       return this.handleData.call$1(type$.Event._as(e));
     },
-    $signature: 14
+    $signature: 18
   };
+  W._Html5NodeValidator.prototype = {
+    _Html5NodeValidator$1$uriPolicy: function(uriPolicy) {
+      var _i;
+      if ($._Html5NodeValidator__attributeValidators.get$isEmpty($._Html5NodeValidator__attributeValidators)) {
+        for (_i = 0; _i < 262; ++_i)
+          $._Html5NodeValidator__attributeValidators.$indexSet(0, C.List_2Zi[_i], W.html__Html5NodeValidator__standardAttributeValidator$closure());
+        for (_i = 0; _i < 12; ++_i)
+          $._Html5NodeValidator__attributeValidators.$indexSet(0, C.List_yrN[_i], W.html__Html5NodeValidator__uriAttributeValidator$closure());
+      }
+    },
+    allowsElement$1: function(element) {
+      return $.$get$_Html5NodeValidator__allowedElements().contains$1(0, W.Element__safeTagName(element));
+    },
+    allowsAttribute$3: function(element, attributeName, value) {
+      var validator = $._Html5NodeValidator__attributeValidators.$index(0, H.S(W.Element__safeTagName(element)) + "::" + attributeName);
+      if (validator == null)
+        validator = $._Html5NodeValidator__attributeValidators.$index(0, "*::" + attributeName);
+      if (validator == null)
+        return false;
+      return H._asBoolS(validator.call$4(element, attributeName, value, this));
+    },
+    $isNodeValidator: 1
+  };
+  W.ImmutableListMixin.prototype = {
+    get$iterator: function(receiver) {
+      return new W.FixedSizeListIterator(receiver, this.get$length(receiver), H.instanceType(receiver)._eval$1("FixedSizeListIterator<ImmutableListMixin.E>"));
+    },
+    sort$1: function(receiver, compare) {
+      H.instanceType(receiver)._eval$1("int(ImmutableListMixin.E,ImmutableListMixin.E)?")._as(compare);
+      throw H.wrapException(P.UnsupportedError$("Cannot sort immutable List."));
+    }
+  };
+  W.NodeValidatorBuilder.prototype = {
+    allowsElement$1: function(element) {
+      return C.JSArray_methods.any$1(this._validators, new W.NodeValidatorBuilder_allowsElement_closure(element));
+    },
+    allowsAttribute$3: function(element, attributeName, value) {
+      return C.JSArray_methods.any$1(this._validators, new W.NodeValidatorBuilder_allowsAttribute_closure(element, attributeName, value));
+    },
+    $isNodeValidator: 1
+  };
+  W.NodeValidatorBuilder_allowsElement_closure.prototype = {
+    call$1: function(v) {
+      return type$.NodeValidator._as(v).allowsElement$1(this.element);
+    },
+    $signature: 17
+  };
+  W.NodeValidatorBuilder_allowsAttribute_closure.prototype = {
+    call$1: function(v) {
+      return type$.NodeValidator._as(v).allowsAttribute$3(this.element, this.attributeName, this.value);
+    },
+    $signature: 17
+  };
+  W._SimpleNodeValidator.prototype = {
+    _SimpleNodeValidator$4$allowedAttributes$allowedElements$allowedUriAttributes: function(uriPolicy, allowedAttributes, allowedElements, allowedUriAttributes) {
+      var legalAttributes, extraUriAttributes, t1;
+      this.allowedElements.addAll$1(0, allowedElements);
+      legalAttributes = allowedAttributes.where$1(0, new W._SimpleNodeValidator_closure());
+      extraUriAttributes = allowedAttributes.where$1(0, new W._SimpleNodeValidator_closure0());
+      this.allowedAttributes.addAll$1(0, legalAttributes);
+      t1 = this.allowedUriAttributes;
+      t1.addAll$1(0, C.List_empty);
+      t1.addAll$1(0, extraUriAttributes);
+    },
+    allowsElement$1: function(element) {
+      return this.allowedElements.contains$1(0, W.Element__safeTagName(element));
+    },
+    allowsAttribute$3: function(element, attributeName, value) {
+      var _this = this,
+        tagName = W.Element__safeTagName(element),
+        t1 = _this.allowedUriAttributes;
+      if (t1.contains$1(0, H.S(tagName) + "::" + attributeName))
+        return _this.uriPolicy.allowsUri$1(value);
+      else if (t1.contains$1(0, "*::" + attributeName))
+        return _this.uriPolicy.allowsUri$1(value);
+      else {
+        t1 = _this.allowedAttributes;
+        if (t1.contains$1(0, H.S(tagName) + "::" + attributeName))
+          return true;
+        else if (t1.contains$1(0, "*::" + attributeName))
+          return true;
+        else if (t1.contains$1(0, H.S(tagName) + "::*"))
+          return true;
+        else if (t1.contains$1(0, "*::*"))
+          return true;
+      }
+      return false;
+    },
+    $isNodeValidator: 1
+  };
+  W._SimpleNodeValidator_closure.prototype = {
+    call$1: function(x) {
+      return !C.JSArray_methods.contains$1(C.List_yrN, H._asStringS(x));
+    },
+    $signature: 2
+  };
+  W._SimpleNodeValidator_closure0.prototype = {
+    call$1: function(x) {
+      return C.JSArray_methods.contains$1(C.List_yrN, H._asStringS(x));
+    },
+    $signature: 2
+  };
+  W._TemplatingNodeValidator.prototype = {
+    allowsAttribute$3: function(element, attributeName, value) {
+      if (this.super$_SimpleNodeValidator$allowsAttribute(element, attributeName, value))
+        return true;
+      if (attributeName === "template" && value === "")
+        return true;
+      if (element.getAttribute("template") === "")
+        return this._templateAttrs.contains$1(0, attributeName);
+      return false;
+    }
+  };
+  W._TemplatingNodeValidator_closure.prototype = {
+    call$1: function(attr) {
+      return "TEMPLATE::" + H.S(H._asStringS(attr));
+    },
+    $signature: 4
+  };
+  W._SvgNodeValidator.prototype = {
+    allowsElement$1: function(element) {
+      var t1;
+      if (type$.ScriptElement._is(element))
+        return false;
+      t1 = type$.SvgElement._is(element);
+      if (t1 && W.Element__safeTagName(element) === "foreignObject")
+        return false;
+      if (t1)
+        return true;
+      return false;
+    },
+    allowsAttribute$3: function(element, attributeName, value) {
+      if (attributeName === "is" || C.JSString_methods.startsWith$1(attributeName, "on"))
+        return false;
+      return this.allowsElement$1(element);
+    },
+    $isNodeValidator: 1
+  };
+  W.FixedSizeListIterator.prototype = {
+    moveNext$0: function() {
+      var _this = this,
+        nextPosition = _this._position + 1,
+        t1 = _this._length;
+      if (nextPosition < t1) {
+        _this.set$_current(J.$index$asx(_this._array, nextPosition));
+        _this._position = nextPosition;
+        return true;
+      }
+      _this.set$_current(null);
+      _this._position = t1;
+      return false;
+    },
+    get$current: function() {
+      return this._current;
+    },
+    set$_current: function(_current) {
+      this._current = this.$ti._eval$1("1?")._as(_current);
+    },
+    $isIterator: 1
+  };
+  W._SameOriginUriPolicy.prototype = {$isUriPolicy: 1};
+  W._ValidatingTreeSanitizer.prototype = {
+    sanitizeTree$1: function(node) {
+      var previousTreeModifications,
+        walk = new W._ValidatingTreeSanitizer_sanitizeTree_walk(this);
+      do {
+        previousTreeModifications = this.numTreeModifications;
+        walk.call$2(node, null);
+      } while (previousTreeModifications !== this.numTreeModifications);
+    },
+    _removeNode$2: function(node, $parent) {
+      ++this.numTreeModifications;
+      if ($parent == null || $parent !== node.parentNode)
+        J.remove$0$x(node);
+      else
+        $parent.removeChild(node);
+    },
+    _sanitizeUntrustedElement$2: function(element, $parent) {
+      var corruptedTest1, elementText, elementTagName, exception, t1,
+        corrupted = true,
+        attrs = null, isAttr = null;
+      try {
+        attrs = J.get$attributes$x(element);
+        isAttr = attrs._html$_element.getAttribute("is");
+        type$.Element._as(element);
+        corruptedTest1 = function(element) {
+          if (!(element.attributes instanceof NamedNodeMap))
+            return true;
+          if (element.id == 'lastChild' || element.name == 'lastChild' || element.id == 'previousSibling' || element.name == 'previousSibling' || element.id == 'children' || element.name == 'children')
+            return true;
+          var childNodes = element.childNodes;
+          if (element.lastChild && element.lastChild !== childNodes[childNodes.length - 1])
+            return true;
+          if (element.children)
+            if (!(element.children instanceof HTMLCollection || element.children instanceof NodeList))
+              return true;
+          var length = 0;
+          if (element.children)
+            length = element.children.length;
+          for (var i = 0; i < length; i++) {
+            var child = element.children[i];
+            if (child.id == 'attributes' || child.name == 'attributes' || child.id == 'lastChild' || child.name == 'lastChild' || child.id == 'previousSibling' || child.name == 'previousSibling' || child.id == 'children' || child.name == 'children')
+              return true;
+          }
+          return false;
+        }(element);
+        corrupted = H.boolConversionCheck(corruptedTest1) ? true : !(element.attributes instanceof NamedNodeMap);
+      } catch (exception) {
+        H.unwrapException(exception);
+      }
+      elementText = "element unprintable";
+      try {
+        elementText = J.toString$0$(element);
+      } catch (exception) {
+        H.unwrapException(exception);
+      }
+      try {
+        elementTagName = W.Element__safeTagName(element);
+        this._sanitizeElement$7(type$.Element._as(element), $parent, corrupted, elementText, elementTagName, type$.Map_dynamic_dynamic._as(attrs), H._asStringQ(isAttr));
+      } catch (exception) {
+        if (H.unwrapException(exception) instanceof P.ArgumentError)
+          throw exception;
+        else {
+          this._removeNode$2(element, $parent);
+          window;
+          t1 = "Removing corrupted element " + H.S(elementText);
+          if (typeof console != "undefined")
+            window.console.warn(t1);
+        }
+      }
+    },
+    _sanitizeElement$7: function(element, $parent, corrupted, text, tag, attrs, isAttr) {
+      var t1, keys, i, $name, t2, t3, _this = this;
+      if (corrupted) {
+        _this._removeNode$2(element, $parent);
+        window;
+        t1 = "Removing element due to corrupted attributes on <" + text + ">";
+        if (typeof console != "undefined")
+          window.console.warn(t1);
+        return;
+      }
+      if (!_this.validator.allowsElement$1(element)) {
+        _this._removeNode$2(element, $parent);
+        window;
+        t1 = "Removing disallowed element <" + H.S(tag) + "> from " + H.S($parent);
+        if (typeof console != "undefined")
+          window.console.warn(t1);
+        return;
+      }
+      if (isAttr != null)
+        if (!_this.validator.allowsAttribute$3(element, "is", isAttr)) {
+          _this._removeNode$2(element, $parent);
+          window;
+          t1 = "Removing disallowed type extension <" + H.S(tag) + ' is="' + isAttr + '">';
+          if (typeof console != "undefined")
+            window.console.warn(t1);
+          return;
+        }
+      t1 = attrs.get$keys(attrs);
+      keys = H.setRuntimeTypeInfo(t1.slice(0), H._arrayInstanceType(t1));
+      for (i = attrs.get$keys(attrs).length - 1, t1 = attrs._html$_element; i >= 0; --i) {
+        if (i >= keys.length)
+          return H.ioore(keys, i);
+        $name = keys[i];
+        t2 = _this.validator;
+        t3 = J.toLowerCase$0$s($name);
+        H._asStringS($name);
+        if (!t2.allowsAttribute$3(element, t3, t1.getAttribute($name))) {
+          window;
+          t2 = "Removing disallowed attribute <" + H.S(tag) + " " + $name + '="' + H.S(t1.getAttribute($name)) + '">';
+          if (typeof console != "undefined")
+            window.console.warn(t2);
+          t1.removeAttribute($name);
+        }
+      }
+      if (type$.TemplateElement._is(element)) {
+        t1 = element.content;
+        t1.toString;
+        _this.sanitizeTree$1(t1);
+      }
+    },
+    $isNodeTreeSanitizer: 1
+  };
+  W._ValidatingTreeSanitizer_sanitizeTree_walk.prototype = {
+    call$2: function(node, $parent) {
+      var child, nextChild, t2, t3, t4, exception,
+        t1 = this.$this;
+      switch (node.nodeType) {
+        case 1:
+          t1._sanitizeUntrustedElement$2(node, $parent);
+          break;
+        case 8:
+        case 11:
+        case 3:
+        case 4:
+          break;
+        default:
+          t1._removeNode$2(node, $parent);
+      }
+      child = node.lastChild;
+      for (t2 = type$.Node; null != child;) {
+        nextChild = null;
+        try {
+          nextChild = child.previousSibling;
+          if (nextChild != null) {
+            t3 = nextChild.nextSibling;
+            t4 = child;
+            t4 = t3 == null ? t4 != null : t3 !== t4;
+            t3 = t4;
+          } else
+            t3 = false;
+          if (t3) {
+            t3 = P.StateError$("Corrupt HTML");
+            throw H.wrapException(t3);
+          }
+        } catch (exception) {
+          H.unwrapException(exception);
+          t3 = t2._as(child);
+          ++t1.numTreeModifications;
+          t4 = t3.parentNode;
+          t4 = node == null ? t4 != null : node !== t4;
+          if (t4) {
+            t4 = t3.parentNode;
+            if (t4 != null)
+              t4.removeChild(t3);
+          } else
+            node.removeChild(t3);
+          child = null;
+          nextChild = node.lastChild;
+        }
+        if (child != null)
+          this.call$2(child, node);
+        child = nextChild;
+      }
+    },
+    $signature: 34
+  };
+  W._HtmlCollection_Interceptor_ListMixin.prototype = {};
+  W._HtmlCollection_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
+  W._NodeList_Interceptor_ListMixin.prototype = {};
+  W._NodeList_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
+  W.__NamedNodeMap_Interceptor_ListMixin.prototype = {};
+  W.__NamedNodeMap_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
   P._AcceptStructuredClone.prototype = {
     findSlot$1: function(value) {
       var i,
@@ -11870,7 +12873,7 @@
       J.$indexSet$ax(t1, key, t2);
       return t2;
     },
-    $signature: 30
+    $signature: 35
   };
   P._AcceptStructuredCloneDart2Js.prototype = {
     forEachJsField$2: function(object, action) {
@@ -11901,6 +12904,30 @@
       return this.completer.completeError$1(e);
     },
     $signature: 1
+  };
+  P.ScriptElement0.prototype = {$isScriptElement0: 1};
+  P.SvgElement.prototype = {
+    createFragment$3$treeSanitizer$validator: function(receiver, svg, treeSanitizer, validator) {
+      var html, t2, fragment, svgFragment, root,
+        t1 = H.setRuntimeTypeInfo([], type$.JSArray_NodeValidator);
+      C.JSArray_methods.add$1(t1, W._Html5NodeValidator$(null));
+      C.JSArray_methods.add$1(t1, W._TemplatingNodeValidator$());
+      C.JSArray_methods.add$1(t1, new W._SvgNodeValidator());
+      treeSanitizer = new W._ValidatingTreeSanitizer(new W.NodeValidatorBuilder(t1));
+      html = '<svg version="1.1">' + svg + "</svg>";
+      t1 = document;
+      t2 = t1.body;
+      t2.toString;
+      fragment = C.BodyElement_methods.createFragment$2$treeSanitizer(t2, html, treeSanitizer);
+      svgFragment = t1.createDocumentFragment();
+      fragment.toString;
+      t1 = new W._ChildNodeListLazy(fragment);
+      root = t1.get$single(t1);
+      for (; t1 = root.firstChild, t1 != null;)
+        svgFragment.appendChild(t1);
+      return svgFragment;
+    },
+    $isSvgElement: 1
   };
   M.CanonicalizedMap.prototype = {
     $index: function(_, key) {
@@ -12018,13 +13045,13 @@
       H._asStringS(key2);
       return key1.toLowerCase() === key2.toLowerCase();
     },
-    $signature: 31
+    $signature: 36
   };
   G.BaseRequest_closure0.prototype = {
     call$1: function(key) {
       return C.JSString_methods.get$hashCode(H._asStringS(key).toLowerCase());
     },
-    $signature: 32
+    $signature: 37
   };
   T.BaseResponse.prototype = {
     BaseResponse$7$contentLength$headers$isRedirect$persistentConnection$reasonPhrase$request: function(statusCode, contentLength, headers, isRedirect, persistentConnection, reasonPhrase, request) {
@@ -12130,14 +13157,14 @@
       t2.BaseResponse$7$contentLength$headers$isRedirect$persistentConnection$reasonPhrase$request(t3, t4, t6, false, true, t1, t5);
       this.completer.complete$1(0, t2);
     },
-    $signature: 13
+    $signature: 6
   };
   O.BrowserClient_send_closure0.prototype = {
     call$1: function(_) {
       type$.ProgressEvent._as(_);
       this.completer.completeError$2(new E.ClientException("XMLHttpRequest error."), P.StackTrace_current());
     },
-    $signature: 13
+    $signature: 6
   };
   Z.ByteStream.prototype = {
     toBytes$0: function() {
@@ -12152,7 +13179,7 @@
     call$1: function(bytes) {
       return this.completer.complete$1(0, new Uint8Array(H._ensureNativeList(type$.List_int._as(bytes))));
     },
-    $signature: 34
+    $signature: 39
   };
   E.ClientException.prototype = {
     toString$0: function(_) {
@@ -12168,7 +13195,7 @@
     call$1: function(key) {
       return H._asStringS(key).toLowerCase();
     },
-    $signature: 12
+    $signature: 4
   };
   R.MediaType.prototype = {
     toString$0: function(_) {
@@ -12179,7 +13206,7 @@
       buffer._contents = t1;
       buffer._contents = t1 + this.subtype;
       t1 = this.parameters;
-      t1._map.forEach$1(0, t1.$ti._eval$1("~(1,2)")._as(new R.MediaType_toString_closure(buffer)));
+      t1._collection$_map.forEach$1(0, t1.$ti._eval$1("~(1,2)")._as(new R.MediaType_toString_closure(buffer)));
       t1 = buffer._contents;
       return t1.charCodeAt(0) == 0 ? t1 : t1;
     }
@@ -12203,27 +13230,27 @@
       t6 = type$.String;
       parameters = P.LinkedHashMap_LinkedHashMap$_empty(t6, t6);
       while (true) {
-        t6 = scanner._lastMatch = C.JSString_methods.matchAsPrefix$2(";", t1, scanner._position);
-        t7 = scanner._lastMatchPosition = scanner._position;
+        t6 = scanner._lastMatch = C.JSString_methods.matchAsPrefix$2(";", t1, scanner._string_scanner$_position);
+        t7 = scanner._lastMatchPosition = scanner._string_scanner$_position;
         success = t6 != null;
-        t6 = success ? scanner._lastMatchPosition = scanner._position = t6.get$end(t6) : t7;
+        t6 = success ? scanner._lastMatchPosition = scanner._string_scanner$_position = t6.get$end(t6) : t7;
         if (!success)
           break;
         t6 = scanner._lastMatch = t2.matchAsPrefix$2(0, t1, t6);
-        scanner._lastMatchPosition = scanner._position;
+        scanner._lastMatchPosition = scanner._string_scanner$_position;
         if (t6 != null)
-          scanner._lastMatchPosition = scanner._position = t6.get$end(t6);
+          scanner._lastMatchPosition = scanner._string_scanner$_position = t6.get$end(t6);
         scanner.expect$1(t3);
-        if (scanner._position !== scanner._lastMatchPosition)
+        if (scanner._string_scanner$_position !== scanner._lastMatchPosition)
           scanner._lastMatch = null;
         t6 = scanner._lastMatch.$index(0, 0);
         t6.toString;
         scanner.expect$1("=");
-        t7 = scanner._lastMatch = t3.matchAsPrefix$2(0, t1, scanner._position);
-        t8 = scanner._lastMatchPosition = scanner._position;
+        t7 = scanner._lastMatch = t3.matchAsPrefix$2(0, t1, scanner._string_scanner$_position);
+        t8 = scanner._lastMatchPosition = scanner._string_scanner$_position;
         success = t7 != null;
         if (success) {
-          t7 = scanner._lastMatchPosition = scanner._position = t7.get$end(t7);
+          t7 = scanner._lastMatchPosition = scanner._string_scanner$_position = t7.get$end(t7);
           t8 = t7;
         } else
           t7 = t8;
@@ -12235,16 +13262,16 @@
           value = t7;
         } else
           value = N.expectQuotedString(scanner);
-        t7 = scanner._lastMatch = t2.matchAsPrefix$2(0, t1, scanner._position);
-        scanner._lastMatchPosition = scanner._position;
+        t7 = scanner._lastMatch = t2.matchAsPrefix$2(0, t1, scanner._string_scanner$_position);
+        scanner._lastMatchPosition = scanner._string_scanner$_position;
         if (t7 != null)
-          scanner._lastMatchPosition = scanner._position = t7.get$end(t7);
+          scanner._lastMatchPosition = scanner._string_scanner$_position = t7.get$end(t7);
         parameters.$indexSet(0, t6, value);
       }
       scanner.expectDone$0();
       return R.MediaType$(t4, t5, parameters);
     },
-    $signature: 36
+    $signature: 40
   };
   R.MediaType_toString_closure.prototype = {
     call$2: function(attribute, value) {
@@ -12265,13 +13292,13 @@
       } else
         t1._contents += H.S(value);
     },
-    $signature: 6
+    $signature: 7
   };
   R.MediaType_toString__closure.prototype = {
     call$1: function(match) {
       return "\\" + H.S(match.$index(0, 0));
     },
-    $signature: 4
+    $signature: 14
   };
   N.expectQuotedString_closure.prototype = {
     call$1: function(match) {
@@ -12279,7 +13306,7 @@
       t1.toString;
       return t1;
     },
-    $signature: 4
+    $signature: 14
   };
   V.BufferModule.prototype = {};
   V.BufferConstants.prototype = {};
@@ -12552,20 +13579,20 @@
     call$1: function(part) {
       return H._asStringS(part) !== "";
     },
-    $signature: 11
+    $signature: 2
   };
   M.Context_split_closure.prototype = {
     call$1: function(part) {
       return H._asStringS(part).length !== 0;
     },
-    $signature: 11
+    $signature: 2
   };
   M._validateArgList_closure.prototype = {
     call$1: function(arg) {
       H._asStringQ(arg);
       return arg == null ? "null" : '"' + arg + '"';
     },
-    $signature: 39
+    $signature: 42
   };
   B.InternalStyle.prototype = {
     getRoot$1: function(path) {
@@ -13312,7 +14339,7 @@
     call$0: function() {
       return this.color;
     },
-    $signature: 40
+    $signature: 43
   };
   U.Highlighter$__closure.prototype = {
     call$1: function(line) {
@@ -13321,27 +14348,27 @@
       t2 = new H.WhereIterable(t1, t2._eval$1("bool(1)")._as(new U.Highlighter$___closure()), t2._eval$1("WhereIterable<1>"));
       return t2.get$length(t2);
     },
-    $signature: 41
+    $signature: 44
   };
   U.Highlighter$___closure.prototype = {
     call$1: function(highlight) {
       var t1 = type$._Highlight._as(highlight).span;
       return t1.get$start(t1).get$line() != t1.get$end(t1).get$line();
     },
-    $signature: 3
+    $signature: 5
   };
   U.Highlighter$__closure0.prototype = {
     call$1: function(line) {
       return type$._Line._as(line).url;
     },
-    $signature: 43
+    $signature: 46
   };
   U.Highlighter__collateLines_closure.prototype = {
     call$1: function(highlight) {
       var t1 = type$._Highlight._as(highlight).span;
       return t1.get$sourceUrl(t1);
     },
-    $signature: 44
+    $signature: 47
   };
   U.Highlighter__collateLines_closure0.prototype = {
     call$2: function(highlight1, highlight2) {
@@ -13350,7 +14377,7 @@
       t1._as(highlight2);
       return highlight1.span.compareTo$1(0, highlight2.span);
     },
-    $signature: 45
+    $signature: 48
   };
   U.Highlighter__collateLines_closure1.prototype = {
     call$1: function(highlightsForFile) {
@@ -13402,7 +14429,7 @@
       }
       return lines;
     },
-    $signature: 46
+    $signature: 49
   };
   U.Highlighter__collateLines__closure.prototype = {
     call$1: function(highlight) {
@@ -13419,14 +14446,14 @@
         t1 = true;
       return t1;
     },
-    $signature: 3
+    $signature: 5
   };
   U.Highlighter_highlight_closure.prototype = {
     call$1: function(highlight) {
       type$._Highlight._as(highlight).toString;
       return true;
     },
-    $signature: 3
+    $signature: 5
   };
   U.Highlighter__writeFileStart_closure.prototype = {
     call$0: function() {
@@ -13580,7 +14607,7 @@
       }
       return U._Highlight__normalizeEndOfLine(U._Highlight__normalizeTrailingNewline(U._Highlight__normalizeNewlines(t1)));
     },
-    $signature: 47
+    $signature: 50
   };
   U._Line.prototype = {
     toString$0: function(_) {
@@ -13790,17 +14817,17 @@
   X.StringScanner.prototype = {
     get$lastMatch: function() {
       var _this = this;
-      if (_this._position !== _this._lastMatchPosition)
+      if (_this._string_scanner$_position !== _this._lastMatchPosition)
         _this._lastMatch = null;
       return _this._lastMatch;
     },
     scan$1: function(pattern) {
       var success, _this = this,
-        t1 = _this._lastMatch = J.matchAsPrefix$2$s(pattern, _this.string, _this._position);
-      _this._lastMatchPosition = _this._position;
+        t1 = _this._lastMatch = J.matchAsPrefix$2$s(pattern, _this.string, _this._string_scanner$_position);
+      _this._lastMatchPosition = _this._string_scanner$_position;
       success = t1 != null;
       if (success)
-        _this._lastMatchPosition = _this._position = t1.get$end(t1);
+        _this._lastMatchPosition = _this._string_scanner$_position = t1.get$end(t1);
       return success;
     },
     expect$2$name: function(pattern, $name) {
@@ -13822,7 +14849,7 @@
       return this.expect$2$name(pattern, null);
     },
     expectDone$0: function() {
-      if (this._position === this.string.length)
+      if (this._string_scanner$_position === this.string.length)
         return;
       this._fail$1("no more input");
       H.ReachabilityError$(string$.x60null_);
@@ -13851,8 +14878,84 @@
       throw H.wrapException(new E.StringScannerException(t1, message, new Y._FileSpan(sourceFile, position, end)));
     },
     _fail$1: function($name) {
-      this.error$3$length$position(0, "expected " + $name + ".", 0, this._position);
+      this.error$3$length$position(0, "expected " + $name + ".", 0, this._string_scanner$_position);
       H.ReachabilityError$(string$.x60null_);
+    }
+  };
+  L.App.prototype = {
+    setCurrentState$1: function(stateType) {
+      var _this = this,
+        t1 = _this._currentState;
+      if (t1 != null)
+        t1.onDeactivate$0();
+      _this.set$_currentState(_this._allStates.$index(0, stateType));
+      _this._currentState.onActivate$0();
+      _this._currentState.renderToDiv$1(_this._appDiv.id);
+    },
+    set$_currentState: function(_currentState) {
+      this._currentState = type$.legacy_DisplayState._as(_currentState);
+    },
+    set$_allStates: function(_allStates) {
+      this._allStates = type$.legacy_Map_of_legacy_DisplayStateType_and_legacy_DisplayState._as(_allStates);
+    }
+  };
+  S.DisplayStateType.prototype = {
+    toString$0: function(_) {
+      return this._name;
+    }
+  };
+  S.DisplayState.prototype = {};
+  S.LoadingState.prototype = {
+    renderToDiv$1: function(divID) {
+      var parentDiv = type$.legacy_DivElement._as(document.getElementById(divID));
+      parentDiv.toString;
+      C.DivElement_methods.insertAdjacentHtml$4$treeSanitizer$validator(parentDiv, "beforeend", "\n    <h1>Loading</h1>\n\n\n    ", null, null);
+    },
+    onActivate$0: function() {
+    },
+    onDeactivate$0: function() {
+    }
+  };
+  S.ProjectViewState.prototype = {
+    renderToDiv$1: function(divID) {
+      var leftNavDiv, sets, t2, _i, set, setDiv, t3, e, setTitle, setID, setYear,
+        project = this._app._project,
+        t1 = document,
+        parentDiv = type$.legacy_DivElement._as(t1.getElementById(divID));
+      parentDiv.toString;
+      C.DivElement_methods._clearChildren$0(parentDiv);
+      leftNavDiv = t1.createElement("div");
+      leftNavDiv.id = "pvNavDiv";
+      parentDiv.appendChild(leftNavDiv);
+      sets = project._sets;
+      for (t2 = sets.length, _i = 0; _i < sets.length; sets.length === t2 || (0, H.throwConcurrentModificationError)(sets), ++_i) {
+        set = sets[_i];
+        setDiv = t1.createElement("div");
+        setDiv.classList.add("pvNavSetDiv");
+        leftNavDiv.appendChild(setDiv);
+        t3 = set._imageURL;
+        e = t1.createElement("img");
+        if (t3 != null)
+          C.ImageElement_methods.set$src(e, t3);
+        e.classList.add("pvNavSetImg");
+        setDiv.appendChild(e);
+        setTitle = t1.createElement("h1");
+        C.HeadingElement_methods.set$text(setTitle, set._LegoSet$_name);
+        setTitle.classList.add("pvNavSetTitle");
+        setDiv.appendChild(setTitle);
+        setID = t1.createElement("h2");
+        C.HeadingElement_methods.set$text(setID, set._setID);
+        setID.classList.add("pvNavSetSubtitle");
+        setDiv.appendChild(setID);
+        setYear = t1.createElement("h2");
+        C.HeadingElement_methods.set$text(setYear, J.toString$0$(set._year));
+        setYear.classList.add("pvNavSetSubtitle");
+        setDiv.appendChild(setYear);
+      }
+    },
+    onActivate$0: function() {
+    },
+    onDeactivate$0: function() {
     }
   };
   R.LegoPiece.prototype = {
@@ -13860,12 +14963,12 @@
       var _this = this;
       _this._partID = partID;
       _this._colorID = colorID;
-      _this.set$_imageURL(apiAccess.$get$2("parts/" + H.S(partID) + "/colors/" + H.S(_this._colorID), "").then$1$1(0, new R.LegoPiece$__closure(_this), type$.legacy_String));
+      _this.set$_LegoPiece$_imageURL(apiAccess.$get$2("parts/" + H.S(partID) + "/colors/" + H.S(_this._colorID), "").then$1$1(0, new R.LegoPiece$__closure(_this), type$.legacy_String));
     },
     toString$0: function(_) {
       return this._partID;
     },
-    set$_imageURL: function(_imageURL) {
+    set$_LegoPiece$_imageURL: function(_imageURL) {
       type$.legacy_Future_legacy_String._as(_imageURL);
     }
   };
@@ -13874,9 +14977,9 @@
       type$.legacy_Response._as(value);
       if (value.statusCode !== 200)
         return "";
-      return H._asStringS(J.$index$asx(C.C_JsonCodec.decode$2$reviver(0, B.encodingForCharset(U._contentTypeForHeaders(value.headers).parameters._map.$index(0, "charset")).decode$1(0, value.bodyBytes), null), "part_img_url"));
+      return H._asStringS(J.$index$asx(C.C_JsonCodec.decode$2$reviver(0, B.encodingForCharset(U._contentTypeForHeaders(value.headers).parameters._collection$_map.$index(0, "charset")).decode$1(0, value.bodyBytes), null), "part_img_url"));
     },
-    $signature: 48
+    $signature: 51
   };
   U.LegoSet.prototype = {
     loadSet$1: function(apiAccess) {
@@ -13901,12 +15004,12 @@
                 $async$goto = 1;
                 break;
               }
-              jsonData = C.C_JsonCodec.decode$2$reviver(0, B.encodingForCharset(U._contentTypeForHeaders(basicInfo.headers).parameters._map.$index(0, "charset")).decode$1(0, basicInfo.bodyBytes), null);
+              jsonData = C.C_JsonCodec.decode$2$reviver(0, B.encodingForCharset(U._contentTypeForHeaders(basicInfo.headers).parameters._collection$_map.$index(0, "charset")).decode$1(0, basicInfo.bodyBytes), null);
               t1 = J.getInterceptor$asx(jsonData);
-              H._asStringS(t1.$index(jsonData, "name"));
-              H._asIntS(t1.$index(jsonData, "year"));
+              $async$self._LegoSet$_name = H._asStringS(t1.$index(jsonData, "name"));
+              $async$self._year = H._asIntS(t1.$index(jsonData, "year"));
               H._asIntS(t1.$index(jsonData, "theme_id"));
-              H._asStringS(t1.$index(jsonData, "set_img_url"));
+              $async$self._imageURL = H._asStringS(t1.$index(jsonData, "set_img_url"));
               H._asIntS(t1.$index(jsonData, "num_parts"));
               t1 = type$.JsLinkedHashMap_of_legacy_LegoPiece_and_legacy_int;
               $async$self.set$_pieces(new H.JsLinkedHashMap(t1));
@@ -13929,7 +15032,7 @@
                 $async$goto = 5;
                 break;
               }
-              partsJsonData = C.C_JsonCodec.decode$2$reviver(0, B.encodingForCharset(U._contentTypeForHeaders(partsInfo.headers).parameters._map.$index(0, "charset")).decode$1(0, partsInfo.bodyBytes), null);
+              partsJsonData = C.C_JsonCodec.decode$2$reviver(0, B.encodingForCharset(U._contentTypeForHeaders(partsInfo.headers).parameters._collection$_map.$index(0, "charset")).decode$1(0, partsInfo.bodyBytes), null);
               t5 = J.getInterceptor$asx(partsJsonData);
               if (t5.$index(partsJsonData, "next") == null)
                 hasNextPage = false;
@@ -13952,7 +15055,7 @@
                   t7._colorID = colorID;
                   t8 = new P._Future($.Zone__current, t3);
                   t8._asyncComplete$1(imageURL);
-                  t7.set$_imageURL(t8);
+                  t7.set$_LegoPiece$_imageURL(t8);
                   J.$indexSet$ax(t6, colorID, t7);
                 }
                 t6 = J.$index$asx($.LegoPiece__registeredPieces.$index(0, partID), colorID);
@@ -13988,7 +15091,7 @@
     loadProject$0: function() {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.legacy_bool),
-        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], $async$self = this, fileContentsJson, loadedAwaits, setsJson, i, curSetJson, curSet, e, t1, t2, t3, curSet0, exception, $async$exception;
+        $async$returnValue, $async$handler = 2, $async$currentError, $async$next = [], $async$self = this, fileContentsJson, loadedAwaits, setsJson, i, curSetJson, curSet, e, t1, t2, t3, curSet0, exception, line, $async$exception;
       var $async$loadProject$0 = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1) {
           $async$currentError = $async$result;
@@ -14050,7 +15153,8 @@
                 $async$handler = 3;
                 $async$exception = $async$currentError;
                 e = H.unwrapException($async$exception);
-                P.print(e);
+                line = J.toString$0$(e);
+                H.printString(H.S(line));
                 $async$returnValue = false;
                 // goto return
                 $async$goto = 1;
@@ -14113,7 +15217,7 @@
         }
       }
     },
-    $signature: 49
+    $signature: 13
   };
   T.RebrickableAccess.prototype = {
     $get$2: function(section, params) {
@@ -14141,22 +15245,11 @@
     }
   };
   Z.main_closure.prototype = {
-    call$1: function($event) {
-      type$.legacy_Event._as($event);
-      type$.legacy_TextInputElement._as(document.getElementById("apiInput"));
-    },
-    $signature: 50
-  };
-  Z.main_closure0.prototype = {
     call$1: function(value) {
-      var t1;
       H._asBoolS(value);
-      t1 = this.project._sets;
-      if (0 >= t1.length)
-        return H.ioore(t1, 0);
-      return P.print(t1[0]._piecesOwned);
+      this.app.setCurrentState$1(C.DisplayStateType_1);
     },
-    $signature: 51
+    $signature: 13
   };
   (function aliases() {
     var _ = J.Interceptor.prototype;
@@ -14169,6 +15262,12 @@
     _.super$JsLinkedHashMap$internalSet = _.internalSet$2;
     _ = P.ListMixin.prototype;
     _.super$ListMixin$setRange = _.setRange$4;
+    _ = P.Iterable.prototype;
+    _.super$Iterable$where = _.where$1;
+    _ = W.Element.prototype;
+    _.super$Element$createFragment = _.createFragment$3$treeSanitizer$validator;
+    _ = W._SimpleNodeValidator.prototype;
+    _.super$_SimpleNodeValidator$allowsAttribute = _.allowsAttribute$3;
     _ = G.BaseRequest.prototype;
     _.super$BaseRequest$finalize = _.finalize$0;
     _ = Y.SourceSpanMixin.prototype;
@@ -14184,46 +15283,48 @@
       _instance_0_u = hunkHelpers._instance_0u,
       _instance_1_i = hunkHelpers._instance_1i,
       _instance_0_i = hunkHelpers._instance_0i,
-      _instance_2_i = hunkHelpers._instance_2i,
-      _static = hunkHelpers.installStaticTearOff;
-    _static_2(J, "_interceptors_JSArray__compareAny$closure", "JSArray__compareAny", 10);
-    _static_1(P, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 2);
-    _static_1(P, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 2);
-    _static_1(P, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 2);
+      _static = hunkHelpers.installStaticTearOff,
+      _instance_2_i = hunkHelpers._instance_2i;
+    _static_2(J, "_interceptors_JSArray__compareAny$closure", "JSArray__compareAny", 12);
+    _static_1(P, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 3);
+    _static_1(P, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 3);
+    _static_1(P, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 3);
     _static_0(P, "async___startMicrotaskLoop$closure", "_startMicrotaskLoop", 0);
     _static_1(P, "async___nullDataHandler$closure", "_nullDataHandler", 1);
-    _instance(P._Completer.prototype, "get$completeError", 0, 1, null, ["call$2", "call$1"], ["completeError$2", "completeError$1"], 27, 0);
-    _instance_2_u(P._Future.prototype, "get$_completeError", "_completeError$2", 7);
+    _instance(P._Completer.prototype, "get$completeError", 0, 1, null, ["call$2", "call$1"], ["completeError$2", "completeError$1"], 33, 0);
+    _instance_2_u(P._Future.prototype, "get$_completeError", "_completeError$2", 8);
     _instance_0_u(P._DoneStreamSubscription.prototype, "get$_sendDone", "_sendDone$0", 0);
-    _static_2(P, "collection___defaultEquals$closure", "_defaultEquals", 15);
-    _static_1(P, "collection___defaultHashCode$closure", "_defaultHashCode", 9);
-    _static_2(P, "collection_ListMixin__compareAny$closure", "ListMixin__compareAny", 10);
+    _static_2(P, "collection___defaultEquals$closure", "_defaultEquals", 10);
+    _static_1(P, "collection___defaultHashCode$closure", "_defaultHashCode", 15);
+    _static_2(P, "collection_ListMixin__compareAny$closure", "ListMixin__compareAny", 12);
     var _;
     _instance_1_i(_ = P._ByteCallbackSink.prototype, "get$add", "add$1", 22);
     _instance_0_i(_, "get$close", "close$0", 0);
-    _static_1(P, "core__identityHashCode$closure", "identityHashCode", 9);
-    _static_2(P, "core__identical$closure", "identical", 15);
-    _static_1(P, "core_Uri_decodeComponent$closure", "Uri_decodeComponent", 12);
-    _instance_2_i(W.HttpRequest.prototype, "get$setRequestHeader", "setRequestHeader$2", 6);
+    _static_1(P, "core__identityHashCode$closure", "identityHashCode", 15);
+    _static_2(P, "core__identical$closure", "identical", 10);
+    _static_1(P, "core_Uri_decodeComponent$closure", "Uri_decodeComponent", 4);
+    _static(W, "html__Html5NodeValidator__standardAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__standardAttributeValidator"], 9, 0);
+    _static(W, "html__Html5NodeValidator__uriAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__uriAttributeValidator"], 9, 0);
+    _instance_2_i(W.HttpRequest.prototype, "get$setRequestHeader", "setRequestHeader$2", 7);
     _static(P, "math__max$closure", 2, null, ["call$1$2", "call$2"], ["max", function(a, b) {
       return P.max(a, b, type$.num);
-    }], 37, 0);
+    }], 38, 0);
   })();
   (function inheritance() {
     var _mixin = hunkHelpers.mixin,
       _inherit = hunkHelpers.inherit,
       _inheritMany = hunkHelpers.inheritMany;
     _inherit(P.Object, null);
-    _inheritMany(P.Object, [H.JS_CONST, J.Interceptor, J.ArrayIterator, P.Error, P._ListBase_Object_ListMixin, H.Closure, P.Iterable, H.ListIterator, P.Iterator, H.ExpandIterator, H.EmptyIterator, H.WhereTypeIterator, H.FixedLengthListMixin, H.UnmodifiableListMixin, H.ConstantMap, H.TypeErrorDecoder, H.NullThrownFromJavaScriptException, H.ExceptionAndStackTrace, H._StackTrace, P.MapMixin, H.LinkedHashMapCell, H.LinkedHashMapKeyIterator, H.JSSyntaxRegExp, H._MatchImplementation, H._AllMatchesIterator, H.StringMatch, H._StringAllMatchesIterator, H.Rti, H._FunctionParameters, H._Type, P._TimerImpl, P._AsyncAwaitCompleter, P.AsyncError, P._Completer, P._FutureListener, P._Future, P._AsyncCallbackEntry, P.Stream, P.StreamSubscription, P.StreamTransformerBase, P._BufferingStreamSubscription, P._PendingEvents, P._DoneStreamSubscription, P._StreamIterator, P._Zone, P.__SetBase_Object_SetMixin, P._LinkedHashSetCell, P._LinkedHashSetIterator, P.ListMixin, P._UnmodifiableMapMixin, P.MapView, P.SetMixin, P.Codec, P.ChunkedConversionSink, P._Utf8Decoder, P.DateTime, P.OutOfMemoryError, P.StackOverflowError, P._Exception, P.FormatException, P.MapEntry, P.Null, P._StringStackTrace, P.StringBuffer, P._Uri, P.UriData, P._SimpleUri, W.EventStreamProvider, P._AcceptStructuredClone, P.NullRejectionException, M.CanonicalizedMap, E.BaseClient, G.BaseRequest, T.BaseResponse, E.ClientException, R.MediaType, M.Context, O.Style, X.ParsedPath, X.PathException, Y.SourceFile, D.SourceLocationMixin, Y.SourceSpanMixin, U.Highlighter, U._Highlight, U._Line, V.SourceLocation, G.SourceSpanException, X.StringScanner, R.LegoPiece, U.LegoSet, S.LegoSetProject, T.RebrickableAccess]);
-    _inheritMany(J.Interceptor, [J.JSBool, J.JSNull, J.JavaScriptObject, J.JSArray, J.JSNumber, J.JSString, H.NativeByteBuffer, H.NativeTypedData, W.EventTarget, W.DomException, W.Event]);
+    _inheritMany(P.Object, [H.JS_CONST, J.Interceptor, J.ArrayIterator, P.Error, P._ListBase_Object_ListMixin, H.Closure, P.Iterable, H.ListIterator, P.Iterator, H.ExpandIterator, H.EmptyIterator, H.WhereTypeIterator, H.FixedLengthListMixin, H.UnmodifiableListMixin, H.ConstantMap, H.TypeErrorDecoder, H.NullThrownFromJavaScriptException, H.ExceptionAndStackTrace, H._StackTrace, P.MapMixin, H.LinkedHashMapCell, H.LinkedHashMapKeyIterator, H.JSSyntaxRegExp, H._MatchImplementation, H._AllMatchesIterator, H.StringMatch, H._StringAllMatchesIterator, H.Rti, H._FunctionParameters, H._Type, P._TimerImpl, P._AsyncAwaitCompleter, P.AsyncError, P._Completer, P._FutureListener, P._Future, P._AsyncCallbackEntry, P.Stream, P.StreamSubscription, P.StreamTransformerBase, P._BufferingStreamSubscription, P._PendingEvents, P._DoneStreamSubscription, P._StreamIterator, P._Zone, P.__SetBase_Object_SetMixin, P._LinkedHashSetCell, P._LinkedHashSetIterator, P.ListMixin, P._UnmodifiableMapMixin, P.MapView, P.SetMixin, P.Codec, P.ChunkedConversionSink, P._Utf8Decoder, P.DateTime, P.OutOfMemoryError, P.StackOverflowError, P._Exception, P.FormatException, P.MapEntry, P.Null, P._StringStackTrace, P.StringBuffer, P._Uri, P.UriData, P._SimpleUri, W.EventStreamProvider, W._Html5NodeValidator, W.ImmutableListMixin, W.NodeValidatorBuilder, W._SimpleNodeValidator, W._SvgNodeValidator, W.FixedSizeListIterator, W._SameOriginUriPolicy, W._ValidatingTreeSanitizer, P._AcceptStructuredClone, P.NullRejectionException, M.CanonicalizedMap, E.BaseClient, G.BaseRequest, T.BaseResponse, E.ClientException, R.MediaType, M.Context, O.Style, X.ParsedPath, X.PathException, Y.SourceFile, D.SourceLocationMixin, Y.SourceSpanMixin, U.Highlighter, U._Highlight, U._Line, V.SourceLocation, G.SourceSpanException, X.StringScanner, L.App, S.DisplayStateType, S.DisplayState, R.LegoPiece, U.LegoSet, S.LegoSetProject, T.RebrickableAccess]);
+    _inheritMany(J.Interceptor, [J.JSBool, J.JSNull, J.JavaScriptObject, J.JSArray, J.JSNumber, J.JSString, H.NativeByteBuffer, H.NativeTypedData, W.EventTarget, W.DomException, W.DomImplementation, W.DomTokenList, W.Event, W._HtmlCollection_Interceptor_ListMixin, W.Location, W._NodeList_Interceptor_ListMixin, W.__NamedNodeMap_Interceptor_ListMixin]);
     _inheritMany(J.JavaScriptObject, [J.PlainJavaScriptObject, J.UnknownJavaScriptObject, J.JavaScriptFunction, V.BufferModule, V.BufferConstants, V.Buffer, F.ConsoleModule, F.Console, F.EventEmitter, D.FS, D.FSConstants, D.FSWatcher, D.ReadStream, D.ReadStreamOptions, D.WriteStream, D.WriteStreamOptions, D.FileOptions, D.StatOptions, D.MkdirOptions, D.RmdirOptions, D.WatchOptions, D.WatchFileOptions, D.Stats, E.Promise, E.Date, E.JsError, E.Atomics, Y.Modules, Y.Module, Y.Net, Y.Socket, Y.NetAddress, Y.NetServer, X.NodeJsError, X.Process, X.CPUUsage, X.Release, D.StreamModule, D.Readable, D.Writable, D.Duplex, D.Transform, D.WritableOptions, D.ReadableOptions, L.Immediate, L.Timeout, N.TTY]);
     _inherit(J.JSUnmodifiableArray, J.JSArray);
     _inheritMany(J.JSNumber, [J.JSInt, J.JSNumNotInt]);
     _inheritMany(P.Error, [H.LateError, H.ReachabilityError, H.NotNullableError, P.TypeError, H.JsNoSuchMethodError, H.UnknownJsTypeError, H.RuntimeError, P.AssertionError, H._Error, P.NullThrownError, P.ArgumentError, P.UnsupportedError, P.UnimplementedError, P.StateError, P.ConcurrentModificationError, P.CyclicInitializationError]);
     _inherit(P.ListBase, P._ListBase_Object_ListMixin);
-    _inherit(H.UnmodifiableListBase, P.ListBase);
+    _inheritMany(P.ListBase, [H.UnmodifiableListBase, W._ChildNodeListLazy]);
     _inherit(H.CodeUnits, H.UnmodifiableListBase);
-    _inheritMany(H.Closure, [H.nullFuture_closure, H.Instantiation, H.TearOffClosure, H.JsLinkedHashMap_values_closure, H.initHooks_closure, H.initHooks_closure0, H.initHooks_closure1, P._AsyncRun__initializeScheduleImmediate_internalCallback, P._AsyncRun__initializeScheduleImmediate_closure, P._AsyncRun__scheduleImmediateJsOverride_internalCallback, P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, P._TimerImpl_internalCallback, P._awaitOnObject_closure, P._awaitOnObject_closure0, P._wrapJsFunctionForAsync_closure, P.Future_wait__error_set, P.Future_wait__stackTrace_set, P.Future_wait__error_get, P.Future_wait__stackTrace_get, P.Future_wait_handleError, P.Future_wait_closure, P._Future__addListener_closure, P._Future__prependListeners_closure, P._Future__chainForeignFuture_closure, P._Future__chainForeignFuture_closure0, P._Future__chainForeignFuture_closure1, P._Future__asyncCompleteWithValue_closure, P._Future__chainFuture_closure, P._Future__asyncCompleteError_closure, P._Future__propagateToListeners_handleWhenCompleteCallback, P._Future__propagateToListeners_handleWhenCompleteCallback_closure, P._Future__propagateToListeners_handleValueCallback, P._Future__propagateToListeners_handleError, P.Stream_Stream$fromIterable_closure, P.Stream_length_closure, P.Stream_length_closure0, P.Stream_first_closure, P.Stream_first_closure0, P._BufferingStreamSubscription__sendError_sendError, P._BufferingStreamSubscription__sendDone_sendDone, P._PendingEvents_schedule_closure, P._cancelAndValue_closure, P._rootHandleUncaughtError_closure, P._RootZone_bindCallbackGuarded_closure, P._RootZone_bindUnaryCallbackGuarded_closure, P._LinkedCustomHashMap_closure, P.MapBase_mapToString_closure, P.Utf8Decoder__decoder_closure, P.Utf8Decoder__decoderNonfatal_closure, P.Uri__parseIPv4Address_error, P.Uri_parseIPv6Address_error, P.Uri_parseIPv6Address_parseHex, P._createTables_build, P._createTables_setChars, P._createTables_setRange, W._EventStreamSubscription_closure, W._EventStreamSubscription_onData_closure, P._AcceptStructuredClone_walk_closure, P.promiseToFuture_closure, P.promiseToFuture_closure0, M.CanonicalizedMap_addAll_closure, M.CanonicalizedMap_forEach_closure, G.BaseRequest_closure, G.BaseRequest_closure0, O.BrowserClient_send_closure, O.BrowserClient_send_closure0, Z.ByteStream_toBytes_closure, Z.CaseInsensitiveMap$from_closure, R.MediaType_MediaType$parse_closure, R.MediaType_toString_closure, R.MediaType_toString__closure, N.expectQuotedString_closure, M.Context_joinAll_closure, M.Context_split_closure, M._validateArgList_closure, U.Highlighter_closure, U.Highlighter$__closure, U.Highlighter$___closure, U.Highlighter$__closure0, U.Highlighter__collateLines_closure, U.Highlighter__collateLines_closure0, U.Highlighter__collateLines_closure1, U.Highlighter__collateLines__closure, U.Highlighter_highlight_closure, U.Highlighter__writeFileStart_closure, U.Highlighter__writeMultilineHighlights_closure, U.Highlighter__writeMultilineHighlights_closure0, U.Highlighter__writeMultilineHighlights_closure1, U.Highlighter__writeMultilineHighlights_closure2, U.Highlighter__writeMultilineHighlights__closure, U.Highlighter__writeMultilineHighlights__closure0, U.Highlighter__writeHighlightedText_closure, U.Highlighter__writeIndicator_closure, U.Highlighter__writeIndicator_closure0, U.Highlighter__writeIndicator_closure1, U.Highlighter__writeSidebar_closure, U._Highlight_closure, R.LegoPiece$__closure, S.LegoSetProject_loadProject_closure, Z.main_closure, Z.main_closure0]);
+    _inheritMany(H.Closure, [H.nullFuture_closure, H.Instantiation, H.TearOffClosure, H.JsLinkedHashMap_values_closure, H.initHooks_closure, H.initHooks_closure0, H.initHooks_closure1, P._AsyncRun__initializeScheduleImmediate_internalCallback, P._AsyncRun__initializeScheduleImmediate_closure, P._AsyncRun__scheduleImmediateJsOverride_internalCallback, P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, P._TimerImpl_internalCallback, P._awaitOnObject_closure, P._awaitOnObject_closure0, P._wrapJsFunctionForAsync_closure, P.Future_wait__error_set, P.Future_wait__stackTrace_set, P.Future_wait__error_get, P.Future_wait__stackTrace_get, P.Future_wait_handleError, P.Future_wait_closure, P._Future__addListener_closure, P._Future__prependListeners_closure, P._Future__chainForeignFuture_closure, P._Future__chainForeignFuture_closure0, P._Future__chainForeignFuture_closure1, P._Future__asyncCompleteWithValue_closure, P._Future__chainFuture_closure, P._Future__asyncCompleteError_closure, P._Future__propagateToListeners_handleWhenCompleteCallback, P._Future__propagateToListeners_handleWhenCompleteCallback_closure, P._Future__propagateToListeners_handleValueCallback, P._Future__propagateToListeners_handleError, P.Stream_Stream$fromIterable_closure, P.Stream_length_closure, P.Stream_length_closure0, P.Stream_first_closure, P.Stream_first_closure0, P._BufferingStreamSubscription__sendError_sendError, P._BufferingStreamSubscription__sendDone_sendDone, P._PendingEvents_schedule_closure, P._cancelAndValue_closure, P._rootHandleUncaughtError_closure, P._RootZone_bindCallbackGuarded_closure, P._RootZone_bindUnaryCallbackGuarded_closure, P._LinkedCustomHashMap_closure, P.MapBase_mapToString_closure, P.Utf8Decoder__decoder_closure, P.Utf8Decoder__decoderNonfatal_closure, P.Uri__parseIPv4Address_error, P.Uri_parseIPv6Address_error, P.Uri_parseIPv6Address_parseHex, P._createTables_build, P._createTables_setChars, P._createTables_setRange, W.Element_Element$html_closure, W._EventStreamSubscription_closure, W._EventStreamSubscription_onData_closure, W.NodeValidatorBuilder_allowsElement_closure, W.NodeValidatorBuilder_allowsAttribute_closure, W._SimpleNodeValidator_closure, W._SimpleNodeValidator_closure0, W._TemplatingNodeValidator_closure, W._ValidatingTreeSanitizer_sanitizeTree_walk, P._AcceptStructuredClone_walk_closure, P.promiseToFuture_closure, P.promiseToFuture_closure0, M.CanonicalizedMap_addAll_closure, M.CanonicalizedMap_forEach_closure, G.BaseRequest_closure, G.BaseRequest_closure0, O.BrowserClient_send_closure, O.BrowserClient_send_closure0, Z.ByteStream_toBytes_closure, Z.CaseInsensitiveMap$from_closure, R.MediaType_MediaType$parse_closure, R.MediaType_toString_closure, R.MediaType_toString__closure, N.expectQuotedString_closure, M.Context_joinAll_closure, M.Context_split_closure, M._validateArgList_closure, U.Highlighter_closure, U.Highlighter$__closure, U.Highlighter$___closure, U.Highlighter$__closure0, U.Highlighter__collateLines_closure, U.Highlighter__collateLines_closure0, U.Highlighter__collateLines_closure1, U.Highlighter__collateLines__closure, U.Highlighter_highlight_closure, U.Highlighter__writeFileStart_closure, U.Highlighter__writeMultilineHighlights_closure, U.Highlighter__writeMultilineHighlights_closure0, U.Highlighter__writeMultilineHighlights_closure1, U.Highlighter__writeMultilineHighlights_closure2, U.Highlighter__writeMultilineHighlights__closure, U.Highlighter__writeMultilineHighlights__closure0, U.Highlighter__writeHighlightedText_closure, U.Highlighter__writeIndicator_closure, U.Highlighter__writeIndicator_closure0, U.Highlighter__writeIndicator_closure1, U.Highlighter__writeSidebar_closure, U._Highlight_closure, R.LegoPiece$__closure, S.LegoSetProject_loadProject_closure, Z.main_closure]);
     _inheritMany(P.Iterable, [H.EfficientLengthIterable, H.MappedIterable, H.WhereIterable, H.ExpandIterable, H.SkipIterable, H.WhereTypeIterable, P.IterableBase, H._StringAllMatchesIterable]);
     _inheritMany(H.EfficientLengthIterable, [H.ListIterable, H.EmptyIterable, H.LinkedHashMapKeyIterable]);
     _inheritMany(H.ListIterable, [H.SubListIterable, H.MappedListIterable, H.ReversedListIterable, P._JsonMapKeyIterable]);
@@ -14236,7 +15337,7 @@
     _inheritMany(H.TearOffClosure, [H.StaticClosure, H.BoundClosure]);
     _inherit(H._AssertionError, P.AssertionError);
     _inherit(P.MapBase, P.MapMixin);
-    _inheritMany(P.MapBase, [H.JsLinkedHashMap, P._JsonMap]);
+    _inheritMany(P.MapBase, [H.JsLinkedHashMap, P._JsonMap, W._AttributeMap]);
     _inherit(H._AllMatchesIterable, P.IterableBase);
     _inherit(H.NativeTypedArray, H.NativeTypedData);
     _inherit(H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin, H.NativeTypedArray);
@@ -14265,13 +15366,23 @@
     _inheritMany(P.ArgumentError, [P.RangeError, P.IndexError]);
     _inherit(P._DataUri, P._Uri);
     _inheritMany(W.EventTarget, [W.Node, W.HttpRequestEventTarget]);
-    _inheritMany(W.Node, [W.Element, W.Document]);
-    _inherit(W.HtmlElement, W.Element);
-    _inheritMany(W.HtmlElement, [W.AnchorElement, W.AreaElement, W.ButtonElement, W.FormElement, W.InputElement, W.SelectElement]);
+    _inheritMany(W.Node, [W.Element, W.CharacterData, W.Document, W._Attr]);
+    _inheritMany(W.Element, [W.HtmlElement, P.SvgElement]);
+    _inheritMany(W.HtmlElement, [W.AnchorElement, W.AreaElement, W.BaseElement, W.BodyElement, W.DivElement, W.FormElement, W.HeadingElement, W.ImageElement, W.SelectElement, W.TableElement, W.TableRowElement, W.TableSectionElement, W.TemplateElement]);
+    _inherit(W._HtmlCollection_Interceptor_ListMixin_ImmutableListMixin, W._HtmlCollection_Interceptor_ListMixin);
+    _inherit(W.HtmlCollection, W._HtmlCollection_Interceptor_ListMixin_ImmutableListMixin);
+    _inherit(W.HtmlDocument, W.Document);
     _inherit(W.HttpRequest, W.HttpRequestEventTarget);
+    _inherit(W._NodeList_Interceptor_ListMixin_ImmutableListMixin, W._NodeList_Interceptor_ListMixin);
+    _inherit(W.NodeList, W._NodeList_Interceptor_ListMixin_ImmutableListMixin);
     _inherit(W.ProgressEvent, W.Event);
+    _inherit(W.__NamedNodeMap_Interceptor_ListMixin_ImmutableListMixin, W.__NamedNodeMap_Interceptor_ListMixin);
+    _inherit(W._NamedNodeMap, W.__NamedNodeMap_Interceptor_ListMixin_ImmutableListMixin);
+    _inherit(W._ElementAttributeMap, W._AttributeMap);
     _inherit(W._EventStreamSubscription, P.StreamSubscription);
+    _inherit(W._TemplatingNodeValidator, W._SimpleNodeValidator);
     _inherit(P._AcceptStructuredCloneDart2Js, P._AcceptStructuredClone);
+    _inherit(P.ScriptElement0, P.SvgElement);
     _inherit(O.BrowserClient, E.BaseClient);
     _inherit(Z.ByteStream, P.StreamView);
     _inherit(O.Request, G.BaseRequest);
@@ -14286,12 +15397,19 @@
     _inherit(G.SourceSpanFormatException, G.SourceSpanException);
     _inherit(X.SourceSpanWithContext, V.SourceSpanBase);
     _inherit(E.StringScannerException, G.SourceSpanFormatException);
+    _inheritMany(S.DisplayState, [S.LoadingState, S.ProjectViewState]);
     _mixin(H.UnmodifiableListBase, H.UnmodifiableListMixin);
     _mixin(H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin, P.ListMixin);
     _mixin(H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin_FixedLengthListMixin, H.FixedLengthListMixin);
     _mixin(P._ListBase_Object_ListMixin, P.ListMixin);
     _mixin(P._UnmodifiableMapView_MapView__UnmodifiableMapMixin, P._UnmodifiableMapMixin);
     _mixin(P.__SetBase_Object_SetMixin, P.SetMixin);
+    _mixin(W._HtmlCollection_Interceptor_ListMixin, P.ListMixin);
+    _mixin(W._HtmlCollection_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(W._NodeList_Interceptor_ListMixin, P.ListMixin);
+    _mixin(W._NodeList_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(W.__NamedNodeMap_Interceptor_ListMixin, P.ListMixin);
+    _mixin(W.__NamedNodeMap_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
   })();
   var init = {
     typeUniverse: {eC: new Map(), tR: {}, eT: {}, tPV: {}, sEA: []},
@@ -14299,12 +15417,12 @@
     mangledNames: {},
     getTypeFromName: getGlobalFromName,
     metadata: [],
-    types: ["~()", "~(@)", "~(~())", "bool(_Highlight)", "String(Match)", "Null()", "~(String,String)", "~(Object,StackTrace)", "Null(@)", "int(Object?)", "int(@,@)", "bool(String)", "String(String)", "Null(ProgressEvent)", "~(Event)", "bool(Object?,Object?)", "~(Uint8List,String,int)", "@()", "_Future<@>(@)", "Future<Null>()", "~(Object?,Object?)", "Null(Object,StackTrace)", "~(Object?)", "~(String,int)", "~(String[@])", "int(int,int)", "Uint8List(@,@)", "~(Object[StackTrace?])", "bool(@)", "StackTrace()", "@(@,@)", "bool(String,String)", "int(String)", "Object()", "~(List<int>)", "@(StackTrace)", "MediaType()", "0^(0^,0^)<num>", "@(Object)", "String(String?)", "String?()", "int(_Line)", "@(String)", "Uri?(_Line)", "Uri?(_Highlight)", "int(_Highlight,_Highlight)", "List<_Line>(List<_Highlight>)", "SourceSpanWithContext()", "String*(Response*)", "Null(bool*)", "Null(Event*)", "~(bool*)", "~(int,@)", "@(@,String)", "@(@)", "Null(~())", "Null(@,StackTrace)"],
+    types: ["~()", "~(@)", "bool(String)", "~(~())", "String(String)", "bool(_Highlight)", "Null(ProgressEvent)", "~(String,String)", "~(Object,StackTrace)", "bool(Element,String,String,_Html5NodeValidator)", "bool(Object?,Object?)", "Null()", "int(@,@)", "Null(bool*)", "String(Match)", "int(Object?)", "Null(@)", "bool(NodeValidator)", "~(Event)", "~(Uint8List,String,int)", "@()", "Future<Null>()", "~(Object?)", "~(String,int)", "~(String[@])", "int(int,int)", "Uint8List(@,@)", "bool(@)", "bool(Node)", "~(Object?,Object?)", "_Future<@>(@)", "Null(Object,StackTrace)", "@(String)", "~(Object[StackTrace?])", "~(Node,Node?)", "@(@,@)", "bool(String,String)", "int(String)", "0^(0^,0^)<num>", "~(List<int>)", "MediaType()", "StackTrace()", "String(String?)", "String?()", "int(_Line)", "Null(~())", "Uri?(_Line)", "Uri?(_Highlight)", "int(_Highlight,_Highlight)", "List<_Line>(List<_Highlight>)", "SourceSpanWithContext()", "String*(Response*)", "Object()", "@(StackTrace)", "@(Object)", "~(int,@)", "@(@,String)", "@(@)", "Null(@,StackTrace)"],
     interceptorsByTag: null,
     leafTags: null,
     arrayRti: typeof Symbol == "function" && typeof Symbol() == "symbol" ? Symbol("$ti") : "$ti"
   };
-  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","BufferModule":"JavaScriptObject","BufferConstants":"JavaScriptObject","Buffer":"JavaScriptObject","ConsoleModule":"JavaScriptObject","Console":"JavaScriptObject","EventEmitter":"JavaScriptObject","FS":"JavaScriptObject","FSConstants":"JavaScriptObject","FSWatcher":"JavaScriptObject","ReadStream":"JavaScriptObject","ReadStreamOptions":"JavaScriptObject","WriteStream":"JavaScriptObject","WriteStreamOptions":"JavaScriptObject","FileOptions":"JavaScriptObject","StatOptions":"JavaScriptObject","MkdirOptions":"JavaScriptObject","RmdirOptions":"JavaScriptObject","WatchOptions":"JavaScriptObject","WatchFileOptions":"JavaScriptObject","Stats":"JavaScriptObject","Promise":"JavaScriptObject","Date":"JavaScriptObject","JsError":"JavaScriptObject","Atomics":"JavaScriptObject","Modules":"JavaScriptObject","Module":"JavaScriptObject","Net":"JavaScriptObject","Socket":"JavaScriptObject","NetAddress":"JavaScriptObject","NetServer":"JavaScriptObject","NodeJsError":"JavaScriptObject","JsAssertionError":"JavaScriptObject","JsRangeError":"JavaScriptObject","JsReferenceError":"JavaScriptObject","JsSyntaxError":"JavaScriptObject","JsTypeError":"JavaScriptObject","JsSystemError":"JavaScriptObject","Process":"JavaScriptObject","CPUUsage":"JavaScriptObject","Release":"JavaScriptObject","StreamModule":"JavaScriptObject","Readable":"JavaScriptObject","Writable":"JavaScriptObject","Duplex":"JavaScriptObject","Transform":"JavaScriptObject","WritableOptions":"JavaScriptObject","ReadableOptions":"JavaScriptObject","Immediate":"JavaScriptObject","Timeout":"JavaScriptObject","TTY":"JavaScriptObject","TTYReadStream":"JavaScriptObject","TTYWriteStream":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","AElement":"Element","GraphicsElement":"Element","SvgElement":"Element","_ResourceProgressEvent":"ProgressEvent","AudioElement":"HtmlElement","MediaElement":"HtmlElement","HtmlDocument":"Document","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"FS":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"num":[],"Comparable":["num"]},"JSInt":{"int":[],"num":[],"Comparable":["num"]},"JSNumNotInt":{"num":[],"Comparable":["num"]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[],"JSIndexable":["@"]},"LateError":{"Error":[]},"ReachabilityError":{"Error":[]},"CodeUnits":{"ListMixin":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListMixin.E":"int","UnmodifiableListMixin.E":"int"},"NotNullableError":{"Error":[]},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"ListIterable.E":"2","Iterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"NullError":{"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteBuffer":{"ByteBuffer":[]},"NativeTypedData":{"TypedData":[]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"TypedData":[],"JSIndexable":["1"]},"NativeTypedArrayOfInt":{"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint32List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint8List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"Error":[]},"_Future":{"Future":["1"]},"_IterablePendingEvents":{"_PendingEvents":["1"]},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"StreamView":{"Stream":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventDispatch":["1"]},"_StreamImpl":{"Stream":["1"]},"_GeneratedStreamImpl":{"_StreamImpl":["1"],"Stream":["1"],"Stream.T":"1"},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_EmptyStream":{"Stream":["1"],"Stream.T":"1"},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_LinkedIdentityHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedCustomHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedHashSet":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"_LinkedHashSetIterator":{"Iterator":["1"]},"IterableBase":{"Iterable":["1"]},"ListBase":{"ListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"_SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"Encoding":{"Codec":["String","List<int>"]},"_JsonMap":{"MapMixin":["String","@"],"Map":["String","@"],"MapMixin.K":"String","MapMixin.V":"@"},"_JsonMapKeyIterable":{"ListIterable":["String"],"EfficientLengthIterable":["String"],"Iterable":["String"],"ListIterable.E":"String","Iterable.E":"String"},"AsciiCodec":{"Encoding":[],"Codec":["String","List<int>"]},"_UnicodeSubsetDecoder":{"Converter":["List<int>","String"]},"AsciiDecoder":{"Converter":["List<int>","String"]},"Base64Codec":{"Codec":["List<int>","String"]},"Base64Encoder":{"Converter":["List<int>","String"]},"ByteConversionSink":{"ChunkedConversionSink":["List<int>"]},"ByteConversionSinkBase":{"ChunkedConversionSink":["List<int>"]},"_ByteCallbackSink":{"ChunkedConversionSink":["List<int>"]},"JsonCodec":{"Codec":["Object?","String"]},"JsonDecoder":{"Converter":["String","Object?"]},"Latin1Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Latin1Decoder":{"Converter":["List<int>","String"]},"Utf8Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"DateTime":{"Comparable":["DateTime"]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"String":{"Comparable":["String"],"Pattern":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"_StringStackTrace":{"StackTrace":[]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"HttpRequest":{"EventTarget":[]},"HttpRequestEventTarget":{"EventTarget":[]},"ProgressEvent":{"Event":[]},"HtmlElement":{"EventTarget":[]},"AnchorElement":{"EventTarget":[]},"AreaElement":{"EventTarget":[]},"ButtonElement":{"EventTarget":[]},"Document":{"EventTarget":[]},"Element":{"EventTarget":[]},"FormElement":{"EventTarget":[]},"InputElement":{"TextInputElement":[],"EventTarget":[]},"Node":{"EventTarget":[]},"SelectElement":{"EventTarget":[]},"_EventStream":{"Stream":["1"],"Stream.T":"1"},"_EventStreamSubscription":{"StreamSubscription":["1"]},"NullRejectionException":{"Exception":[]},"CanonicalizedMap":{"Map":["2","3"]},"BaseClient":{"Client":[]},"BrowserClient":{"Client":[]},"ByteStream":{"StreamView":["List<int>"],"Stream":["List<int>"],"StreamView.T":"List<int>","Stream.T":"List<int>"},"ClientException":{"Exception":[]},"Request":{"BaseRequest":[]},"CaseInsensitiveMap":{"CanonicalizedMap":["String","String","1"],"Map":["String","1"],"CanonicalizedMap.K":"String","CanonicalizedMap.V":"1","CanonicalizedMap.C":"String"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"FileLocation":{"SourceLocation":[],"Comparable":["SourceLocation"]},"_FileSpan":{"FileSpan":[],"SourceSpanWithContext":[],"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceLocation":{"Comparable":["SourceLocation"]},"SourceLocationMixin":{"SourceLocation":[],"Comparable":["SourceLocation"]},"SourceSpan":{"Comparable":["SourceSpan"]},"SourceSpanBase":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanException":{"Exception":[]},"SourceSpanFormatException":{"FormatException":[],"Exception":[]},"SourceSpanMixin":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanWithContext":{"SourceSpan":[],"Comparable":["SourceSpan"]},"StringScannerException":{"FormatException":[],"Exception":[]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"TypedData":[]}}'));
+  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","BufferModule":"JavaScriptObject","BufferConstants":"JavaScriptObject","Buffer":"JavaScriptObject","ConsoleModule":"JavaScriptObject","Console":"JavaScriptObject","EventEmitter":"JavaScriptObject","FS":"JavaScriptObject","FSConstants":"JavaScriptObject","FSWatcher":"JavaScriptObject","ReadStream":"JavaScriptObject","ReadStreamOptions":"JavaScriptObject","WriteStream":"JavaScriptObject","WriteStreamOptions":"JavaScriptObject","FileOptions":"JavaScriptObject","StatOptions":"JavaScriptObject","MkdirOptions":"JavaScriptObject","RmdirOptions":"JavaScriptObject","WatchOptions":"JavaScriptObject","WatchFileOptions":"JavaScriptObject","Stats":"JavaScriptObject","Promise":"JavaScriptObject","Date":"JavaScriptObject","JsError":"JavaScriptObject","Atomics":"JavaScriptObject","Modules":"JavaScriptObject","Module":"JavaScriptObject","Net":"JavaScriptObject","Socket":"JavaScriptObject","NetAddress":"JavaScriptObject","NetServer":"JavaScriptObject","NodeJsError":"JavaScriptObject","JsAssertionError":"JavaScriptObject","JsRangeError":"JavaScriptObject","JsReferenceError":"JavaScriptObject","JsSyntaxError":"JavaScriptObject","JsTypeError":"JavaScriptObject","JsSystemError":"JavaScriptObject","Process":"JavaScriptObject","CPUUsage":"JavaScriptObject","Release":"JavaScriptObject","StreamModule":"JavaScriptObject","Readable":"JavaScriptObject","Writable":"JavaScriptObject","Duplex":"JavaScriptObject","Transform":"JavaScriptObject","WritableOptions":"JavaScriptObject","ReadableOptions":"JavaScriptObject","Immediate":"JavaScriptObject","Timeout":"JavaScriptObject","TTY":"JavaScriptObject","TTYReadStream":"JavaScriptObject","TTYWriteStream":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","AElement":"SvgElement","GraphicsElement":"SvgElement","_ResourceProgressEvent":"ProgressEvent","AudioElement":"HtmlElement","MediaElement":"HtmlElement","ShadowRoot":"Node","DocumentFragment":"Node","XmlDocument":"Document","Window":"EventTarget","CDataSection":"CharacterData","Text":"CharacterData","HtmlFormControlsCollection":"HtmlCollection","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"FS":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"num":[],"Comparable":["num"]},"JSInt":{"int":[],"num":[],"Comparable":["num"]},"JSNumNotInt":{"num":[],"Comparable":["num"]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[],"JSIndexable":["@"]},"LateError":{"Error":[]},"ReachabilityError":{"Error":[]},"CodeUnits":{"ListMixin":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListMixin.E":"int","UnmodifiableListMixin.E":"int"},"NotNullableError":{"Error":[]},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"ListIterable.E":"2","Iterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"NullError":{"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteBuffer":{"ByteBuffer":[]},"NativeTypedData":{"TypedData":[]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"TypedData":[],"JSIndexable":["1"]},"NativeTypedArrayOfInt":{"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint32List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint8List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"Error":[]},"_Future":{"Future":["1"]},"_IterablePendingEvents":{"_PendingEvents":["1"]},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"StreamView":{"Stream":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventDispatch":["1"]},"_StreamImpl":{"Stream":["1"]},"_GeneratedStreamImpl":{"_StreamImpl":["1"],"Stream":["1"],"Stream.T":"1"},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_EmptyStream":{"Stream":["1"],"Stream.T":"1"},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_LinkedIdentityHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedCustomHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedHashSet":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"SetMixin.E":"1"},"_LinkedHashSetIterator":{"Iterator":["1"]},"IterableBase":{"Iterable":["1"]},"ListBase":{"ListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"_SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"Encoding":{"Codec":["String","List<int>"]},"_JsonMap":{"MapMixin":["String","@"],"Map":["String","@"],"MapMixin.K":"String","MapMixin.V":"@"},"_JsonMapKeyIterable":{"ListIterable":["String"],"EfficientLengthIterable":["String"],"Iterable":["String"],"ListIterable.E":"String","Iterable.E":"String"},"AsciiCodec":{"Encoding":[],"Codec":["String","List<int>"]},"_UnicodeSubsetDecoder":{"Converter":["List<int>","String"]},"AsciiDecoder":{"Converter":["List<int>","String"]},"Base64Codec":{"Codec":["List<int>","String"]},"Base64Encoder":{"Converter":["List<int>","String"]},"ByteConversionSink":{"ChunkedConversionSink":["List<int>"]},"ByteConversionSinkBase":{"ChunkedConversionSink":["List<int>"]},"_ByteCallbackSink":{"ChunkedConversionSink":["List<int>"]},"JsonCodec":{"Codec":["Object?","String"]},"JsonDecoder":{"Converter":["String","Object?"]},"Latin1Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Latin1Decoder":{"Converter":["List<int>","String"]},"Utf8Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"DateTime":{"Comparable":["DateTime"]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"String":{"Comparable":["String"],"Pattern":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"_StringStackTrace":{"StackTrace":[]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"Element":{"Node":[],"EventTarget":[]},"HttpRequest":{"EventTarget":[]},"HttpRequestEventTarget":{"EventTarget":[]},"Node":{"EventTarget":[]},"ProgressEvent":{"Event":[]},"_Html5NodeValidator":{"NodeValidator":[]},"HtmlElement":{"Element":[],"Node":[],"EventTarget":[]},"AnchorElement":{"Element":[],"Node":[],"EventTarget":[]},"AreaElement":{"Element":[],"Node":[],"EventTarget":[]},"BaseElement":{"Element":[],"Node":[],"EventTarget":[]},"BodyElement":{"Element":[],"Node":[],"EventTarget":[]},"CharacterData":{"Node":[],"EventTarget":[]},"DivElement":{"Element":[],"Node":[],"EventTarget":[]},"Document":{"Node":[],"EventTarget":[]},"FormElement":{"Element":[],"Node":[],"EventTarget":[]},"HeadingElement":{"Element":[],"Node":[],"EventTarget":[]},"HtmlCollection":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"JSIndexable":["Node"],"ImmutableListMixin.E":"Node","ListMixin.E":"Node"},"HtmlDocument":{"Document":[],"Node":[],"EventTarget":[]},"ImageElement":{"Element":[],"Node":[],"EventTarget":[]},"_ChildNodeListLazy":{"ListMixin":["Node"],"List":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"ListMixin.E":"Node"},"NodeList":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"JSIndexable":["Node"],"ImmutableListMixin.E":"Node","ListMixin.E":"Node"},"SelectElement":{"Element":[],"Node":[],"EventTarget":[]},"TableElement":{"Element":[],"Node":[],"EventTarget":[]},"TableRowElement":{"Element":[],"Node":[],"EventTarget":[]},"TableSectionElement":{"Element":[],"Node":[],"EventTarget":[]},"TemplateElement":{"Element":[],"Node":[],"EventTarget":[]},"_Attr":{"Node":[],"EventTarget":[]},"_NamedNodeMap":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"JSIndexable":["Node"],"ImmutableListMixin.E":"Node","ListMixin.E":"Node"},"_AttributeMap":{"MapMixin":["String","String"],"Map":["String","String"]},"_ElementAttributeMap":{"MapMixin":["String","String"],"Map":["String","String"],"MapMixin.K":"String","MapMixin.V":"String"},"_EventStream":{"Stream":["1"],"Stream.T":"1"},"_EventStreamSubscription":{"StreamSubscription":["1"]},"NodeValidatorBuilder":{"NodeValidator":[]},"_SimpleNodeValidator":{"NodeValidator":[]},"_TemplatingNodeValidator":{"NodeValidator":[]},"_SvgNodeValidator":{"NodeValidator":[]},"FixedSizeListIterator":{"Iterator":["1"]},"_SameOriginUriPolicy":{"UriPolicy":[]},"_ValidatingTreeSanitizer":{"NodeTreeSanitizer":[]},"NullRejectionException":{"Exception":[]},"ScriptElement0":{"SvgElement":[],"Element":[],"Node":[],"EventTarget":[]},"SvgElement":{"Element":[],"Node":[],"EventTarget":[]},"CanonicalizedMap":{"Map":["2","3"]},"BaseClient":{"Client":[]},"BrowserClient":{"Client":[]},"ByteStream":{"StreamView":["List<int>"],"Stream":["List<int>"],"StreamView.T":"List<int>","Stream.T":"List<int>"},"ClientException":{"Exception":[]},"Request":{"BaseRequest":[]},"CaseInsensitiveMap":{"CanonicalizedMap":["String","String","1"],"Map":["String","1"],"CanonicalizedMap.K":"String","CanonicalizedMap.V":"1","CanonicalizedMap.C":"String"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"FileLocation":{"SourceLocation":[],"Comparable":["SourceLocation"]},"_FileSpan":{"FileSpan":[],"SourceSpanWithContext":[],"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceLocation":{"Comparable":["SourceLocation"]},"SourceLocationMixin":{"SourceLocation":[],"Comparable":["SourceLocation"]},"SourceSpan":{"Comparable":["SourceSpan"]},"SourceSpanBase":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanException":{"Exception":[]},"SourceSpanFormatException":{"FormatException":[],"Exception":[]},"SourceSpanMixin":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanWithContext":{"SourceSpan":[],"Comparable":["SourceSpan"]},"StringScannerException":{"FormatException":[],"Exception":[]},"LoadingState":{"DisplayState":[]},"ProjectViewState":{"DisplayState":[]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"TypedData":[]}}'));
   H._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"UnmodifiableListBase":1,"NativeTypedArray":1,"StreamTransformerBase":2,"IterableBase":1,"ListBase":1,"MapBase":2,"_SetBase":1,"_ListBase_Object_ListMixin":1,"__SetBase_Object_SetMixin":1}'));
   var string$ = {
     x20must_: " must not be greater than the number of characters in the file, ",
@@ -14318,12 +15436,15 @@
     return {
       $env_1_1_void: findType("@<~>"),
       AsyncError: findType("AsyncError"),
+      BaseElement: findType("BaseElement"),
+      BodyElement: findType("BodyElement"),
       ByteBuffer: findType("ByteBuffer"),
       CodeUnits: findType("CodeUnits"),
       Comparable_dynamic: findType("Comparable<@>"),
       DateTime: findType("DateTime"),
       Document: findType("Document"),
       EfficientLengthIterable_dynamic: findType("EfficientLengthIterable<@>"),
+      Element: findType("Element"),
       Error: findType("Error"),
       Event: findType("Event"),
       Exception: findType("Exception"),
@@ -14332,10 +15453,12 @@
       Function: findType("Function"),
       Future_dynamic: findType("Future<@>"),
       HttpRequest: findType("HttpRequest"),
+      Iterable_Node: findType("Iterable<Node>"),
       Iterable_String: findType("Iterable<String>"),
       Iterable_dynamic: findType("Iterable<@>"),
       Iterable_int: findType("Iterable<int>"),
       JSArray_List_int: findType("JSArray<List<int>>"),
+      JSArray_NodeValidator: findType("JSArray<NodeValidator>"),
       JSArray_String: findType("JSArray<String>"),
       JSArray_Uint8List: findType("JSArray<Uint8List>"),
       JSArray__Highlight: findType("JSArray<_Highlight>"),
@@ -14344,12 +15467,14 @@
       JSArray_int: findType("JSArray<int>"),
       JSArray_legacy_Future_dynamic: findType("JSArray<Future<@>*>"),
       JSArray_legacy_LegoSet: findType("JSArray<LegoSet*>"),
+      JSArray_legacy_String: findType("JSArray<String*>"),
       JSArray_legacy_int: findType("JSArray<int*>"),
       JSArray_nullable_String: findType("JSArray<String?>"),
       JSIndexable_dynamic: findType("JSIndexable<@>"),
       JSNull: findType("JSNull"),
       JavaScriptFunction: findType("JavaScriptFunction"),
       JavaScriptIndexingBehavior_dynamic: findType("JavaScriptIndexingBehavior<@>"),
+      JsLinkedHashMap_of_legacy_DisplayStateType_and_legacy_DisplayState: findType("JsLinkedHashMap<DisplayStateType*,DisplayState*>"),
       JsLinkedHashMap_of_legacy_LegoPiece_and_legacy_int: findType("JsLinkedHashMap<LegoPiece*,int*>"),
       JsLinkedHashMap_of_legacy_String_and_legacy_Map_of_legacy_int_and_legacy_LegoPiece: findType("JsLinkedHashMap<String*,Map<int*,LegoPiece*>*>"),
       JsLinkedHashMap_of_legacy_int_and_legacy_LegoPiece: findType("JsLinkedHashMap<int*,LegoPiece*>"),
@@ -14358,16 +15483,21 @@
       List_dynamic: findType("List<@>"),
       List_int: findType("List<int>"),
       List_nullable__Highlight: findType("List<_Highlight?>"),
+      Map_dynamic_dynamic: findType("Map<@,@>"),
       MappedListIterable_String_dynamic: findType("MappedListIterable<String,@>"),
+      MappedListIterable_of_legacy_String_and_String: findType("MappedListIterable<String*,String>"),
       MediaType: findType("MediaType"),
       NativeTypedArrayOfInt: findType("NativeTypedArrayOfInt"),
       NativeUint8List: findType("NativeUint8List"),
+      Node: findType("Node"),
+      NodeValidator: findType("NodeValidator"),
       Null: findType("Null"),
       Object: findType("Object"),
       Pattern: findType("Pattern"),
       ProgressEvent: findType("ProgressEvent"),
       RegExp: findType("RegExp"),
       Response: findType("Response"),
+      ScriptElement: findType("ScriptElement0"),
       SourceLocation: findType("SourceLocation"),
       SourceSpan: findType("SourceSpan"),
       SourceSpanWithContext: findType("SourceSpanWithContext"),
@@ -14375,6 +15505,9 @@
       StreamedResponse: findType("StreamedResponse"),
       String: findType("String"),
       String_Function_Match: findType("String(Match)"),
+      String_Function_legacy_String: findType("String(String*)"),
+      SvgElement: findType("SvgElement"),
+      TemplateElement: findType("TemplateElement"),
       TypedData: findType("TypedData"),
       Uint8List: findType("Uint8List"),
       UnknownJavaScriptObject: findType("UnknownJavaScriptObject"),
@@ -14383,6 +15516,8 @@
       WhereTypeIterable_String: findType("WhereTypeIterable<String>"),
       _AsyncCompleter_StreamedResponse: findType("_AsyncCompleter<StreamedResponse>"),
       _AsyncCompleter_Uint8List: findType("_AsyncCompleter<Uint8List>"),
+      _Attr: findType("_Attr"),
+      _ChildNodeListLazy: findType("_ChildNodeListLazy"),
       _EventStream_legacy_ProgressEvent: findType("_EventStream<ProgressEvent*>"),
       _Future_StreamedResponse: findType("_Future<StreamedResponse>"),
       _Future_Uint8List: findType("_Future<Uint8List>"),
@@ -14390,6 +15525,7 @@
       _Future_int: findType("_Future<int>"),
       _Future_legacy_String: findType("_Future<String*>"),
       _Highlight: findType("_Highlight"),
+      _Html5NodeValidator: findType("_Html5NodeValidator"),
       _Line: findType("_Line"),
       bool: findType("bool"),
       bool_Function_Object: findType("bool(Object)"),
@@ -14402,18 +15538,18 @@
       dynamic_Function_String: findType("@(String)"),
       dynamic_Function_dynamic_dynamic: findType("@(@,@)"),
       int: findType("int"),
-      legacy_ButtonElement: findType("ButtonElement*"),
-      legacy_Event: findType("Event*"),
+      legacy_DisplayState: findType("DisplayState*"),
+      legacy_DivElement: findType("DivElement*"),
       legacy_Future_legacy_String: findType("Future<String*>*"),
       legacy_LegoPiece: findType("LegoPiece*"),
       legacy_List_dynamic: findType("List<@>*"),
       legacy_List_legacy_LegoSet: findType("List<LegoSet*>*"),
+      legacy_Map_of_legacy_DisplayStateType_and_legacy_DisplayState: findType("Map<DisplayStateType*,DisplayState*>*"),
       legacy_Map_of_legacy_LegoPiece_and_legacy_int: findType("Map<LegoPiece*,int*>*"),
       legacy_Never: findType("0&*"),
       legacy_Object: findType("Object*"),
       legacy_Response: findType("Response*"),
       legacy_String: findType("String*"),
-      legacy_TextInputElement: findType("TextInputElement*"),
       legacy_bool: findType("bool*"),
       nullable_EventTarget: findType("EventTarget?"),
       nullable_FS: findType("FS?"),
@@ -14429,6 +15565,7 @@
       nullable__Highlight: findType("_Highlight?"),
       nullable__LinkedHashSetCell: findType("_LinkedHashSetCell?"),
       nullable_dynamic_Function_Event: findType("@(Event)?"),
+      nullable_int_Function_Node_Node: findType("int(Node,Node)?"),
       nullable_nullable_Object_Function_2_nullable_Object_and_nullable_Object: findType("Object?(Object?,Object?)?"),
       nullable_void_Function: findType("~()?"),
       num: findType("num"),
@@ -14436,13 +15573,20 @@
       void_Function: findType("~()"),
       void_Function_Object: findType("~(Object)"),
       void_Function_Object_StackTrace: findType("~(Object,StackTrace)"),
+      void_Function_String_String: findType("~(String,String)"),
       void_Function_String_dynamic: findType("~(String,@)")
     };
   })();
   (function constants() {
     var makeConstList = hunkHelpers.makeConstList;
-    C.ButtonElement_methods = W.ButtonElement.prototype;
+    C.AnchorElement_methods = W.AnchorElement.prototype;
+    C.BodyElement_methods = W.BodyElement.prototype;
+    C.DivElement_methods = W.DivElement.prototype;
+    C.DomImplementation_methods = W.DomImplementation.prototype;
+    C.HeadingElement_methods = W.HeadingElement.prototype;
+    C.HtmlDocument_methods = W.HtmlDocument.prototype;
     C.HttpRequest_methods = W.HttpRequest.prototype;
+    C.ImageElement_methods = W.ImageElement.prototype;
     C.Interceptor_methods = J.Interceptor.prototype;
     C.JSArray_methods = J.JSArray.prototype;
     C.JSInt_methods = J.JSInt.prototype;
@@ -14451,7 +15595,9 @@
     C.JavaScriptFunction_methods = J.JavaScriptFunction.prototype;
     C.NativeUint32List_methods = H.NativeUint32List.prototype;
     C.NativeUint8List_methods = H.NativeUint8List.prototype;
+    C.NodeList_methods = W.NodeList.prototype;
     C.PlainJavaScriptObject_methods = J.PlainJavaScriptObject.prototype;
+    C.TableElement_methods = W.TableElement.prototype;
     C.UnknownJavaScriptObject_methods = J.UnknownJavaScriptObject.prototype;
     C.AsciiDecoder_false_127 = new P.AsciiDecoder(false, 127);
     C.C__EmptyStream = new P._EmptyStream(H.findType("_EmptyStream<List<int*>*>"));
@@ -14587,16 +15733,22 @@
     C.C_Utf8Codec = new P.Utf8Codec();
     C.C__RootZone = new P._RootZone();
     C.C__StringStackTrace = new P._StringStackTrace();
+    C.DisplayStateType_0 = new S.DisplayStateType("DisplayStateType.LOADING");
+    C.DisplayStateType_1 = new S.DisplayStateType("DisplayStateType.PROJECT_VIEW");
     C.JsonDecoder_null = new P.JsonDecoder(null);
     C.Latin1Decoder_false_255 = new P.Latin1Decoder(false, 255);
     C.List_2Vk = H.setRuntimeTypeInfo(makeConstList([0, 0, 32776, 33792, 1, 10240, 0, 0]), type$.JSArray_legacy_int);
+    C.List_2Zi = H.setRuntimeTypeInfo(makeConstList(["*::class", "*::dir", "*::draggable", "*::hidden", "*::id", "*::inert", "*::itemprop", "*::itemref", "*::itemscope", "*::lang", "*::spellcheck", "*::title", "*::translate", "A::accesskey", "A::coords", "A::hreflang", "A::name", "A::shape", "A::tabindex", "A::target", "A::type", "AREA::accesskey", "AREA::alt", "AREA::coords", "AREA::nohref", "AREA::shape", "AREA::tabindex", "AREA::target", "AUDIO::controls", "AUDIO::loop", "AUDIO::mediagroup", "AUDIO::muted", "AUDIO::preload", "BDO::dir", "BODY::alink", "BODY::bgcolor", "BODY::link", "BODY::text", "BODY::vlink", "BR::clear", "BUTTON::accesskey", "BUTTON::disabled", "BUTTON::name", "BUTTON::tabindex", "BUTTON::type", "BUTTON::value", "CANVAS::height", "CANVAS::width", "CAPTION::align", "COL::align", "COL::char", "COL::charoff", "COL::span", "COL::valign", "COL::width", "COLGROUP::align", "COLGROUP::char", "COLGROUP::charoff", "COLGROUP::span", "COLGROUP::valign", "COLGROUP::width", "COMMAND::checked", "COMMAND::command", "COMMAND::disabled", "COMMAND::label", "COMMAND::radiogroup", "COMMAND::type", "DATA::value", "DEL::datetime", "DETAILS::open", "DIR::compact", "DIV::align", "DL::compact", "FIELDSET::disabled", "FONT::color", "FONT::face", "FONT::size", "FORM::accept", "FORM::autocomplete", "FORM::enctype", "FORM::method", "FORM::name", "FORM::novalidate", "FORM::target", "FRAME::name", "H1::align", "H2::align", "H3::align", "H4::align", "H5::align", "H6::align", "HR::align", "HR::noshade", "HR::size", "HR::width", "HTML::version", "IFRAME::align", "IFRAME::frameborder", "IFRAME::height", "IFRAME::marginheight", "IFRAME::marginwidth", "IFRAME::width", "IMG::align", "IMG::alt", "IMG::border", "IMG::height", "IMG::hspace", "IMG::ismap", "IMG::name", "IMG::usemap", "IMG::vspace", "IMG::width", "INPUT::accept", "INPUT::accesskey", "INPUT::align", "INPUT::alt", "INPUT::autocomplete", "INPUT::autofocus", "INPUT::checked", "INPUT::disabled", "INPUT::inputmode", "INPUT::ismap", "INPUT::list", "INPUT::max", "INPUT::maxlength", "INPUT::min", "INPUT::multiple", "INPUT::name", "INPUT::placeholder", "INPUT::readonly", "INPUT::required", "INPUT::size", "INPUT::step", "INPUT::tabindex", "INPUT::type", "INPUT::usemap", "INPUT::value", "INS::datetime", "KEYGEN::disabled", "KEYGEN::keytype", "KEYGEN::name", "LABEL::accesskey", "LABEL::for", "LEGEND::accesskey", "LEGEND::align", "LI::type", "LI::value", "LINK::sizes", "MAP::name", "MENU::compact", "MENU::label", "MENU::type", "METER::high", "METER::low", "METER::max", "METER::min", "METER::value", "OBJECT::typemustmatch", "OL::compact", "OL::reversed", "OL::start", "OL::type", "OPTGROUP::disabled", "OPTGROUP::label", "OPTION::disabled", "OPTION::label", "OPTION::selected", "OPTION::value", "OUTPUT::for", "OUTPUT::name", "P::align", "PRE::width", "PROGRESS::max", "PROGRESS::min", "PROGRESS::value", "SELECT::autocomplete", "SELECT::disabled", "SELECT::multiple", "SELECT::name", "SELECT::required", "SELECT::size", "SELECT::tabindex", "SOURCE::type", "TABLE::align", "TABLE::bgcolor", "TABLE::border", "TABLE::cellpadding", "TABLE::cellspacing", "TABLE::frame", "TABLE::rules", "TABLE::summary", "TABLE::width", "TBODY::align", "TBODY::char", "TBODY::charoff", "TBODY::valign", "TD::abbr", "TD::align", "TD::axis", "TD::bgcolor", "TD::char", "TD::charoff", "TD::colspan", "TD::headers", "TD::height", "TD::nowrap", "TD::rowspan", "TD::scope", "TD::valign", "TD::width", "TEXTAREA::accesskey", "TEXTAREA::autocomplete", "TEXTAREA::cols", "TEXTAREA::disabled", "TEXTAREA::inputmode", "TEXTAREA::name", "TEXTAREA::placeholder", "TEXTAREA::readonly", "TEXTAREA::required", "TEXTAREA::rows", "TEXTAREA::tabindex", "TEXTAREA::wrap", "TFOOT::align", "TFOOT::char", "TFOOT::charoff", "TFOOT::valign", "TH::abbr", "TH::align", "TH::axis", "TH::bgcolor", "TH::char", "TH::charoff", "TH::colspan", "TH::headers", "TH::height", "TH::nowrap", "TH::rowspan", "TH::scope", "TH::valign", "TH::width", "THEAD::align", "THEAD::char", "THEAD::charoff", "THEAD::valign", "TR::align", "TR::bgcolor", "TR::char", "TR::charoff", "TR::valign", "TRACK::default", "TRACK::kind", "TRACK::label", "TRACK::srclang", "UL::compact", "UL::type", "VIDEO::controls", "VIDEO::height", "VIDEO::loop", "VIDEO::mediagroup", "VIDEO::muted", "VIDEO::preload", "VIDEO::width"]), type$.JSArray_legacy_String);
     C.List_CVk = H.setRuntimeTypeInfo(makeConstList([0, 0, 65490, 45055, 65535, 34815, 65534, 18431]), type$.JSArray_legacy_int);
     C.List_JYB = H.setRuntimeTypeInfo(makeConstList([0, 0, 26624, 1023, 65534, 2047, 65534, 2047]), type$.JSArray_legacy_int);
-    C.List_empty = H.setRuntimeTypeInfo(makeConstList([]), H.findType("JSArray<String*>"));
+    C.List_ego = H.setRuntimeTypeInfo(makeConstList(["HEAD", "AREA", "BASE", "BASEFONT", "BR", "COL", "COLGROUP", "EMBED", "FRAME", "FRAMESET", "HR", "IMAGE", "IMG", "INPUT", "ISINDEX", "LINK", "META", "PARAM", "SOURCE", "STYLE", "TITLE", "WBR"]), type$.JSArray_legacy_String);
+    C.List_empty = H.setRuntimeTypeInfo(makeConstList([]), type$.JSArray_legacy_String);
     C.List_gRj = H.setRuntimeTypeInfo(makeConstList([0, 0, 32722, 12287, 65534, 34815, 65534, 18431]), type$.JSArray_legacy_int);
     C.List_nxB = H.setRuntimeTypeInfo(makeConstList([0, 0, 24576, 1023, 65534, 34815, 65534, 18431]), type$.JSArray_legacy_int);
     C.List_qNA = H.setRuntimeTypeInfo(makeConstList([0, 0, 32754, 11263, 65534, 34815, 65534, 18431]), type$.JSArray_legacy_int);
     C.List_qg4 = H.setRuntimeTypeInfo(makeConstList([0, 0, 65490, 12287, 65535, 34815, 65534, 18431]), type$.JSArray_legacy_int);
+    C.List_wSV = H.setRuntimeTypeInfo(makeConstList(["bind", "if", "ref", "repeat", "syntax"]), type$.JSArray_legacy_String);
+    C.List_yrN = H.setRuntimeTypeInfo(makeConstList(["A::href", "AREA::href", "BLOCKQUOTE::cite", "BODY::background", "COMMAND::icon", "DEL::cite", "FORM::action", "IMG::src", "INPUT::src", "INS::cite", "Q::cite", "VIDEO::poster"]), type$.JSArray_legacy_String);
     C.Map_empty = new H.ConstantStringMap(0, {}, C.List_empty, H.findType("ConstantStringMap<String*,String*>"));
     C.Utf8Decoder_false = new P.Utf8Decoder(false);
   })();
@@ -14618,6 +15770,11 @@
     $.Zone__current = C.C__RootZone;
     $._toStringVisiting = H.setRuntimeTypeInfo([], H.findType("JSArray<Object>"));
     $.Encoding__nameToEncoding = P.LinkedHashMap_LinkedHashMap$_literal(["iso_8859-1:1987", C.C_Latin1Codec, "iso-ir-100", C.C_Latin1Codec, "iso_8859-1", C.C_Latin1Codec, "iso-8859-1", C.C_Latin1Codec, "latin1", C.C_Latin1Codec, "l1", C.C_Latin1Codec, "ibm819", C.C_Latin1Codec, "cp819", C.C_Latin1Codec, "csisolatin1", C.C_Latin1Codec, "iso-ir-6", C.C_AsciiCodec, "ansi_x3.4-1968", C.C_AsciiCodec, "ansi_x3.4-1986", C.C_AsciiCodec, "iso_646.irv:1991", C.C_AsciiCodec, "iso646-us", C.C_AsciiCodec, "us-ascii", C.C_AsciiCodec, "us", C.C_AsciiCodec, "ibm367", C.C_AsciiCodec, "cp367", C.C_AsciiCodec, "csascii", C.C_AsciiCodec, "ascii", C.C_AsciiCodec, "csutf8", C.C_Utf8Codec, "utf-8", C.C_Utf8Codec], type$.String, H.findType("Encoding"));
+    $.Element__parseDocument = null;
+    $.Element__parseRange = null;
+    $.Element__defaultValidator = null;
+    $.Element__defaultSanitizer = null;
+    $._Html5NodeValidator__attributeValidators = P.LinkedHashMap_LinkedHashMap$_empty(type$.String, type$.Function);
     $._fs = null;
     $._currentUriBase = null;
     $._current = null;
@@ -14720,6 +15877,9 @@
     _lazyFinal($, "_scannerTables", "$get$_scannerTables", function() {
       return P._createTables();
     });
+    _lazyFinal($, "_Html5NodeValidator__allowedElements", "$get$_Html5NodeValidator__allowedElements", function() {
+      return P.LinkedHashSet_LinkedHashSet$from(["A", "ABBR", "ACRONYM", "ADDRESS", "AREA", "ARTICLE", "ASIDE", "AUDIO", "B", "BDI", "BDO", "BIG", "BLOCKQUOTE", "BR", "BUTTON", "CANVAS", "CAPTION", "CENTER", "CITE", "CODE", "COL", "COLGROUP", "COMMAND", "DATA", "DATALIST", "DD", "DEL", "DETAILS", "DFN", "DIR", "DIV", "DL", "DT", "EM", "FIELDSET", "FIGCAPTION", "FIGURE", "FONT", "FOOTER", "FORM", "H1", "H2", "H3", "H4", "H5", "H6", "HEADER", "HGROUP", "HR", "I", "IFRAME", "IMG", "INPUT", "INS", "KBD", "LABEL", "LEGEND", "LI", "MAP", "MARK", "MENU", "METER", "NAV", "NOBR", "OL", "OPTGROUP", "OPTION", "OUTPUT", "P", "PRE", "PROGRESS", "Q", "S", "SAMP", "SECTION", "SELECT", "SMALL", "SOURCE", "SPAN", "STRIKE", "STRONG", "SUB", "SUMMARY", "SUP", "TABLE", "TBODY", "TD", "TEXTAREA", "TFOOT", "TH", "THEAD", "TIME", "TR", "TRACK", "TT", "U", "UL", "VAR", "VIDEO", "WBR"], type$.String);
+    });
     _lazyFinal($, "BaseRequest__tokenRE", "$get$BaseRequest__tokenRE", function() {
       return P.RegExp_RegExp("^[\\w!#%&'*+\\-.^`|~]+$");
     });
@@ -14783,8 +15943,8 @@
       }
       init.dispatchPropertyName = init.getIsolateTag("dispatch_record");
     }();
-    hunkHelpers.setOrUpdateInterceptorsByTag({Blob: J.Interceptor, DOMError: J.Interceptor, File: J.Interceptor, MediaError: J.Interceptor, NavigatorUserMediaError: J.Interceptor, OverconstrainedError: J.Interceptor, PositionError: J.Interceptor, SQLError: J.Interceptor, ArrayBuffer: H.NativeByteBuffer, ArrayBufferView: H.NativeTypedData, Int8Array: H.NativeInt8List, Uint32Array: H.NativeUint32List, Uint8Array: H.NativeUint8List, HTMLAudioElement: W.HtmlElement, HTMLBRElement: W.HtmlElement, HTMLBaseElement: W.HtmlElement, HTMLBodyElement: W.HtmlElement, HTMLCanvasElement: W.HtmlElement, HTMLContentElement: W.HtmlElement, HTMLDListElement: W.HtmlElement, HTMLDataElement: W.HtmlElement, HTMLDataListElement: W.HtmlElement, HTMLDetailsElement: W.HtmlElement, HTMLDialogElement: W.HtmlElement, HTMLDivElement: W.HtmlElement, HTMLEmbedElement: W.HtmlElement, HTMLFieldSetElement: W.HtmlElement, HTMLHRElement: W.HtmlElement, HTMLHeadElement: W.HtmlElement, HTMLHeadingElement: W.HtmlElement, HTMLHtmlElement: W.HtmlElement, HTMLIFrameElement: W.HtmlElement, HTMLImageElement: W.HtmlElement, HTMLLIElement: W.HtmlElement, HTMLLabelElement: W.HtmlElement, HTMLLegendElement: W.HtmlElement, HTMLLinkElement: W.HtmlElement, HTMLMapElement: W.HtmlElement, HTMLMediaElement: W.HtmlElement, HTMLMenuElement: W.HtmlElement, HTMLMetaElement: W.HtmlElement, HTMLMeterElement: W.HtmlElement, HTMLModElement: W.HtmlElement, HTMLOListElement: W.HtmlElement, HTMLObjectElement: W.HtmlElement, HTMLOptGroupElement: W.HtmlElement, HTMLOptionElement: W.HtmlElement, HTMLOutputElement: W.HtmlElement, HTMLParagraphElement: W.HtmlElement, HTMLParamElement: W.HtmlElement, HTMLPictureElement: W.HtmlElement, HTMLPreElement: W.HtmlElement, HTMLProgressElement: W.HtmlElement, HTMLQuoteElement: W.HtmlElement, HTMLScriptElement: W.HtmlElement, HTMLShadowElement: W.HtmlElement, HTMLSlotElement: W.HtmlElement, HTMLSourceElement: W.HtmlElement, HTMLSpanElement: W.HtmlElement, HTMLStyleElement: W.HtmlElement, HTMLTableCaptionElement: W.HtmlElement, HTMLTableCellElement: W.HtmlElement, HTMLTableDataCellElement: W.HtmlElement, HTMLTableHeaderCellElement: W.HtmlElement, HTMLTableColElement: W.HtmlElement, HTMLTableElement: W.HtmlElement, HTMLTableRowElement: W.HtmlElement, HTMLTableSectionElement: W.HtmlElement, HTMLTemplateElement: W.HtmlElement, HTMLTextAreaElement: W.HtmlElement, HTMLTimeElement: W.HtmlElement, HTMLTitleElement: W.HtmlElement, HTMLTrackElement: W.HtmlElement, HTMLUListElement: W.HtmlElement, HTMLUnknownElement: W.HtmlElement, HTMLVideoElement: W.HtmlElement, HTMLDirectoryElement: W.HtmlElement, HTMLFontElement: W.HtmlElement, HTMLFrameElement: W.HtmlElement, HTMLFrameSetElement: W.HtmlElement, HTMLMarqueeElement: W.HtmlElement, HTMLElement: W.HtmlElement, HTMLAnchorElement: W.AnchorElement, HTMLAreaElement: W.AreaElement, HTMLButtonElement: W.ButtonElement, Document: W.Document, HTMLDocument: W.Document, XMLDocument: W.Document, DOMException: W.DomException, SVGAElement: W.Element, SVGAnimateElement: W.Element, SVGAnimateMotionElement: W.Element, SVGAnimateTransformElement: W.Element, SVGAnimationElement: W.Element, SVGCircleElement: W.Element, SVGClipPathElement: W.Element, SVGDefsElement: W.Element, SVGDescElement: W.Element, SVGDiscardElement: W.Element, SVGEllipseElement: W.Element, SVGFEBlendElement: W.Element, SVGFEColorMatrixElement: W.Element, SVGFEComponentTransferElement: W.Element, SVGFECompositeElement: W.Element, SVGFEConvolveMatrixElement: W.Element, SVGFEDiffuseLightingElement: W.Element, SVGFEDisplacementMapElement: W.Element, SVGFEDistantLightElement: W.Element, SVGFEFloodElement: W.Element, SVGFEFuncAElement: W.Element, SVGFEFuncBElement: W.Element, SVGFEFuncGElement: W.Element, SVGFEFuncRElement: W.Element, SVGFEGaussianBlurElement: W.Element, SVGFEImageElement: W.Element, SVGFEMergeElement: W.Element, SVGFEMergeNodeElement: W.Element, SVGFEMorphologyElement: W.Element, SVGFEOffsetElement: W.Element, SVGFEPointLightElement: W.Element, SVGFESpecularLightingElement: W.Element, SVGFESpotLightElement: W.Element, SVGFETileElement: W.Element, SVGFETurbulenceElement: W.Element, SVGFilterElement: W.Element, SVGForeignObjectElement: W.Element, SVGGElement: W.Element, SVGGeometryElement: W.Element, SVGGraphicsElement: W.Element, SVGImageElement: W.Element, SVGLineElement: W.Element, SVGLinearGradientElement: W.Element, SVGMarkerElement: W.Element, SVGMaskElement: W.Element, SVGMetadataElement: W.Element, SVGPathElement: W.Element, SVGPatternElement: W.Element, SVGPolygonElement: W.Element, SVGPolylineElement: W.Element, SVGRadialGradientElement: W.Element, SVGRectElement: W.Element, SVGScriptElement: W.Element, SVGSetElement: W.Element, SVGStopElement: W.Element, SVGStyleElement: W.Element, SVGElement: W.Element, SVGSVGElement: W.Element, SVGSwitchElement: W.Element, SVGSymbolElement: W.Element, SVGTSpanElement: W.Element, SVGTextContentElement: W.Element, SVGTextElement: W.Element, SVGTextPathElement: W.Element, SVGTextPositioningElement: W.Element, SVGTitleElement: W.Element, SVGUseElement: W.Element, SVGViewElement: W.Element, SVGGradientElement: W.Element, SVGComponentTransferFunctionElement: W.Element, SVGFEDropShadowElement: W.Element, SVGMPathElement: W.Element, Element: W.Element, AbortPaymentEvent: W.Event, AnimationEvent: W.Event, AnimationPlaybackEvent: W.Event, ApplicationCacheErrorEvent: W.Event, BackgroundFetchClickEvent: W.Event, BackgroundFetchEvent: W.Event, BackgroundFetchFailEvent: W.Event, BackgroundFetchedEvent: W.Event, BeforeInstallPromptEvent: W.Event, BeforeUnloadEvent: W.Event, BlobEvent: W.Event, CanMakePaymentEvent: W.Event, ClipboardEvent: W.Event, CloseEvent: W.Event, CompositionEvent: W.Event, CustomEvent: W.Event, DeviceMotionEvent: W.Event, DeviceOrientationEvent: W.Event, ErrorEvent: W.Event, ExtendableEvent: W.Event, ExtendableMessageEvent: W.Event, FetchEvent: W.Event, FocusEvent: W.Event, FontFaceSetLoadEvent: W.Event, ForeignFetchEvent: W.Event, GamepadEvent: W.Event, HashChangeEvent: W.Event, InstallEvent: W.Event, KeyboardEvent: W.Event, MediaEncryptedEvent: W.Event, MediaKeyMessageEvent: W.Event, MediaQueryListEvent: W.Event, MediaStreamEvent: W.Event, MediaStreamTrackEvent: W.Event, MessageEvent: W.Event, MIDIConnectionEvent: W.Event, MIDIMessageEvent: W.Event, MouseEvent: W.Event, DragEvent: W.Event, MutationEvent: W.Event, NotificationEvent: W.Event, PageTransitionEvent: W.Event, PaymentRequestEvent: W.Event, PaymentRequestUpdateEvent: W.Event, PointerEvent: W.Event, PopStateEvent: W.Event, PresentationConnectionAvailableEvent: W.Event, PresentationConnectionCloseEvent: W.Event, PromiseRejectionEvent: W.Event, PushEvent: W.Event, RTCDataChannelEvent: W.Event, RTCDTMFToneChangeEvent: W.Event, RTCPeerConnectionIceEvent: W.Event, RTCTrackEvent: W.Event, SecurityPolicyViolationEvent: W.Event, SensorErrorEvent: W.Event, SpeechRecognitionError: W.Event, SpeechRecognitionEvent: W.Event, SpeechSynthesisEvent: W.Event, StorageEvent: W.Event, SyncEvent: W.Event, TextEvent: W.Event, TouchEvent: W.Event, TrackEvent: W.Event, TransitionEvent: W.Event, WebKitTransitionEvent: W.Event, UIEvent: W.Event, VRDeviceEvent: W.Event, VRDisplayEvent: W.Event, VRSessionEvent: W.Event, WheelEvent: W.Event, MojoInterfaceRequestEvent: W.Event, USBConnectionEvent: W.Event, IDBVersionChangeEvent: W.Event, AudioProcessingEvent: W.Event, OfflineAudioCompletionEvent: W.Event, WebGLContextEvent: W.Event, Event: W.Event, InputEvent: W.Event, SubmitEvent: W.Event, EventTarget: W.EventTarget, HTMLFormElement: W.FormElement, XMLHttpRequest: W.HttpRequest, XMLHttpRequestEventTarget: W.HttpRequestEventTarget, HTMLInputElement: W.InputElement, Node: W.Node, ProgressEvent: W.ProgressEvent, ResourceProgressEvent: W.ProgressEvent, HTMLSelectElement: W.SelectElement});
-    hunkHelpers.setOrUpdateLeafTags({Blob: true, DOMError: true, File: true, MediaError: true, NavigatorUserMediaError: true, OverconstrainedError: true, PositionError: true, SQLError: true, ArrayBuffer: true, ArrayBufferView: false, Int8Array: true, Uint32Array: true, Uint8Array: false, HTMLAudioElement: true, HTMLBRElement: true, HTMLBaseElement: true, HTMLBodyElement: true, HTMLCanvasElement: true, HTMLContentElement: true, HTMLDListElement: true, HTMLDataElement: true, HTMLDataListElement: true, HTMLDetailsElement: true, HTMLDialogElement: true, HTMLDivElement: true, HTMLEmbedElement: true, HTMLFieldSetElement: true, HTMLHRElement: true, HTMLHeadElement: true, HTMLHeadingElement: true, HTMLHtmlElement: true, HTMLIFrameElement: true, HTMLImageElement: true, HTMLLIElement: true, HTMLLabelElement: true, HTMLLegendElement: true, HTMLLinkElement: true, HTMLMapElement: true, HTMLMediaElement: true, HTMLMenuElement: true, HTMLMetaElement: true, HTMLMeterElement: true, HTMLModElement: true, HTMLOListElement: true, HTMLObjectElement: true, HTMLOptGroupElement: true, HTMLOptionElement: true, HTMLOutputElement: true, HTMLParagraphElement: true, HTMLParamElement: true, HTMLPictureElement: true, HTMLPreElement: true, HTMLProgressElement: true, HTMLQuoteElement: true, HTMLScriptElement: true, HTMLShadowElement: true, HTMLSlotElement: true, HTMLSourceElement: true, HTMLSpanElement: true, HTMLStyleElement: true, HTMLTableCaptionElement: true, HTMLTableCellElement: true, HTMLTableDataCellElement: true, HTMLTableHeaderCellElement: true, HTMLTableColElement: true, HTMLTableElement: true, HTMLTableRowElement: true, HTMLTableSectionElement: true, HTMLTemplateElement: true, HTMLTextAreaElement: true, HTMLTimeElement: true, HTMLTitleElement: true, HTMLTrackElement: true, HTMLUListElement: true, HTMLUnknownElement: true, HTMLVideoElement: true, HTMLDirectoryElement: true, HTMLFontElement: true, HTMLFrameElement: true, HTMLFrameSetElement: true, HTMLMarqueeElement: true, HTMLElement: false, HTMLAnchorElement: true, HTMLAreaElement: true, HTMLButtonElement: true, Document: true, HTMLDocument: true, XMLDocument: true, DOMException: true, SVGAElement: true, SVGAnimateElement: true, SVGAnimateMotionElement: true, SVGAnimateTransformElement: true, SVGAnimationElement: true, SVGCircleElement: true, SVGClipPathElement: true, SVGDefsElement: true, SVGDescElement: true, SVGDiscardElement: true, SVGEllipseElement: true, SVGFEBlendElement: true, SVGFEColorMatrixElement: true, SVGFEComponentTransferElement: true, SVGFECompositeElement: true, SVGFEConvolveMatrixElement: true, SVGFEDiffuseLightingElement: true, SVGFEDisplacementMapElement: true, SVGFEDistantLightElement: true, SVGFEFloodElement: true, SVGFEFuncAElement: true, SVGFEFuncBElement: true, SVGFEFuncGElement: true, SVGFEFuncRElement: true, SVGFEGaussianBlurElement: true, SVGFEImageElement: true, SVGFEMergeElement: true, SVGFEMergeNodeElement: true, SVGFEMorphologyElement: true, SVGFEOffsetElement: true, SVGFEPointLightElement: true, SVGFESpecularLightingElement: true, SVGFESpotLightElement: true, SVGFETileElement: true, SVGFETurbulenceElement: true, SVGFilterElement: true, SVGForeignObjectElement: true, SVGGElement: true, SVGGeometryElement: true, SVGGraphicsElement: true, SVGImageElement: true, SVGLineElement: true, SVGLinearGradientElement: true, SVGMarkerElement: true, SVGMaskElement: true, SVGMetadataElement: true, SVGPathElement: true, SVGPatternElement: true, SVGPolygonElement: true, SVGPolylineElement: true, SVGRadialGradientElement: true, SVGRectElement: true, SVGScriptElement: true, SVGSetElement: true, SVGStopElement: true, SVGStyleElement: true, SVGElement: true, SVGSVGElement: true, SVGSwitchElement: true, SVGSymbolElement: true, SVGTSpanElement: true, SVGTextContentElement: true, SVGTextElement: true, SVGTextPathElement: true, SVGTextPositioningElement: true, SVGTitleElement: true, SVGUseElement: true, SVGViewElement: true, SVGGradientElement: true, SVGComponentTransferFunctionElement: true, SVGFEDropShadowElement: true, SVGMPathElement: true, Element: false, AbortPaymentEvent: true, AnimationEvent: true, AnimationPlaybackEvent: true, ApplicationCacheErrorEvent: true, BackgroundFetchClickEvent: true, BackgroundFetchEvent: true, BackgroundFetchFailEvent: true, BackgroundFetchedEvent: true, BeforeInstallPromptEvent: true, BeforeUnloadEvent: true, BlobEvent: true, CanMakePaymentEvent: true, ClipboardEvent: true, CloseEvent: true, CompositionEvent: true, CustomEvent: true, DeviceMotionEvent: true, DeviceOrientationEvent: true, ErrorEvent: true, ExtendableEvent: true, ExtendableMessageEvent: true, FetchEvent: true, FocusEvent: true, FontFaceSetLoadEvent: true, ForeignFetchEvent: true, GamepadEvent: true, HashChangeEvent: true, InstallEvent: true, KeyboardEvent: true, MediaEncryptedEvent: true, MediaKeyMessageEvent: true, MediaQueryListEvent: true, MediaStreamEvent: true, MediaStreamTrackEvent: true, MessageEvent: true, MIDIConnectionEvent: true, MIDIMessageEvent: true, MouseEvent: true, DragEvent: true, MutationEvent: true, NotificationEvent: true, PageTransitionEvent: true, PaymentRequestEvent: true, PaymentRequestUpdateEvent: true, PointerEvent: true, PopStateEvent: true, PresentationConnectionAvailableEvent: true, PresentationConnectionCloseEvent: true, PromiseRejectionEvent: true, PushEvent: true, RTCDataChannelEvent: true, RTCDTMFToneChangeEvent: true, RTCPeerConnectionIceEvent: true, RTCTrackEvent: true, SecurityPolicyViolationEvent: true, SensorErrorEvent: true, SpeechRecognitionError: true, SpeechRecognitionEvent: true, SpeechSynthesisEvent: true, StorageEvent: true, SyncEvent: true, TextEvent: true, TouchEvent: true, TrackEvent: true, TransitionEvent: true, WebKitTransitionEvent: true, UIEvent: true, VRDeviceEvent: true, VRDisplayEvent: true, VRSessionEvent: true, WheelEvent: true, MojoInterfaceRequestEvent: true, USBConnectionEvent: true, IDBVersionChangeEvent: true, AudioProcessingEvent: true, OfflineAudioCompletionEvent: true, WebGLContextEvent: true, Event: false, InputEvent: false, SubmitEvent: false, EventTarget: false, HTMLFormElement: true, XMLHttpRequest: true, XMLHttpRequestEventTarget: false, HTMLInputElement: true, Node: false, ProgressEvent: true, ResourceProgressEvent: true, HTMLSelectElement: true});
+    hunkHelpers.setOrUpdateInterceptorsByTag({Blob: J.Interceptor, DOMError: J.Interceptor, File: J.Interceptor, MediaError: J.Interceptor, NavigatorUserMediaError: J.Interceptor, OverconstrainedError: J.Interceptor, PositionError: J.Interceptor, Range: J.Interceptor, SQLError: J.Interceptor, ArrayBuffer: H.NativeByteBuffer, ArrayBufferView: H.NativeTypedData, Int8Array: H.NativeInt8List, Uint32Array: H.NativeUint32List, Uint8Array: H.NativeUint8List, HTMLAudioElement: W.HtmlElement, HTMLBRElement: W.HtmlElement, HTMLButtonElement: W.HtmlElement, HTMLCanvasElement: W.HtmlElement, HTMLContentElement: W.HtmlElement, HTMLDListElement: W.HtmlElement, HTMLDataElement: W.HtmlElement, HTMLDataListElement: W.HtmlElement, HTMLDetailsElement: W.HtmlElement, HTMLDialogElement: W.HtmlElement, HTMLEmbedElement: W.HtmlElement, HTMLFieldSetElement: W.HtmlElement, HTMLHRElement: W.HtmlElement, HTMLHeadElement: W.HtmlElement, HTMLHtmlElement: W.HtmlElement, HTMLIFrameElement: W.HtmlElement, HTMLInputElement: W.HtmlElement, HTMLLIElement: W.HtmlElement, HTMLLabelElement: W.HtmlElement, HTMLLegendElement: W.HtmlElement, HTMLLinkElement: W.HtmlElement, HTMLMapElement: W.HtmlElement, HTMLMediaElement: W.HtmlElement, HTMLMenuElement: W.HtmlElement, HTMLMetaElement: W.HtmlElement, HTMLMeterElement: W.HtmlElement, HTMLModElement: W.HtmlElement, HTMLOListElement: W.HtmlElement, HTMLObjectElement: W.HtmlElement, HTMLOptGroupElement: W.HtmlElement, HTMLOptionElement: W.HtmlElement, HTMLOutputElement: W.HtmlElement, HTMLParagraphElement: W.HtmlElement, HTMLParamElement: W.HtmlElement, HTMLPictureElement: W.HtmlElement, HTMLPreElement: W.HtmlElement, HTMLProgressElement: W.HtmlElement, HTMLQuoteElement: W.HtmlElement, HTMLScriptElement: W.HtmlElement, HTMLShadowElement: W.HtmlElement, HTMLSlotElement: W.HtmlElement, HTMLSourceElement: W.HtmlElement, HTMLSpanElement: W.HtmlElement, HTMLStyleElement: W.HtmlElement, HTMLTableCaptionElement: W.HtmlElement, HTMLTableCellElement: W.HtmlElement, HTMLTableDataCellElement: W.HtmlElement, HTMLTableHeaderCellElement: W.HtmlElement, HTMLTableColElement: W.HtmlElement, HTMLTextAreaElement: W.HtmlElement, HTMLTimeElement: W.HtmlElement, HTMLTitleElement: W.HtmlElement, HTMLTrackElement: W.HtmlElement, HTMLUListElement: W.HtmlElement, HTMLUnknownElement: W.HtmlElement, HTMLVideoElement: W.HtmlElement, HTMLDirectoryElement: W.HtmlElement, HTMLFontElement: W.HtmlElement, HTMLFrameElement: W.HtmlElement, HTMLFrameSetElement: W.HtmlElement, HTMLMarqueeElement: W.HtmlElement, HTMLElement: W.HtmlElement, HTMLAnchorElement: W.AnchorElement, HTMLAreaElement: W.AreaElement, HTMLBaseElement: W.BaseElement, HTMLBodyElement: W.BodyElement, CDATASection: W.CharacterData, CharacterData: W.CharacterData, Comment: W.CharacterData, ProcessingInstruction: W.CharacterData, Text: W.CharacterData, HTMLDivElement: W.DivElement, XMLDocument: W.Document, Document: W.Document, DOMException: W.DomException, DOMImplementation: W.DomImplementation, DOMTokenList: W.DomTokenList, Element: W.Element, AbortPaymentEvent: W.Event, AnimationEvent: W.Event, AnimationPlaybackEvent: W.Event, ApplicationCacheErrorEvent: W.Event, BackgroundFetchClickEvent: W.Event, BackgroundFetchEvent: W.Event, BackgroundFetchFailEvent: W.Event, BackgroundFetchedEvent: W.Event, BeforeInstallPromptEvent: W.Event, BeforeUnloadEvent: W.Event, BlobEvent: W.Event, CanMakePaymentEvent: W.Event, ClipboardEvent: W.Event, CloseEvent: W.Event, CompositionEvent: W.Event, CustomEvent: W.Event, DeviceMotionEvent: W.Event, DeviceOrientationEvent: W.Event, ErrorEvent: W.Event, ExtendableEvent: W.Event, ExtendableMessageEvent: W.Event, FetchEvent: W.Event, FocusEvent: W.Event, FontFaceSetLoadEvent: W.Event, ForeignFetchEvent: W.Event, GamepadEvent: W.Event, HashChangeEvent: W.Event, InstallEvent: W.Event, KeyboardEvent: W.Event, MediaEncryptedEvent: W.Event, MediaKeyMessageEvent: W.Event, MediaQueryListEvent: W.Event, MediaStreamEvent: W.Event, MediaStreamTrackEvent: W.Event, MessageEvent: W.Event, MIDIConnectionEvent: W.Event, MIDIMessageEvent: W.Event, MouseEvent: W.Event, DragEvent: W.Event, MutationEvent: W.Event, NotificationEvent: W.Event, PageTransitionEvent: W.Event, PaymentRequestEvent: W.Event, PaymentRequestUpdateEvent: W.Event, PointerEvent: W.Event, PopStateEvent: W.Event, PresentationConnectionAvailableEvent: W.Event, PresentationConnectionCloseEvent: W.Event, PromiseRejectionEvent: W.Event, PushEvent: W.Event, RTCDataChannelEvent: W.Event, RTCDTMFToneChangeEvent: W.Event, RTCPeerConnectionIceEvent: W.Event, RTCTrackEvent: W.Event, SecurityPolicyViolationEvent: W.Event, SensorErrorEvent: W.Event, SpeechRecognitionError: W.Event, SpeechRecognitionEvent: W.Event, SpeechSynthesisEvent: W.Event, StorageEvent: W.Event, SyncEvent: W.Event, TextEvent: W.Event, TouchEvent: W.Event, TrackEvent: W.Event, TransitionEvent: W.Event, WebKitTransitionEvent: W.Event, UIEvent: W.Event, VRDeviceEvent: W.Event, VRDisplayEvent: W.Event, VRSessionEvent: W.Event, WheelEvent: W.Event, MojoInterfaceRequestEvent: W.Event, USBConnectionEvent: W.Event, IDBVersionChangeEvent: W.Event, AudioProcessingEvent: W.Event, OfflineAudioCompletionEvent: W.Event, WebGLContextEvent: W.Event, Event: W.Event, InputEvent: W.Event, SubmitEvent: W.Event, Window: W.EventTarget, DOMWindow: W.EventTarget, EventTarget: W.EventTarget, HTMLFormElement: W.FormElement, HTMLHeadingElement: W.HeadingElement, HTMLCollection: W.HtmlCollection, HTMLFormControlsCollection: W.HtmlCollection, HTMLOptionsCollection: W.HtmlCollection, HTMLDocument: W.HtmlDocument, XMLHttpRequest: W.HttpRequest, XMLHttpRequestEventTarget: W.HttpRequestEventTarget, HTMLImageElement: W.ImageElement, Location: W.Location, DocumentFragment: W.Node, ShadowRoot: W.Node, DocumentType: W.Node, Node: W.Node, NodeList: W.NodeList, RadioNodeList: W.NodeList, ProgressEvent: W.ProgressEvent, ResourceProgressEvent: W.ProgressEvent, HTMLSelectElement: W.SelectElement, HTMLTableElement: W.TableElement, HTMLTableRowElement: W.TableRowElement, HTMLTableSectionElement: W.TableSectionElement, HTMLTemplateElement: W.TemplateElement, Attr: W._Attr, NamedNodeMap: W._NamedNodeMap, MozNamedAttrMap: W._NamedNodeMap, SVGScriptElement: P.ScriptElement0, SVGAElement: P.SvgElement, SVGAnimateElement: P.SvgElement, SVGAnimateMotionElement: P.SvgElement, SVGAnimateTransformElement: P.SvgElement, SVGAnimationElement: P.SvgElement, SVGCircleElement: P.SvgElement, SVGClipPathElement: P.SvgElement, SVGDefsElement: P.SvgElement, SVGDescElement: P.SvgElement, SVGDiscardElement: P.SvgElement, SVGEllipseElement: P.SvgElement, SVGFEBlendElement: P.SvgElement, SVGFEColorMatrixElement: P.SvgElement, SVGFEComponentTransferElement: P.SvgElement, SVGFECompositeElement: P.SvgElement, SVGFEConvolveMatrixElement: P.SvgElement, SVGFEDiffuseLightingElement: P.SvgElement, SVGFEDisplacementMapElement: P.SvgElement, SVGFEDistantLightElement: P.SvgElement, SVGFEFloodElement: P.SvgElement, SVGFEFuncAElement: P.SvgElement, SVGFEFuncBElement: P.SvgElement, SVGFEFuncGElement: P.SvgElement, SVGFEFuncRElement: P.SvgElement, SVGFEGaussianBlurElement: P.SvgElement, SVGFEImageElement: P.SvgElement, SVGFEMergeElement: P.SvgElement, SVGFEMergeNodeElement: P.SvgElement, SVGFEMorphologyElement: P.SvgElement, SVGFEOffsetElement: P.SvgElement, SVGFEPointLightElement: P.SvgElement, SVGFESpecularLightingElement: P.SvgElement, SVGFESpotLightElement: P.SvgElement, SVGFETileElement: P.SvgElement, SVGFETurbulenceElement: P.SvgElement, SVGFilterElement: P.SvgElement, SVGForeignObjectElement: P.SvgElement, SVGGElement: P.SvgElement, SVGGeometryElement: P.SvgElement, SVGGraphicsElement: P.SvgElement, SVGImageElement: P.SvgElement, SVGLineElement: P.SvgElement, SVGLinearGradientElement: P.SvgElement, SVGMarkerElement: P.SvgElement, SVGMaskElement: P.SvgElement, SVGMetadataElement: P.SvgElement, SVGPathElement: P.SvgElement, SVGPatternElement: P.SvgElement, SVGPolygonElement: P.SvgElement, SVGPolylineElement: P.SvgElement, SVGRadialGradientElement: P.SvgElement, SVGRectElement: P.SvgElement, SVGSetElement: P.SvgElement, SVGStopElement: P.SvgElement, SVGStyleElement: P.SvgElement, SVGSVGElement: P.SvgElement, SVGSwitchElement: P.SvgElement, SVGSymbolElement: P.SvgElement, SVGTSpanElement: P.SvgElement, SVGTextContentElement: P.SvgElement, SVGTextElement: P.SvgElement, SVGTextPathElement: P.SvgElement, SVGTextPositioningElement: P.SvgElement, SVGTitleElement: P.SvgElement, SVGUseElement: P.SvgElement, SVGViewElement: P.SvgElement, SVGGradientElement: P.SvgElement, SVGComponentTransferFunctionElement: P.SvgElement, SVGFEDropShadowElement: P.SvgElement, SVGMPathElement: P.SvgElement, SVGElement: P.SvgElement});
+    hunkHelpers.setOrUpdateLeafTags({Blob: true, DOMError: true, File: true, MediaError: true, NavigatorUserMediaError: true, OverconstrainedError: true, PositionError: true, Range: true, SQLError: true, ArrayBuffer: true, ArrayBufferView: false, Int8Array: true, Uint32Array: true, Uint8Array: false, HTMLAudioElement: true, HTMLBRElement: true, HTMLButtonElement: true, HTMLCanvasElement: true, HTMLContentElement: true, HTMLDListElement: true, HTMLDataElement: true, HTMLDataListElement: true, HTMLDetailsElement: true, HTMLDialogElement: true, HTMLEmbedElement: true, HTMLFieldSetElement: true, HTMLHRElement: true, HTMLHeadElement: true, HTMLHtmlElement: true, HTMLIFrameElement: true, HTMLInputElement: true, HTMLLIElement: true, HTMLLabelElement: true, HTMLLegendElement: true, HTMLLinkElement: true, HTMLMapElement: true, HTMLMediaElement: true, HTMLMenuElement: true, HTMLMetaElement: true, HTMLMeterElement: true, HTMLModElement: true, HTMLOListElement: true, HTMLObjectElement: true, HTMLOptGroupElement: true, HTMLOptionElement: true, HTMLOutputElement: true, HTMLParagraphElement: true, HTMLParamElement: true, HTMLPictureElement: true, HTMLPreElement: true, HTMLProgressElement: true, HTMLQuoteElement: true, HTMLScriptElement: true, HTMLShadowElement: true, HTMLSlotElement: true, HTMLSourceElement: true, HTMLSpanElement: true, HTMLStyleElement: true, HTMLTableCaptionElement: true, HTMLTableCellElement: true, HTMLTableDataCellElement: true, HTMLTableHeaderCellElement: true, HTMLTableColElement: true, HTMLTextAreaElement: true, HTMLTimeElement: true, HTMLTitleElement: true, HTMLTrackElement: true, HTMLUListElement: true, HTMLUnknownElement: true, HTMLVideoElement: true, HTMLDirectoryElement: true, HTMLFontElement: true, HTMLFrameElement: true, HTMLFrameSetElement: true, HTMLMarqueeElement: true, HTMLElement: false, HTMLAnchorElement: true, HTMLAreaElement: true, HTMLBaseElement: true, HTMLBodyElement: true, CDATASection: true, CharacterData: true, Comment: true, ProcessingInstruction: true, Text: true, HTMLDivElement: true, XMLDocument: true, Document: false, DOMException: true, DOMImplementation: true, DOMTokenList: true, Element: false, AbortPaymentEvent: true, AnimationEvent: true, AnimationPlaybackEvent: true, ApplicationCacheErrorEvent: true, BackgroundFetchClickEvent: true, BackgroundFetchEvent: true, BackgroundFetchFailEvent: true, BackgroundFetchedEvent: true, BeforeInstallPromptEvent: true, BeforeUnloadEvent: true, BlobEvent: true, CanMakePaymentEvent: true, ClipboardEvent: true, CloseEvent: true, CompositionEvent: true, CustomEvent: true, DeviceMotionEvent: true, DeviceOrientationEvent: true, ErrorEvent: true, ExtendableEvent: true, ExtendableMessageEvent: true, FetchEvent: true, FocusEvent: true, FontFaceSetLoadEvent: true, ForeignFetchEvent: true, GamepadEvent: true, HashChangeEvent: true, InstallEvent: true, KeyboardEvent: true, MediaEncryptedEvent: true, MediaKeyMessageEvent: true, MediaQueryListEvent: true, MediaStreamEvent: true, MediaStreamTrackEvent: true, MessageEvent: true, MIDIConnectionEvent: true, MIDIMessageEvent: true, MouseEvent: true, DragEvent: true, MutationEvent: true, NotificationEvent: true, PageTransitionEvent: true, PaymentRequestEvent: true, PaymentRequestUpdateEvent: true, PointerEvent: true, PopStateEvent: true, PresentationConnectionAvailableEvent: true, PresentationConnectionCloseEvent: true, PromiseRejectionEvent: true, PushEvent: true, RTCDataChannelEvent: true, RTCDTMFToneChangeEvent: true, RTCPeerConnectionIceEvent: true, RTCTrackEvent: true, SecurityPolicyViolationEvent: true, SensorErrorEvent: true, SpeechRecognitionError: true, SpeechRecognitionEvent: true, SpeechSynthesisEvent: true, StorageEvent: true, SyncEvent: true, TextEvent: true, TouchEvent: true, TrackEvent: true, TransitionEvent: true, WebKitTransitionEvent: true, UIEvent: true, VRDeviceEvent: true, VRDisplayEvent: true, VRSessionEvent: true, WheelEvent: true, MojoInterfaceRequestEvent: true, USBConnectionEvent: true, IDBVersionChangeEvent: true, AudioProcessingEvent: true, OfflineAudioCompletionEvent: true, WebGLContextEvent: true, Event: false, InputEvent: false, SubmitEvent: false, Window: true, DOMWindow: true, EventTarget: false, HTMLFormElement: true, HTMLHeadingElement: true, HTMLCollection: true, HTMLFormControlsCollection: true, HTMLOptionsCollection: true, HTMLDocument: true, XMLHttpRequest: true, XMLHttpRequestEventTarget: false, HTMLImageElement: true, Location: true, DocumentFragment: true, ShadowRoot: true, DocumentType: true, Node: false, NodeList: true, RadioNodeList: true, ProgressEvent: true, ResourceProgressEvent: true, HTMLSelectElement: true, HTMLTableElement: true, HTMLTableRowElement: true, HTMLTableSectionElement: true, HTMLTemplateElement: true, Attr: true, NamedNodeMap: true, MozNamedAttrMap: true, SVGScriptElement: true, SVGAElement: true, SVGAnimateElement: true, SVGAnimateMotionElement: true, SVGAnimateTransformElement: true, SVGAnimationElement: true, SVGCircleElement: true, SVGClipPathElement: true, SVGDefsElement: true, SVGDescElement: true, SVGDiscardElement: true, SVGEllipseElement: true, SVGFEBlendElement: true, SVGFEColorMatrixElement: true, SVGFEComponentTransferElement: true, SVGFECompositeElement: true, SVGFEConvolveMatrixElement: true, SVGFEDiffuseLightingElement: true, SVGFEDisplacementMapElement: true, SVGFEDistantLightElement: true, SVGFEFloodElement: true, SVGFEFuncAElement: true, SVGFEFuncBElement: true, SVGFEFuncGElement: true, SVGFEFuncRElement: true, SVGFEGaussianBlurElement: true, SVGFEImageElement: true, SVGFEMergeElement: true, SVGFEMergeNodeElement: true, SVGFEMorphologyElement: true, SVGFEOffsetElement: true, SVGFEPointLightElement: true, SVGFESpecularLightingElement: true, SVGFESpotLightElement: true, SVGFETileElement: true, SVGFETurbulenceElement: true, SVGFilterElement: true, SVGForeignObjectElement: true, SVGGElement: true, SVGGeometryElement: true, SVGGraphicsElement: true, SVGImageElement: true, SVGLineElement: true, SVGLinearGradientElement: true, SVGMarkerElement: true, SVGMaskElement: true, SVGMetadataElement: true, SVGPathElement: true, SVGPatternElement: true, SVGPolygonElement: true, SVGPolylineElement: true, SVGRadialGradientElement: true, SVGRectElement: true, SVGSetElement: true, SVGStopElement: true, SVGStyleElement: true, SVGSVGElement: true, SVGSwitchElement: true, SVGSymbolElement: true, SVGTSpanElement: true, SVGTextContentElement: true, SVGTextElement: true, SVGTextPathElement: true, SVGTextPositioningElement: true, SVGTitleElement: true, SVGUseElement: true, SVGViewElement: true, SVGGradientElement: true, SVGComponentTransferFunctionElement: true, SVGFEDropShadowElement: true, SVGMPathElement: true, SVGElement: false});
     H.NativeTypedArray.$nativeSuperclassTag = "ArrayBufferView";
     H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin.$nativeSuperclassTag = "ArrayBufferView";
     H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin_FixedLengthListMixin.$nativeSuperclassTag = "ArrayBufferView";

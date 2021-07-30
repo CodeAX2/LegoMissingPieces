@@ -2354,13 +2354,30 @@
 											"height": 13,
 											"text": "+setState(stateType: DisplayStateType)",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAF6+G3owFnhf0M=",
+											"_parent": {
+												"$ref": "AAAAAAF6pfqDmZXMfoI="
+											},
+											"model": {
+												"$ref": "AAAAAAF6+G3orlnYkAc="
+											},
+											"font": "Arial;13;0",
+											"left": 1381,
+											"top": 217,
+											"width": 309.63232421875,
+											"height": 13,
+											"text": "+getProject(): LegoSetProject",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 1376,
 									"top": 182,
 									"width": 319.63232421875,
-									"height": 38
+									"height": 53
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -7527,6 +7544,27 @@
 									"type": {
 										"$ref": "AAAAAAF6pgT+hKnuoK0="
 									}
+								}
+							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAF6+G3orlnYkAc=",
+							"_parent": {
+								"$ref": "AAAAAAF6pfqDmJXDvy0="
+							},
+							"name": "getProject",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAF6+G4OP1o5iTE=",
+									"_parent": {
+										"$ref": "AAAAAAF6+G3orlnYkAc="
+									},
+									"type": {
+										"$ref": "AAAAAAF6pckzYn4zbAI="
+									},
+									"direction": "return"
 								}
 							]
 						}

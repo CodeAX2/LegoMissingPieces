@@ -5,7 +5,16 @@ class LoadingState extends DisplayState {
     _app.registerState(DisplayStateType.LOADING, this);
   }
 
-  void renderToDiv(String divID) {}
+  void renderToDiv(String divID) {
+    DivElement parentDiv = document.getElementById(divID);
+
+    parentDiv.appendHtml('''
+
+    <h1>Loading</h1>
+
+
+    ''');
+  }
 
   void onActivate() {}
 

@@ -1,0 +1,33 @@
+#pvNavDiv {
+  height: 100%;
+  width: 25%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.pvNavSetDiv {
+  width: 100%;
+  margin-bottom: 80px;
+}
+
+.pvNavSetImg {
+  width: 50%;
+  margin: 0 auto;
+  display: block;
+}
+
+.pvNavSetTitle {
+  text-align: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+
+.pvNavSetSubtitle {
+  display: inline-block;
+  width: 50%;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 0;
+}

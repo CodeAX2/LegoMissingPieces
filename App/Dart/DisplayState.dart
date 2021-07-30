@@ -1,8 +1,12 @@
 library DisplayState;
 
 import 'App.dart';
+import 'dart:html';
+import 'LegoSetProject.dart';
+import 'LegoSet.dart';
 
 part 'LoadingState.dart';
+part 'ProjectViewState.dart';
 
 enum DisplayStateType { LOADING, PROJECT_VIEW, ADD_SET, EDIT_PIECES, ALL_MISSING_PIECES_VIEW }
 
