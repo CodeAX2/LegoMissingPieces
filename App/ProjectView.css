@@ -1,33 +1,84 @@
+#pvContainerDiv {
+    display: flex;
+    height: 100%;
+}
+
 #pvNavDiv {
-  height: 100%;
-  width: 25%;
-  overflow-y: auto;
-  overflow-x: hidden;
+    height: 100%;
+    width: 25%;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .pvNavSetDiv {
-  width: 100%;
-  margin-bottom: 80px;
+    width: 100%;
+    margin-bottom: 80px;
+    cursor: pointer;
 }
 
 .pvNavSetImg {
-  width: 50%;
-  margin: 0 auto;
-  display: block;
+    width: 50%;
+    margin: 0 auto;
+    display: block;
 }
 
 .pvNavSetTitle {
-  text-align: center;
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-bottom: 0;
-  margin-top: 10px;
+    text-align: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 0;
+    margin-top: 10px;
 }
 
 .pvNavSetSubtitle {
-  display: inline-block;
-  width: 50%;
-  text-align: center;
-  margin-top: 0;
-  margin-bottom: 0;
+    display: inline-block;
+    width: 50%;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#pvSetViewDiv {
+    width: 75%;
+    height: 100%;
+    position: relative;
+}
+
+#pvSetViewDiv>img {
+    width: 50%;
+    margin: 0 auto;
+    display: block;
+}
+
+#pvSetViewDiv>p {
+    white-space: pre;
+}
+
+#pvSetViewDiv>#pvEditPiecesBtn {}
+
+#pvSetViewDiv>#pvRemoveSetBtn {}
+
+#pvDeleteConfirmationDiv {
+    position: absolute;
+    background-color: red;
+    display: block;
+    width: 80%;
+    height: 20%;
+    left: 10%;
+    top: -20%;
+}
+
+.pvDeleteConfirmationAnim {
+    animation: deleteConfirmationAnimation 0.25s ease-out forwards;
+}
+
+@keyframes deleteConfirmationAnimation {
+    from {
+        top: -20%;
+        opacity: 0;
+    }
+    to {
+        top: 20px;
+        opacity: 0.5;
+    }
 }

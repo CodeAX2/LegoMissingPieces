@@ -68,16 +68,18 @@ class LegoSet {
 
       List<dynamic> partsList = partsJsonData["results"];
       for (int i = 0; i < partsList.length; i++) {
-        String partID = partsList[i]["part"]["part_num"];
-        int colorID = partsList[i]["color"]["id"];
-        String imageURL = partsList[i]["part"]["part_img_url"];
+        if (!partsList[i]["is_spare"]) {
+          String partID = partsList[i]["part"]["part_num"];
+          int colorID = partsList[i]["color"]["id"];
+          String imageURL = partsList[i]["part"]["part_img_url"];
 
-        LegoPiece piece = LegoPiece.getPieceWithoutAPI(partID, colorID, imageURL);
+          LegoPiece piece = LegoPiece.getPieceWithoutAPI(partID, colorID, imageURL);
 
-        int numInSet = partsList[i]["quantity"];
+          int numInSet = partsList[i]["quantity"];
 
-        _pieces[piece] = numInSet;
-        _piecesOwned[piece] = 0;
+          _pieces[piece] = numInSet;
+          _piecesOwned[piece] = 0;
+        }
       }
 
       partsPage++;
