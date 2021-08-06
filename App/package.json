@@ -9,6 +9,6 @@
   "author": "Jacob Hofer",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^13.1.6"
+    "electron": "^13.1.8"
   }
 }
