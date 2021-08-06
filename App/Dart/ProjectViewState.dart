@@ -4,6 +4,7 @@ class ProjectViewState extends DisplayState {
   LegoSet _selectedSet;
   DivElement _setViewDiv;
   DivElement _deleteConfirmationDiv;
+  DivElement _divRenderingTo;
 
   ProjectViewState(App app) : super(app) {
     _app.registerState(DisplayStateType.PROJECT_VIEW, this);
@@ -12,12 +13,12 @@ class ProjectViewState extends DisplayState {
   void renderToDiv(String divID) {
     LegoSetProject project = _app.getProject();
 
-    DivElement divRenderingTo = document.getElementById(divID);
-    divRenderingTo.children.clear();
+    _divRenderingTo = document.getElementById(divID);
+    _divRenderingTo.children.clear();
 
     DivElement parentDiv = new DivElement();
     parentDiv.id = "pvContainerDiv";
-    divRenderingTo.append(parentDiv);
+    _divRenderingTo.append(parentDiv);
 
     DivElement leftNavDiv = new DivElement();
     leftNavDiv.id = "pvNavDiv";
@@ -52,6 +53,22 @@ class ProjectViewState extends DisplayState {
       setDiv.append(setYear);
     }
 
+    ButtonElement addSetButton = new ButtonElement();
+    addSetButton.text = "Add Set";
+    addSetButton.id = "pvAddSetBtn";
+    addSetButton.onClick.listen((event) {
+      _app.setCurrentState(DisplayStateType.ADD_SET);
+    });
+    leftNavDiv.append(addSetButton);
+
+    ButtonElement viewAllMissingButton = new ButtonElement();
+    viewAllMissingButton.text = "View All Missing Pieces";
+    viewAllMissingButton.id = "pvViewAllMissingBtn";
+    viewAllMissingButton.onClick.listen((event) {
+      _app.setCurrentState(DisplayStateType.ALL_MISSING_PIECES_VIEW);
+    });
+    leftNavDiv.append(viewAllMissingButton);
+
     _setViewDiv = new DivElement();
     _setViewDiv.id = "pvSetViewDiv";
     parentDiv.append(_setViewDiv);
@@ -60,6 +77,31 @@ class ProjectViewState extends DisplayState {
 
     _deleteConfirmationDiv = new DivElement();
     _deleteConfirmationDiv.id = "pvDeleteConfirmationDiv";
+
+    HeadingElement deleteHeading = HeadingElement.h1();
+    deleteHeading.text = "Are You Sure You Want To Proceed?";
+    _deleteConfirmationDiv.append(deleteHeading);
+
+    ParagraphElement deleteInformation = new ParagraphElement();
+    deleteInformation.text =
+        "This will remove the set from the current project, and any parts you have marked as missing. Are you sure you want to proceed?";
+    _deleteConfirmationDiv.append(deleteInformation);
+
+    ButtonElement deleteConfirmButton = new ButtonElement();
+    deleteConfirmButton.id = "pvDeleteConfirmationBtn";
+    deleteConfirmButton.text = "Remove Set";
+    deleteConfirmButton.onClick.listen((event) {
+      _deleteCurrentSet();
+    });
+    _deleteConfirmationDiv.append(deleteConfirmButton);
+
+    ButtonElement confirmationCloseButton = new ButtonElement();
+    confirmationCloseButton.id = "pvConfirmationCloseBtn";
+    confirmationCloseButton.text = "X";
+    confirmationCloseButton.onClick.listen((event) {
+      _hideDeletionConfirm();
+    });
+    _deleteConfirmationDiv.append(confirmationCloseButton);
   }
 
   void selectSet(LegoSet set) {
@@ -93,7 +135,9 @@ class ProjectViewState extends DisplayState {
     ButtonElement editPiecesButton = new ButtonElement();
     editPiecesButton.text = "Edit Missing Pieces";
     editPiecesButton.id = "pvEditPiecesBtn";
-    editPiecesButton.onClick.listen((event) {});
+    editPiecesButton.onClick.listen((event) {
+      _app.setCurrentState(DisplayStateType.EDIT_PIECES);
+    });
 
     _setViewDiv.append(editPiecesButton);
 
@@ -106,12 +150,25 @@ class ProjectViewState extends DisplayState {
 
     _setViewDiv.append(removeSetButton);
 
-    _deleteConfirmationDiv.classes.removeWhere((element) => element == "pvDeleteConfirmationAnim");
+    _deleteConfirmationDiv.classes
+        .removeWhere((element) => element == "pvDeleteConfirmationAnim");
     _setViewDiv.append(_deleteConfirmationDiv);
   }
 
   void _showDeletionConfirm() {
     _deleteConfirmationDiv.classes.add("pvDeleteConfirmationAnim");
+  }
+
+  void _hideDeletionConfirm() {
+    _deleteConfirmationDiv.getAnimations()[0].reverse();
+    _deleteConfirmationDiv.getAnimations()[0].finished.then((value) =>
+        {_deleteConfirmationDiv.classes.remove("pvDeleteConfirmationAnim")});
+  }
+
+  void _deleteCurrentSet() {
+    _app.getProject().removeSet(_selectedSet.getSetID());
+    _selectedSet = null;
+    renderToDiv(_divRenderingTo.id);
   }
 
   void onActivate() {}

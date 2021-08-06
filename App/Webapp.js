@@ -312,7 +312,10 @@
       return new P.StateError("Too few elements");
     },
     Sort_sort: function(a, compare, $E) {
-      H.Sort__doSort(a, 0, J.get$length$asx(a) - 1, compare, $E);
+      var t1 = J.get$length$asx(a);
+      if (typeof t1 !== "number")
+        return t1.$sub();
+      H.Sort__doSort(a, 0, t1 - 1, compare, $E);
     },
     Sort__doSort: function(a, left, right, compare, $E) {
       if (right - left <= 32)
@@ -843,11 +846,16 @@
     },
     Primitives_stringFromNativeUint8List: function(charCodes, start, end) {
       var i, result, i0, chunkEnd;
+      if (typeof end !== "number")
+        return end.$le();
       if (end <= 500 && start === 0 && end === charCodes.length)
         return String.fromCharCode.apply(null, charCodes);
       for (i = start, result = ""; i < end; i = i0) {
         i0 = i + 500;
-        chunkEnd = i0 < end ? i0 : end;
+        if (i0 < end)
+          chunkEnd = i0;
+        else
+          chunkEnd = end;
         result += String.fromCharCode.apply(null, charCodes.subarray(i, chunkEnd));
       }
       return result;
@@ -1133,6 +1141,13 @@
         index1 = index0 + 1;
         result.$indexSet(0, keyValuePairs[index], keyValuePairs[index0]);
       }
+      return result;
+    },
+    fillLiteralSet: function(values, result) {
+      var index,
+        $length = values.length;
+      for (index = 0; index < $length; ++index)
+        result.add$1(0, values[index]);
       return result;
     },
     invokeClosure: function(closure, numberOfArguments, arg1, arg2, arg3, arg4) {
@@ -1669,7 +1684,7 @@
     },
     ConstantStringMap: function ConstantStringMap(t0, t1, t2, t3) {
       var _ = this;
-      _.__js_helper$_length = t0;
+      _._length = t0;
       _._jsObject = t1;
       _._keys = t2;
       _.$ti = t3;
@@ -1733,7 +1748,7 @@
     },
     JsLinkedHashMap: function JsLinkedHashMap(t0) {
       var _ = this;
-      _.__js_helper$_length = 0;
+      _._length = 0;
       _._last = _._first = _.__js_helper$_rest = _._nums = _._strings = null;
       _._modifications = 0;
       _.$ti = t0;
@@ -1805,13 +1820,21 @@
       _.__js_helper$_current = null;
     },
     _ensureNativeList: function(list) {
-      var t1, result, i;
+      var t1, result, i, t2;
       if (type$.JSIndexable_dynamic._is(list))
         return list;
       t1 = J.getInterceptor$asx(list);
       result = P.List_List$filled(t1.get$length(list), null, false, type$.dynamic);
-      for (i = 0; i < t1.get$length(list); ++i)
+      i = 0;
+      while (true) {
+        t2 = t1.get$length(list);
+        if (typeof t2 !== "number")
+          return H.iae(t2);
+        if (!(i < t2))
+          break;
         C.JSArray_methods.$indexSet(result, i, t1.$index(list, i));
+        ++i;
+      }
       return result;
     },
     NativeInt8List__create1: function(arg) {
@@ -1841,13 +1864,27 @@
     },
     NativeTypedArray: function NativeTypedArray() {
     },
+    NativeTypedArrayOfDouble: function NativeTypedArrayOfDouble() {
+    },
     NativeTypedArrayOfInt: function NativeTypedArrayOfInt() {
+    },
+    NativeInt16List: function NativeInt16List() {
+    },
+    NativeInt32List: function NativeInt32List() {
     },
     NativeInt8List: function NativeInt8List() {
     },
+    NativeUint16List: function NativeUint16List() {
+    },
     NativeUint32List: function NativeUint32List() {
     },
+    NativeUint8ClampedList: function NativeUint8ClampedList() {
+    },
     NativeUint8List: function NativeUint8List() {
+    },
+    _NativeTypedArrayOfDouble_NativeTypedArray_ListMixin: function _NativeTypedArrayOfDouble_NativeTypedArray_ListMixin() {
+    },
+    _NativeTypedArrayOfDouble_NativeTypedArray_ListMixin_FixedLengthListMixin: function _NativeTypedArrayOfDouble_NativeTypedArray_ListMixin_FixedLengthListMixin() {
     },
     _NativeTypedArrayOfInt_NativeTypedArray_ListMixin: function _NativeTypedArrayOfInt_NativeTypedArray_ListMixin() {
     },
@@ -3498,6 +3535,9 @@
     get$attributes$x: function(receiver) {
       return J.getInterceptor$x(receiver).get$attributes(receiver);
     },
+    get$current$z: function(receiver) {
+      return J.getInterceptor$z(receiver).get$current(receiver);
+    },
     get$hashCode$: function(receiver) {
       return J.getInterceptor$(receiver).get$hashCode(receiver);
     },
@@ -3541,9 +3581,6 @@
     $indexSet$ax: function(receiver, a0, a1) {
       return J.getInterceptor$ax(receiver).$indexSet(receiver, a0, a1);
     },
-    _addEventListener$3$x: function(receiver, a0, a1, a2) {
-      return J.getInterceptor$x(receiver)._addEventListener$3(receiver, a0, a1, a2);
-    },
     _codeUnitAt$1$s: function(receiver, a0) {
       return J.getInterceptor$s(receiver)._codeUnitAt$1(receiver, a0);
     },
@@ -3552,6 +3589,9 @@
     },
     add$1$ax: function(receiver, a0) {
       return J.getInterceptor$ax(receiver).add$1(receiver, a0);
+    },
+    addEventListener$3$x: function(receiver, a0, a1, a2) {
+      return J.getInterceptor$x(receiver).addEventListener$3(receiver, a0, a1, a2);
     },
     allMatches$1$s: function(receiver, a0) {
       return J.getInterceptor$s(receiver).allMatches$1(receiver, a0);
@@ -3568,6 +3608,9 @@
     elementAt$1$ax: function(receiver, a0) {
       return J.getInterceptor$ax(receiver).elementAt$1(receiver, a0);
     },
+    forEach$1$ax: function(receiver, a0) {
+      return J.getInterceptor$ax(receiver).forEach$1(receiver, a0);
+    },
     insertBefore$2$x: function(receiver, a0, a1) {
       return J.getInterceptor$x(receiver).insertBefore$2(receiver, a0, a1);
     },
@@ -3579,6 +3622,9 @@
     },
     remove$0$x: function(receiver) {
       return J.getInterceptor$x(receiver).remove$0(receiver);
+    },
+    reverse$0$x: function(receiver) {
+      return J.getInterceptor$x(receiver).reverse$0(receiver);
     },
     send$1$x: function(receiver, a0) {
       return J.getInterceptor$x(receiver).send$1(receiver, a0);
@@ -4010,7 +4056,7 @@
     },
     _cancelAndValue: function(subscription, future, value) {
       var action, t1, t2,
-        cancelFuture = subscription.cancel$0();
+        cancelFuture = subscription.cancel$0(0);
       if (cancelFuture != null && cancelFuture !== $.$get$Future__nullFuture()) {
         action = type$.dynamic_Function._as(new P._cancelAndValue_closure(future, value));
         t1 = H._instanceType(cancelFuture);
@@ -4342,6 +4388,9 @@
     LinkedHashSet_LinkedHashSet$_empty: function($E) {
       return new P._LinkedHashSet($E._eval$1("_LinkedHashSet<0>"));
     },
+    LinkedHashSet_LinkedHashSet$_literal: function(values, $E) {
+      return $E._eval$1("LinkedHashSet<0>")._as(H.fillLiteralSet(values, new P._LinkedHashSet($E._eval$1("_LinkedHashSet<0>"))));
+    },
     _LinkedHashSet__newHashTable: function() {
       var table = Object.create(null);
       table["<non-identifier-key>"] = table;
@@ -4407,7 +4456,7 @@
           break;
         if (!it.moveNext$0())
           return;
-        next = H.S(it.get$current());
+        next = H.S(it.get$current(it));
         C.JSArray_methods.add$1(parts, next);
         $length += next.length + 2;
         ++count;
@@ -4422,7 +4471,7 @@
           return H.ioore(parts, -1);
         penultimateString = parts.pop();
       } else {
-        penultimate = it.get$current();
+        penultimate = it.get$current(it);
         ++count;
         if (!it.moveNext$0()) {
           if (count <= 4) {
@@ -4435,10 +4484,10 @@
           penultimateString = parts.pop();
           $length += ultimateString.length + 2;
         } else {
-          ultimate = it.get$current();
+          ultimate = it.get$current(it);
           ++count;
           for (; it.moveNext$0(); penultimate = ultimate, ultimate = ultimate0) {
-            ultimate0 = it.get$current();
+            ultimate0 = it.get$current(it);
             ++count;
             if (count > 100) {
               while (true) {
@@ -4499,7 +4548,7 @@
         C.JSArray_methods.add$1($._toStringVisiting, m);
         result._contents += "{";
         t1.first = true;
-        m.forEach$1(0, new P.MapBase_mapToString_closure(t1, result));
+        J.forEach$1$ax(m, new P.MapBase_mapToString_closure(t1, result));
         result._contents += "}";
       } finally {
         if (0 >= $._toStringVisiting.length)
@@ -4511,7 +4560,7 @@
     },
     _LinkedIdentityHashMap: function _LinkedIdentityHashMap(t0) {
       var _ = this;
-      _.__js_helper$_length = 0;
+      _._length = 0;
       _._last = _._first = _.__js_helper$_rest = _._nums = _._strings = null;
       _._modifications = 0;
       _.$ti = t0;
@@ -4521,7 +4570,7 @@
       _._equals = t0;
       _._hashCode = t1;
       _._validKey = t2;
-      _.__js_helper$_length = 0;
+      _._length = 0;
       _._last = _._first = _.__js_helper$_rest = _._nums = _._strings = null;
       _._modifications = 0;
       _.$ti = t3;
@@ -4673,9 +4722,11 @@
       }
     },
     _Utf8Decoder__makeUint8List: function(codeUnits, start, end) {
-      var t1, i, b,
-        $length = end - start,
-        bytes = new Uint8Array($length);
+      var $length, bytes, t1, i, b;
+      if (typeof end !== "number")
+        return end.$sub();
+      $length = end - start;
+      bytes = new Uint8Array($length);
       for (t1 = J.getInterceptor$asx(codeUnits), i = 0; i < $length; ++i) {
         b = t1.$index(codeUnits, start + i);
         if (typeof b !== "number")
@@ -4776,7 +4827,7 @@
       var t1,
         list = H.setRuntimeTypeInfo([], $E._eval$1("JSArray<0>"));
       for (t1 = J.get$iterator$ax(elements); t1.moveNext$0();)
-        C.JSArray_methods.add$1(list, $E._as(t1.get$current()));
+        C.JSArray_methods.add$1(list, $E._as(t1.get$current(t1)));
       if (growable)
         return list;
       return J.JSArray_markFixedList(list, $E);
@@ -4794,7 +4845,7 @@
         return H.setRuntimeTypeInfo(elements.slice(0), $E._eval$1("JSArray<0>"));
       list = H.setRuntimeTypeInfo([], $E._eval$1("JSArray<0>"));
       for (t1 = J.get$iterator$ax(elements); t1.moveNext$0();)
-        C.JSArray_methods.add$1(list, t1.get$current());
+        C.JSArray_methods.add$1(list, t1.get$current(t1));
       return list;
     },
     List_List$unmodifiable: function(elements, $E) {
@@ -4846,12 +4897,12 @@
         return string;
       if (separator.length === 0) {
         do
-          string += H.S(iterator.get$current());
+          string += H.S(iterator.get$current(iterator));
         while (iterator.moveNext$0());
       } else {
-        string += H.S(iterator.get$current());
+        string += H.S(iterator.get$current(iterator));
         for (; iterator.moveNext$0();)
-          string = string + separator + H.S(iterator.get$current());
+          string = string + separator + H.S(iterator.get$current(iterator));
       }
       return string;
     },
@@ -4923,15 +4974,35 @@
       return new P.RangeError(minValue, maxValue, true, invalidValue, $name, "Invalid value");
     },
     RangeError_checkValueInInterval: function(value, minValue, maxValue, $name) {
-      if (value < minValue || value > maxValue)
+      var t1;
+      if (value >= minValue) {
+        if (typeof maxValue !== "number")
+          return H.iae(maxValue);
+        t1 = value > maxValue;
+      } else
+        t1 = true;
+      if (t1)
         throw H.wrapException(P.RangeError$range(value, minValue, maxValue, $name, null));
       return value;
     },
     RangeError_checkValidRange: function(start, end, $length) {
-      if (0 > start || start > $length)
+      var t1;
+      if (0 <= start) {
+        if (typeof $length !== "number")
+          return H.iae($length);
+        t1 = start > $length;
+      } else
+        t1 = true;
+      if (t1)
         throw H.wrapException(P.RangeError$range(start, 0, $length, "start", null));
       if (end != null) {
-        if (start > end || end > $length)
+        if (!(start > end)) {
+          if (typeof $length !== "number")
+            return H.iae($length);
+          t1 = end > $length;
+        } else
+          t1 = true;
+        if (t1)
           throw H.wrapException(P.RangeError$range(end, start, $length, "end", null));
         return end;
       }
@@ -5264,7 +5335,7 @@
     _Uri__checkNonWindowsPathReservedCharacters: function(segments, argumentError) {
       var t1, t2;
       for (t1 = J.get$iterator$ax(segments); t1.moveNext$0();) {
-        t2 = t1.get$current();
+        t2 = t1.get$current(t1);
         if (J.contains$1$asx(t2, "/")) {
           t1 = P.UnsupportedError$("Illegal path character " + t2);
           throw H.wrapException(t1);
@@ -5274,7 +5345,7 @@
     _Uri__checkWindowsPathReservedCharacters: function(segments, argumentError, firstSegment) {
       var t1, t2;
       for (t1 = J.skip$1$ax(segments, firstSegment), t1 = t1.get$iterator(t1); t1.moveNext$0();) {
-        t2 = t1.get$current();
+        t2 = t1.get$current(t1);
         if (J.contains$1$asx(t2, P.RegExp_RegExp('["*/:<>?\\\\|]'))) {
           t1 = P.UnsupportedError$("Illegal character in path: " + t2);
           throw H.wrapException(t1);
@@ -5828,10 +5899,13 @@
       return -1;
     },
     _Uri__toWindowsFilePath: function(uri) {
-      var hasDriveLetter, t2, host,
+      var hasDriveLetter, host,
         segments = uri.get$pathSegments(),
-        t1 = J.getInterceptor$asx(segments);
-      if (t1.get$length(segments) > 0 && J.get$length$asx(t1.$index(segments, 0)) === 2 && J.codeUnitAt$1$s(t1.$index(segments, 0), 1) === 58) {
+        t1 = J.getInterceptor$asx(segments),
+        t2 = t1.get$length(segments);
+      if (typeof t2 !== "number")
+        return t2.$gt();
+      if (t2 > 0 && J.get$length$asx(t1.$index(segments, 0)) === 2 && J.codeUnitAt$1$s(t1.$index(segments, 0), 1) === 58) {
         P._Uri__checkWindowsDriveLetter(J.codeUnitAt$1$s(t1.$index(segments, 0), 0), false);
         P._Uri__checkWindowsPathReservedCharacters(segments, false, 1);
         hasDriveLetter = true;
@@ -5959,7 +6033,7 @@
       C.JSArray_methods.add$1(indices, i);
       t2 = i + 1;
       if ((indices.length & 1) === 1)
-        text = C.C_Base64Codec.normalize$3(text, t2, t1);
+        text = C.C_Base64Codec.normalize$3(0, text, t2, t1);
       else {
         data = P._Uri__normalize(text, t2, t1, C.List_CVk, true);
         if (data != null)
@@ -6269,6 +6343,18 @@
       _._fragment = t6;
       _.___Uri_hashCode = _.___Uri_pathSegments = _.___Uri__text = $;
     },
+    convertNativeToDart_Dictionary: function(object) {
+      var dict, keys, t1, _i, t2;
+      if (object == null)
+        return null;
+      dict = P.LinkedHashMap_LinkedHashMap$_empty(type$.String, type$.dynamic);
+      keys = Object.getOwnPropertyNames(object);
+      for (t1 = keys.length, _i = 0; _i < keys.length; keys.length === t1 || (0, H.throwConcurrentModificationError)(keys), ++_i) {
+        t2 = H._asStringS(keys[_i]);
+        dict.$indexSet(0, t2, object[t2]);
+      }
+      return dict;
+    },
     _AcceptStructuredClone: function _AcceptStructuredClone() {
     },
     _AcceptStructuredClone_walk_closure: function _AcceptStructuredClone_walk_closure(t0, t1) {
@@ -6296,9 +6382,62 @@
     promiseToFuture_closure0: function promiseToFuture_closure0(t0) {
       this.completer = t0;
     },
+    Length: function Length() {
+    },
+    LengthList: function LengthList() {
+    },
+    Number: function Number() {
+    },
+    NumberList: function NumberList() {
+    },
+    PointList: function PointList() {
+    },
     ScriptElement0: function ScriptElement0() {
     },
+    StringList: function StringList() {
+    },
     SvgElement: function SvgElement() {
+    },
+    Transform: function Transform() {
+    },
+    TransformList: function TransformList() {
+    },
+    _LengthList_Interceptor_ListMixin: function _LengthList_Interceptor_ListMixin() {
+    },
+    _LengthList_Interceptor_ListMixin_ImmutableListMixin: function _LengthList_Interceptor_ListMixin_ImmutableListMixin() {
+    },
+    _NumberList_Interceptor_ListMixin: function _NumberList_Interceptor_ListMixin() {
+    },
+    _NumberList_Interceptor_ListMixin_ImmutableListMixin: function _NumberList_Interceptor_ListMixin_ImmutableListMixin() {
+    },
+    _StringList_Interceptor_ListMixin: function _StringList_Interceptor_ListMixin() {
+    },
+    _StringList_Interceptor_ListMixin_ImmutableListMixin: function _StringList_Interceptor_ListMixin_ImmutableListMixin() {
+    },
+    _TransformList_Interceptor_ListMixin: function _TransformList_Interceptor_ListMixin() {
+    },
+    _TransformList_Interceptor_ListMixin_ImmutableListMixin: function _TransformList_Interceptor_ListMixin_ImmutableListMixin() {
+    },
+    AudioBuffer: function AudioBuffer() {
+    },
+    AudioParamMap: function AudioParamMap() {
+    },
+    AudioParamMap_keys_closure: function AudioParamMap_keys_closure(t0) {
+      this.keys = t0;
+    },
+    AudioTrackList: function AudioTrackList() {
+    },
+    BaseAudioContext: function BaseAudioContext() {
+    },
+    OfflineAudioContext: function OfflineAudioContext() {
+    },
+    _AudioParamMap_Interceptor_MapMixin: function _AudioParamMap_Interceptor_MapMixin() {
+    },
+    SqlResultSetRowList: function SqlResultSetRowList() {
+    },
+    _SqlResultSetRowList_Interceptor_ListMixin: function _SqlResultSetRowList_Interceptor_ListMixin() {
+    },
+    _SqlResultSetRowList_Interceptor_ListMixin_ImmutableListMixin: function _SqlResultSetRowList_Interceptor_ListMixin_ImmutableListMixin() {
     },
     max: function(a, b, $T) {
       H.checkTypeBound($T, type$.num, "T", "max");
@@ -6335,6 +6474,17 @@
       if (src != null)
         C.ImageElement_methods.set$src(e, src);
       return e;
+    },
+    _JenkinsSmiHash_combine: function(hash, value) {
+      hash = hash + value & 536870911;
+      hash = hash + ((hash & 524287) << 10) & 536870911;
+      return hash ^ hash >>> 6;
+    },
+    _JenkinsSmiHash_hash4: function(a, b, c, d) {
+      var t1 = W._JenkinsSmiHash_combine(W._JenkinsSmiHash_combine(W._JenkinsSmiHash_combine(W._JenkinsSmiHash_combine(0, a), b), c), d),
+        hash = t1 + ((t1 & 67108863) << 3) & 536870911;
+      hash ^= hash >>> 11;
+      return hash + ((hash & 16383) << 15) & 536870911;
     },
     _ElementCssClassSet__removeWhere: function(_element, test, doRemove) {
       var i, t1,
@@ -6416,17 +6566,41 @@
     },
     HtmlElement: function HtmlElement() {
     },
+    AccessibleNodeList: function AccessibleNodeList() {
+    },
     AnchorElement: function AnchorElement() {
+    },
+    Animation: function Animation() {
     },
     AreaElement: function AreaElement() {
     },
     BaseElement: function BaseElement() {
+    },
+    Blob: function Blob() {
     },
     BodyElement: function BodyElement() {
     },
     ButtonElement: function ButtonElement() {
     },
     CharacterData: function CharacterData() {
+    },
+    CssPerspective: function CssPerspective() {
+    },
+    CssRule: function CssRule() {
+    },
+    CssStyleDeclaration: function CssStyleDeclaration() {
+    },
+    CssStyleDeclarationBase: function CssStyleDeclarationBase() {
+    },
+    CssStyleValue: function CssStyleValue() {
+    },
+    CssTransformComponent: function CssTransformComponent() {
+    },
+    CssTransformValue: function CssTransformValue() {
+    },
+    CssUnparsedValue: function CssUnparsedValue() {
+    },
+    DataTransferItemList: function DataTransferItemList() {
     },
     DivElement: function DivElement() {
     },
@@ -6435,6 +6609,12 @@
     DomException: function DomException() {
     },
     DomImplementation: function DomImplementation() {
+    },
+    DomRectList: function DomRectList() {
+    },
+    DomRectReadOnly: function DomRectReadOnly() {
+    },
+    DomStringList: function DomStringList() {
     },
     DomTokenList: function DomTokenList() {
     },
@@ -6446,9 +6626,19 @@
     },
     EventTarget: function EventTarget() {
     },
+    File: function File() {
+    },
+    FileList: function FileList() {
+    },
+    FileWriter: function FileWriter() {
+    },
     FormElement: function FormElement() {
     },
+    Gamepad: function Gamepad() {
+    },
     HeadingElement: function HeadingElement() {
+    },
+    History: function History() {
     },
     HtmlCollection: function HtmlCollection() {
     },
@@ -6462,6 +6652,22 @@
     },
     Location: function Location() {
     },
+    MediaList: function MediaList() {
+    },
+    MidiInputMap: function MidiInputMap() {
+    },
+    MidiInputMap_keys_closure: function MidiInputMap_keys_closure(t0) {
+      this.keys = t0;
+    },
+    MidiOutputMap: function MidiOutputMap() {
+    },
+    MidiOutputMap_keys_closure: function MidiOutputMap_keys_closure(t0) {
+      this.keys = t0;
+    },
+    MimeType: function MimeType() {
+    },
+    MimeTypeArray: function MimeTypeArray() {
+    },
     MouseEvent: function MouseEvent() {
     },
     _ChildNodeListLazy: function _ChildNodeListLazy(t0) {
@@ -6473,9 +6679,35 @@
     },
     ParagraphElement: function ParagraphElement() {
     },
+    Plugin: function Plugin() {
+    },
+    PluginArray: function PluginArray() {
+    },
     ProgressEvent: function ProgressEvent() {
     },
+    RtcStatsReport: function RtcStatsReport() {
+    },
+    RtcStatsReport_keys_closure: function RtcStatsReport_keys_closure(t0) {
+      this.keys = t0;
+    },
     SelectElement: function SelectElement() {
+    },
+    SourceBuffer: function SourceBuffer() {
+    },
+    SourceBufferList: function SourceBufferList() {
+    },
+    SpeechGrammar: function SpeechGrammar() {
+    },
+    SpeechGrammarList: function SpeechGrammarList() {
+    },
+    SpeechRecognitionResult: function SpeechRecognitionResult() {
+    },
+    Storage: function Storage() {
+    },
+    Storage_keys_closure: function Storage_keys_closure(t0) {
+      this.keys = t0;
+    },
+    StyleSheet: function StyleSheet() {
     },
     TableElement: function TableElement() {
     },
@@ -6485,11 +6717,41 @@
     },
     TemplateElement: function TemplateElement() {
     },
+    TextTrack: function TextTrack() {
+    },
+    TextTrackCue: function TextTrackCue() {
+    },
+    TextTrackCueList: function TextTrackCueList() {
+    },
+    TextTrackList: function TextTrackList() {
+    },
+    TimeRanges: function TimeRanges() {
+    },
+    Touch: function Touch() {
+    },
+    TouchList: function TouchList() {
+    },
+    TrackDefaultList: function TrackDefaultList() {
+    },
     UIEvent: function UIEvent() {
+    },
+    Url: function Url() {
+    },
+    VideoTrackList: function VideoTrackList() {
     },
     _Attr: function _Attr() {
     },
+    _CssRuleList: function _CssRuleList() {
+    },
+    _DomRect: function _DomRect() {
+    },
+    _GamepadList: function _GamepadList() {
+    },
     _NamedNodeMap: function _NamedNodeMap() {
+    },
+    _SpeechRecognitionResultList: function _SpeechRecognitionResultList() {
+    },
+    _StyleSheetList: function _StyleSheetList() {
     },
     _AttributeMap: function _AttributeMap() {
     },
@@ -6565,7 +6827,7 @@
     FixedSizeListIterator: function FixedSizeListIterator(t0, t1, t2) {
       var _ = this;
       _._array = t0;
-      _._length = t1;
+      _._html$_length = t1;
       _._position = -1;
       _._current = null;
       _.$ti = t2;
@@ -6581,17 +6843,83 @@
     _ValidatingTreeSanitizer_sanitizeTree_walk: function _ValidatingTreeSanitizer_sanitizeTree_walk(t0) {
       this.$this = t0;
     },
+    _CssStyleDeclaration_Interceptor_CssStyleDeclarationBase: function _CssStyleDeclaration_Interceptor_CssStyleDeclarationBase() {
+    },
+    _DomRectList_Interceptor_ListMixin: function _DomRectList_Interceptor_ListMixin() {
+    },
+    _DomRectList_Interceptor_ListMixin_ImmutableListMixin: function _DomRectList_Interceptor_ListMixin_ImmutableListMixin() {
+    },
+    _DomStringList_Interceptor_ListMixin: function _DomStringList_Interceptor_ListMixin() {
+    },
+    _DomStringList_Interceptor_ListMixin_ImmutableListMixin: function _DomStringList_Interceptor_ListMixin_ImmutableListMixin() {
+    },
+    _FileList_Interceptor_ListMixin: function _FileList_Interceptor_ListMixin() {
+    },
+    _FileList_Interceptor_ListMixin_ImmutableListMixin: function _FileList_Interceptor_ListMixin_ImmutableListMixin() {
+    },
     _HtmlCollection_Interceptor_ListMixin: function _HtmlCollection_Interceptor_ListMixin() {
     },
     _HtmlCollection_Interceptor_ListMixin_ImmutableListMixin: function _HtmlCollection_Interceptor_ListMixin_ImmutableListMixin() {
+    },
+    _MidiInputMap_Interceptor_MapMixin: function _MidiInputMap_Interceptor_MapMixin() {
+    },
+    _MidiOutputMap_Interceptor_MapMixin: function _MidiOutputMap_Interceptor_MapMixin() {
+    },
+    _MimeTypeArray_Interceptor_ListMixin: function _MimeTypeArray_Interceptor_ListMixin() {
+    },
+    _MimeTypeArray_Interceptor_ListMixin_ImmutableListMixin: function _MimeTypeArray_Interceptor_ListMixin_ImmutableListMixin() {
     },
     _NodeList_Interceptor_ListMixin: function _NodeList_Interceptor_ListMixin() {
     },
     _NodeList_Interceptor_ListMixin_ImmutableListMixin: function _NodeList_Interceptor_ListMixin_ImmutableListMixin() {
     },
+    _PluginArray_Interceptor_ListMixin: function _PluginArray_Interceptor_ListMixin() {
+    },
+    _PluginArray_Interceptor_ListMixin_ImmutableListMixin: function _PluginArray_Interceptor_ListMixin_ImmutableListMixin() {
+    },
+    _RtcStatsReport_Interceptor_MapMixin: function _RtcStatsReport_Interceptor_MapMixin() {
+    },
+    _SourceBufferList_EventTarget_ListMixin: function _SourceBufferList_EventTarget_ListMixin() {
+    },
+    _SourceBufferList_EventTarget_ListMixin_ImmutableListMixin: function _SourceBufferList_EventTarget_ListMixin_ImmutableListMixin() {
+    },
+    _SpeechGrammarList_Interceptor_ListMixin: function _SpeechGrammarList_Interceptor_ListMixin() {
+    },
+    _SpeechGrammarList_Interceptor_ListMixin_ImmutableListMixin: function _SpeechGrammarList_Interceptor_ListMixin_ImmutableListMixin() {
+    },
+    _Storage_Interceptor_MapMixin: function _Storage_Interceptor_MapMixin() {
+    },
+    _TextTrackCueList_Interceptor_ListMixin: function _TextTrackCueList_Interceptor_ListMixin() {
+    },
+    _TextTrackCueList_Interceptor_ListMixin_ImmutableListMixin: function _TextTrackCueList_Interceptor_ListMixin_ImmutableListMixin() {
+    },
+    _TextTrackList_EventTarget_ListMixin: function _TextTrackList_EventTarget_ListMixin() {
+    },
+    _TextTrackList_EventTarget_ListMixin_ImmutableListMixin: function _TextTrackList_EventTarget_ListMixin_ImmutableListMixin() {
+    },
+    _TouchList_Interceptor_ListMixin: function _TouchList_Interceptor_ListMixin() {
+    },
+    _TouchList_Interceptor_ListMixin_ImmutableListMixin: function _TouchList_Interceptor_ListMixin_ImmutableListMixin() {
+    },
+    __CssRuleList_Interceptor_ListMixin: function __CssRuleList_Interceptor_ListMixin() {
+    },
+    __CssRuleList_Interceptor_ListMixin_ImmutableListMixin: function __CssRuleList_Interceptor_ListMixin_ImmutableListMixin() {
+    },
+    __GamepadList_Interceptor_ListMixin: function __GamepadList_Interceptor_ListMixin() {
+    },
+    __GamepadList_Interceptor_ListMixin_ImmutableListMixin: function __GamepadList_Interceptor_ListMixin_ImmutableListMixin() {
+    },
     __NamedNodeMap_Interceptor_ListMixin: function __NamedNodeMap_Interceptor_ListMixin() {
     },
     __NamedNodeMap_Interceptor_ListMixin_ImmutableListMixin: function __NamedNodeMap_Interceptor_ListMixin_ImmutableListMixin() {
+    },
+    __SpeechRecognitionResultList_Interceptor_ListMixin: function __SpeechRecognitionResultList_Interceptor_ListMixin() {
+    },
+    __SpeechRecognitionResultList_Interceptor_ListMixin_ImmutableListMixin: function __SpeechRecognitionResultList_Interceptor_ListMixin_ImmutableListMixin() {
+    },
+    __StyleSheetList_Interceptor_ListMixin: function __StyleSheetList_Interceptor_ListMixin() {
+    },
+    __StyleSheetList_Interceptor_ListMixin_ImmutableListMixin: function __StyleSheetList_Interceptor_ListMixin_ImmutableListMixin() {
     }
   },
   M = {CanonicalizedMap: function CanonicalizedMap() {
@@ -6857,7 +7185,7 @@
       var t1, t2, t3,
         highlightsByUrl = Y.groupBy(highlights, new U.Highlighter__collateLines_closure(), type$._Highlight, type$.nullable_Uri);
       for (t1 = highlightsByUrl.get$values(highlightsByUrl), t1 = t1.get$iterator(t1); t1.moveNext$0();)
-        J.sort$1$ax(t1.get$current(), new U.Highlighter__collateLines_closure0());
+        J.sort$1$ax(t1.get$current(t1), new U.Highlighter__collateLines_closure0());
       t1 = highlightsByUrl.get$values(highlightsByUrl);
       t2 = H._instanceType(t1);
       t3 = t2._eval$1("ExpandIterable<Iterable.E,_Line>");
@@ -6878,26 +7206,27 @@
           --endOffset;
       t1 = span.get$start(span);
       t2 = span.get$sourceUrl(span);
-      t3 = span.get$end(span).get$line();
+      t3 = span.get$end(span);
+      t3 = t3.get$line(t3);
       t2 = V.SourceLocation$(endOffset, span.get$end(span).get$column(), t3, t2);
       t3 = H.stringReplaceAllUnchecked(text, "\r\n", "\n");
-      t4 = span.get$context();
+      t4 = span.get$context(span);
       return X.SourceSpanWithContext$(t1, t2, t3, H.stringReplaceAllUnchecked(t4, "\r\n", "\n"));
     },
     _Highlight__normalizeTrailingNewline: function(span) {
       var context, text, start, end, t1, t2, t3;
-      if (!C.JSString_methods.endsWith$1(span.get$context(), "\n"))
+      if (!C.JSString_methods.endsWith$1(span.get$context(span), "\n"))
         return span;
       if (C.JSString_methods.endsWith$1(span.get$text(span), "\n\n"))
         return span;
-      context = C.JSString_methods.substring$2(span.get$context(), 0, span.get$context().length - 1);
+      context = C.JSString_methods.substring$2(span.get$context(span), 0, span.get$context(span).length - 1);
       text = span.get$text(span);
       start = span.get$start(span);
       end = span.get$end(span);
       if (C.JSString_methods.endsWith$1(span.get$text(span), "\n")) {
-        t1 = B.findLineStart(span.get$context(), span.get$text(span), span.get$start(span).get$column());
+        t1 = B.findLineStart(span.get$context(span), span.get$text(span), span.get$start(span).get$column());
         t1.toString;
-        t1 = t1 + span.get$start(span).get$column() + span.get$length(span) === span.get$context().length;
+        t1 = t1 + span.get$start(span).get$column() + span.get$length(span) === span.get$context(span).length;
       } else
         t1 = false;
       if (t1) {
@@ -6908,7 +7237,8 @@
           t1 = span.get$end(span);
           t1 = t1.get$offset(t1);
           t2 = span.get$sourceUrl(span);
-          t3 = span.get$end(span).get$line();
+          t3 = span.get$end(span);
+          t3 = t3.get$line(t3);
           if (typeof t3 !== "number")
             return t3.$sub();
           end = V.SourceLocation$(t1 - 1, U._Highlight__lastLineLength(context), t3 - 1, t2);
@@ -6921,21 +7251,25 @@
       return X.SourceSpanWithContext$(start, end, text, context);
     },
     _Highlight__normalizeEndOfLine: function(span) {
-      var text, t1, t2, t3, t4;
+      var t1, t2, text, t3, t4;
       if (span.get$end(span).get$column() !== 0)
         return span;
-      if (span.get$end(span).get$line() == span.get$start(span).get$line())
+      t1 = span.get$end(span);
+      t1 = t1.get$line(t1);
+      t2 = span.get$start(span);
+      if (t1 == t2.get$line(t2))
         return span;
       text = C.JSString_methods.substring$2(span.get$text(span), 0, span.get$text(span).length - 1);
       t1 = span.get$start(span);
       t2 = span.get$end(span);
       t2 = t2.get$offset(t2);
       t3 = span.get$sourceUrl(span);
-      t4 = span.get$end(span).get$line();
+      t4 = span.get$end(span);
+      t4 = t4.get$line(t4);
       if (typeof t4 !== "number")
         return t4.$sub();
       t3 = V.SourceLocation$(t2 - 1, text.length - C.JSString_methods.lastIndexOf$1(text, "\n") - 1, t4 - 1, t3);
-      return X.SourceSpanWithContext$(t1, t3, text, C.JSString_methods.endsWith$1(span.get$context(), "\n") ? C.JSString_methods.substring$2(span.get$context(), 0, span.get$context().length - 1) : span.get$context());
+      return X.SourceSpanWithContext$(t1, t3, text, C.JSString_methods.endsWith$1(span.get$context(span), "\n") ? C.JSString_methods.substring$2(span.get$context(span), 0, span.get$context(span).length - 1) : span.get$context(span));
     },
     _Highlight__lastLineLength: function(text) {
       var t1 = text.length;
@@ -7215,7 +7549,7 @@
   },
   V = {BufferModule: function BufferModule() {
     }, BufferConstants: function BufferConstants() {
-    }, Buffer: function Buffer() {
+    }, Buffer0: function Buffer0() {
     },
     SourceLocation$: function(offset, column, line, sourceUrl) {
       var t1 = line == null,
@@ -7266,7 +7600,7 @@
     }, Readable: function Readable() {
     }, Writable: function Writable() {
     }, Duplex: function Duplex() {
-    }, Transform: function Transform() {
+    }, Transform0: function Transform0() {
     }, WritableOptions: function WritableOptions() {
     }, ReadableOptions: function ReadableOptions() {
     }, SourceLocationMixin: function SourceLocationMixin() {
@@ -7477,14 +7811,25 @@
       this._app = null;
     }, ProjectViewState: function ProjectViewState() {
       var _ = this;
-      _._app = _._deleteConfirmationDiv = _._setViewDiv = _._selectedSet = null;
+      _._app = _._divRenderingTo = _._deleteConfirmationDiv = _._setViewDiv = _._selectedSet = null;
     }, ProjectViewState_renderToDiv_closure: function ProjectViewState_renderToDiv_closure(t0, t1) {
       this.$this = t0;
       this.set = t1;
-    }, ProjectViewState__renderSelectedSet_closure: function ProjectViewState__renderSelectedSet_closure() {
+    }, ProjectViewState_renderToDiv_closure0: function ProjectViewState_renderToDiv_closure0(t0) {
+      this.$this = t0;
+    }, ProjectViewState_renderToDiv_closure1: function ProjectViewState_renderToDiv_closure1(t0) {
+      this.$this = t0;
+    }, ProjectViewState_renderToDiv_closure2: function ProjectViewState_renderToDiv_closure2(t0) {
+      this.$this = t0;
+    }, ProjectViewState_renderToDiv_closure3: function ProjectViewState_renderToDiv_closure3(t0) {
+      this.$this = t0;
+    }, ProjectViewState__renderSelectedSet_closure: function ProjectViewState__renderSelectedSet_closure(t0) {
+      this.$this = t0;
     }, ProjectViewState__renderSelectedSet_closure0: function ProjectViewState__renderSelectedSet_closure0(t0) {
       this.$this = t0;
     }, ProjectViewState__renderSelectedSet_closure1: function ProjectViewState__renderSelectedSet_closure1() {
+    }, ProjectViewState__hideDeletionConfirm_closure: function ProjectViewState__hideDeletionConfirm_closure(t0) {
+      this.$this = t0;
     }, LegoSetProject: function LegoSetProject() {
       this._apiAccess = this._filePath = this._sets = null;
     }, LegoSetProject_loadProject_closure: function LegoSetProject_loadProject_closure(t0, t1, t2) {
@@ -7571,11 +7916,9 @@
       receiver.push(value);
     },
     removeAt$1: function(receiver, index) {
-      var t1;
       if (!!receiver.fixed$length)
         H.throwExpression(P.UnsupportedError$("removeAt"));
-      t1 = receiver.length;
-      if (index >= t1)
+      if (index < 0 || index >= receiver.length)
         throw H.wrapException(P.RangeError$value(index, null));
       return receiver.splice(index, 1)[0];
     },
@@ -7590,7 +7933,7 @@
       receiver.splice(index, 0, value);
     },
     insertAll$2: function(receiver, index, iterable) {
-      var insertionLength, end;
+      var insertionLength, t1, end;
       H._arrayInstanceType(receiver)._eval$1("Iterable<1>")._as(iterable);
       if (!!receiver.fixed$length)
         H.throwExpression(P.UnsupportedError$("insertAll"));
@@ -7598,7 +7941,10 @@
       if (!type$.EfficientLengthIterable_dynamic._is(iterable))
         iterable = J.toList$0$ax(iterable);
       insertionLength = J.get$length$asx(iterable);
-      receiver.length = receiver.length + insertionLength;
+      t1 = receiver.length;
+      if (typeof insertionLength !== "number")
+        return H.iae(insertionLength);
+      receiver.length = t1 + insertionLength;
       end = index + insertionLength;
       this.setRange$4(receiver, end, receiver.length, receiver, index);
       this.setRange$3(receiver, index, end, iterable);
@@ -7639,7 +7985,7 @@
         return;
       }
       for (t1 = J.get$iterator$ax(collection); t1.moveNext$0();)
-        receiver.push(t1.get$current());
+        receiver.push(t1.get$current(t1));
     },
     _addAllFromArray$1: function(receiver, array) {
       var len, i;
@@ -7677,7 +8023,7 @@
       throw H.wrapException(H.IterableElementError_noElement());
     },
     setRange$4: function(receiver, start, end, iterable, skipCount) {
-      var $length, otherList, otherStart, t1, i;
+      var $length, otherList, otherStart, t1, t2, i;
       H._arrayInstanceType(receiver)._eval$1("Iterable<1>")._as(iterable);
       if (!!receiver.immutable$list)
         H.throwExpression(P.UnsupportedError$("setRange"));
@@ -7694,7 +8040,10 @@
         otherStart = 0;
       }
       t1 = J.getInterceptor$asx(otherList);
-      if (otherStart + $length > t1.get$length(otherList))
+      t2 = t1.get$length(otherList);
+      if (typeof t2 !== "number")
+        return H.iae(t2);
+      if (otherStart + $length > t2)
         throw H.wrapException(H.IterableElementError_tooFew());
       if (otherStart < start)
         for (i = $length - 1; i >= 0; --i)
@@ -7809,7 +8158,7 @@
   };
   J.JSUnmodifiableArray.prototype = {};
   J.ArrayIterator.prototype = {
-    get$current: function() {
+    get$current: function(_) {
       return this.__interceptors$_current;
     },
     moveNext$0: function() {
@@ -7923,6 +8272,7 @@
       return other > 31 ? 0 : receiver >>> other;
     },
     $isComparable: 1,
+    $isdouble: 1,
     $isnum: 1
   };
   J.JSInt.prototype = {$isint: 1};
@@ -7980,6 +8330,8 @@
     },
     replaceRange$3: function(receiver, start, end, replacement) {
       var e = P.RangeError_checkValidRange(start, end, receiver.length);
+      if (!H._isInt(e))
+        H.throwExpression(H.argumentErrorValue(e));
       return H.stringReplaceRangeUnchecked(receiver, start, e, replacement);
     },
     startsWith$2: function(receiver, pattern, index) {
@@ -8151,16 +8503,24 @@
         if ($length === 0)
           return "";
         first = H.S(_this.elementAt$1(0, 0));
-        if ($length !== _this.get$length(_this))
+        if ($length != _this.get$length(_this))
           throw H.wrapException(P.ConcurrentModificationError$(_this));
-        for (t1 = first, i = 1; i < $length; ++i) {
+        if (typeof $length !== "number")
+          return H.iae($length);
+        t1 = first;
+        i = 1;
+        for (; i < $length; ++i) {
           t1 = t1 + separator + H.S(_this.elementAt$1(0, i));
           if ($length !== _this.get$length(_this))
             throw H.wrapException(P.ConcurrentModificationError$(_this));
         }
         return t1.charCodeAt(0) == 0 ? t1 : t1;
       } else {
-        for (i = 0, t1 = ""; i < $length; ++i) {
+        if (typeof $length !== "number")
+          return H.iae($length);
+        i = 0;
+        t1 = "";
+        for (; i < $length; ++i) {
           t1 += H.S(_this.elementAt$1(0, i));
           if ($length !== _this.get$length(_this))
             throw H.wrapException(P.ConcurrentModificationError$(_this));
@@ -8178,7 +8538,10 @@
       if ($length === 0)
         throw H.wrapException(H.IterableElementError_noElement());
       value = _this.elementAt$1(0, 0);
-      for (i = 1; i < $length; ++i) {
+      if (typeof $length !== "number")
+        return H.iae($length);
+      i = 1;
+      for (; i < $length; ++i) {
         value = combine.call$2(value, _this.elementAt$1(0, i));
         if ($length !== _this.get$length(_this))
           throw H.wrapException(P.ConcurrentModificationError$(_this));
@@ -8202,15 +8565,24 @@
       }
     },
     get$_endIndex: function() {
-      var $length = J.get$length$asx(this.__internal$_iterable),
+      var t1,
+        $length = J.get$length$asx(this.__internal$_iterable),
         endOrLength = this._endOrLength;
-      if (endOrLength == null || endOrLength > $length)
+      if (endOrLength != null) {
+        if (typeof $length !== "number")
+          return H.iae($length);
+        t1 = endOrLength > $length;
+      } else
+        t1 = true;
+      if (t1)
         return $length;
       return endOrLength;
     },
     get$_startIndex: function() {
       var $length = J.get$length$asx(this.__internal$_iterable),
         t1 = this.__internal$_start;
+      if (typeof $length !== "number")
+        return H.iae($length);
       if (t1 > $length)
         return $length;
       return t1;
@@ -8219,6 +8591,8 @@
       var endOrLength,
         $length = J.get$length$asx(this.__internal$_iterable),
         t1 = this.__internal$_start;
+      if (typeof $length !== "number")
+        return H.iae($length);
       if (t1 >= $length)
         return 0;
       endOrLength = this._endOrLength;
@@ -8231,10 +8605,19 @@
     elementAt$1: function(_, index) {
       var realIndex, _this = this,
         t1 = _this.get$_startIndex();
+      if (typeof t1 !== "number")
+        return t1.$add();
       if (typeof index !== "number")
         return H.iae(index);
       realIndex = t1 + index;
-      if (index < 0 || realIndex >= _this.get$_endIndex())
+      if (index >= 0) {
+        t1 = _this.get$_endIndex();
+        if (typeof t1 !== "number")
+          return H.iae(t1);
+        t1 = realIndex >= t1;
+      } else
+        t1 = true;
+      if (t1)
         throw H.wrapException(P.IndexError$(index, _this, "index", null, null));
       return J.elementAt$1$ax(_this.__internal$_iterable, realIndex);
     },
@@ -8248,13 +8631,19 @@
       return H.SubListIterable$(_this.__internal$_iterable, newStart, endOrLength, _this.$ti._precomputed1);
     },
     toList$1$growable: function(_, growable) {
-      var $length, result, i, _this = this,
+      var t3, $length, result, i, _this = this,
         start = _this.__internal$_start,
         t1 = _this.__internal$_iterable,
         t2 = J.getInterceptor$asx(t1),
         end = t2.get$length(t1),
         endOrLength = _this._endOrLength;
-      if (endOrLength != null && endOrLength < end)
+      if (endOrLength != null) {
+        if (typeof end !== "number")
+          return H.iae(end);
+        t3 = endOrLength < end;
+      } else
+        t3 = false;
+      if (t3)
         end = endOrLength;
       if (typeof end !== "number")
         return end.$sub();
@@ -8266,14 +8655,17 @@
       result = P.List_List$filled($length, t2.elementAt$1(t1, start), false, _this.$ti._precomputed1);
       for (i = 1; i < $length; ++i) {
         C.JSArray_methods.$indexSet(result, i, t2.elementAt$1(t1, start + i));
-        if (t2.get$length(t1) < end)
+        t3 = t2.get$length(t1);
+        if (typeof t3 !== "number")
+          return t3.$lt();
+        if (t3 < end)
           throw H.wrapException(P.ConcurrentModificationError$(_this));
       }
       return result;
     }
   };
   H.ListIterator.prototype = {
-    get$current: function() {
+    get$current: function(_) {
       return this.__internal$_current;
     },
     moveNext$0: function() {
@@ -8281,9 +8673,11 @@
         t1 = _this.__internal$_iterable,
         t2 = J.getInterceptor$asx(t1),
         $length = t2.get$length(t1);
-      if (_this.__internal$_length !== $length)
+      if (_this.__internal$_length != $length)
         throw H.wrapException(P.ConcurrentModificationError$(t1));
       t3 = _this.__internal$_index;
+      if (typeof $length !== "number")
+        return H.iae($length);
       if (t3 >= $length) {
         _this.set$__internal$_current(null);
         return false;
@@ -8312,13 +8706,13 @@
       var _this = this,
         t1 = _this._iterator;
       if (t1.moveNext$0()) {
-        _this.set$__internal$_current(_this._f.call$1(t1.get$current()));
+        _this.set$__internal$_current(_this._f.call$1(t1.get$current(t1)));
         return true;
       }
       _this.set$__internal$_current(null);
       return false;
     },
-    get$current: function() {
+    get$current: function(_) {
       return this.__internal$_current;
     },
     set$__internal$_current: function(_current) {
@@ -8342,12 +8736,13 @@
     moveNext$0: function() {
       var t1, t2;
       for (t1 = this._iterator, t2 = this._f; t1.moveNext$0();)
-        if (H.boolConversionCheck(t2.call$1(t1.get$current())))
+        if (H.boolConversionCheck(t2.call$1(t1.get$current(t1))))
           return true;
       return false;
     },
-    get$current: function() {
-      return this._iterator.get$current();
+    get$current: function(_) {
+      var t1 = this._iterator;
+      return t1.get$current(t1);
     }
   };
   H.ExpandIterable.prototype = {
@@ -8357,7 +8752,7 @@
     }
   };
   H.ExpandIterator.prototype = {
-    get$current: function() {
+    get$current: function(_) {
       return this.__internal$_current;
     },
     moveNext$0: function() {
@@ -8368,11 +8763,12 @@
         _this.set$__internal$_current(null);
         if (t1.moveNext$0()) {
           _this.set$_currentExpansion(null);
-          _this.set$_currentExpansion(J.get$iterator$ax(t2.call$1(t1.get$current())));
+          _this.set$_currentExpansion(J.get$iterator$ax(t2.call$1(t1.get$current(t1))));
         } else
           return false;
       }
-      _this.set$__internal$_current(_this._currentExpansion.get$current());
+      t1 = _this._currentExpansion;
+      _this.set$__internal$_current(t1.get$current(t1));
       return true;
     },
     set$_currentExpansion: function(_currentExpansion) {
@@ -8394,7 +8790,11 @@
   };
   H.EfficientLengthSkipIterable.prototype = {
     get$length: function(_) {
-      var $length = J.get$length$asx(this.__internal$_iterable) - this._skipCount;
+      var $length,
+        t1 = J.get$length$asx(this.__internal$_iterable);
+      if (typeof t1 !== "number")
+        return t1.$sub();
+      $length = t1 - this._skipCount;
       if ($length >= 0)
         return $length;
       return 0;
@@ -8413,8 +8813,9 @@
       this._skipCount = 0;
       return t1.moveNext$0();
     },
-    get$current: function() {
-      return this._iterator.get$current();
+    get$current: function(_) {
+      var t1 = this._iterator;
+      return t1.get$current(t1);
     }
   };
   H.EmptyIterable.prototype = {
@@ -8437,7 +8838,7 @@
     moveNext$0: function() {
       return false;
     },
-    get$current: function() {
+    get$current: function(_) {
       throw H.wrapException(H.IterableElementError_noElement());
     },
     $isIterator: 1
@@ -8451,12 +8852,13 @@
     moveNext$0: function() {
       var t1, t2;
       for (t1 = this._source, t2 = this.$ti._precomputed1; t1.moveNext$0();)
-        if (t2._is(t1.get$current()))
+        if (t2._is(t1.get$current(t1)))
           return true;
       return false;
     },
-    get$current: function() {
-      return this.$ti._precomputed1._as(this._source.get$current());
+    get$current: function(_) {
+      var t1 = this._source;
+      return this.$ti._precomputed1._as(t1.get$current(t1));
     },
     $isIterator: 1
   };
@@ -8481,6 +8883,8 @@
       var t1 = this._source,
         t2 = J.getInterceptor$asx(t1),
         t3 = t2.get$length(t1);
+      if (typeof t3 !== "number")
+        return t3.$sub();
       if (typeof index !== "number")
         return H.iae(index);
       return t2.elementAt$1(t1, t3 - 1 - index);
@@ -8501,9 +8905,9 @@
   };
   H.ConstantStringMap.prototype = {
     get$length: function(_) {
-      return this.__js_helper$_length;
+      return this._length;
     },
-    containsKey$1: function(key) {
+    containsKey$1: function(_, key) {
       if (typeof key != "string")
         return false;
       if ("__proto__" === key)
@@ -8511,7 +8915,7 @@
       return this._jsObject.hasOwnProperty(key);
     },
     $index: function(_, key) {
-      if (!this.containsKey$1(key))
+      if (!this.containsKey$1(0, key))
         return null;
       return this._fetch$1(key);
     },
@@ -8679,10 +9083,10 @@
   };
   H.JsLinkedHashMap.prototype = {
     get$length: function(_) {
-      return this.__js_helper$_length;
+      return this._length;
     },
     get$isEmpty: function(_) {
-      return this.__js_helper$_length === 0;
+      return this._length === 0;
     },
     get$keys: function(_) {
       return new H.LinkedHashMapKeyIterable(this, H._instanceType(this)._eval$1("LinkedHashMapKeyIterable<1>"));
@@ -8692,7 +9096,7 @@
         t1 = H._instanceType(_this);
       return H.MappedIterable_MappedIterable(_this.get$keys(_this), new H.JsLinkedHashMap_values_closure(_this), t1._precomputed1, t1._rest[1]);
     },
-    containsKey$1: function(key) {
+    containsKey$1: function(_, key) {
       var strings, nums, _this = this;
       if (typeof key == "string") {
         strings = _this._strings;
@@ -8816,7 +9220,7 @@
         cell._previous = t1;
         _this._last = t1._next = cell;
       }
-      ++_this.__js_helper$_length;
+      ++_this._length;
       _this._modified$0();
       return cell;
     },
@@ -8872,7 +9276,7 @@
   H.LinkedHashMapCell.prototype = {};
   H.LinkedHashMapKeyIterable.prototype = {
     get$length: function(_) {
-      return this._map.__js_helper$_length;
+      return this._map._length;
     },
     get$iterator: function(_) {
       var t1 = this._map,
@@ -8882,7 +9286,7 @@
     }
   };
   H.LinkedHashMapKeyIterator.prototype = {
-    get$current: function() {
+    get$current: function(_) {
       return this.__js_helper$_current;
     },
     moveNext$0: function() {
@@ -8909,19 +9313,19 @@
     call$1: function(o) {
       return this.getTag(o);
     },
-    $signature: 27
+    $signature: 34
   };
   H.initHooks_closure0.prototype = {
     call$2: function(o, tag) {
       return this.getUnknownTag(o, tag);
     },
-    $signature: 45
+    $signature: 46
   };
   H.initHooks_closure1.prototype = {
     call$1: function(tag) {
       return this.prototypeForTag(H._asStringS(tag));
     },
-    $signature: 58
+    $signature: 27
   };
   H.JSSyntaxRegExp.prototype = {
     toString$0: function(_) {
@@ -9004,7 +9408,7 @@
     }
   };
   H._AllMatchesIterator.prototype = {
-    get$current: function() {
+    get$current: function(_) {
       return this.__js_helper$_current;
     },
     moveNext$0: function() {
@@ -9086,7 +9490,7 @@
       _this.__js_helper$_index = end === _this.__js_helper$_index ? end + 1 : end;
       return true;
     },
-    get$current: function() {
+    get$current: function(_) {
       var t1 = this.__js_helper$_current;
       t1.toString;
       return t1;
@@ -9109,8 +9513,39 @@
     get$length: function(receiver) {
       return receiver.length;
     },
+    _setRangeFast$4: function(receiver, start, end, source, skipCount) {
+      var count, sourceLength,
+        targetLength = receiver.length;
+      this._checkPosition$3(receiver, start, targetLength, "start");
+      this._checkPosition$3(receiver, end, targetLength, "end");
+      if (start > end)
+        throw H.wrapException(P.RangeError$range(start, 0, end, null, null));
+      count = end - start;
+      sourceLength = source.length;
+      if (sourceLength - skipCount < count)
+        throw H.wrapException(P.StateError$("Not enough elements"));
+      if (skipCount !== 0 || sourceLength !== count)
+        source = source.subarray(skipCount, skipCount + count);
+      receiver.set(source, start);
+    },
     $isJSIndexable: 1,
     $isJavaScriptIndexingBehavior: 1
+  };
+  H.NativeTypedArrayOfDouble.prototype = {
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      H._checkValidIndex(index, receiver, receiver.length);
+      return receiver[index];
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      H._asDoubleS(value);
+      H._checkValidIndex(index, receiver, receiver.length);
+      receiver[index] = value;
+    },
+    $isEfficientLengthIterable: 1,
+    $isIterable: 1,
+    $isList: 1
   };
   H.NativeTypedArrayOfInt.prototype = {
     $indexSet: function(receiver, index, value) {
@@ -9120,20 +9555,9 @@
       receiver[index] = value;
     },
     setRange$4: function(receiver, start, end, iterable, skipCount) {
-      var targetLength, count, sourceLength, source;
       type$.Iterable_int._as(iterable);
       if (type$.NativeTypedArrayOfInt._is(iterable)) {
-        targetLength = receiver.length;
-        this._checkPosition$3(receiver, start, targetLength, "start");
-        this._checkPosition$3(receiver, end, targetLength, "end");
-        if (start > end)
-          H.throwExpression(P.RangeError$range(start, 0, end, null, null));
-        count = end - start;
-        sourceLength = iterable.length;
-        if (sourceLength - skipCount < count)
-          H.throwExpression(P.StateError$("Not enough elements"));
-        source = skipCount !== 0 || sourceLength !== count ? iterable.subarray(skipCount, skipCount + count) : iterable;
-        receiver.set(source, start);
+        this._setRangeFast$4(receiver, start, end, iterable, skipCount);
         return;
       }
       this.super$ListMixin$setRange(receiver, start, end, iterable, skipCount);
@@ -9145,7 +9569,28 @@
     $isIterable: 1,
     $isList: 1
   };
+  H.NativeInt16List.prototype = {
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      H._checkValidIndex(index, receiver, receiver.length);
+      return receiver[index];
+    }
+  };
+  H.NativeInt32List.prototype = {
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      H._checkValidIndex(index, receiver, receiver.length);
+      return receiver[index];
+    }
+  };
   H.NativeInt8List.prototype = {
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      H._checkValidIndex(index, receiver, receiver.length);
+      return receiver[index];
+    }
+  };
+  H.NativeUint16List.prototype = {
     $index: function(receiver, index) {
       H._asIntS(index);
       H._checkValidIndex(index, receiver, receiver.length);
@@ -9163,6 +9608,16 @@
     },
     $isUint32List: 1
   };
+  H.NativeUint8ClampedList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      H._checkValidIndex(index, receiver, receiver.length);
+      return receiver[index];
+    }
+  };
   H.NativeUint8List.prototype = {
     get$length: function(receiver) {
       return receiver.length;
@@ -9178,6 +9633,8 @@
     $isNativeUint8List: 1,
     $isUint8List: 1
   };
+  H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin.prototype = {};
+  H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin_FixedLengthListMixin.prototype = {};
   H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin.prototype = {};
   H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin_FixedLengthListMixin.prototype = {};
   H.Rti.prototype = {
@@ -9207,7 +9664,7 @@
       t1.storedCallback = null;
       f.call$0();
     },
-    $signature: 8
+    $signature: 13
   };
   P._AsyncRun__initializeScheduleImmediate_closure.prototype = {
     call$1: function(callback) {
@@ -9217,19 +9674,19 @@
       t2 = this.span;
       t1.firstChild ? t1.removeChild(t2) : t1.appendChild(t2);
     },
-    $signature: 31
+    $signature: 30
   };
   P._AsyncRun__scheduleImmediateJsOverride_internalCallback.prototype = {
     call$0: function() {
       this.callback.call$0();
     },
-    $signature: 9
+    $signature: 16
   };
   P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback.prototype = {
     call$0: function() {
       this.callback.call$0();
     },
-    $signature: 9
+    $signature: 16
   };
   P._TimerImpl.prototype = {
     _TimerImpl$2: function(milliseconds, callback) {
@@ -9275,19 +9732,19 @@
     call$1: function(result) {
       return this.bodyFunction.call$2(0, result);
     },
-    $signature: 1
+    $signature: 2
   };
   P._awaitOnObject_closure0.prototype = {
     call$2: function(error, stackTrace) {
       this.bodyFunction.call$2(1, new H.ExceptionAndStackTrace(error, type$.StackTrace._as(stackTrace)));
     },
-    $signature: 29
+    $signature: 58
   };
   P._wrapJsFunctionForAsync_closure.prototype = {
     call$2: function(errorCode, result) {
       this.$protected(H._asIntS(errorCode), result);
     },
-    $signature: 30
+    $signature: 62
   };
   P.AsyncError.prototype = {
     toString$0: function(_) {
@@ -9308,21 +9765,21 @@
     call$1: function(t1) {
       return this._box_0._stackTrace = type$.StackTrace._as(t1);
     },
-    $signature: 33
+    $signature: 42
   };
   P.Future_wait__error_get.prototype = {
     call$0: function() {
       var t1 = this._box_0._error;
       return t1 === $ ? H.throwExpression(H.LateError$localNI("error")) : t1;
     },
-    $signature: 38
+    $signature: 29
   };
   P.Future_wait__stackTrace_get.prototype = {
     call$0: function() {
       var t1 = this._box_0._stackTrace;
       return t1 === $ ? H.throwExpression(H.LateError$localNI("stackTrace")) : t1;
     },
-    $signature: 41
+    $signature: 31
   };
   P.Future_wait_handleError.prototype = {
     call$2: function(theError, theStackTrace) {
@@ -9603,13 +10060,13 @@
         t1._completeError$2(error, stackTrace);
       }
     },
-    $signature: 8
+    $signature: 13
   };
   P._Future__chainForeignFuture_closure0.prototype = {
     call$2: function(error, stackTrace) {
       this.$this._completeError$2(error, type$.StackTrace._as(stackTrace));
     },
-    $signature: 54
+    $signature: 39
   };
   P._Future__chainForeignFuture_closure1.prototype = {
     call$0: function() {
@@ -9680,7 +10137,7 @@
     call$1: function(_) {
       return this.originalSource;
     },
-    $signature: 55
+    $signature: 23
   };
   P._Future__propagateToListeners_handleValueCallback.prototype = {
     call$0: function() {
@@ -9817,7 +10274,7 @@
       var t1 = this.$ti;
       this.set$_async$_onData(P._BufferingStreamSubscription__registerDataHandler(this._zone, t1._eval$1("~(1)?")._as(handleData), t1._precomputed1));
     },
-    cancel$0: function() {
+    cancel$0: function(_) {
       var t1 = this._state &= 4294967279;
       if ((t1 & 8) === 0)
         this._cancel$0();
@@ -9959,7 +10416,7 @@
         if (iterator.moveNext$0()) {
           movedNext = true;
           t1 = dispatch.$ti._precomputed1;
-          t2 = t1._as(iterator.get$current());
+          t2 = t1._as(J.get$current$z(iterator));
           t3 = dispatch._state;
           dispatch._state = t3 | 32;
           dispatch._zone.runUnaryGuarded$1$2(dispatch._async$_onData, t2, t1);
@@ -10018,7 +10475,7 @@
     onData$1: function(handleData) {
       this.$ti._eval$1("~(1)?")._as(handleData);
     },
-    cancel$0: function() {
+    cancel$0: function(_) {
       return $.$get$Future__nullFuture();
     },
     _sendDone$0: function() {
@@ -10182,7 +10639,7 @@
       var t1 = this.$ti;
       this.super$JsLinkedHashMap$internalSet(t1._precomputed1._as(key), t1._rest[1]._as(value));
     },
-    containsKey$1: function(key) {
+    containsKey$1: function(_, key) {
       if (!H.boolConversionCheck(this._validKey.call$1(key)))
         return false;
       return this.super$JsLinkedHashMap$internalContainsKey(key);
@@ -10205,7 +10662,7 @@
     call$1: function(v) {
       return this.K._is(v);
     },
-    $signature: 56
+    $signature: 43
   };
   P._LinkedHashSet.prototype = {
     get$iterator: function(_) {
@@ -10245,9 +10702,9 @@
         nums = _this._collection$_nums;
         return _this._collection$_addHashTableEntry$2(nums == null ? _this._collection$_nums = P._LinkedHashSet__newHashTable() : nums, element);
       } else
-        return _this._add$1(element);
+        return _this._add$1(0, element);
     },
-    _add$1: function(element) {
+    _add$1: function(_, element) {
       var rest, hash, bucket, _this = this;
       H._instanceType(_this)._precomputed1._as(element);
       rest = _this._collection$_rest;
@@ -10271,9 +10728,9 @@
       else if (typeof object == "number" && (object & 1073741823) === object)
         return _this._removeHashTableEntry$2(_this._collection$_nums, object);
       else
-        return _this._remove$1(object);
+        return _this._remove$1(0, object);
     },
-    _remove$1: function(object) {
+    _remove$1: function(_, object) {
       var hash, bucket, index, cell, _this = this,
         rest = _this._collection$_rest;
       if (rest == null)
@@ -10352,11 +10809,12 @@
         if (J.$eq$(bucket[i]._element, element))
           return i;
       return -1;
-    }
+    },
+    $isLinkedHashSet: 1
   };
   P._LinkedHashSetCell.prototype = {};
   P._LinkedHashSetIterator.prototype = {
-    get$current: function() {
+    get$current: function(_) {
       return this._collection$_current;
     },
     moveNext$0: function() {
@@ -10402,8 +10860,16 @@
       }
       first = _this.$index(receiver, 0);
       result = P.List_List$filled(_this.get$length(receiver), first, true, H.instanceType(receiver)._eval$1("ListMixin.E"));
-      for (i = 1; i < _this.get$length(receiver); ++i)
+      i = 1;
+      while (true) {
+        t1 = _this.get$length(receiver);
+        if (typeof t1 !== "number")
+          return H.iae(t1);
+        if (!(i < t1))
+          break;
         C.JSArray_methods.$indexSet(result, i, _this.$index(receiver, i));
+        ++i;
+      }
       return result;
     },
     toList$0: function($receiver) {
@@ -10424,7 +10890,7 @@
         this.$indexSet(receiver, i, fill);
     },
     setRange$4: function(receiver, start, end, iterable, skipCount) {
-      var $length, otherStart, otherList, i,
+      var $length, otherStart, otherList, t2, i,
         t1 = H.instanceType(receiver);
       t1._eval$1("Iterable<ListMixin.E>")._as(iterable);
       P.RangeError_checkValidRange(start, end, this.get$length(receiver));
@@ -10440,7 +10906,10 @@
         otherStart = 0;
       }
       t1 = J.getInterceptor$asx(otherList);
-      if (otherStart + $length > t1.get$length(otherList))
+      t2 = t1.get$length(otherList);
+      if (typeof t2 !== "number")
+        return H.iae(t2);
+      if (otherStart + $length > t2)
         throw H.wrapException(H.IterableElementError_tooFew());
       if (otherStart < start)
         for (i = $length - 1; i >= 0; --i)
@@ -10466,22 +10935,22 @@
       t1._contents = t2 + ": ";
       t1._contents += H.S(v);
     },
-    $signature: 22
+    $signature: 56
   };
   P.MapMixin.prototype = {
-    forEach$1: function(_, action) {
-      var t1, key, _this = this;
-      H._instanceType(_this)._eval$1("~(MapMixin.K,MapMixin.V)")._as(action);
-      for (t1 = J.get$iterator$ax(_this.get$keys(_this)); t1.moveNext$0();) {
-        key = t1.get$current();
-        action.call$2(key, _this.$index(0, key));
+    forEach$1: function(receiver, action) {
+      var t1, key;
+      H.instanceType(receiver)._eval$1("~(MapMixin.K,MapMixin.V)")._as(action);
+      for (t1 = J.get$iterator$ax(this.get$keys(receiver)); t1.moveNext$0();) {
+        key = t1.get$current(t1);
+        action.call$2(key, this.$index(receiver, key));
       }
     },
-    get$length: function(_) {
-      return J.get$length$asx(this.get$keys(this));
+    get$length: function(receiver) {
+      return J.get$length$asx(this.get$keys(receiver));
     },
-    toString$0: function(_) {
-      return P.MapBase_mapToString(this);
+    toString$0: function(receiver) {
+      return P.MapBase_mapToString(receiver);
     },
     $isMap: 1
   };
@@ -10506,7 +10975,8 @@
       return t1.get$length(t1);
     },
     toString$0: function(_) {
-      return this._collection$_map.toString$0(0);
+      var t1 = this._collection$_map;
+      return t1.toString$0(t1);
     },
     $isMap: 1
   };
@@ -10515,7 +10985,7 @@
     addAll$1: function(_, elements) {
       var t1;
       for (t1 = J.get$iterator$ax(H._instanceType(this)._eval$1("Iterable<SetMixin.E>")._as(elements)); t1.moveNext$0();)
-        this.add$1(0, t1.get$current());
+        this.add$1(0, t1.get$current(t1));
     },
     toString$0: function(_) {
       return P.IterableBase_iterableToFullString(this, "{", "}");
@@ -10563,7 +11033,7 @@
       H._asStringS(key);
       if (_this._processed == null)
         _this._data.$indexSet(0, key, value);
-      else if (_this.containsKey$1(key)) {
+      else if (_this.containsKey$1(0, key)) {
         processed = _this._processed;
         processed[key] = value;
         original = _this._original;
@@ -10572,9 +11042,9 @@
       } else
         _this._upgrade$0().$indexSet(0, key, value);
     },
-    containsKey$1: function(key) {
+    containsKey$1: function(_, key) {
       if (this._processed == null)
-        return this._data.containsKey$1(key);
+        return this._data.containsKey$1(0, key);
       if (typeof key != "string")
         return false;
       return Object.prototype.hasOwnProperty.call(this._original, key);
@@ -10660,7 +11130,7 @@
       }
       return null;
     },
-    $signature: 12
+    $signature: 14
   };
   P.Utf8Decoder__decoderNonfatal_closure.prototype = {
     call$0: function() {
@@ -10673,7 +11143,7 @@
       }
       return null;
     },
-    $signature: 12
+    $signature: 14
   };
   P.AsciiCodec.prototype = {
     decode$1: function(_, bytes) {
@@ -10689,6 +11159,8 @@
       type$.List_int._as(bytes);
       t1 = bytes.length;
       end = P.RangeError_checkValidRange(0, null, t1);
+      if (end == null)
+        throw H.wrapException(P.RangeError$("Invalid range"));
       for (t2 = ~this._subsetMask, i = 0; i < end; ++i) {
         if (i >= t1)
           return H.ioore(bytes, i);
@@ -10715,10 +11187,12 @@
   };
   P.AsciiDecoder.prototype = {};
   P.Base64Codec.prototype = {
-    normalize$3: function(source, start, end) {
+    normalize$3: function(_, source, start, end) {
       var inverseAlphabet, i, sliceStart, buffer, firstPadding, firstPaddingSourceIndex, paddingCount, i0, char, i1, digit1, digit2, char0, value, t1, t2, endLength, $length,
         _s31_ = "Invalid base64 encoding length ";
       end = P.RangeError_checkValidRange(start, end, source.length);
+      if (end == null)
+        throw H.wrapException(P.RangeError$("Invalid range"));
       inverseAlphabet = $.$get$_Base64Decoder__inverseAlphabet();
       for (i = start, sliceStart = i, buffer = null, firstPadding = -1, firstPaddingSourceIndex = -1, paddingCount = 0; i < end; i = i0) {
         i0 = i + 1;
@@ -10810,14 +11284,20 @@
   P.ByteConversionSinkBase.prototype = {};
   P._ByteCallbackSink.prototype = {
     add$1: function(_, chunk) {
-      var t1, t2, t3, v, grown, _this = this;
+      var t1, t2, t3, t4, v, grown, _this = this;
       type$.Iterable_int._as(chunk);
       t1 = _this._convert$_buffer;
       t2 = _this._bufferIndex;
       t3 = J.getInterceptor$asx(chunk);
-      if (t3.get$length(chunk) > t1.length - t2) {
+      t4 = t3.get$length(chunk);
+      if (typeof t4 !== "number")
+        return t4.$gt();
+      if (t4 > t1.length - t2) {
         t1 = _this._convert$_buffer;
-        v = t3.get$length(chunk) + t1.length - 1;
+        t2 = t3.get$length(chunk);
+        if (typeof t2 !== "number")
+          return t2.$add();
+        v = t2 + t1.length - 1;
         v |= C.JSInt_methods._shrOtherPositive$1(v, 1);
         v |= v >>> 2;
         v |= v >>> 4;
@@ -10829,8 +11309,15 @@
       }
       t1 = _this._convert$_buffer;
       t2 = _this._bufferIndex;
-      C.NativeUint8List_methods.setRange$3(t1, t2, t2 + t3.get$length(chunk), chunk);
-      _this._bufferIndex = _this._bufferIndex + t3.get$length(chunk);
+      t4 = t3.get$length(chunk);
+      if (typeof t4 !== "number")
+        return H.iae(t4);
+      C.NativeUint8List_methods.setRange$3(t1, t2, t2 + t4, chunk);
+      t4 = _this._bufferIndex;
+      t3 = t3.get$length(chunk);
+      if (typeof t3 !== "number")
+        return H.iae(t3);
+      _this._bufferIndex = t4 + t3;
     },
     close$0: function(_) {
       this._callback.call$1(C.NativeUint8List_methods.sublist$2(this._convert$_buffer, 0, this._bufferIndex));
@@ -10893,6 +11380,8 @@
         errorOffset = 0;
       } else {
         bytes = P._Utf8Decoder__makeUint8List(codeUnits, start, end);
+        if (typeof end !== "number")
+          return end.$sub();
         end -= start;
         errorOffset = start;
         start = 0;
@@ -10908,6 +11397,8 @@
     },
     _convertRecursive$4: function(bytes, start, end, single) {
       var mid, s1, _this = this;
+      if (typeof end !== "number")
+        return end.$sub();
       if (end - start > 1000) {
         mid = C.JSInt_methods._tdivFast$1(start + end, 2);
         s1 = _this._convertRecursive$4(bytes, start, mid, false);
@@ -11287,7 +11778,7 @@
         it = this.get$iterator(this);
       if (!it.moveNext$0())
         throw H.wrapException(H.IterableElementError_noElement());
-      result = it.get$current();
+      result = it.get$current(it);
       if (it.moveNext$0())
         throw H.wrapException(H.IterableElementError_tooMany());
       return result;
@@ -11296,7 +11787,7 @@
       var t1, elementIndex, element;
       P.RangeError_checkNotNegative(index, "index");
       for (t1 = this.get$iterator(this), elementIndex = 0; t1.moveNext$0();) {
-        element = t1.get$current();
+        element = t1.get$current(t1);
         if (index === elementIndex)
           return element;
         ++elementIndex;
@@ -11355,7 +11846,7 @@
     call$2: function(msg, position) {
       throw H.wrapException(P.FormatException$("Illegal IPv4 address, " + msg, this.host, position));
     },
-    $signature: 23
+    $signature: 60
   };
   P.Uri_parseIPv6Address_error.prototype = {
     call$2: function(msg, position) {
@@ -11456,7 +11947,7 @@
       var t1 = this._port;
       return t1 == null ? P._Uri__defaultPort(this.scheme) : t1;
     },
-    get$query: function() {
+    get$query: function(_) {
       var t1 = this._query;
       return t1 == null ? "" : t1;
     },
@@ -11516,7 +12007,7 @@
           targetUserInfo = "";
         }
         targetPath = P._Uri__removeDotSegments(reference.get$path(reference));
-        targetQuery = reference.get$hasQuery() ? reference.get$query() : _null;
+        targetQuery = reference.get$hasQuery() ? reference.get$query(reference) : _null;
       } else {
         targetScheme = _this.scheme;
         if (reference.get$hasAuthority()) {
@@ -11524,14 +12015,14 @@
           targetHost = reference.get$host(reference);
           targetPort = P._Uri__makePort(reference.get$hasPort() ? reference.get$port(reference) : _null, targetScheme);
           targetPath = P._Uri__removeDotSegments(reference.get$path(reference));
-          targetQuery = reference.get$hasQuery() ? reference.get$query() : _null;
+          targetQuery = reference.get$hasQuery() ? reference.get$query(reference) : _null;
         } else {
           targetUserInfo = _this._userInfo;
           targetHost = _this._host;
           targetPort = _this._port;
           targetPath = _this.path;
           if (reference.get$path(reference) === "")
-            targetQuery = reference.get$hasQuery() ? reference.get$query() : _this._query;
+            targetQuery = reference.get$hasQuery() ? reference.get$query(reference) : _this._query;
           else {
             packageNameEnd = P._Uri__packageNameEnd(_this, targetPath);
             if (packageNameEnd > 0) {
@@ -11552,7 +12043,7 @@
               else
                 targetPath = P._Uri__normalizeRelativePath(mergedPath, !t1 || targetHost != null);
             }
-            targetQuery = reference.get$hasQuery() ? reference.get$query() : _null;
+            targetQuery = reference.get$hasQuery() ? reference.get$query(reference) : _null;
           }
         }
       }
@@ -11618,7 +12109,7 @@
                     if (!t2 === other.get$hasQuery()) {
                       if (t2)
                         t1 = "";
-                      if (t1 === other.get$query()) {
+                      if (t1 === other.get$query(other)) {
                         t1 = _this._fragment;
                         t2 = t1 == null;
                         if (!t2 === other.get$hasFragment()) {
@@ -11709,7 +12200,7 @@
         target[t2] = transition;
       }
     },
-    $signature: 13
+    $signature: 12
   };
   P._createTables_setRange.prototype = {
     call$3: function(target, range, transition) {
@@ -11721,7 +12212,7 @@
         target[t1] = transition;
       }
     },
-    $signature: 13
+    $signature: 12
   };
   P._SimpleUri.prototype = {
     get$hasAuthority: function() {
@@ -11782,7 +12273,7 @@
     get$path: function(_) {
       return C.JSString_methods.substring$2(this._uri, this._pathStart, this._queryStart);
     },
-    get$query: function() {
+    get$query: function(_) {
       var t1 = this._queryStart,
         t2 = this._fragmentStart;
       return t1 < t2 ? C.JSString_methods.substring$2(this._uri, t1 + 1, t2) : "";
@@ -11966,7 +12457,7 @@
         t6 = _this._queryStart,
         t7 = C.JSString_methods.substring$2(t5, _this._pathStart, t6),
         t8 = _this._fragmentStart;
-      t6 = t6 < t8 ? _this.get$query() : _null;
+      t6 = t6 < t8 ? _this.get$query(_this) : _null;
       return P._Uri$_internal(t1, t2, t3, t4, t7, t6, t8 < t5.length ? _this.get$fragment() : _null);
     },
     toString$0: function(_) {
@@ -11976,6 +12467,11 @@
   };
   P._DataUri.prototype = {};
   W.HtmlElement.prototype = {};
+  W.AccessibleNodeList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    }
+  };
   W.AnchorElement.prototype = {
     set$href: function(receiver, value) {
       receiver.href = value;
@@ -11985,17 +12481,56 @@
     },
     $isAnchorElement: 1
   };
+  W.Animation.prototype = {
+    reverse$0: function(receiver) {
+      return receiver.reverse();
+    },
+    $isAnimation: 1
+  };
   W.AreaElement.prototype = {
     toString$0: function(receiver) {
       return String(receiver);
     }
   };
   W.BaseElement.prototype = {$isBaseElement: 1};
+  W.Blob.prototype = {};
   W.BodyElement.prototype = {$isBodyElement: 1};
   W.ButtonElement.prototype = {};
   W.CharacterData.prototype = {
     get$length: function(receiver) {
       return receiver.length;
+    }
+  };
+  W.CssPerspective.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    }
+  };
+  W.CssRule.prototype = {$isCssRule: 1};
+  W.CssStyleDeclaration.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    }
+  };
+  W.CssStyleDeclarationBase.prototype = {};
+  W.CssStyleValue.prototype = {};
+  W.CssTransformComponent.prototype = {};
+  W.CssTransformValue.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    }
+  };
+  W.CssUnparsedValue.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    }
+  };
+  W.DataTransferItemList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      return receiver[H._asIntS(index)];
     }
   };
   W.DivElement.prototype = {$isDivElement: 1};
@@ -12009,6 +12544,116 @@
     createHtmlDocument$1: function(receiver, title) {
       return receiver.createHTMLDocument(title);
     }
+  };
+  W.DomRectList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver[index];
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.Rectangle_num._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isJSIndexable: 1,
+    $isEfficientLengthIterable: 1,
+    $isJavaScriptIndexingBehavior: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
+  W.DomRectReadOnly.prototype = {
+    toString$0: function(receiver) {
+      var t2,
+        t1 = receiver.left;
+      t1.toString;
+      t1 = "Rectangle (" + H.S(t1) + ", ";
+      t2 = receiver.top;
+      t2.toString;
+      return t1 + H.S(t2) + ") " + H.S(this.get$width(receiver)) + " x " + H.S(this.get$height(receiver));
+    },
+    $eq: function(receiver, other) {
+      var t1, t2;
+      if (other == null)
+        return false;
+      if (type$.Rectangle_num._is(other)) {
+        t1 = receiver.left;
+        t1.toString;
+        t2 = other.left;
+        t2.toString;
+        if (t1 === t2) {
+          t1 = receiver.top;
+          t1.toString;
+          t2 = other.top;
+          t2.toString;
+          if (t1 === t2) {
+            t1 = J.getInterceptor$x(other);
+            t1 = this.get$width(receiver) == t1.get$width(other) && this.get$height(receiver) == t1.get$height(other);
+          } else
+            t1 = false;
+        } else
+          t1 = false;
+      } else
+        t1 = false;
+      return t1;
+    },
+    get$hashCode: function(receiver) {
+      var t2,
+        t1 = receiver.left;
+      t1.toString;
+      t1 = C.JSNumber_methods.get$hashCode(t1);
+      t2 = receiver.top;
+      t2.toString;
+      return W._JenkinsSmiHash_hash4(t1, C.JSNumber_methods.get$hashCode(t2), J.get$hashCode$(this.get$width(receiver)), J.get$hashCode$(this.get$height(receiver)));
+    },
+    get$_height: function(receiver) {
+      return receiver.height;
+    },
+    get$height: function(receiver) {
+      var t1 = this.get$_height(receiver);
+      t1.toString;
+      return t1;
+    },
+    get$_width: function(receiver) {
+      return receiver.width;
+    },
+    get$width: function(receiver) {
+      var t1 = this.get$_width(receiver);
+      t1.toString;
+      return t1;
+    },
+    $isRectangle: 1
+  };
+  W.DomStringList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver[index];
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      H._asStringS(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isJSIndexable: 1,
+    $isEfficientLengthIterable: 1,
+    $isJavaScriptIndexingBehavior: 1,
+    $isIterable: 1,
+    $isList: 1
   };
   W.DomTokenList.prototype = {
     get$length: function(receiver) {
@@ -12134,6 +12779,11 @@
   };
   W.Event.prototype = {$isEvent: 1};
   W.EventTarget.prototype = {
+    addEventListener$3: function(receiver, type, listener, useCapture) {
+      type$.nullable_dynamic_Function_Event._as(listener);
+      if (listener != null)
+        this._addEventListener$3(receiver, type, listener, false);
+    },
     _addEventListener$3: function(receiver, type, listener, options) {
       return receiver.addEventListener(type, H.convertDartClosureToJS(type$.nullable_dynamic_Function_Event._as(listener), 1), false);
     },
@@ -12142,12 +12792,48 @@
     },
     $isEventTarget: 1
   };
+  W.File.prototype = {$isFile: 1};
+  W.FileList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver[index];
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.File._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isJSIndexable: 1,
+    $isEfficientLengthIterable: 1,
+    $isJavaScriptIndexingBehavior: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
+  W.FileWriter.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    }
+  };
   W.FormElement.prototype = {
     get$length: function(receiver) {
       return receiver.length;
     }
   };
+  W.Gamepad.prototype = {$isGamepad: 1};
   W.HeadingElement.prototype = {};
+  W.History.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    }
+  };
   W.HtmlCollection.prototype = {
     get$length: function(receiver) {
       return receiver.length;
@@ -12197,7 +12883,7 @@
           continue;
         key = t2.substring$2(header, 0, splitIdx).toLowerCase();
         value = t2.substring$1(header, splitIdx + 2);
-        if (headers.containsKey$1(key))
+        if (headers.containsKey$1(0, key))
           headers.$indexSet(0, key, H.S(headers.$index(0, key)) + ", " + value);
         else
           headers.$indexSet(0, key, value);
@@ -12230,6 +12916,106 @@
     },
     $isLocation: 1
   };
+  W.MediaList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    }
+  };
+  W.MidiInputMap.prototype = {
+    $index: function(receiver, key) {
+      return P.convertNativeToDart_Dictionary(receiver.get(H._asStringS(key)));
+    },
+    forEach$1: function(receiver, f) {
+      var entries, entry;
+      type$.void_Function_String_dynamic._as(f);
+      entries = receiver.entries();
+      for (; true;) {
+        entry = entries.next();
+        if (entry.done)
+          return;
+        f.call$2(entry.value[0], P.convertNativeToDart_Dictionary(entry.value[1]));
+      }
+    },
+    get$keys: function(receiver) {
+      var keys = H.setRuntimeTypeInfo([], type$.JSArray_String);
+      this.forEach$1(receiver, new W.MidiInputMap_keys_closure(keys));
+      return keys;
+    },
+    get$length: function(receiver) {
+      return receiver.size;
+    },
+    $indexSet: function(receiver, key, value) {
+      H._asStringS(key);
+      throw H.wrapException(P.UnsupportedError$("Not supported"));
+    },
+    $isMap: 1
+  };
+  W.MidiInputMap_keys_closure.prototype = {
+    call$2: function(k, v) {
+      return C.JSArray_methods.add$1(this.keys, k);
+    },
+    $signature: 3
+  };
+  W.MidiOutputMap.prototype = {
+    $index: function(receiver, key) {
+      return P.convertNativeToDart_Dictionary(receiver.get(H._asStringS(key)));
+    },
+    forEach$1: function(receiver, f) {
+      var entries, entry;
+      type$.void_Function_String_dynamic._as(f);
+      entries = receiver.entries();
+      for (; true;) {
+        entry = entries.next();
+        if (entry.done)
+          return;
+        f.call$2(entry.value[0], P.convertNativeToDart_Dictionary(entry.value[1]));
+      }
+    },
+    get$keys: function(receiver) {
+      var keys = H.setRuntimeTypeInfo([], type$.JSArray_String);
+      this.forEach$1(receiver, new W.MidiOutputMap_keys_closure(keys));
+      return keys;
+    },
+    get$length: function(receiver) {
+      return receiver.size;
+    },
+    $indexSet: function(receiver, key, value) {
+      H._asStringS(key);
+      throw H.wrapException(P.UnsupportedError$("Not supported"));
+    },
+    $isMap: 1
+  };
+  W.MidiOutputMap_keys_closure.prototype = {
+    call$2: function(k, v) {
+      return C.JSArray_methods.add$1(this.keys, k);
+    },
+    $signature: 3
+  };
+  W.MimeType.prototype = {$isMimeType: 1};
+  W.MimeTypeArray.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver[index];
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.MimeType._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isJSIndexable: 1,
+    $isEfficientLengthIterable: 1,
+    $isJavaScriptIndexingBehavior: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
   W.MouseEvent.prototype = {$isMouseEvent: 1};
   W._ChildNodeListLazy.prototype = {
     get$single: function(_) {
@@ -12258,7 +13044,7 @@
         return;
       }
       for (t1 = iterable.get$iterator(iterable), t2 = this._this; t1.moveNext$0();)
-        t2.appendChild(t1.get$current());
+        t2.appendChild(t1.get$current(t1));
     },
     $indexSet: function(_, index, value) {
       var t1;
@@ -12330,12 +13116,169 @@
     $isList: 1
   };
   W.ParagraphElement.prototype = {};
+  W.Plugin.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $isPlugin: 1
+  };
+  W.PluginArray.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver[index];
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.Plugin._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isJSIndexable: 1,
+    $isEfficientLengthIterable: 1,
+    $isJavaScriptIndexingBehavior: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
   W.ProgressEvent.prototype = {$isProgressEvent: 1};
+  W.RtcStatsReport.prototype = {
+    $index: function(receiver, key) {
+      return P.convertNativeToDart_Dictionary(receiver.get(H._asStringS(key)));
+    },
+    forEach$1: function(receiver, f) {
+      var entries, entry;
+      type$.void_Function_String_dynamic._as(f);
+      entries = receiver.entries();
+      for (; true;) {
+        entry = entries.next();
+        if (entry.done)
+          return;
+        f.call$2(entry.value[0], P.convertNativeToDart_Dictionary(entry.value[1]));
+      }
+    },
+    get$keys: function(receiver) {
+      var keys = H.setRuntimeTypeInfo([], type$.JSArray_String);
+      this.forEach$1(receiver, new W.RtcStatsReport_keys_closure(keys));
+      return keys;
+    },
+    get$length: function(receiver) {
+      return receiver.size;
+    },
+    $indexSet: function(receiver, key, value) {
+      H._asStringS(key);
+      throw H.wrapException(P.UnsupportedError$("Not supported"));
+    },
+    $isMap: 1
+  };
+  W.RtcStatsReport_keys_closure.prototype = {
+    call$2: function(k, v) {
+      return C.JSArray_methods.add$1(this.keys, k);
+    },
+    $signature: 3
+  };
   W.SelectElement.prototype = {
     get$length: function(receiver) {
       return receiver.length;
     }
   };
+  W.SourceBuffer.prototype = {$isSourceBuffer: 1};
+  W.SourceBufferList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver[index];
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.SourceBuffer._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isJSIndexable: 1,
+    $isEfficientLengthIterable: 1,
+    $isJavaScriptIndexingBehavior: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
+  W.SpeechGrammar.prototype = {$isSpeechGrammar: 1};
+  W.SpeechGrammarList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver[index];
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.SpeechGrammar._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isJSIndexable: 1,
+    $isEfficientLengthIterable: 1,
+    $isJavaScriptIndexingBehavior: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
+  W.SpeechRecognitionResult.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $isSpeechRecognitionResult: 1
+  };
+  W.Storage.prototype = {
+    $index: function(receiver, key) {
+      return receiver.getItem(H._asStringS(key));
+    },
+    $indexSet: function(receiver, key, value) {
+      receiver.setItem(H._asStringS(key), H._asStringS(value));
+    },
+    forEach$1: function(receiver, f) {
+      var i, key, t1;
+      type$.void_Function_String_String._as(f);
+      for (i = 0; true; ++i) {
+        key = receiver.key(i);
+        if (key == null)
+          return;
+        t1 = receiver.getItem(key);
+        t1.toString;
+        f.call$2(key, t1);
+      }
+    },
+    get$keys: function(receiver) {
+      var keys = H.setRuntimeTypeInfo([], type$.JSArray_String);
+      this.forEach$1(receiver, new W.Storage_keys_closure(keys));
+      return keys;
+    },
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $isMap: 1
+  };
+  W.Storage_keys_closure.prototype = {
+    call$2: function(k, v) {
+      return C.JSArray_methods.add$1(this.keys, k);
+    },
+    $signature: 6
+  };
+  W.StyleSheet.prototype = {$isStyleSheet: 1};
   W.TableElement.prototype = {
     createFragment$3$treeSanitizer$validator: function(receiver, html, treeSanitizer, validator) {
       var table, fragment;
@@ -12387,8 +13330,232 @@
     }
   };
   W.TemplateElement.prototype = {$isTemplateElement: 1};
+  W.TextTrack.prototype = {$isTextTrack: 1};
+  W.TextTrackCue.prototype = {$isTextTrackCue: 1};
+  W.TextTrackCueList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver[index];
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.TextTrackCue._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isJSIndexable: 1,
+    $isEfficientLengthIterable: 1,
+    $isJavaScriptIndexingBehavior: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
+  W.TextTrackList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver[index];
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.TextTrack._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isJSIndexable: 1,
+    $isEfficientLengthIterable: 1,
+    $isJavaScriptIndexingBehavior: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
+  W.TimeRanges.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    }
+  };
+  W.Touch.prototype = {$isTouch: 1};
+  W.TouchList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver[index];
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.Touch._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isJSIndexable: 1,
+    $isEfficientLengthIterable: 1,
+    $isJavaScriptIndexingBehavior: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
+  W.TrackDefaultList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    }
+  };
   W.UIEvent.prototype = {};
+  W.Url.prototype = {
+    toString$0: function(receiver) {
+      return String(receiver);
+    }
+  };
+  W.VideoTrackList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    }
+  };
   W._Attr.prototype = {$is_Attr: 1};
+  W._CssRuleList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver[index];
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.CssRule._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isJSIndexable: 1,
+    $isEfficientLengthIterable: 1,
+    $isJavaScriptIndexingBehavior: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
+  W._DomRect.prototype = {
+    toString$0: function(receiver) {
+      var t2,
+        t1 = receiver.left;
+      t1.toString;
+      t1 = "Rectangle (" + H.S(t1) + ", ";
+      t2 = receiver.top;
+      t2.toString;
+      t2 = t1 + H.S(t2) + ") ";
+      t1 = receiver.width;
+      t1.toString;
+      t1 = t2 + H.S(t1) + " x ";
+      t2 = receiver.height;
+      t2.toString;
+      return t1 + H.S(t2);
+    },
+    $eq: function(receiver, other) {
+      var t1, t2;
+      if (other == null)
+        return false;
+      if (type$.Rectangle_num._is(other)) {
+        t1 = receiver.left;
+        t1.toString;
+        t2 = other.left;
+        t2.toString;
+        if (t1 === t2) {
+          t1 = receiver.top;
+          t1.toString;
+          t2 = other.top;
+          t2.toString;
+          if (t1 === t2) {
+            t1 = receiver.width;
+            t1.toString;
+            t2 = J.getInterceptor$x(other);
+            if (t1 === t2.get$width(other)) {
+              t1 = receiver.height;
+              t1.toString;
+              t2 = t1 === t2.get$height(other);
+              t1 = t2;
+            } else
+              t1 = false;
+          } else
+            t1 = false;
+        } else
+          t1 = false;
+      } else
+        t1 = false;
+      return t1;
+    },
+    get$hashCode: function(receiver) {
+      var t2, t3, t4,
+        t1 = receiver.left;
+      t1.toString;
+      t1 = C.JSNumber_methods.get$hashCode(t1);
+      t2 = receiver.top;
+      t2.toString;
+      t2 = C.JSNumber_methods.get$hashCode(t2);
+      t3 = receiver.width;
+      t3.toString;
+      t3 = C.JSNumber_methods.get$hashCode(t3);
+      t4 = receiver.height;
+      t4.toString;
+      return W._JenkinsSmiHash_hash4(t1, t2, t3, C.JSNumber_methods.get$hashCode(t4));
+    },
+    get$_height: function(receiver) {
+      return receiver.height;
+    },
+    get$height: function(receiver) {
+      var t1 = receiver.height;
+      t1.toString;
+      return t1;
+    },
+    get$_width: function(receiver) {
+      return receiver.width;
+    },
+    get$width: function(receiver) {
+      var t1 = receiver.width;
+      t1.toString;
+      return t1;
+    }
+  };
+  W._GamepadList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver[index];
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.nullable_Gamepad._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isJSIndexable: 1,
+    $isEfficientLengthIterable: 1,
+    $isJavaScriptIndexingBehavior: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
   W._NamedNodeMap.prototype = {
     get$length: function(receiver) {
       return receiver.length;
@@ -12402,6 +13569,54 @@
     $indexSet: function(receiver, index, value) {
       H._asIntS(index);
       type$.Node._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isJSIndexable: 1,
+    $isEfficientLengthIterable: 1,
+    $isJavaScriptIndexingBehavior: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
+  W._SpeechRecognitionResultList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver[index];
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.SpeechRecognitionResult._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isJSIndexable: 1,
+    $isEfficientLengthIterable: 1,
+    $isJavaScriptIndexingBehavior: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
+  W._StyleSheetList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver[index];
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.StyleSheet._as(value);
       throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
     },
     elementAt$1: function(receiver, index) {
@@ -12462,7 +13677,7 @@
   };
   W._ElementEventStreamImpl.prototype = {};
   W._EventStreamSubscription.prototype = {
-    cancel$0: function() {
+    cancel$0: function(_) {
       var _this = this;
       if (_this._html$_target == null)
         return $.$get$nullFuture();
@@ -12482,15 +13697,12 @@
       _this._tryResume$0();
     },
     _tryResume$0: function() {
-      var t3,
-        t1 = this._onData,
-        t2 = t1 != null;
-      if (t2 && true) {
-        t3 = this._html$_target;
-        t3.toString;
-        type$.nullable_dynamic_Function_Event._as(t1);
-        if (t2)
-          J._addEventListener$3$x(t3, this._eventType, t1, false);
+      var t2,
+        t1 = this._onData;
+      if (t1 != null && true) {
+        t2 = this._html$_target;
+        t2.toString;
+        J.addEventListener$3$x(t2, this._eventType, t1, false);
       }
     },
     _unlisten$0: function() {
@@ -12510,13 +13722,13 @@
     call$1: function(e) {
       return this.onData.call$1(type$.Event._as(e));
     },
-    $signature: 10
+    $signature: 9
   };
   W._EventStreamSubscription_onData_closure.prototype = {
     call$1: function(e) {
       return this.handleData.call$1(type$.Event._as(e));
     },
-    $signature: 10
+    $signature: 9
   };
   W._Html5NodeValidator.prototype = {
     _Html5NodeValidator$1$uriPolicy: function(uriPolicy) {
@@ -12612,13 +13824,13 @@
     call$1: function(x) {
       return !C.JSArray_methods.contains$1(C.List_yrN, H._asStringS(x));
     },
-    $signature: 2
+    $signature: 4
   };
   W._SimpleNodeValidator_closure0.prototype = {
     call$1: function(x) {
       return C.JSArray_methods.contains$1(C.List_yrN, H._asStringS(x));
     },
-    $signature: 2
+    $signature: 4
   };
   W._TemplatingNodeValidator.prototype = {
     allowsAttribute$3: function(element, attributeName, value) {
@@ -12635,7 +13847,7 @@
     call$1: function(attr) {
       return "TEMPLATE::" + H.S(H._asStringS(attr));
     },
-    $signature: 3
+    $signature: 7
   };
   W._SvgNodeValidator.prototype = {
     allowsElement$1: function(element) {
@@ -12660,7 +13872,7 @@
     moveNext$0: function() {
       var _this = this,
         nextPosition = _this._position + 1,
-        t1 = _this._length;
+        t1 = _this._html$_length;
       if (nextPosition < t1) {
         _this.set$_current(J.$index$asx(_this._array, nextPosition));
         _this._position = nextPosition;
@@ -12670,7 +13882,7 @@
       _this._position = t1;
       return false;
     },
-    get$current: function() {
+    get$current: function(_) {
       return this._current;
     },
     set$_current: function(_current) {
@@ -12853,14 +14065,47 @@
         child = nextChild;
       }
     },
-    $signature: 34
+    $signature: 35
   };
+  W._CssStyleDeclaration_Interceptor_CssStyleDeclarationBase.prototype = {};
+  W._DomRectList_Interceptor_ListMixin.prototype = {};
+  W._DomRectList_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
+  W._DomStringList_Interceptor_ListMixin.prototype = {};
+  W._DomStringList_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
+  W._FileList_Interceptor_ListMixin.prototype = {};
+  W._FileList_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
   W._HtmlCollection_Interceptor_ListMixin.prototype = {};
   W._HtmlCollection_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
+  W._MidiInputMap_Interceptor_MapMixin.prototype = {};
+  W._MidiOutputMap_Interceptor_MapMixin.prototype = {};
+  W._MimeTypeArray_Interceptor_ListMixin.prototype = {};
+  W._MimeTypeArray_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
   W._NodeList_Interceptor_ListMixin.prototype = {};
   W._NodeList_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
+  W._PluginArray_Interceptor_ListMixin.prototype = {};
+  W._PluginArray_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
+  W._RtcStatsReport_Interceptor_MapMixin.prototype = {};
+  W._SourceBufferList_EventTarget_ListMixin.prototype = {};
+  W._SourceBufferList_EventTarget_ListMixin_ImmutableListMixin.prototype = {};
+  W._SpeechGrammarList_Interceptor_ListMixin.prototype = {};
+  W._SpeechGrammarList_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
+  W._Storage_Interceptor_MapMixin.prototype = {};
+  W._TextTrackCueList_Interceptor_ListMixin.prototype = {};
+  W._TextTrackCueList_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
+  W._TextTrackList_EventTarget_ListMixin.prototype = {};
+  W._TextTrackList_EventTarget_ListMixin_ImmutableListMixin.prototype = {};
+  W._TouchList_Interceptor_ListMixin.prototype = {};
+  W._TouchList_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
+  W.__CssRuleList_Interceptor_ListMixin.prototype = {};
+  W.__CssRuleList_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
+  W.__GamepadList_Interceptor_ListMixin.prototype = {};
+  W.__GamepadList_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
   W.__NamedNodeMap_Interceptor_ListMixin.prototype = {};
   W.__NamedNodeMap_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
+  W.__SpeechRecognitionResultList_Interceptor_ListMixin.prototype = {};
+  W.__SpeechRecognitionResultList_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
+  W.__StyleSheetList_Interceptor_ListMixin.prototype = {};
+  W.__StyleSheetList_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
   P._AcceptStructuredClone.prototype = {
     findSlot$1: function(value) {
       var i,
@@ -12927,7 +14172,11 @@
         $length = t2.get$length(l);
         copy = _this.mustCopy ? new Array($length) : l;
         C.JSArray_methods.$indexSet(t1, slot, copy);
-        for (t1 = J.getInterceptor$ax(copy), i = 0; i < $length; ++i)
+        if (typeof $length !== "number")
+          return H.iae($length);
+        t1 = J.getInterceptor$ax(copy);
+        i = 0;
+        for (; i < $length; ++i)
           t1.$indexSet(copy, i, _this.walk$1(t2.$index(l, i)));
         return copy;
       }
@@ -12941,7 +14190,7 @@
       J.$indexSet$ax(t1, key, t2);
       return t2;
     },
-    $signature: 35
+    $signature: 36
   };
   P._AcceptStructuredCloneDart2Js.prototype = {
     forEachJsField$2: function(object, action) {
@@ -12963,7 +14212,7 @@
     call$1: function(r) {
       return this.completer.complete$1(0, this.T._eval$1("0/?")._as(r));
     },
-    $signature: 1
+    $signature: 2
   };
   P.promiseToFuture_closure0.prototype = {
     call$1: function(e) {
@@ -12971,9 +14220,82 @@
         return this.completer.completeError$1(new P.NullRejectionException(e === undefined));
       return this.completer.completeError$1(e);
     },
-    $signature: 1
+    $signature: 2
+  };
+  P.Length.prototype = {$isLength: 1};
+  P.LengthList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver.getItem(index);
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.Length._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isEfficientLengthIterable: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
+  P.Number.prototype = {$isNumber: 1};
+  P.NumberList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver.getItem(index);
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.Number._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isEfficientLengthIterable: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
+  P.PointList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    }
   };
   P.ScriptElement0.prototype = {$isScriptElement0: 1};
+  P.StringList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver.getItem(index);
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      H._asStringS(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isEfficientLengthIterable: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
   P.SvgElement.prototype = {
     createFragment$3$treeSanitizer$validator: function(receiver, svg, treeSanitizer, validator) {
       var html, t2, fragment, svgFragment, root,
@@ -12997,6 +14319,116 @@
     },
     $isSvgElement: 1
   };
+  P.Transform.prototype = {$isTransform: 1};
+  P.TransformList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      return receiver.getItem(index);
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.Transform._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isEfficientLengthIterable: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
+  P._LengthList_Interceptor_ListMixin.prototype = {};
+  P._LengthList_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
+  P._NumberList_Interceptor_ListMixin.prototype = {};
+  P._NumberList_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
+  P._StringList_Interceptor_ListMixin.prototype = {};
+  P._StringList_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
+  P._TransformList_Interceptor_ListMixin.prototype = {};
+  P._TransformList_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
+  P.AudioBuffer.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    }
+  };
+  P.AudioParamMap.prototype = {
+    $index: function(receiver, key) {
+      return P.convertNativeToDart_Dictionary(receiver.get(H._asStringS(key)));
+    },
+    forEach$1: function(receiver, f) {
+      var entries, entry;
+      type$.void_Function_String_dynamic._as(f);
+      entries = receiver.entries();
+      for (; true;) {
+        entry = entries.next();
+        if (entry.done)
+          return;
+        f.call$2(entry.value[0], P.convertNativeToDart_Dictionary(entry.value[1]));
+      }
+    },
+    get$keys: function(receiver) {
+      var keys = H.setRuntimeTypeInfo([], type$.JSArray_String);
+      this.forEach$1(receiver, new P.AudioParamMap_keys_closure(keys));
+      return keys;
+    },
+    get$length: function(receiver) {
+      return receiver.size;
+    },
+    $indexSet: function(receiver, key, value) {
+      H._asStringS(key);
+      throw H.wrapException(P.UnsupportedError$("Not supported"));
+    },
+    $isMap: 1
+  };
+  P.AudioParamMap_keys_closure.prototype = {
+    call$2: function(k, v) {
+      return C.JSArray_methods.add$1(this.keys, k);
+    },
+    $signature: 3
+  };
+  P.AudioTrackList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    }
+  };
+  P.BaseAudioContext.prototype = {};
+  P.OfflineAudioContext.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    }
+  };
+  P._AudioParamMap_Interceptor_MapMixin.prototype = {};
+  P.SqlResultSetRowList.prototype = {
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      var t1;
+      H._asIntS(index);
+      if (index >>> 0 !== index || index >= receiver.length)
+        throw H.wrapException(P.IndexError$(index, receiver, null, null, null));
+      t1 = P.convertNativeToDart_Dictionary(receiver.item(index));
+      t1.toString;
+      return t1;
+    },
+    $indexSet: function(receiver, index, value) {
+      H._asIntS(index);
+      type$.Map_dynamic_dynamic._as(value);
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      return this.$index(receiver, index);
+    },
+    $isEfficientLengthIterable: 1,
+    $isIterable: 1,
+    $isList: 1
+  };
+  P._SqlResultSetRowList_Interceptor_ListMixin.prototype = {};
+  P._SqlResultSetRowList_Interceptor_ListMixin_ImmutableListMixin.prototype = {};
   M.CanonicalizedMap.prototype = {
     $index: function(_, key) {
       var pair, _this = this;
@@ -13094,7 +14526,7 @@
       });
       return P._asyncStartSync($async$_sendUnstreamed$3, $async$completer);
     },
-    $isClient: 1
+    $isClient0: 1
   };
   G.BaseRequest.prototype = {
     finalize$0: function() {
@@ -13113,13 +14545,13 @@
       H._asStringS(key2);
       return key1.toLowerCase() === key2.toLowerCase();
     },
-    $signature: 36
+    $signature: 37
   };
   G.BaseRequest_closure0.prototype = {
     call$1: function(key) {
       return C.JSString_methods.get$hashCode(H._asStringS(key).toLowerCase());
     },
-    $signature: 37
+    $signature: 38
   };
   T.BaseResponse.prototype = {
     BaseResponse$7$contentLength$headers$isRedirect$persistentConnection$reasonPhrase$request: function(statusCode, contentLength, headers, isRedirect, persistentConnection, reasonPhrase, request) {
@@ -13225,14 +14657,14 @@
       t2.BaseResponse$7$contentLength$headers$isRedirect$persistentConnection$reasonPhrase$request(t3, t4, t6, false, true, t1, t5);
       this.completer.complete$1(0, t2);
     },
-    $signature: 16
+    $signature: 17
   };
   O.BrowserClient_send_closure0.prototype = {
     call$1: function(_) {
       type$.ProgressEvent._as(_);
       this.completer.completeError$2(new E.ClientException("XMLHttpRequest error."), P.StackTrace_current());
     },
-    $signature: 16
+    $signature: 17
   };
   Z.ByteStream.prototype = {
     toBytes$0: function() {
@@ -13247,7 +14679,7 @@
     call$1: function(bytes) {
       return this.completer.complete$1(0, new Uint8Array(H._ensureNativeList(type$.List_int._as(bytes))));
     },
-    $signature: 39
+    $signature: 40
   };
   E.ClientException.prototype = {
     toString$0: function(_) {
@@ -13263,7 +14695,7 @@
     call$1: function(key) {
       return H._asStringS(key).toLowerCase();
     },
-    $signature: 3
+    $signature: 7
   };
   R.MediaType.prototype = {
     toString$0: function(_) {
@@ -13339,7 +14771,7 @@
       scanner.expectDone$0();
       return R.MediaType$(t4, t5, parameters);
     },
-    $signature: 60
+    $signature: 52
   };
   R.MediaType_toString_closure.prototype = {
     call$2: function(attribute, value) {
@@ -13360,13 +14792,13 @@
       } else
         t1._contents += H.S(value);
     },
-    $signature: 14
+    $signature: 6
   };
   R.MediaType_toString__closure.prototype = {
     call$1: function(match) {
       return "\\" + H.S(match.$index(0, 0));
     },
-    $signature: 17
+    $signature: 18
   };
   N.expectQuotedString_closure.prototype = {
     call$1: function(match) {
@@ -13374,11 +14806,11 @@
       t1.toString;
       return t1;
     },
-    $signature: 17
+    $signature: 18
   };
   V.BufferModule.prototype = {};
   V.BufferConstants.prototype = {};
-  V.Buffer.prototype = {};
+  V.Buffer0.prototype = {};
   F.ConsoleModule.prototype = {};
   F.Console.prototype = {};
   F.EventEmitter.prototype = {};
@@ -13420,7 +14852,7 @@
   D.Readable.prototype = {};
   D.Writable.prototype = {};
   D.Duplex.prototype = {};
-  D.Transform.prototype = {};
+  D.Transform0.prototype = {};
   D.WritableOptions.prototype = {};
   D.ReadableOptions.prototype = {};
   L.Immediate.prototype = {};
@@ -13446,7 +14878,7 @@
       var t1, t2, t3, needsSeparator, isAbsoluteAndNotRootRelative, t4, t5, parsed, path, t6;
       type$.Iterable_String._as(parts);
       for (t1 = parts.$ti, t2 = t1._eval$1("bool(Iterable.E)")._as(new M.Context_joinAll_closure()), t3 = parts.get$iterator(parts), t1 = new H.WhereIterator(t3, t2, t1._eval$1("WhereIterator<Iterable.E>")), t2 = this.style, needsSeparator = false, isAbsoluteAndNotRootRelative = false, t4 = ""; t1.moveNext$0();) {
-        t5 = t3.get$current();
+        t5 = t3.get$current(t3);
         if (t2.isRootRelative$1(t5) && isAbsoluteAndNotRootRelative) {
           parsed = X.ParsedPath_ParsedPath$parse(t5, t2);
           path = t4.charCodeAt(0) == 0 ? t4 : t4;
@@ -13486,12 +14918,12 @@
         C.JSArray_methods.insert$2(parsed.parts, 0, t1);
       return parsed.parts;
     },
-    normalize$1: function(path) {
+    normalize$1: function(_, path) {
       var parsed;
       if (!this._needsNormalization$1(path))
         return path;
       parsed = X.ParsedPath_ParsedPath$parse(path, this.style);
-      parsed.normalize$0();
+      parsed.normalize$0(0);
       return parsed.toString$0(0);
     },
     _needsNormalization$1: function(path) {
@@ -13543,18 +14975,18 @@
         t1 = _this.style,
         t2 = t1.rootLength$1(path);
       if (t2 <= 0)
-        return _this.normalize$1(path);
+        return _this.normalize$1(0, path);
       from = D.current();
       if (t1.rootLength$1(from) <= 0 && t1.rootLength$1(path) > 0)
-        return _this.normalize$1(path);
+        return _this.normalize$1(0, path);
       if (t1.rootLength$1(path) <= 0 || t1.isRootRelative$1(path))
         path = _this.absolute$1(0, path);
       if (t1.rootLength$1(path) <= 0 && t1.rootLength$1(from) > 0)
         throw H.wrapException(X.PathException$(_s26_ + H.S(path) + '" from "' + H.S(from) + '".'));
       fromParsed = X.ParsedPath_ParsedPath$parse(from, t1);
-      fromParsed.normalize$0();
+      fromParsed.normalize$0(0);
       pathParsed = X.ParsedPath_ParsedPath$parse(path, t1);
-      pathParsed.normalize$0();
+      pathParsed.normalize$0(0);
       t2 = fromParsed.parts;
       t3 = t2.length;
       if (t3 !== 0) {
@@ -13638,7 +15070,7 @@
         return typedUri.toString$0(0);
       else if (typedUri.get$scheme() !== "file" && typedUri.get$scheme() !== "" && _this.style != $.$get$Style_url())
         return typedUri.toString$0(0);
-      path = _this.normalize$1(_this.style.pathFromUri$1(M._parseUri(typedUri)));
+      path = _this.normalize$1(0, _this.style.pathFromUri$1(M._parseUri(typedUri)));
       rel = _this.relative$1(path);
       return _this.split$1(0, rel).length > _this.split$1(0, path).length ? path : rel;
     }
@@ -13647,20 +15079,20 @@
     call$1: function(part) {
       return H._asStringS(part) !== "";
     },
-    $signature: 2
+    $signature: 4
   };
   M.Context_split_closure.prototype = {
     call$1: function(part) {
       return H._asStringS(part).length !== 0;
     },
-    $signature: 2
+    $signature: 4
   };
   M._validateArgList_closure.prototype = {
     call$1: function(arg) {
       H._asStringQ(arg);
       return arg == null ? "null" : '"' + arg + '"';
     },
-    $signature: 42
+    $signature: 61
   };
   B.InternalStyle.prototype = {
     getRoot$1: function(path) {
@@ -13698,7 +15130,7 @@
       if (t2 !== 0)
         C.JSArray_methods.$indexSet(t1, t2 - 1, "");
     },
-    normalize$0: function() {
+    normalize$0: function(_) {
       var t1, t2, leadingDoubles, _i, part, t3, _this = this,
         newParts = H.setRuntimeTypeInfo([], type$.JSArray_String);
       for (t1 = _this.parts, t2 = t1.length, leadingDoubles = 0, _i = 0; _i < t1.length; t1.length === t2 || (0, H.throwConcurrentModificationError)(t1), ++_i) {
@@ -13967,7 +15399,7 @@
     get$length: function(_) {
       return this._decodedChars.length;
     },
-    get$lines: function() {
+    get$lines: function(_) {
       return this._lineStarts.length;
     },
     SourceFile$decoded$2$url: function(decodedChars, url) {
@@ -14070,19 +15502,19 @@
       return offset - lineStart;
     },
     getOffset$1: function(line) {
-      var t1, t2, result, t3;
+      var t1, t2, result, t3, _this = this;
       if (typeof line !== "number")
         return line.$lt();
       if (line < 0)
         throw H.wrapException(P.RangeError$("Line may not be negative, was " + line + "."));
       else {
-        t1 = this._lineStarts;
+        t1 = _this._lineStarts;
         t2 = t1.length;
         if (line >= t2)
-          throw H.wrapException(P.RangeError$("Line " + line + " must be less than the number of lines in the file, " + this.get$lines() + "."));
+          throw H.wrapException(P.RangeError$("Line " + line + " must be less than the number of lines in the file, " + _this.get$lines(_this) + "."));
       }
       result = t1[line];
-      if (result <= this._decodedChars.length) {
+      if (result <= _this._decodedChars.length) {
         t3 = line + 1;
         t1 = t3 < t2 && result >= t1[t3];
       } else
@@ -14096,7 +15528,7 @@
     get$sourceUrl: function(_) {
       return this.file.url;
     },
-    get$line: function() {
+    get$line: function(_) {
       return this.file.getLine$1(this.offset);
     },
     get$column: function() {
@@ -14122,7 +15554,7 @@
     get$text: function(_) {
       return P.String_String$fromCharCodes(C.NativeUint32List_methods.sublist$2(this.file._decodedChars, this._file$_start, this._end), 0, null);
     },
-    get$context: function() {
+    get$context: function(_) {
       var t2, _this = this,
         t1 = _this.file,
         endOffset = _this._end,
@@ -14171,8 +15603,8 @@
     $isSourceSpanWithContext: 1
   };
   U.Highlighter.prototype = {
-    highlight$0: function() {
-      var highlightsByColumn, t2, t3, t4, i, line, lastLine, t5, t6, t7, t8, t9, t10, t11, index, primaryIdx, primary, _i, _this = this,
+    highlight$0: function(_) {
+      var highlightsByColumn, t2, t3, t4, i, line, lastLine, t5, t6, t7, t8, t9, t10, t11, t12, t13, index, primaryIdx, primary, _i, _this = this,
         t1 = _this._lines;
       _this._writeFileStart$1(C.JSArray_methods.get$first(t1).url);
       highlightsByColumn = P.List_List$filled(_this._maxMultilineSpans, null, false, type$.nullable__Highlight);
@@ -14194,7 +15626,15 @@
         for (t5 = line.highlights, t6 = H._arrayInstanceType(t5)._eval$1("ReversedListIterable<1>"), t7 = new H.ReversedListIterable(t5, t6), t6 = new H.ListIterator(t7, t7.get$length(t7), t6._eval$1("ListIterator<ListIterable.E>")), t7 = line.number, t8 = line.text, t9 = J.getInterceptor$s(t8); t6.moveNext$0();) {
           t10 = t6.__internal$_current;
           t11 = t10.span;
-          if (t11.get$start(t11).get$line() != t11.get$end(t11).get$line() && t11.get$start(t11).get$line() === t7 && _this._isOnlyWhitespace$1(t9.substring$2(t8, 0, t11.get$start(t11).get$column()))) {
+          t12 = t11.get$start(t11);
+          t12 = t12.get$line(t12);
+          t13 = t11.get$end(t11);
+          if (t12 != t13.get$line(t13)) {
+            t12 = t11.get$start(t11);
+            t11 = t12.get$line(t12) === t7 && _this._isOnlyWhitespace$1(t9.substring$2(t8, 0, t11.get$start(t11).get$column()));
+          } else
+            t11 = false;
+          if (t11) {
             index = C.JSArray_methods.indexOf$1(highlightsByColumn, null);
             if (index < 0)
               H.throwExpression(P.ArgumentError$(H.S(highlightsByColumn) + " contains no null elements."));
@@ -14217,8 +15657,10 @@
         t6 = primary != null;
         if (t6) {
           t9 = primary.span;
-          t10 = t9.get$start(t9).get$line() === t7 ? t9.get$start(t9).get$column() : 0;
-          _this._writeHighlightedText$4$color(t8, t10, t9.get$end(t9).get$line() === t7 ? t9.get$end(t9).get$column() : t8.length, t4);
+          t10 = t9.get$start(t9);
+          t10 = t10.get$line(t10) === t7 ? t9.get$start(t9).get$column() : 0;
+          t11 = t9.get$end(t9);
+          _this._writeHighlightedText$4$color(t8, t10, t11.get$line(t11) === t7 ? t9.get$end(t9).get$column() : t8.length, t4);
         } else
           _this._writeText$1(t8);
         t2._contents += "\n";
@@ -14261,13 +15703,15 @@
           startLine = null;
         else {
           t6 = highlight.span;
-          startLine = t6.get$start(t6).get$line();
+          t6 = t6.get$start(t6);
+          startLine = t6.get$line(t6);
         }
         if (t5)
           endLine = null;
         else {
           t6 = highlight.span;
-          endLine = t6.get$end(t6).get$line();
+          t6 = t6.get$end(t6);
+          endLine = t6.get$line(t6);
         }
         if (t1 && highlight === current) {
           _this._colorize$2$color(new U.Highlighter__writeMultilineHighlights_closure(_this, startLine, line), currentColor);
@@ -14293,11 +15737,14 @@
       _this._writeText$1(C.JSString_methods.substring$2(text, endColumn, text.length));
     },
     _writeIndicator$3: function(line, highlight, highlightsByColumn) {
-      var color, t1, t2, coversWholeLine, _this = this;
+      var color, t1, t2, t3, coversWholeLine, _this = this;
       type$.List_nullable__Highlight._as(highlightsByColumn);
       color = _this._primaryColor;
       t1 = highlight.span;
-      if (t1.get$start(t1).get$line() == t1.get$end(t1).get$line()) {
+      t2 = t1.get$start(t1);
+      t2 = t2.get$line(t2);
+      t3 = t1.get$end(t1);
+      if (t2 == t3.get$line(t3)) {
         _this._writeSidebar$0();
         t1 = _this._buffer;
         t1._contents += " ";
@@ -14307,8 +15754,9 @@
         _this._colorize$2$color(new U.Highlighter__writeIndicator_closure(_this, line, highlight), color);
         t1._contents += "\n";
       } else {
-        t2 = line.number;
-        if (t1.get$start(t1).get$line() === t2) {
+        t2 = t1.get$start(t1);
+        t3 = line.number;
+        if (t2.get$line(t2) === t3) {
           if (C.JSArray_methods.contains$1(highlightsByColumn, highlight))
             return;
           B.replaceFirstNull(highlightsByColumn, highlight, type$._Highlight);
@@ -14318,19 +15766,22 @@
           _this._writeMultilineHighlights$3$current(line, highlightsByColumn, highlight);
           _this._colorize$2$color(new U.Highlighter__writeIndicator_closure0(_this, line, highlight), color);
           t1._contents += "\n";
-        } else if (t1.get$end(t1).get$line() === t2) {
-          coversWholeLine = t1.get$end(t1).get$column() === line.text.length;
-          if (coversWholeLine && true) {
+        } else {
+          t2 = t1.get$end(t1);
+          if (t2.get$line(t2) === t3) {
+            coversWholeLine = t1.get$end(t1).get$column() === line.text.length;
+            if (coversWholeLine && true) {
+              B.replaceWithNull(highlightsByColumn, highlight, type$._Highlight);
+              return;
+            }
+            _this._writeSidebar$0();
+            t1 = _this._buffer;
+            t1._contents += " ";
+            _this._writeMultilineHighlights$3$current(line, highlightsByColumn, highlight);
+            _this._colorize$2$color(new U.Highlighter__writeIndicator_closure1(_this, coversWholeLine, line, highlight), color);
+            t1._contents += "\n";
             B.replaceWithNull(highlightsByColumn, highlight, type$._Highlight);
-            return;
           }
-          _this._writeSidebar$0();
-          t1 = _this._buffer;
-          t1._contents += " ";
-          _this._writeMultilineHighlights$3$current(line, highlightsByColumn, highlight);
-          _this._colorize$2$color(new U.Highlighter__writeIndicator_closure1(_this, coversWholeLine, line, highlight), color);
-          t1._contents += "\n";
-          B.replaceWithNull(highlightsByColumn, highlight, type$._Highlight);
         }
       }
     },
@@ -14407,7 +15858,7 @@
     call$0: function() {
       return this.color;
     },
-    $signature: 43
+    $signature: 44
   };
   U.Highlighter$__closure.prototype = {
     call$1: function(line) {
@@ -14416,27 +15867,30 @@
       t2 = new H.WhereIterable(t1, t2._eval$1("bool(1)")._as(new U.Highlighter$___closure()), t2._eval$1("WhereIterable<1>"));
       return t2.get$length(t2);
     },
-    $signature: 44
+    $signature: 45
   };
   U.Highlighter$___closure.prototype = {
     call$1: function(highlight) {
-      var t1 = type$._Highlight._as(highlight).span;
-      return t1.get$start(t1).get$line() != t1.get$end(t1).get$line();
+      var t1 = type$._Highlight._as(highlight).span,
+        t2 = t1.get$start(t1);
+      t2 = t2.get$line(t2);
+      t1 = t1.get$end(t1);
+      return t2 != t1.get$line(t1);
     },
-    $signature: 4
+    $signature: 8
   };
   U.Highlighter$__closure0.prototype = {
     call$1: function(line) {
       return type$._Line._as(line).url;
     },
-    $signature: 46
+    $signature: 47
   };
   U.Highlighter__collateLines_closure.prototype = {
     call$1: function(highlight) {
       var t1 = type$._Highlight._as(highlight).span;
       return t1.get$sourceUrl(t1);
     },
-    $signature: 47
+    $signature: 48
   };
   U.Highlighter__collateLines_closure0.prototype = {
     call$2: function(highlight1, highlight2) {
@@ -14445,7 +15899,7 @@
       t1._as(highlight2);
       return highlight1.span.compareTo$1(0, highlight2.span);
     },
-    $signature: 48
+    $signature: 49
   };
   U.Highlighter__collateLines_closure1.prototype = {
     call$1: function(highlightsForFile) {
@@ -14453,14 +15907,15 @@
       type$.List__Highlight._as(highlightsForFile);
       lines = H.setRuntimeTypeInfo([], type$.JSArray__Line);
       for (t1 = J.getInterceptor$ax(highlightsForFile), t2 = t1.get$iterator(highlightsForFile), t3 = type$.JSArray__Highlight; t2.moveNext$0();) {
-        t4 = t2.get$current().span;
-        context = t4.get$context();
+        t4 = t2.get$current(t2).span;
+        context = t4.get$context(t4);
         t5 = B.findLineStart(context, t4.get$text(t4), t4.get$start(t4).get$column());
         t5.toString;
         t5 = C.JSString_methods.allMatches$1("\n", C.JSString_methods.substring$2(context, 0, t5));
         linesBeforeSpan = t5.get$length(t5);
         url = t4.get$sourceUrl(t4);
-        t4 = t4.get$start(t4).get$line();
+        t4 = t4.get$start(t4);
+        t4 = t4.get$line(t4);
         if (typeof t4 !== "number")
           return t4.$sub();
         lineNumber = t4 - linesBeforeSpan;
@@ -14480,9 +15935,10 @@
         C.JSArray_methods._removeWhere$2(activeHighlights, t4, true);
         oldHighlightLength = activeHighlights.length;
         for (t4 = t1.skip$1(highlightsForFile, highlightIndex), t4 = t4.get$iterator(t4); t4.moveNext$0();) {
-          t5 = t4.get$current();
+          t5 = t4.get$current(t4);
           t6 = t5.span;
-          t7 = t6.get$start(t6).get$line();
+          t7 = t6.get$start(t6);
+          t7 = t7.get$line(t7);
           t8 = line.number;
           if (typeof t7 !== "number")
             return t7.$gt();
@@ -14497,14 +15953,15 @@
       }
       return lines;
     },
-    $signature: 49
+    $signature: 50
   };
   U.Highlighter__collateLines__closure.prototype = {
     call$1: function(highlight) {
       var t1 = type$._Highlight._as(highlight).span,
         t2 = this.line;
       if (J.$eq$(t1.get$sourceUrl(t1), t2.url)) {
-        t1 = t1.get$end(t1).get$line();
+        t1 = t1.get$end(t1);
+        t1 = t1.get$line(t1);
         t2 = t2.number;
         if (typeof t1 !== "number")
           return t1.$lt();
@@ -14514,14 +15971,14 @@
         t1 = true;
       return t1;
     },
-    $signature: 4
+    $signature: 8
   };
   U.Highlighter_highlight_closure.prototype = {
     call$1: function(highlight) {
       type$._Highlight._as(highlight).toString;
       return true;
     },
-    $signature: 4
+    $signature: 8
   };
   U.Highlighter__writeFileStart_closure.prototype = {
     call$0: function() {
@@ -14655,8 +16112,12 @@
   };
   U._Highlight.prototype = {
     toString$0: function(_) {
-      var t1 = this.span;
-      t1 = "primary " + (H.S(t1.get$start(t1).get$line()) + ":" + t1.get$start(t1).get$column() + "-" + H.S(t1.get$end(t1).get$line()) + ":" + t1.get$end(t1).get$column());
+      var t3,
+        t1 = this.span,
+        t2 = t1.get$start(t1);
+      t2 = H.S(t2.get$line(t2)) + ":" + t1.get$start(t1).get$column() + "-";
+      t3 = t1.get$end(t1);
+      t1 = "primary " + (t2 + H.S(t3.get$line(t3)) + ":" + t1.get$end(t1).get$column());
       return t1.charCodeAt(0) == 0 ? t1 : t1;
     }
   };
@@ -14664,7 +16125,7 @@
     call$0: function() {
       var t2, t3, t4, t5,
         t1 = this.span;
-      if (!(type$.SourceSpanWithContext._is(t1) && B.findLineStart(t1.get$context(), t1.get$text(t1), t1.get$start(t1).get$column()) != null)) {
+      if (!(type$.SourceSpanWithContext._is(t1) && B.findLineStart(t1.get$context(t1), t1.get$text(t1), t1.get$start(t1).get$column()) != null)) {
         t2 = t1.get$start(t1);
         t2 = V.SourceLocation$(t2.get$offset(t2), 0, 0, t1.get$sourceUrl(t1));
         t3 = t1.get$end(t1);
@@ -14675,7 +16136,7 @@
       }
       return U._Highlight__normalizeEndOfLine(U._Highlight__normalizeTrailingNewline(U._Highlight__normalizeNewlines(t1)));
     },
-    $signature: 50
+    $signature: 51
   };
   U._Line.prototype = {
     toString$0: function(_) {
@@ -14722,7 +16183,7 @@
     get$offset: function(receiver) {
       return this.offset;
     },
-    get$line: function() {
+    get$line: function(receiver) {
       return this.line;
     },
     get$column: function() {
@@ -14801,7 +16262,8 @@
     toString$0: function(_) {
       var t3, highlight,
         t1 = this._span,
-        t2 = t1.get$start(t1).get$line();
+        t2 = t1.get$start(t1);
+      t2 = t2.get$line(t2);
       if (typeof t2 !== "number")
         return t2.$add();
       t2 = "line " + (t2 + 1) + ", column " + (t1.get$start(t1).get$column() + 1);
@@ -14811,7 +16273,7 @@
         t2 = t3;
       }
       t2 += ": " + this._span_exception$_message;
-      highlight = t1.highlight$1$color(null);
+      highlight = t1.highlight$1$color(0, null);
       t1 = highlight.length !== 0 ? t2 + "\n" + highlight : t2;
       return "Error on " + (t1.charCodeAt(0) == 0 ? t1 : t1);
     },
@@ -14846,11 +16308,11 @@
       result = _this.get$start(_this).compareTo$1(0, other.get$start(other));
       return result === 0 ? _this.get$end(_this).compareTo$1(0, other.get$end(other)) : result;
     },
-    highlight$1$color: function(color) {
+    highlight$1$color: function(_, color) {
       var _this = this;
       if (!type$.SourceSpanWithContext._is(_this) && _this.get$length(_this) === 0)
         return "";
-      return U.Highlighter$(_this, color).highlight$0();
+      return U.Highlighter$(_this, color).highlight$0(0);
     },
     $eq: function(_, other) {
       var _this = this;
@@ -14873,7 +16335,7 @@
     $isSourceSpan: 1
   };
   X.SourceSpanWithContext.prototype = {
-    get$context: function() {
+    get$context: function(_) {
       return this._context;
     }
   };
@@ -14957,7 +16419,7 @@
       if (t1 != null)
         t1.onDeactivate$0();
       _this.set$_currentState(_this._allStates.$index(0, stateType));
-      _this._currentState.onActivate$0();
+      _this._currentState.onActivate$0(0);
       _this._currentState.renderToDiv$1(_this._appDiv.id);
     },
     set$_currentState: function(_currentState) {
@@ -14979,22 +16441,23 @@
       parentDiv.toString;
       C.DivElement_methods.insertAdjacentHtml$4$treeSanitizer$validator(parentDiv, "beforeend", "\n    <h1>Loading</h1>\n\n\n    ", null, null);
     },
-    onActivate$0: function() {
+    onActivate$0: function(_) {
     },
     onDeactivate$0: function() {
     }
   };
   S.ProjectViewState.prototype = {
     renderToDiv$1: function(divID) {
-      var parentDiv, leftNavDiv, sets, t2, t3, t4, t5, _i, set, setDiv, t6, setImg, setTitle, setID, setYear, _this = this,
+      var parentDiv, leftNavDiv, sets, t3, t4, t5, _i, set, setDiv, t6, setImg, setTitle, setID, setYear, addSetButton, viewAllMissingButton, deleteHeading, deleteInformation, deleteConfirmButton, confirmationCloseButton, _this = this, _s5_ = "click",
         project = _this._app._project,
         t1 = document,
-        divRenderingTo = type$.legacy_DivElement._as(t1.getElementById(divID));
-      divRenderingTo.toString;
-      C.DivElement_methods._clearChildren$0(divRenderingTo);
+        t2 = type$.legacy_DivElement._as(t1.getElementById(divID));
+      _this._divRenderingTo = t2;
+      t2.toString;
+      C.DivElement_methods._clearChildren$0(t2);
       parentDiv = t1.createElement("div");
       parentDiv.id = "pvContainerDiv";
-      divRenderingTo.appendChild(parentDiv);
+      _this._divRenderingTo.appendChild(parentDiv);
       leftNavDiv = t1.createElement("div");
       leftNavDiv.id = "pvNavDiv";
       parentDiv.appendChild(leftNavDiv);
@@ -15004,7 +16467,7 @@
         setDiv = t1.createElement("div");
         t6 = t4._as(new S.ProjectViewState_renderToDiv_closure(_this, set));
         t5._as(null);
-        W._EventStreamSubscription$(setDiv, "click", t6, false, t3);
+        W._EventStreamSubscription$(setDiv, _s5_, t6, false, t3);
         setDiv.classList.add("pvNavSetDiv");
         leftNavDiv.appendChild(setDiv);
         setImg = W.ImageElement_ImageElement(set._imageURL);
@@ -15023,15 +16486,43 @@
         setYear.classList.add("pvNavSetSubtitle");
         setDiv.appendChild(setYear);
       }
+      addSetButton = t1.createElement("button");
+      C.ButtonElement_methods.set$text(addSetButton, "Add Set");
+      addSetButton.id = "pvAddSetBtn";
+      t2 = t4._as(new S.ProjectViewState_renderToDiv_closure0(_this));
+      t5._as(null);
+      W._EventStreamSubscription$(addSetButton, _s5_, t2, false, t3);
+      leftNavDiv.appendChild(addSetButton);
+      viewAllMissingButton = t1.createElement("button");
+      C.ButtonElement_methods.set$text(viewAllMissingButton, "View All Missing Pieces");
+      viewAllMissingButton.id = "pvViewAllMissingBtn";
+      W._EventStreamSubscription$(viewAllMissingButton, _s5_, t4._as(new S.ProjectViewState_renderToDiv_closure1(_this)), false, t3);
+      leftNavDiv.appendChild(viewAllMissingButton);
       t2 = t1.createElement("div");
       _this._setViewDiv = t2;
       t2.id = "pvSetViewDiv";
       parentDiv.appendChild(_this._setViewDiv);
       if (_this._selectedSet != null)
         _this._renderSelectedSet$0();
-      t1 = t1.createElement("div");
-      _this._deleteConfirmationDiv = t1;
-      t1.id = "pvDeleteConfirmationDiv";
+      t2 = t1.createElement("div");
+      _this._deleteConfirmationDiv = t2;
+      t2.id = "pvDeleteConfirmationDiv";
+      deleteHeading = t1.createElement("h1");
+      C.HeadingElement_methods.set$text(deleteHeading, "Are You Sure You Want To Proceed?");
+      _this._deleteConfirmationDiv.appendChild(deleteHeading);
+      deleteInformation = t1.createElement("p");
+      C.ParagraphElement_methods.set$text(deleteInformation, "This will remove the set from the current project, and any parts you have marked as missing. Are you sure you want to proceed?");
+      _this._deleteConfirmationDiv.appendChild(deleteInformation);
+      deleteConfirmButton = t1.createElement("button");
+      deleteConfirmButton.id = "pvDeleteConfirmationBtn";
+      C.ButtonElement_methods.set$text(deleteConfirmButton, "Remove Set");
+      W._EventStreamSubscription$(deleteConfirmButton, _s5_, t4._as(new S.ProjectViewState_renderToDiv_closure2(_this)), false, t3);
+      _this._deleteConfirmationDiv.appendChild(deleteConfirmButton);
+      confirmationCloseButton = t1.createElement("button");
+      confirmationCloseButton.id = "pvConfirmationCloseBtn";
+      C.ButtonElement_methods.set$text(confirmationCloseButton, "X");
+      W._EventStreamSubscription$(confirmationCloseButton, _s5_, t4._as(new S.ProjectViewState_renderToDiv_closure3(_this)), false, t3);
+      _this._deleteConfirmationDiv.appendChild(confirmationCloseButton);
     },
     _renderSelectedSet$0: function() {
       var setImage, setTitle, setInformation, editPiecesButton, t2, t3, t4, removeSetButton, _this = this,
@@ -15053,7 +16544,7 @@
       editPiecesButton.id = "pvEditPiecesBtn";
       t2 = type$._ElementEventStreamImpl_legacy_MouseEvent;
       t3 = t2._eval$1("~(1)?");
-      t4 = t3._as(new S.ProjectViewState__renderSelectedSet_closure());
+      t4 = t3._as(new S.ProjectViewState__renderSelectedSet_closure(_this));
       type$.nullable_void_Function._as(null);
       t2 = t2._precomputed1;
       W._EventStreamSubscription$(editPiecesButton, "click", t4, false, t2);
@@ -15068,7 +16559,11 @@
       W._ElementCssClassSet__removeWhere(t2, type$.bool_Function_String._as(new S.ProjectViewState__renderSelectedSet_closure1()), true);
       _this._setViewDiv.appendChild(_this._deleteConfirmationDiv);
     },
-    onActivate$0: function() {
+    _hideDeletionConfirm$0: function() {
+      J.reverse$0$x(J.$index$asx(this._deleteConfirmationDiv.getAnimations(), 0));
+      P.promiseToFuture(J.$index$asx(this._deleteConfirmationDiv.getAnimations(), 0).finished, type$.Animation).then$1$1(0, new S.ProjectViewState__hideDeletionConfirm_closure(this), type$.legacy_Set_legacy_bool);
+    },
+    onActivate$0: function(_) {
     },
     onDeactivate$0: function() {
     }
@@ -15081,33 +16576,77 @@
       t1._selectedSet = this.set;
       t1._renderSelectedSet$0();
     },
-    $signature: 5
+    $signature: 1
+  };
+  S.ProjectViewState_renderToDiv_closure0.prototype = {
+    call$1: function($event) {
+      type$.legacy_MouseEvent._as($event);
+      this.$this._app.setCurrentState$1(C.DisplayStateType_2);
+    },
+    $signature: 1
+  };
+  S.ProjectViewState_renderToDiv_closure1.prototype = {
+    call$1: function($event) {
+      type$.legacy_MouseEvent._as($event);
+      this.$this._app.setCurrentState$1(C.DisplayStateType_4);
+    },
+    $signature: 1
+  };
+  S.ProjectViewState_renderToDiv_closure2.prototype = {
+    call$1: function($event) {
+      var t1;
+      type$.legacy_MouseEvent._as($event);
+      t1 = this.$this;
+      t1._app._project.removeSet$1(t1._selectedSet._setID);
+      t1._selectedSet = null;
+      t1.renderToDiv$1(t1._divRenderingTo.id);
+    },
+    $signature: 1
+  };
+  S.ProjectViewState_renderToDiv_closure3.prototype = {
+    call$1: function($event) {
+      type$.legacy_MouseEvent._as($event);
+      this.$this._hideDeletionConfirm$0();
+    },
+    $signature: 1
   };
   S.ProjectViewState__renderSelectedSet_closure.prototype = {
     call$1: function($event) {
       type$.legacy_MouseEvent._as($event);
+      this.$this._app.setCurrentState$1(C.DisplayStateType_3);
     },
-    $signature: 5
+    $signature: 1
   };
   S.ProjectViewState__renderSelectedSet_closure0.prototype = {
     call$1: function($event) {
       type$.legacy_MouseEvent._as($event);
       this.$this._deleteConfirmationDiv.classList.add("pvDeleteConfirmationAnim");
     },
-    $signature: 5
+    $signature: 1
   };
   S.ProjectViewState__renderSelectedSet_closure1.prototype = {
     call$1: function(element) {
       return element === "pvDeleteConfirmationAnim";
     },
-    $signature: 52
+    $signature: 53
+  };
+  S.ProjectViewState__hideDeletionConfirm_closure.prototype = {
+    call$1: function(value) {
+      var list, removed;
+      type$.legacy_Animation._as(value);
+      list = this.$this._deleteConfirmationDiv.classList;
+      removed = list.contains("pvDeleteConfirmationAnim");
+      list.remove("pvDeleteConfirmationAnim");
+      return P.LinkedHashSet_LinkedHashSet$_literal([removed], type$.legacy_bool);
+    },
+    $signature: 54
   };
   R.LegoPiece.prototype = {
     LegoPiece$_$3: function(partID, colorID, apiAccess) {
       var _this = this;
       _this._partID = partID;
       _this._colorID = colorID;
-      _this.set$_LegoPiece$_imageURL(apiAccess.$get$2("parts/" + H.S(partID) + "/colors/" + H.S(_this._colorID), "").then$1$1(0, new R.LegoPiece$__closure(_this), type$.legacy_String));
+      _this.set$_LegoPiece$_imageURL(apiAccess.$get$2(0, "parts/" + H.S(partID) + "/colors/" + H.S(_this._colorID), "").then$1$1(0, new R.LegoPiece$__closure(_this), type$.legacy_String));
     },
     toString$0: function(_) {
       return this._partID;
@@ -15123,105 +16662,119 @@
         return "";
       return H._asStringS(J.$index$asx(C.C_JsonCodec.decode$2$reviver(0, B.encodingForCharset(U._contentTypeForHeaders(value.headers).parameters._collection$_map.$index(0, "charset")).decode$1(0, value.bodyBytes), null), "part_img_url"));
     },
-    $signature: 53
+    $signature: 55
   };
   U.LegoSet.prototype = {
     loadSet$1: function(apiAccess) {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.legacy_bool),
-        $async$returnValue, $async$self = this, jsonData, t1, t2, t3, t4, partsPage, hasNextPage, partsInfo, partsJsonData, t5, partsList, i, partID, colorID, imageURL, t6, t7, t8, numInSet, basicInfo;
+        $async$returnValue, $async$self = this, jsonData, t1, t2, t3, t4, partsPage, hasNextPage, partsInfo, partsJsonData, t5, partsList, i, t6, partID, colorID, imageURL, t7, t8, numInSet, basicInfo;
       var $async$loadSet$1 = P._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return P._asyncRethrow($async$result, $async$completer);
         while (true)
-          switch ($async$goto) {
-            case 0:
-              // Function start
-              $async$goto = 3;
-              return P._asyncAwait(apiAccess.$get$2("sets/" + H.S($async$self._setID), ""), $async$loadSet$1);
-            case 3:
-              // returning from await.
-              basicInfo = $async$result;
-              if (basicInfo.statusCode !== 200) {
-                $async$returnValue = false;
+          $async$outer:
+            switch ($async$goto) {
+              case 0:
+                // Function start
+                $async$goto = 3;
+                return P._asyncAwait(apiAccess.$get$2(0, "sets/" + H.S($async$self._setID), ""), $async$loadSet$1);
+              case 3:
+                // returning from await.
+                basicInfo = $async$result;
+                if (basicInfo.statusCode !== 200) {
+                  $async$returnValue = false;
+                  // goto return
+                  $async$goto = 1;
+                  break;
+                }
+                jsonData = C.C_JsonCodec.decode$2$reviver(0, B.encodingForCharset(U._contentTypeForHeaders(basicInfo.headers).parameters._collection$_map.$index(0, "charset")).decode$1(0, basicInfo.bodyBytes), null);
+                t1 = J.getInterceptor$asx(jsonData);
+                $async$self._LegoSet$_name = H._asStringS(t1.$index(jsonData, "name"));
+                $async$self._year = H._asIntS(t1.$index(jsonData, "year"));
+                $async$self._themeID = H._asIntS(t1.$index(jsonData, "theme_id"));
+                $async$self._imageURL = H._asStringS(t1.$index(jsonData, "set_img_url"));
+                $async$self._numPieces = H._asIntS(t1.$index(jsonData, "num_parts"));
+                t1 = type$.JsLinkedHashMap_of_legacy_LegoPiece_and_legacy_int;
+                $async$self.set$_pieces(new H.JsLinkedHashMap(t1));
+                $async$self.set$_piecesOwned(new H.JsLinkedHashMap(t1));
+                t1 = type$.JsLinkedHashMap_of_legacy_String_and_legacy_Map_of_legacy_int_and_legacy_LegoPiece, t2 = type$.JsLinkedHashMap_of_legacy_int_and_legacy_LegoPiece, t3 = type$._Future_legacy_String, t4 = type$.legacy_List_dynamic, partsPage = 1, hasNextPage = true;
+              case 4:
+                // for condition
+                if (!hasNextPage) {
+                  // goto after for
+                  $async$goto = 5;
+                  break;
+                }
+                $async$goto = 6;
+                return P._asyncAwait(apiAccess.$get$2(0, "sets/" + H.S($async$self._setID) + "/parts", "page=" + partsPage), $async$loadSet$1);
+              case 6:
+                // returning from await.
+                partsInfo = $async$result;
+                if (partsInfo.statusCode !== 200) {
+                  // goto after for
+                  $async$goto = 5;
+                  break;
+                }
+                partsJsonData = C.C_JsonCodec.decode$2$reviver(0, B.encodingForCharset(U._contentTypeForHeaders(partsInfo.headers).parameters._collection$_map.$index(0, "charset")).decode$1(0, partsInfo.bodyBytes), null);
+                t5 = J.getInterceptor$asx(partsJsonData);
+                if (t5.$index(partsJsonData, "next") == null)
+                  hasNextPage = false;
+                partsList = t4._as(t5.$index(partsJsonData, "results"));
+                t5 = J.getInterceptor$asx(partsList);
+                i = 0;
+                while (true) {
+                  t6 = t5.get$length(partsList);
+                  if (typeof t6 !== "number") {
+                    $async$returnValue = H.iae(t6);
+                    // goto return
+                    $async$goto = 1;
+                    break $async$outer;
+                  }
+                  if (!(i < t6))
+                    break;
+                  if (!H.boolConversionCheck(H._asBoolS(J.$index$asx(t5.$index(partsList, i), "is_spare")))) {
+                    partID = H._asStringS(J.$index$asx(J.$index$asx(t5.$index(partsList, i), "part"), "part_num"));
+                    colorID = H._asIntS(J.$index$asx(J.$index$asx(t5.$index(partsList, i), "color"), "id"));
+                    imageURL = H._asStringS(J.$index$asx(J.$index$asx(t5.$index(partsList, i), "part"), "part_img_url"));
+                    t6 = $.LegoPiece__registeredPieces;
+                    if (t6 == null)
+                      t6 = $.LegoPiece__registeredPieces = new H.JsLinkedHashMap(t1);
+                    if (t6.$index(0, partID) == null) {
+                      t6 = $.LegoPiece__registeredPieces;
+                      t6.$indexSet(0, partID, new H.JsLinkedHashMap(t2));
+                    }
+                    if (J.$index$asx($.LegoPiece__registeredPieces.$index(0, partID), colorID) == null) {
+                      t6 = $.LegoPiece__registeredPieces.$index(0, partID);
+                      t7 = new R.LegoPiece();
+                      t7._partID = partID;
+                      t7._colorID = colorID;
+                      t8 = new P._Future($.Zone__current, t3);
+                      t8._asyncComplete$1(imageURL);
+                      t7.set$_LegoPiece$_imageURL(t8);
+                      J.$indexSet$ax(t6, colorID, t7);
+                    }
+                    t6 = J.$index$asx($.LegoPiece__registeredPieces.$index(0, partID), colorID);
+                    numInSet = H._asIntS(J.$index$asx(t5.$index(partsList, i), "quantity"));
+                    $async$self._pieces.$indexSet(0, t6, numInSet);
+                    $async$self._piecesOwned.$indexSet(0, t6, 0);
+                  }
+                  ++i;
+                }
+                ++partsPage;
+                // goto for condition
+                $async$goto = 4;
+                break;
+              case 5:
+                // after for
+                $async$returnValue = true;
                 // goto return
                 $async$goto = 1;
                 break;
-              }
-              jsonData = C.C_JsonCodec.decode$2$reviver(0, B.encodingForCharset(U._contentTypeForHeaders(basicInfo.headers).parameters._collection$_map.$index(0, "charset")).decode$1(0, basicInfo.bodyBytes), null);
-              t1 = J.getInterceptor$asx(jsonData);
-              $async$self._LegoSet$_name = H._asStringS(t1.$index(jsonData, "name"));
-              $async$self._year = H._asIntS(t1.$index(jsonData, "year"));
-              $async$self._themeID = H._asIntS(t1.$index(jsonData, "theme_id"));
-              $async$self._imageURL = H._asStringS(t1.$index(jsonData, "set_img_url"));
-              $async$self._numPieces = H._asIntS(t1.$index(jsonData, "num_parts"));
-              t1 = type$.JsLinkedHashMap_of_legacy_LegoPiece_and_legacy_int;
-              $async$self.set$_pieces(new H.JsLinkedHashMap(t1));
-              $async$self.set$_piecesOwned(new H.JsLinkedHashMap(t1));
-              t1 = type$.JsLinkedHashMap_of_legacy_String_and_legacy_Map_of_legacy_int_and_legacy_LegoPiece, t2 = type$.JsLinkedHashMap_of_legacy_int_and_legacy_LegoPiece, t3 = type$._Future_legacy_String, t4 = type$.legacy_List_dynamic, partsPage = 1, hasNextPage = true;
-            case 4:
-              // for condition
-              if (!hasNextPage) {
-                // goto after for
-                $async$goto = 5;
-                break;
-              }
-              $async$goto = 6;
-              return P._asyncAwait(apiAccess.$get$2("sets/" + H.S($async$self._setID) + "/parts", "page=" + partsPage), $async$loadSet$1);
-            case 6:
-              // returning from await.
-              partsInfo = $async$result;
-              if (partsInfo.statusCode !== 200) {
-                // goto after for
-                $async$goto = 5;
-                break;
-              }
-              partsJsonData = C.C_JsonCodec.decode$2$reviver(0, B.encodingForCharset(U._contentTypeForHeaders(partsInfo.headers).parameters._collection$_map.$index(0, "charset")).decode$1(0, partsInfo.bodyBytes), null);
-              t5 = J.getInterceptor$asx(partsJsonData);
-              if (t5.$index(partsJsonData, "next") == null)
-                hasNextPage = false;
-              partsList = t4._as(t5.$index(partsJsonData, "results"));
-              for (t5 = J.getInterceptor$asx(partsList), i = 0; i < t5.get$length(partsList); ++i)
-                if (!H.boolConversionCheck(H._asBoolS(J.$index$asx(t5.$index(partsList, i), "is_spare")))) {
-                  partID = H._asStringS(J.$index$asx(J.$index$asx(t5.$index(partsList, i), "part"), "part_num"));
-                  colorID = H._asIntS(J.$index$asx(J.$index$asx(t5.$index(partsList, i), "color"), "id"));
-                  imageURL = H._asStringS(J.$index$asx(J.$index$asx(t5.$index(partsList, i), "part"), "part_img_url"));
-                  t6 = $.LegoPiece__registeredPieces;
-                  if (t6 == null)
-                    t6 = $.LegoPiece__registeredPieces = new H.JsLinkedHashMap(t1);
-                  if (t6.$index(0, partID) == null) {
-                    t6 = $.LegoPiece__registeredPieces;
-                    t6.$indexSet(0, partID, new H.JsLinkedHashMap(t2));
-                  }
-                  if (J.$index$asx($.LegoPiece__registeredPieces.$index(0, partID), colorID) == null) {
-                    t6 = $.LegoPiece__registeredPieces.$index(0, partID);
-                    t7 = new R.LegoPiece();
-                    t7._partID = partID;
-                    t7._colorID = colorID;
-                    t8 = new P._Future($.Zone__current, t3);
-                    t8._asyncComplete$1(imageURL);
-                    t7.set$_LegoPiece$_imageURL(t8);
-                    J.$indexSet$ax(t6, colorID, t7);
-                  }
-                  t6 = J.$index$asx($.LegoPiece__registeredPieces.$index(0, partID), colorID);
-                  numInSet = H._asIntS(J.$index$asx(t5.$index(partsList, i), "quantity"));
-                  $async$self._pieces.$indexSet(0, t6, numInSet);
-                  $async$self._piecesOwned.$indexSet(0, t6, 0);
-                }
-              ++partsPage;
-              // goto for condition
-              $async$goto = 4;
-              break;
-            case 5:
-              // after for
-              $async$returnValue = true;
-              // goto return
-              $async$goto = 1;
-              break;
-            case 1:
-              // return
-              return P._asyncReturn($async$returnValue, $async$completer);
-          }
+              case 1:
+                // return
+                return P._asyncReturn($async$returnValue, $async$completer);
+            }
       });
       return P._asyncStartSync($async$loadSet$1, $async$completer);
     },
@@ -15265,6 +16818,12 @@
                   t3 = J.get$length$asx(setsJson);
                   if (typeof t2 !== "number") {
                     $async$returnValue = t2.$lt();
+                    // goto return
+                    $async$goto = 1;
+                    break $async$outer;
+                  }
+                  if (typeof t3 !== "number") {
+                    $async$returnValue = H.iae(t3);
                     // goto return
                     $async$goto = 1;
                     break $async$outer;
@@ -15328,6 +16887,16 @@
       });
       return P._asyncStartSync($async$loadProject$0, $async$completer);
     },
+    removeSet$1: function(setID) {
+      var i, t1;
+      for (i = this._sets.length - 1; i >= 0; --i) {
+        t1 = this._sets;
+        if (i >= t1.length)
+          return H.ioore(t1, i);
+        if (t1[i]._setID == setID)
+          C.JSArray_methods.removeAt$1(t1, i);
+      }
+    },
     set$_sets: function(_sets) {
       this._sets = type$.legacy_List_legacy_LegoSet._as(_sets);
     }
@@ -15347,6 +16916,8 @@
           t5 = J.get$length$asx(piecesOwnedJson);
           if (typeof t4 !== "number")
             return t4.$lt();
+          if (typeof t5 !== "number")
+            return H.iae(t5);
           if (!(t4 < t5))
             break;
           curPieceJson = J.$index$asx(piecesOwnedJson, j);
@@ -15362,10 +16933,10 @@
         }
       }
     },
-    $signature: 18
+    $signature: 20
   };
   T.RebrickableAccess.prototype = {
-    $get$2: function(section, params) {
+    $get$2: function(_, section, params) {
       var $async$goto = 0,
         $async$completer = P._makeAsyncAwaitCompleter(type$.legacy_Response),
         $async$returnValue, $async$self = this, requestURL;
@@ -15394,7 +16965,7 @@
       H._asBoolS(value);
       this.app.setCurrentState$1(C.DisplayStateType_1);
     },
-    $signature: 18
+    $signature: 20
   };
   (function aliases() {
     var _ = J.Interceptor.prototype;
@@ -15430,46 +17001,46 @@
       _instance_0_i = hunkHelpers._instance_0i,
       _static = hunkHelpers.installStaticTearOff,
       _instance_2_i = hunkHelpers._instance_2i;
-    _static_2(J, "_interceptors_JSArray__compareAny$closure", "JSArray__compareAny", 19);
-    _static_1(P, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 6);
-    _static_1(P, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 6);
-    _static_1(P, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 6);
+    _static_2(J, "_interceptors_JSArray__compareAny$closure", "JSArray__compareAny", 21);
+    _static_1(P, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 5);
+    _static_1(P, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 5);
+    _static_1(P, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 5);
     _static_0(P, "async___startMicrotaskLoop$closure", "_startMicrotaskLoop", 0);
-    _static_1(P, "async___nullDataHandler$closure", "_nullDataHandler", 1);
-    _instance(P._Completer.prototype, "get$completeError", 0, 1, null, ["call$2", "call$1"], ["completeError$2", "completeError$1"], 51, 0);
+    _static_1(P, "async___nullDataHandler$closure", "_nullDataHandler", 2);
+    _instance(P._Completer.prototype, "get$completeError", 0, 1, null, ["call$2", "call$1"], ["completeError$2", "completeError$1"], 33, 0);
     _instance_2_u(P._Future.prototype, "get$_completeError", "_completeError$2", 11);
     _instance_0_u(P._DoneStreamSubscription.prototype, "get$_sendDone", "_sendDone$0", 0);
-    _static_2(P, "collection___defaultEquals$closure", "_defaultEquals", 20);
-    _static_1(P, "collection___defaultHashCode$closure", "_defaultHashCode", 21);
-    _static_2(P, "collection_ListMixin__compareAny$closure", "ListMixin__compareAny", 19);
+    _static_2(P, "collection___defaultEquals$closure", "_defaultEquals", 22);
+    _static_1(P, "collection___defaultHashCode$closure", "_defaultHashCode", 10);
+    _static_2(P, "collection_ListMixin__compareAny$closure", "ListMixin__compareAny", 21);
     var _;
     _instance_1_i(_ = P._ByteCallbackSink.prototype, "get$add", "add$1", 59);
     _instance_0_i(_, "get$close", "close$0", 0);
-    _static_1(P, "core__identityHashCode$closure", "identityHashCode", 21);
-    _static_2(P, "core__identical$closure", "identical", 20);
-    _static_1(P, "core_Uri_decodeComponent$closure", "Uri_decodeComponent", 3);
-    _static(W, "html__Html5NodeValidator__standardAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__standardAttributeValidator"], 7, 0);
-    _static(W, "html__Html5NodeValidator__uriAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__uriAttributeValidator"], 7, 0);
-    _instance_2_i(W.HttpRequest.prototype, "get$setRequestHeader", "setRequestHeader$2", 14);
+    _static_1(P, "core__identityHashCode$closure", "identityHashCode", 10);
+    _static_2(P, "core__identical$closure", "identical", 22);
+    _static_1(P, "core_Uri_decodeComponent$closure", "Uri_decodeComponent", 7);
+    _static(W, "html__Html5NodeValidator__standardAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__standardAttributeValidator"], 19, 0);
+    _static(W, "html__Html5NodeValidator__uriAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__uriAttributeValidator"], 19, 0);
+    _instance_2_i(W.HttpRequest.prototype, "get$setRequestHeader", "setRequestHeader$2", 6);
     _static(P, "math__max$closure", 2, null, ["call$1$2", "call$2"], ["max", function(a, b) {
       return P.max(a, b, type$.num);
-    }], 40, 0);
+    }], 41, 0);
   })();
   (function inheritance() {
     var _mixin = hunkHelpers.mixin,
       _inherit = hunkHelpers.inherit,
       _inheritMany = hunkHelpers.inheritMany;
     _inherit(P.Object, null);
-    _inheritMany(P.Object, [H.JS_CONST, J.Interceptor, J.ArrayIterator, P.Error, P._ListBase_Object_ListMixin, H.Closure, P.Iterable, H.ListIterator, P.Iterator, H.ExpandIterator, H.EmptyIterator, H.WhereTypeIterator, H.FixedLengthListMixin, H.UnmodifiableListMixin, H.ConstantMap, H.TypeErrorDecoder, H.NullThrownFromJavaScriptException, H.ExceptionAndStackTrace, H._StackTrace, P.MapMixin, H.LinkedHashMapCell, H.LinkedHashMapKeyIterator, H.JSSyntaxRegExp, H._MatchImplementation, H._AllMatchesIterator, H.StringMatch, H._StringAllMatchesIterator, H.Rti, H._FunctionParameters, H._Type, P._TimerImpl, P._AsyncAwaitCompleter, P.AsyncError, P._Completer, P._FutureListener, P._Future, P._AsyncCallbackEntry, P.Stream, P.StreamSubscription, P.StreamTransformerBase, P._BufferingStreamSubscription, P._PendingEvents, P._DoneStreamSubscription, P._StreamIterator, P._Zone, P.__SetBase_Object_SetMixin, P._LinkedHashSetCell, P._LinkedHashSetIterator, P.ListMixin, P._UnmodifiableMapMixin, P.MapView, P.SetMixin, P.Codec, P.ChunkedConversionSink, P._Utf8Decoder, P.DateTime, P.OutOfMemoryError, P.StackOverflowError, P._Exception, P.FormatException, P.MapEntry, P.Null, P._StringStackTrace, P.StringBuffer, P._Uri, P.UriData, P._SimpleUri, W.EventStreamProvider, W._Html5NodeValidator, W.ImmutableListMixin, W.NodeValidatorBuilder, W._SimpleNodeValidator, W._SvgNodeValidator, W.FixedSizeListIterator, W._SameOriginUriPolicy, W._ValidatingTreeSanitizer, P._AcceptStructuredClone, P.NullRejectionException, M.CanonicalizedMap, E.BaseClient, G.BaseRequest, T.BaseResponse, E.ClientException, R.MediaType, M.Context, O.Style, X.ParsedPath, X.PathException, Y.SourceFile, D.SourceLocationMixin, Y.SourceSpanMixin, U.Highlighter, U._Highlight, U._Line, V.SourceLocation, G.SourceSpanException, X.StringScanner, L.App, S.DisplayStateType, S.DisplayState, R.LegoPiece, U.LegoSet, S.LegoSetProject, T.RebrickableAccess]);
-    _inheritMany(J.Interceptor, [J.JSBool, J.JSNull, J.JavaScriptObject, J.JSArray, J.JSNumber, J.JSString, H.NativeByteBuffer, H.NativeTypedData, W.EventTarget, W.DomException, W.DomImplementation, W.DomTokenList, W.Event, W._HtmlCollection_Interceptor_ListMixin, W.Location, W._NodeList_Interceptor_ListMixin, W.__NamedNodeMap_Interceptor_ListMixin]);
-    _inheritMany(J.JavaScriptObject, [J.PlainJavaScriptObject, J.UnknownJavaScriptObject, J.JavaScriptFunction, V.BufferModule, V.BufferConstants, V.Buffer, F.ConsoleModule, F.Console, F.EventEmitter, D.FS, D.FSConstants, D.FSWatcher, D.ReadStream, D.ReadStreamOptions, D.WriteStream, D.WriteStreamOptions, D.FileOptions, D.StatOptions, D.MkdirOptions, D.RmdirOptions, D.WatchOptions, D.WatchFileOptions, D.Stats, E.Promise, E.Date, E.JsError, E.Atomics, Y.Modules, Y.Module, Y.Net, Y.Socket, Y.NetAddress, Y.NetServer, X.NodeJsError, X.Process, X.CPUUsage, X.Release, D.StreamModule, D.Readable, D.Writable, D.Duplex, D.Transform, D.WritableOptions, D.ReadableOptions, L.Immediate, L.Timeout, N.TTY]);
+    _inheritMany(P.Object, [H.JS_CONST, J.Interceptor, J.ArrayIterator, P.Error, P._ListBase_Object_ListMixin, H.Closure, P.Iterable, H.ListIterator, P.Iterator, H.ExpandIterator, H.EmptyIterator, H.WhereTypeIterator, H.FixedLengthListMixin, H.UnmodifiableListMixin, H.ConstantMap, H.TypeErrorDecoder, H.NullThrownFromJavaScriptException, H.ExceptionAndStackTrace, H._StackTrace, P.MapMixin, H.LinkedHashMapCell, H.LinkedHashMapKeyIterator, H.JSSyntaxRegExp, H._MatchImplementation, H._AllMatchesIterator, H.StringMatch, H._StringAllMatchesIterator, H.Rti, H._FunctionParameters, H._Type, P._TimerImpl, P._AsyncAwaitCompleter, P.AsyncError, P._Completer, P._FutureListener, P._Future, P._AsyncCallbackEntry, P.Stream, P.StreamSubscription, P.StreamTransformerBase, P._BufferingStreamSubscription, P._PendingEvents, P._DoneStreamSubscription, P._StreamIterator, P._Zone, P.__SetBase_Object_SetMixin, P._LinkedHashSetCell, P._LinkedHashSetIterator, P.ListMixin, P._UnmodifiableMapMixin, P.MapView, P.SetMixin, P.Codec, P.ChunkedConversionSink, P._Utf8Decoder, P.DateTime, P.OutOfMemoryError, P.StackOverflowError, P._Exception, P.FormatException, P.MapEntry, P.Null, P._StringStackTrace, P.StringBuffer, P._Uri, P.UriData, P._SimpleUri, W.CssStyleDeclarationBase, W.EventStreamProvider, W._Html5NodeValidator, W.ImmutableListMixin, W.NodeValidatorBuilder, W._SimpleNodeValidator, W._SvgNodeValidator, W.FixedSizeListIterator, W._SameOriginUriPolicy, W._ValidatingTreeSanitizer, P._AcceptStructuredClone, P.NullRejectionException, M.CanonicalizedMap, E.BaseClient, G.BaseRequest, T.BaseResponse, E.ClientException, R.MediaType, M.Context, O.Style, X.ParsedPath, X.PathException, Y.SourceFile, D.SourceLocationMixin, Y.SourceSpanMixin, U.Highlighter, U._Highlight, U._Line, V.SourceLocation, G.SourceSpanException, X.StringScanner, L.App, S.DisplayStateType, S.DisplayState, R.LegoPiece, U.LegoSet, S.LegoSetProject, T.RebrickableAccess]);
+    _inheritMany(J.Interceptor, [J.JSBool, J.JSNull, J.JavaScriptObject, J.JSArray, J.JSNumber, J.JSString, H.NativeByteBuffer, H.NativeTypedData, W.EventTarget, W.AccessibleNodeList, W.Blob, W.CssTransformComponent, W.CssRule, W._CssStyleDeclaration_Interceptor_CssStyleDeclarationBase, W.CssStyleValue, W.DataTransferItemList, W.DomException, W.DomImplementation, W._DomRectList_Interceptor_ListMixin, W.DomRectReadOnly, W._DomStringList_Interceptor_ListMixin, W.DomTokenList, W.Event, W._FileList_Interceptor_ListMixin, W.Gamepad, W.History, W._HtmlCollection_Interceptor_ListMixin, W.Location, W.MediaList, W._MidiInputMap_Interceptor_MapMixin, W._MidiOutputMap_Interceptor_MapMixin, W.MimeType, W._MimeTypeArray_Interceptor_ListMixin, W._NodeList_Interceptor_ListMixin, W.Plugin, W._PluginArray_Interceptor_ListMixin, W._RtcStatsReport_Interceptor_MapMixin, W.SpeechGrammar, W._SpeechGrammarList_Interceptor_ListMixin, W.SpeechRecognitionResult, W._Storage_Interceptor_MapMixin, W.StyleSheet, W._TextTrackCueList_Interceptor_ListMixin, W.TimeRanges, W.Touch, W._TouchList_Interceptor_ListMixin, W.TrackDefaultList, W.Url, W.__CssRuleList_Interceptor_ListMixin, W.__GamepadList_Interceptor_ListMixin, W.__NamedNodeMap_Interceptor_ListMixin, W.__SpeechRecognitionResultList_Interceptor_ListMixin, W.__StyleSheetList_Interceptor_ListMixin, P.Length, P._LengthList_Interceptor_ListMixin, P.Number, P._NumberList_Interceptor_ListMixin, P.PointList, P._StringList_Interceptor_ListMixin, P.Transform, P._TransformList_Interceptor_ListMixin, P.AudioBuffer, P._AudioParamMap_Interceptor_MapMixin, P._SqlResultSetRowList_Interceptor_ListMixin]);
+    _inheritMany(J.JavaScriptObject, [J.PlainJavaScriptObject, J.UnknownJavaScriptObject, J.JavaScriptFunction, V.BufferModule, V.BufferConstants, V.Buffer0, F.ConsoleModule, F.Console, F.EventEmitter, D.FS, D.FSConstants, D.FSWatcher, D.ReadStream, D.ReadStreamOptions, D.WriteStream, D.WriteStreamOptions, D.FileOptions, D.StatOptions, D.MkdirOptions, D.RmdirOptions, D.WatchOptions, D.WatchFileOptions, D.Stats, E.Promise, E.Date, E.JsError, E.Atomics, Y.Modules, Y.Module, Y.Net, Y.Socket, Y.NetAddress, Y.NetServer, X.NodeJsError, X.Process, X.CPUUsage, X.Release, D.StreamModule, D.Readable, D.Writable, D.Duplex, D.Transform0, D.WritableOptions, D.ReadableOptions, L.Immediate, L.Timeout, N.TTY]);
     _inherit(J.JSUnmodifiableArray, J.JSArray);
     _inheritMany(J.JSNumber, [J.JSInt, J.JSNumNotInt]);
     _inheritMany(P.Error, [H.LateError, H.ReachabilityError, H.NotNullableError, P.TypeError, H.JsNoSuchMethodError, H.UnknownJsTypeError, H.RuntimeError, P.AssertionError, H._Error, P.NullThrownError, P.ArgumentError, P.UnsupportedError, P.UnimplementedError, P.StateError, P.ConcurrentModificationError, P.CyclicInitializationError]);
     _inherit(P.ListBase, P._ListBase_Object_ListMixin);
     _inheritMany(P.ListBase, [H.UnmodifiableListBase, W._ChildNodeListLazy]);
     _inherit(H.CodeUnits, H.UnmodifiableListBase);
-    _inheritMany(H.Closure, [H.nullFuture_closure, H.Instantiation, H.TearOffClosure, H.JsLinkedHashMap_values_closure, H.initHooks_closure, H.initHooks_closure0, H.initHooks_closure1, P._AsyncRun__initializeScheduleImmediate_internalCallback, P._AsyncRun__initializeScheduleImmediate_closure, P._AsyncRun__scheduleImmediateJsOverride_internalCallback, P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, P._TimerImpl_internalCallback, P._awaitOnObject_closure, P._awaitOnObject_closure0, P._wrapJsFunctionForAsync_closure, P.Future_wait__error_set, P.Future_wait__stackTrace_set, P.Future_wait__error_get, P.Future_wait__stackTrace_get, P.Future_wait_handleError, P.Future_wait_closure, P._Future__addListener_closure, P._Future__prependListeners_closure, P._Future__chainForeignFuture_closure, P._Future__chainForeignFuture_closure0, P._Future__chainForeignFuture_closure1, P._Future__asyncCompleteWithValue_closure, P._Future__chainFuture_closure, P._Future__asyncCompleteError_closure, P._Future__propagateToListeners_handleWhenCompleteCallback, P._Future__propagateToListeners_handleWhenCompleteCallback_closure, P._Future__propagateToListeners_handleValueCallback, P._Future__propagateToListeners_handleError, P.Stream_Stream$fromIterable_closure, P.Stream_length_closure, P.Stream_length_closure0, P.Stream_first_closure, P.Stream_first_closure0, P._BufferingStreamSubscription__sendError_sendError, P._BufferingStreamSubscription__sendDone_sendDone, P._PendingEvents_schedule_closure, P._cancelAndValue_closure, P._rootHandleUncaughtError_closure, P._RootZone_bindCallbackGuarded_closure, P._RootZone_bindUnaryCallbackGuarded_closure, P._LinkedCustomHashMap_closure, P.MapBase_mapToString_closure, P.Utf8Decoder__decoder_closure, P.Utf8Decoder__decoderNonfatal_closure, P.Uri__parseIPv4Address_error, P.Uri_parseIPv6Address_error, P.Uri_parseIPv6Address_parseHex, P._createTables_build, P._createTables_setChars, P._createTables_setRange, W.Element_Element$html_closure, W._EventStreamSubscription_closure, W._EventStreamSubscription_onData_closure, W.NodeValidatorBuilder_allowsElement_closure, W.NodeValidatorBuilder_allowsAttribute_closure, W._SimpleNodeValidator_closure, W._SimpleNodeValidator_closure0, W._TemplatingNodeValidator_closure, W._ValidatingTreeSanitizer_sanitizeTree_walk, P._AcceptStructuredClone_walk_closure, P.promiseToFuture_closure, P.promiseToFuture_closure0, M.CanonicalizedMap_addAll_closure, M.CanonicalizedMap_forEach_closure, G.BaseRequest_closure, G.BaseRequest_closure0, O.BrowserClient_send_closure, O.BrowserClient_send_closure0, Z.ByteStream_toBytes_closure, Z.CaseInsensitiveMap$from_closure, R.MediaType_MediaType$parse_closure, R.MediaType_toString_closure, R.MediaType_toString__closure, N.expectQuotedString_closure, M.Context_joinAll_closure, M.Context_split_closure, M._validateArgList_closure, U.Highlighter_closure, U.Highlighter$__closure, U.Highlighter$___closure, U.Highlighter$__closure0, U.Highlighter__collateLines_closure, U.Highlighter__collateLines_closure0, U.Highlighter__collateLines_closure1, U.Highlighter__collateLines__closure, U.Highlighter_highlight_closure, U.Highlighter__writeFileStart_closure, U.Highlighter__writeMultilineHighlights_closure, U.Highlighter__writeMultilineHighlights_closure0, U.Highlighter__writeMultilineHighlights_closure1, U.Highlighter__writeMultilineHighlights_closure2, U.Highlighter__writeMultilineHighlights__closure, U.Highlighter__writeMultilineHighlights__closure0, U.Highlighter__writeHighlightedText_closure, U.Highlighter__writeIndicator_closure, U.Highlighter__writeIndicator_closure0, U.Highlighter__writeIndicator_closure1, U.Highlighter__writeSidebar_closure, U._Highlight_closure, S.ProjectViewState_renderToDiv_closure, S.ProjectViewState__renderSelectedSet_closure, S.ProjectViewState__renderSelectedSet_closure0, S.ProjectViewState__renderSelectedSet_closure1, R.LegoPiece$__closure, S.LegoSetProject_loadProject_closure, Z.main_closure]);
+    _inheritMany(H.Closure, [H.nullFuture_closure, H.Instantiation, H.TearOffClosure, H.JsLinkedHashMap_values_closure, H.initHooks_closure, H.initHooks_closure0, H.initHooks_closure1, P._AsyncRun__initializeScheduleImmediate_internalCallback, P._AsyncRun__initializeScheduleImmediate_closure, P._AsyncRun__scheduleImmediateJsOverride_internalCallback, P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, P._TimerImpl_internalCallback, P._awaitOnObject_closure, P._awaitOnObject_closure0, P._wrapJsFunctionForAsync_closure, P.Future_wait__error_set, P.Future_wait__stackTrace_set, P.Future_wait__error_get, P.Future_wait__stackTrace_get, P.Future_wait_handleError, P.Future_wait_closure, P._Future__addListener_closure, P._Future__prependListeners_closure, P._Future__chainForeignFuture_closure, P._Future__chainForeignFuture_closure0, P._Future__chainForeignFuture_closure1, P._Future__asyncCompleteWithValue_closure, P._Future__chainFuture_closure, P._Future__asyncCompleteError_closure, P._Future__propagateToListeners_handleWhenCompleteCallback, P._Future__propagateToListeners_handleWhenCompleteCallback_closure, P._Future__propagateToListeners_handleValueCallback, P._Future__propagateToListeners_handleError, P.Stream_Stream$fromIterable_closure, P.Stream_length_closure, P.Stream_length_closure0, P.Stream_first_closure, P.Stream_first_closure0, P._BufferingStreamSubscription__sendError_sendError, P._BufferingStreamSubscription__sendDone_sendDone, P._PendingEvents_schedule_closure, P._cancelAndValue_closure, P._rootHandleUncaughtError_closure, P._RootZone_bindCallbackGuarded_closure, P._RootZone_bindUnaryCallbackGuarded_closure, P._LinkedCustomHashMap_closure, P.MapBase_mapToString_closure, P.Utf8Decoder__decoder_closure, P.Utf8Decoder__decoderNonfatal_closure, P.Uri__parseIPv4Address_error, P.Uri_parseIPv6Address_error, P.Uri_parseIPv6Address_parseHex, P._createTables_build, P._createTables_setChars, P._createTables_setRange, W.Element_Element$html_closure, W.MidiInputMap_keys_closure, W.MidiOutputMap_keys_closure, W.RtcStatsReport_keys_closure, W.Storage_keys_closure, W._EventStreamSubscription_closure, W._EventStreamSubscription_onData_closure, W.NodeValidatorBuilder_allowsElement_closure, W.NodeValidatorBuilder_allowsAttribute_closure, W._SimpleNodeValidator_closure, W._SimpleNodeValidator_closure0, W._TemplatingNodeValidator_closure, W._ValidatingTreeSanitizer_sanitizeTree_walk, P._AcceptStructuredClone_walk_closure, P.promiseToFuture_closure, P.promiseToFuture_closure0, P.AudioParamMap_keys_closure, M.CanonicalizedMap_addAll_closure, M.CanonicalizedMap_forEach_closure, G.BaseRequest_closure, G.BaseRequest_closure0, O.BrowserClient_send_closure, O.BrowserClient_send_closure0, Z.ByteStream_toBytes_closure, Z.CaseInsensitiveMap$from_closure, R.MediaType_MediaType$parse_closure, R.MediaType_toString_closure, R.MediaType_toString__closure, N.expectQuotedString_closure, M.Context_joinAll_closure, M.Context_split_closure, M._validateArgList_closure, U.Highlighter_closure, U.Highlighter$__closure, U.Highlighter$___closure, U.Highlighter$__closure0, U.Highlighter__collateLines_closure, U.Highlighter__collateLines_closure0, U.Highlighter__collateLines_closure1, U.Highlighter__collateLines__closure, U.Highlighter_highlight_closure, U.Highlighter__writeFileStart_closure, U.Highlighter__writeMultilineHighlights_closure, U.Highlighter__writeMultilineHighlights_closure0, U.Highlighter__writeMultilineHighlights_closure1, U.Highlighter__writeMultilineHighlights_closure2, U.Highlighter__writeMultilineHighlights__closure, U.Highlighter__writeMultilineHighlights__closure0, U.Highlighter__writeHighlightedText_closure, U.Highlighter__writeIndicator_closure, U.Highlighter__writeIndicator_closure0, U.Highlighter__writeIndicator_closure1, U.Highlighter__writeSidebar_closure, U._Highlight_closure, S.ProjectViewState_renderToDiv_closure, S.ProjectViewState_renderToDiv_closure0, S.ProjectViewState_renderToDiv_closure1, S.ProjectViewState_renderToDiv_closure2, S.ProjectViewState_renderToDiv_closure3, S.ProjectViewState__renderSelectedSet_closure, S.ProjectViewState__renderSelectedSet_closure0, S.ProjectViewState__renderSelectedSet_closure1, S.ProjectViewState__hideDeletionConfirm_closure, R.LegoPiece$__closure, S.LegoSetProject_loadProject_closure, Z.main_closure]);
     _inheritMany(P.Iterable, [H.EfficientLengthIterable, H.MappedIterable, H.WhereIterable, H.ExpandIterable, H.SkipIterable, H.WhereTypeIterable, P.IterableBase, H._StringAllMatchesIterable]);
     _inheritMany(H.EfficientLengthIterable, [H.ListIterable, H.EmptyIterable, H.LinkedHashMapKeyIterable]);
     _inheritMany(H.ListIterable, [H.SubListIterable, H.MappedListIterable, H.ReversedListIterable, P._JsonMapKeyIterable]);
@@ -15485,10 +17056,12 @@
     _inheritMany(P.MapBase, [H.JsLinkedHashMap, P._JsonMap, W._AttributeMap]);
     _inherit(H._AllMatchesIterable, P.IterableBase);
     _inherit(H.NativeTypedArray, H.NativeTypedData);
-    _inherit(H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin, H.NativeTypedArray);
+    _inheritMany(H.NativeTypedArray, [H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin, H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin]);
+    _inherit(H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin_FixedLengthListMixin, H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin);
+    _inherit(H.NativeTypedArrayOfDouble, H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin_FixedLengthListMixin);
     _inherit(H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin_FixedLengthListMixin, H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin);
     _inherit(H.NativeTypedArrayOfInt, H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin_FixedLengthListMixin);
-    _inheritMany(H.NativeTypedArrayOfInt, [H.NativeInt8List, H.NativeUint32List, H.NativeUint8List]);
+    _inheritMany(H.NativeTypedArrayOfInt, [H.NativeInt16List, H.NativeInt32List, H.NativeInt8List, H.NativeUint16List, H.NativeUint32List, H.NativeUint8ClampedList, H.NativeUint8List]);
     _inherit(H._TypeError, H._Error);
     _inherit(P._AsyncCompleter, P._Completer);
     _inheritMany(P.Stream, [P.StreamView, P._StreamImpl, P._EmptyStream, W._EventStream]);
@@ -15510,26 +17083,75 @@
     _inherit(P._ByteCallbackSink, P.ByteConversionSinkBase);
     _inheritMany(P.ArgumentError, [P.RangeError, P.IndexError]);
     _inherit(P._DataUri, P._Uri);
-    _inheritMany(W.EventTarget, [W.Node, W.HttpRequestEventTarget]);
+    _inheritMany(W.EventTarget, [W.Node, W.Animation, W.FileWriter, W.HttpRequestEventTarget, W.SourceBuffer, W._SourceBufferList_EventTarget_ListMixin, W.TextTrack, W.TextTrackCue, W._TextTrackList_EventTarget_ListMixin, W.VideoTrackList, P.AudioTrackList, P.BaseAudioContext]);
     _inheritMany(W.Node, [W.Element, W.CharacterData, W.Document, W._Attr]);
     _inheritMany(W.Element, [W.HtmlElement, P.SvgElement]);
     _inheritMany(W.HtmlElement, [W.AnchorElement, W.AreaElement, W.BaseElement, W.BodyElement, W.ButtonElement, W.DivElement, W.FormElement, W.HeadingElement, W.ImageElement, W.ParagraphElement, W.SelectElement, W.TableElement, W.TableRowElement, W.TableSectionElement, W.TemplateElement]);
+    _inherit(W.CssPerspective, W.CssTransformComponent);
+    _inherit(W.CssStyleDeclaration, W._CssStyleDeclaration_Interceptor_CssStyleDeclarationBase);
+    _inheritMany(W.CssStyleValue, [W.CssTransformValue, W.CssUnparsedValue]);
+    _inherit(W._DomRectList_Interceptor_ListMixin_ImmutableListMixin, W._DomRectList_Interceptor_ListMixin);
+    _inherit(W.DomRectList, W._DomRectList_Interceptor_ListMixin_ImmutableListMixin);
+    _inherit(W._DomStringList_Interceptor_ListMixin_ImmutableListMixin, W._DomStringList_Interceptor_ListMixin);
+    _inherit(W.DomStringList, W._DomStringList_Interceptor_ListMixin_ImmutableListMixin);
+    _inherit(W.File, W.Blob);
+    _inherit(W._FileList_Interceptor_ListMixin_ImmutableListMixin, W._FileList_Interceptor_ListMixin);
+    _inherit(W.FileList, W._FileList_Interceptor_ListMixin_ImmutableListMixin);
     _inherit(W._HtmlCollection_Interceptor_ListMixin_ImmutableListMixin, W._HtmlCollection_Interceptor_ListMixin);
     _inherit(W.HtmlCollection, W._HtmlCollection_Interceptor_ListMixin_ImmutableListMixin);
     _inherit(W.HtmlDocument, W.Document);
     _inherit(W.HttpRequest, W.HttpRequestEventTarget);
+    _inherit(W.MidiInputMap, W._MidiInputMap_Interceptor_MapMixin);
+    _inherit(W.MidiOutputMap, W._MidiOutputMap_Interceptor_MapMixin);
+    _inherit(W._MimeTypeArray_Interceptor_ListMixin_ImmutableListMixin, W._MimeTypeArray_Interceptor_ListMixin);
+    _inherit(W.MimeTypeArray, W._MimeTypeArray_Interceptor_ListMixin_ImmutableListMixin);
     _inheritMany(W.Event, [W.UIEvent, W.ProgressEvent]);
     _inherit(W.MouseEvent, W.UIEvent);
     _inherit(W._NodeList_Interceptor_ListMixin_ImmutableListMixin, W._NodeList_Interceptor_ListMixin);
     _inherit(W.NodeList, W._NodeList_Interceptor_ListMixin_ImmutableListMixin);
+    _inherit(W._PluginArray_Interceptor_ListMixin_ImmutableListMixin, W._PluginArray_Interceptor_ListMixin);
+    _inherit(W.PluginArray, W._PluginArray_Interceptor_ListMixin_ImmutableListMixin);
+    _inherit(W.RtcStatsReport, W._RtcStatsReport_Interceptor_MapMixin);
+    _inherit(W._SourceBufferList_EventTarget_ListMixin_ImmutableListMixin, W._SourceBufferList_EventTarget_ListMixin);
+    _inherit(W.SourceBufferList, W._SourceBufferList_EventTarget_ListMixin_ImmutableListMixin);
+    _inherit(W._SpeechGrammarList_Interceptor_ListMixin_ImmutableListMixin, W._SpeechGrammarList_Interceptor_ListMixin);
+    _inherit(W.SpeechGrammarList, W._SpeechGrammarList_Interceptor_ListMixin_ImmutableListMixin);
+    _inherit(W.Storage, W._Storage_Interceptor_MapMixin);
+    _inherit(W._TextTrackCueList_Interceptor_ListMixin_ImmutableListMixin, W._TextTrackCueList_Interceptor_ListMixin);
+    _inherit(W.TextTrackCueList, W._TextTrackCueList_Interceptor_ListMixin_ImmutableListMixin);
+    _inherit(W._TextTrackList_EventTarget_ListMixin_ImmutableListMixin, W._TextTrackList_EventTarget_ListMixin);
+    _inherit(W.TextTrackList, W._TextTrackList_EventTarget_ListMixin_ImmutableListMixin);
+    _inherit(W._TouchList_Interceptor_ListMixin_ImmutableListMixin, W._TouchList_Interceptor_ListMixin);
+    _inherit(W.TouchList, W._TouchList_Interceptor_ListMixin_ImmutableListMixin);
+    _inherit(W.__CssRuleList_Interceptor_ListMixin_ImmutableListMixin, W.__CssRuleList_Interceptor_ListMixin);
+    _inherit(W._CssRuleList, W.__CssRuleList_Interceptor_ListMixin_ImmutableListMixin);
+    _inherit(W._DomRect, W.DomRectReadOnly);
+    _inherit(W.__GamepadList_Interceptor_ListMixin_ImmutableListMixin, W.__GamepadList_Interceptor_ListMixin);
+    _inherit(W._GamepadList, W.__GamepadList_Interceptor_ListMixin_ImmutableListMixin);
     _inherit(W.__NamedNodeMap_Interceptor_ListMixin_ImmutableListMixin, W.__NamedNodeMap_Interceptor_ListMixin);
     _inherit(W._NamedNodeMap, W.__NamedNodeMap_Interceptor_ListMixin_ImmutableListMixin);
+    _inherit(W.__SpeechRecognitionResultList_Interceptor_ListMixin_ImmutableListMixin, W.__SpeechRecognitionResultList_Interceptor_ListMixin);
+    _inherit(W._SpeechRecognitionResultList, W.__SpeechRecognitionResultList_Interceptor_ListMixin_ImmutableListMixin);
+    _inherit(W.__StyleSheetList_Interceptor_ListMixin_ImmutableListMixin, W.__StyleSheetList_Interceptor_ListMixin);
+    _inherit(W._StyleSheetList, W.__StyleSheetList_Interceptor_ListMixin_ImmutableListMixin);
     _inherit(W._ElementAttributeMap, W._AttributeMap);
     _inherit(W._ElementEventStreamImpl, W._EventStream);
     _inherit(W._EventStreamSubscription, P.StreamSubscription);
     _inherit(W._TemplatingNodeValidator, W._SimpleNodeValidator);
     _inherit(P._AcceptStructuredCloneDart2Js, P._AcceptStructuredClone);
+    _inherit(P._LengthList_Interceptor_ListMixin_ImmutableListMixin, P._LengthList_Interceptor_ListMixin);
+    _inherit(P.LengthList, P._LengthList_Interceptor_ListMixin_ImmutableListMixin);
+    _inherit(P._NumberList_Interceptor_ListMixin_ImmutableListMixin, P._NumberList_Interceptor_ListMixin);
+    _inherit(P.NumberList, P._NumberList_Interceptor_ListMixin_ImmutableListMixin);
     _inherit(P.ScriptElement0, P.SvgElement);
+    _inherit(P._StringList_Interceptor_ListMixin_ImmutableListMixin, P._StringList_Interceptor_ListMixin);
+    _inherit(P.StringList, P._StringList_Interceptor_ListMixin_ImmutableListMixin);
+    _inherit(P._TransformList_Interceptor_ListMixin_ImmutableListMixin, P._TransformList_Interceptor_ListMixin);
+    _inherit(P.TransformList, P._TransformList_Interceptor_ListMixin_ImmutableListMixin);
+    _inherit(P.AudioParamMap, P._AudioParamMap_Interceptor_MapMixin);
+    _inherit(P.OfflineAudioContext, P.BaseAudioContext);
+    _inherit(P._SqlResultSetRowList_Interceptor_ListMixin_ImmutableListMixin, P._SqlResultSetRowList_Interceptor_ListMixin);
+    _inherit(P.SqlResultSetRowList, P._SqlResultSetRowList_Interceptor_ListMixin_ImmutableListMixin);
     _inherit(O.BrowserClient, E.BaseClient);
     _inherit(Z.ByteStream, P.StreamView);
     _inherit(O.Request, G.BaseRequest);
@@ -15546,17 +17168,63 @@
     _inherit(E.StringScannerException, G.SourceSpanFormatException);
     _inheritMany(S.DisplayState, [S.LoadingState, S.ProjectViewState]);
     _mixin(H.UnmodifiableListBase, H.UnmodifiableListMixin);
+    _mixin(H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin, P.ListMixin);
+    _mixin(H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin_FixedLengthListMixin, H.FixedLengthListMixin);
     _mixin(H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin, P.ListMixin);
     _mixin(H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin_FixedLengthListMixin, H.FixedLengthListMixin);
     _mixin(P._ListBase_Object_ListMixin, P.ListMixin);
     _mixin(P._UnmodifiableMapView_MapView__UnmodifiableMapMixin, P._UnmodifiableMapMixin);
     _mixin(P.__SetBase_Object_SetMixin, P.SetMixin);
+    _mixin(W._CssStyleDeclaration_Interceptor_CssStyleDeclarationBase, W.CssStyleDeclarationBase);
+    _mixin(W._DomRectList_Interceptor_ListMixin, P.ListMixin);
+    _mixin(W._DomRectList_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(W._DomStringList_Interceptor_ListMixin, P.ListMixin);
+    _mixin(W._DomStringList_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(W._FileList_Interceptor_ListMixin, P.ListMixin);
+    _mixin(W._FileList_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
     _mixin(W._HtmlCollection_Interceptor_ListMixin, P.ListMixin);
     _mixin(W._HtmlCollection_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(W._MidiInputMap_Interceptor_MapMixin, P.MapMixin);
+    _mixin(W._MidiOutputMap_Interceptor_MapMixin, P.MapMixin);
+    _mixin(W._MimeTypeArray_Interceptor_ListMixin, P.ListMixin);
+    _mixin(W._MimeTypeArray_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
     _mixin(W._NodeList_Interceptor_ListMixin, P.ListMixin);
     _mixin(W._NodeList_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(W._PluginArray_Interceptor_ListMixin, P.ListMixin);
+    _mixin(W._PluginArray_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(W._RtcStatsReport_Interceptor_MapMixin, P.MapMixin);
+    _mixin(W._SourceBufferList_EventTarget_ListMixin, P.ListMixin);
+    _mixin(W._SourceBufferList_EventTarget_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(W._SpeechGrammarList_Interceptor_ListMixin, P.ListMixin);
+    _mixin(W._SpeechGrammarList_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(W._Storage_Interceptor_MapMixin, P.MapMixin);
+    _mixin(W._TextTrackCueList_Interceptor_ListMixin, P.ListMixin);
+    _mixin(W._TextTrackCueList_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(W._TextTrackList_EventTarget_ListMixin, P.ListMixin);
+    _mixin(W._TextTrackList_EventTarget_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(W._TouchList_Interceptor_ListMixin, P.ListMixin);
+    _mixin(W._TouchList_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(W.__CssRuleList_Interceptor_ListMixin, P.ListMixin);
+    _mixin(W.__CssRuleList_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(W.__GamepadList_Interceptor_ListMixin, P.ListMixin);
+    _mixin(W.__GamepadList_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
     _mixin(W.__NamedNodeMap_Interceptor_ListMixin, P.ListMixin);
     _mixin(W.__NamedNodeMap_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(W.__SpeechRecognitionResultList_Interceptor_ListMixin, P.ListMixin);
+    _mixin(W.__SpeechRecognitionResultList_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(W.__StyleSheetList_Interceptor_ListMixin, P.ListMixin);
+    _mixin(W.__StyleSheetList_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(P._LengthList_Interceptor_ListMixin, P.ListMixin);
+    _mixin(P._LengthList_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(P._NumberList_Interceptor_ListMixin, P.ListMixin);
+    _mixin(P._NumberList_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(P._StringList_Interceptor_ListMixin, P.ListMixin);
+    _mixin(P._StringList_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(P._TransformList_Interceptor_ListMixin, P.ListMixin);
+    _mixin(P._TransformList_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
+    _mixin(P._AudioParamMap_Interceptor_MapMixin, P.MapMixin);
+    _mixin(P._SqlResultSetRowList_Interceptor_ListMixin, P.ListMixin);
+    _mixin(P._SqlResultSetRowList_Interceptor_ListMixin_ImmutableListMixin, W.ImmutableListMixin);
   })();
   var init = {
     typeUniverse: {eC: new Map(), tR: {}, eT: {}, tPV: {}, sEA: []},
@@ -15564,13 +17232,13 @@
     mangledNames: {},
     getTypeFromName: getGlobalFromName,
     metadata: [],
-    types: ["~()", "~(@)", "bool(String)", "String(String)", "bool(_Highlight)", "Null(MouseEvent*)", "~(~())", "bool(Element,String,String,_Html5NodeValidator)", "Null(@)", "Null()", "~(Event)", "~(Object,StackTrace)", "@()", "~(Uint8List,String,int)", "~(String,String)", "bool(NodeValidator)", "Null(ProgressEvent)", "String(Match)", "Null(bool*)", "int(@,@)", "bool(Object?,Object?)", "int(Object?)", "~(Object?,Object?)", "~(String,int)", "~(String[@])", "int(int,int)", "Uint8List(@,@)", "@(@)", "bool(Node)", "Null(@,StackTrace)", "~(int,@)", "Null(~())", "@(Object)", "@(StackTrace)", "~(Node,Node?)", "@(@,@)", "bool(String,String)", "int(String)", "Object()", "~(List<int>)", "0^(0^,0^)<num>", "StackTrace()", "String(String?)", "String?()", "int(_Line)", "@(@,String)", "Uri?(_Line)", "Uri?(_Highlight)", "int(_Highlight,_Highlight)", "List<_Line>(List<_Highlight>)", "SourceSpanWithContext()", "~(Object[StackTrace?])", "bool*(String*)", "String*(Response*)", "Null(Object,StackTrace)", "_Future<@>(@)", "bool(@)", "Future<Null>()", "@(String)", "~(Object?)", "MediaType()"],
+    types: ["~()", "Null(MouseEvent*)", "~(@)", "~(String,@)", "bool(String)", "~(~())", "~(String,String)", "String(String)", "bool(_Highlight)", "~(Event)", "int(Object?)", "~(Object,StackTrace)", "~(Uint8List,String,int)", "Null(@)", "@()", "bool(NodeValidator)", "Null()", "Null(ProgressEvent)", "String(Match)", "bool(Element,String,String,_Html5NodeValidator)", "Null(bool*)", "int(@,@)", "bool(Object?,Object?)", "_Future<@>(@)", "~(String[@])", "int(int,int)", "Uint8List(@,@)", "@(String)", "bool(Node)", "Object()", "Null(~())", "StackTrace()", "@(Object)", "~(Object[StackTrace?])", "@(@)", "~(Node,Node?)", "@(@,@)", "bool(String,String)", "int(String)", "Null(Object,StackTrace)", "~(List<int>)", "0^(0^,0^)<num>", "@(StackTrace)", "bool(@)", "String?()", "int(_Line)", "@(@,String)", "Uri?(_Line)", "Uri?(_Highlight)", "int(_Highlight,_Highlight)", "List<_Line>(List<_Highlight>)", "SourceSpanWithContext()", "MediaType()", "bool*(String*)", "Set<bool*>*(Animation*)", "String*(Response*)", "~(Object?,Object?)", "Future<Null>()", "Null(@,StackTrace)", "~(Object?)", "~(String,int)", "String(String?)", "~(int,@)"],
     interceptorsByTag: null,
     leafTags: null,
     arrayRti: typeof Symbol == "function" && typeof Symbol() == "symbol" ? Symbol("$ti") : "$ti"
   };
-  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","BufferModule":"JavaScriptObject","BufferConstants":"JavaScriptObject","Buffer":"JavaScriptObject","ConsoleModule":"JavaScriptObject","Console":"JavaScriptObject","EventEmitter":"JavaScriptObject","FS":"JavaScriptObject","FSConstants":"JavaScriptObject","FSWatcher":"JavaScriptObject","ReadStream":"JavaScriptObject","ReadStreamOptions":"JavaScriptObject","WriteStream":"JavaScriptObject","WriteStreamOptions":"JavaScriptObject","FileOptions":"JavaScriptObject","StatOptions":"JavaScriptObject","MkdirOptions":"JavaScriptObject","RmdirOptions":"JavaScriptObject","WatchOptions":"JavaScriptObject","WatchFileOptions":"JavaScriptObject","Stats":"JavaScriptObject","Promise":"JavaScriptObject","Date":"JavaScriptObject","JsError":"JavaScriptObject","Atomics":"JavaScriptObject","Modules":"JavaScriptObject","Module":"JavaScriptObject","Net":"JavaScriptObject","Socket":"JavaScriptObject","NetAddress":"JavaScriptObject","NetServer":"JavaScriptObject","NodeJsError":"JavaScriptObject","JsAssertionError":"JavaScriptObject","JsRangeError":"JavaScriptObject","JsReferenceError":"JavaScriptObject","JsSyntaxError":"JavaScriptObject","JsTypeError":"JavaScriptObject","JsSystemError":"JavaScriptObject","Process":"JavaScriptObject","CPUUsage":"JavaScriptObject","Release":"JavaScriptObject","StreamModule":"JavaScriptObject","Readable":"JavaScriptObject","Writable":"JavaScriptObject","Duplex":"JavaScriptObject","Transform":"JavaScriptObject","WritableOptions":"JavaScriptObject","ReadableOptions":"JavaScriptObject","Immediate":"JavaScriptObject","Timeout":"JavaScriptObject","TTY":"JavaScriptObject","TTYReadStream":"JavaScriptObject","TTYWriteStream":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","AElement":"SvgElement","GraphicsElement":"SvgElement","_ResourceProgressEvent":"ProgressEvent","AudioElement":"HtmlElement","MediaElement":"HtmlElement","ShadowRoot":"Node","DocumentFragment":"Node","XmlDocument":"Document","Window":"EventTarget","PointerEvent":"MouseEvent","CompositionEvent":"UIEvent","CDataSection":"CharacterData","Text":"CharacterData","HtmlFormControlsCollection":"HtmlCollection","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"FS":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"num":[],"Comparable":["num"]},"JSInt":{"int":[],"num":[],"Comparable":["num"]},"JSNumNotInt":{"num":[],"Comparable":["num"]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[],"JSIndexable":["@"]},"LateError":{"Error":[]},"ReachabilityError":{"Error":[]},"CodeUnits":{"ListMixin":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListMixin.E":"int","UnmodifiableListMixin.E":"int"},"NotNullableError":{"Error":[]},"EfficientLengthIterable":{"Iterable":["1"]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"ListIterable.E":"2","Iterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"NullError":{"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteBuffer":{"ByteBuffer":[]},"NativeTypedData":{"TypedData":[]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"TypedData":[],"JSIndexable":["1"]},"NativeTypedArrayOfInt":{"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint32List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint8List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"Error":[]},"_Future":{"Future":["1"]},"_IterablePendingEvents":{"_PendingEvents":["1"]},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"StreamView":{"Stream":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventDispatch":["1"]},"_StreamImpl":{"Stream":["1"]},"_GeneratedStreamImpl":{"_StreamImpl":["1"],"Stream":["1"],"Stream.T":"1"},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_EmptyStream":{"Stream":["1"],"Stream.T":"1"},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_LinkedIdentityHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedCustomHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedHashSet":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"SetMixin.E":"1"},"_LinkedHashSetIterator":{"Iterator":["1"]},"IterableBase":{"Iterable":["1"]},"ListBase":{"ListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"_SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"Encoding":{"Codec":["String","List<int>"]},"_JsonMap":{"MapMixin":["String","@"],"Map":["String","@"],"MapMixin.K":"String","MapMixin.V":"@"},"_JsonMapKeyIterable":{"ListIterable":["String"],"EfficientLengthIterable":["String"],"Iterable":["String"],"ListIterable.E":"String","Iterable.E":"String"},"AsciiCodec":{"Encoding":[],"Codec":["String","List<int>"]},"_UnicodeSubsetDecoder":{"Converter":["List<int>","String"]},"AsciiDecoder":{"Converter":["List<int>","String"]},"Base64Codec":{"Codec":["List<int>","String"]},"Base64Encoder":{"Converter":["List<int>","String"]},"ByteConversionSink":{"ChunkedConversionSink":["List<int>"]},"ByteConversionSinkBase":{"ChunkedConversionSink":["List<int>"]},"_ByteCallbackSink":{"ChunkedConversionSink":["List<int>"]},"JsonCodec":{"Codec":["Object?","String"]},"JsonDecoder":{"Converter":["String","Object?"]},"Latin1Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Latin1Decoder":{"Converter":["List<int>","String"]},"Utf8Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"DateTime":{"Comparable":["DateTime"]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"String":{"Comparable":["String"],"Pattern":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"_StringStackTrace":{"StackTrace":[]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"Element":{"Node":[],"EventTarget":[]},"HttpRequest":{"EventTarget":[]},"HttpRequestEventTarget":{"EventTarget":[]},"MouseEvent":{"Event":[]},"Node":{"EventTarget":[]},"ProgressEvent":{"Event":[]},"UIEvent":{"Event":[]},"_Html5NodeValidator":{"NodeValidator":[]},"HtmlElement":{"Element":[],"Node":[],"EventTarget":[]},"AnchorElement":{"Element":[],"Node":[],"EventTarget":[]},"AreaElement":{"Element":[],"Node":[],"EventTarget":[]},"BaseElement":{"Element":[],"Node":[],"EventTarget":[]},"BodyElement":{"Element":[],"Node":[],"EventTarget":[]},"ButtonElement":{"Element":[],"Node":[],"EventTarget":[]},"CharacterData":{"Node":[],"EventTarget":[]},"DivElement":{"Element":[],"Node":[],"EventTarget":[]},"Document":{"Node":[],"EventTarget":[]},"FormElement":{"Element":[],"Node":[],"EventTarget":[]},"HeadingElement":{"Element":[],"Node":[],"EventTarget":[]},"HtmlCollection":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"JSIndexable":["Node"],"ImmutableListMixin.E":"Node","ListMixin.E":"Node"},"HtmlDocument":{"Document":[],"Node":[],"EventTarget":[]},"ImageElement":{"Element":[],"Node":[],"EventTarget":[]},"_ChildNodeListLazy":{"ListMixin":["Node"],"List":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"ListMixin.E":"Node"},"NodeList":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"JSIndexable":["Node"],"ImmutableListMixin.E":"Node","ListMixin.E":"Node"},"ParagraphElement":{"Element":[],"Node":[],"EventTarget":[]},"SelectElement":{"Element":[],"Node":[],"EventTarget":[]},"TableElement":{"Element":[],"Node":[],"EventTarget":[]},"TableRowElement":{"Element":[],"Node":[],"EventTarget":[]},"TableSectionElement":{"Element":[],"Node":[],"EventTarget":[]},"TemplateElement":{"Element":[],"Node":[],"EventTarget":[]},"_Attr":{"Node":[],"EventTarget":[]},"_NamedNodeMap":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"JSIndexable":["Node"],"ImmutableListMixin.E":"Node","ListMixin.E":"Node"},"_AttributeMap":{"MapMixin":["String","String"],"Map":["String","String"]},"_ElementAttributeMap":{"MapMixin":["String","String"],"Map":["String","String"],"MapMixin.K":"String","MapMixin.V":"String"},"_EventStream":{"Stream":["1"],"Stream.T":"1"},"_ElementEventStreamImpl":{"_EventStream":["1"],"Stream":["1"],"Stream.T":"1"},"_EventStreamSubscription":{"StreamSubscription":["1"]},"NodeValidatorBuilder":{"NodeValidator":[]},"_SimpleNodeValidator":{"NodeValidator":[]},"_TemplatingNodeValidator":{"NodeValidator":[]},"_SvgNodeValidator":{"NodeValidator":[]},"FixedSizeListIterator":{"Iterator":["1"]},"_SameOriginUriPolicy":{"UriPolicy":[]},"_ValidatingTreeSanitizer":{"NodeTreeSanitizer":[]},"NullRejectionException":{"Exception":[]},"ScriptElement0":{"SvgElement":[],"Element":[],"Node":[],"EventTarget":[]},"SvgElement":{"Element":[],"Node":[],"EventTarget":[]},"CanonicalizedMap":{"Map":["2","3"]},"BaseClient":{"Client":[]},"BrowserClient":{"Client":[]},"ByteStream":{"StreamView":["List<int>"],"Stream":["List<int>"],"StreamView.T":"List<int>","Stream.T":"List<int>"},"ClientException":{"Exception":[]},"Request":{"BaseRequest":[]},"CaseInsensitiveMap":{"CanonicalizedMap":["String","String","1"],"Map":["String","1"],"CanonicalizedMap.K":"String","CanonicalizedMap.V":"1","CanonicalizedMap.C":"String"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"FileLocation":{"SourceLocation":[],"Comparable":["SourceLocation"]},"_FileSpan":{"FileSpan":[],"SourceSpanWithContext":[],"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceLocation":{"Comparable":["SourceLocation"]},"SourceLocationMixin":{"SourceLocation":[],"Comparable":["SourceLocation"]},"SourceSpan":{"Comparable":["SourceSpan"]},"SourceSpanBase":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanException":{"Exception":[]},"SourceSpanFormatException":{"FormatException":[],"Exception":[]},"SourceSpanMixin":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanWithContext":{"SourceSpan":[],"Comparable":["SourceSpan"]},"StringScannerException":{"FormatException":[],"Exception":[]},"LoadingState":{"DisplayState":[]},"ProjectViewState":{"DisplayState":[]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"TypedData":[]}}'));
-  H._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"UnmodifiableListBase":1,"NativeTypedArray":1,"StreamTransformerBase":2,"IterableBase":1,"ListBase":1,"MapBase":2,"_SetBase":1,"_ListBase_Object_ListMixin":1,"__SetBase_Object_SetMixin":1}'));
+  H._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"JavaScriptObject","UnknownJavaScriptObject":"JavaScriptObject","JavaScriptFunction":"JavaScriptObject","BufferModule":"JavaScriptObject","BufferConstants":"JavaScriptObject","Buffer0":"JavaScriptObject","ConsoleModule":"JavaScriptObject","Console":"JavaScriptObject","EventEmitter":"JavaScriptObject","FS":"JavaScriptObject","FSConstants":"JavaScriptObject","FSWatcher":"JavaScriptObject","ReadStream":"JavaScriptObject","ReadStreamOptions":"JavaScriptObject","WriteStream":"JavaScriptObject","WriteStreamOptions":"JavaScriptObject","FileOptions":"JavaScriptObject","StatOptions":"JavaScriptObject","MkdirOptions":"JavaScriptObject","RmdirOptions":"JavaScriptObject","WatchOptions":"JavaScriptObject","WatchFileOptions":"JavaScriptObject","Stats":"JavaScriptObject","Promise":"JavaScriptObject","Date":"JavaScriptObject","JsError":"JavaScriptObject","Atomics":"JavaScriptObject","Modules":"JavaScriptObject","Module":"JavaScriptObject","Net":"JavaScriptObject","Socket":"JavaScriptObject","NetAddress":"JavaScriptObject","NetServer":"JavaScriptObject","NodeJsError":"JavaScriptObject","JsAssertionError":"JavaScriptObject","JsRangeError":"JavaScriptObject","JsReferenceError":"JavaScriptObject","JsSyntaxError":"JavaScriptObject","JsTypeError":"JavaScriptObject","JsSystemError":"JavaScriptObject","Process":"JavaScriptObject","CPUUsage":"JavaScriptObject","Release":"JavaScriptObject","StreamModule":"JavaScriptObject","Readable":"JavaScriptObject","Writable":"JavaScriptObject","Duplex":"JavaScriptObject","Transform0":"JavaScriptObject","WritableOptions":"JavaScriptObject","ReadableOptions":"JavaScriptObject","Immediate":"JavaScriptObject","Timeout":"JavaScriptObject","TTY":"JavaScriptObject","TTYReadStream":"JavaScriptObject","TTYWriteStream":"JavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","AudioContext":"BaseAudioContext","AbsoluteOrientationSensor":"EventTarget","OrientationSensor":"EventTarget","Sensor":"EventTarget","AElement":"SvgElement","GraphicsElement":"SvgElement","_ResourceProgressEvent":"ProgressEvent","AudioElement":"HtmlElement","MediaElement":"HtmlElement","ShadowRoot":"Node","DocumentFragment":"Node","XmlDocument":"Document","PointerEvent":"MouseEvent","VttCue":"TextTrackCue","CompositionEvent":"UIEvent","CDataSection":"CharacterData","Text":"CharacterData","HttpRequestUpload":"HttpRequestEventTarget","HtmlFormControlsCollection":"HtmlCollection","CssCharsetRule":"CssRule","CssStyleSheet":"StyleSheet","NativeFloat32List":"NativeTypedArrayOfDouble","NativeByteData":"NativeTypedData","JSBool":{"bool":[]},"JSNull":{"Null":[]},"JavaScriptObject":{"FS":[]},"JSArray":{"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"JSIndexable":["1"]},"ArrayIterator":{"Iterator":["1"]},"JSNumber":{"double":[],"num":[],"Comparable":["num"]},"JSInt":{"double":[],"int":[],"num":[],"Comparable":["num"]},"JSNumNotInt":{"double":[],"num":[],"Comparable":["num"]},"JSString":{"String":[],"Comparable":["String"],"Pattern":[],"JSIndexable":["@"]},"EfficientLengthIterable":{"Iterable":["1"]},"LateError":{"Error":[]},"ReachabilityError":{"Error":[]},"CodeUnits":{"ListMixin":["int"],"UnmodifiableListMixin":["int"],"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"ListMixin.E":"int","UnmodifiableListMixin.E":"int"},"NotNullableError":{"Error":[]},"ListIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"SubListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ListIterator":{"Iterator":["1"]},"MappedIterable":{"Iterable":["2"],"Iterable.E":"2"},"EfficientLengthMappedIterable":{"MappedIterable":["1","2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"Iterable.E":"2"},"MappedIterator":{"Iterator":["2"]},"MappedListIterable":{"ListIterable":["2"],"EfficientLengthIterable":["2"],"Iterable":["2"],"ListIterable.E":"2","Iterable.E":"2"},"WhereIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereIterator":{"Iterator":["1"]},"ExpandIterable":{"Iterable":["2"],"Iterable.E":"2"},"ExpandIterator":{"Iterator":["2"]},"SkipIterable":{"Iterable":["1"],"Iterable.E":"1"},"EfficientLengthSkipIterable":{"SkipIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"SkipIterator":{"Iterator":["1"]},"EmptyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"EmptyIterator":{"Iterator":["1"]},"WhereTypeIterable":{"Iterable":["1"],"Iterable.E":"1"},"WhereTypeIterator":{"Iterator":["1"]},"UnmodifiableListBase":{"ListMixin":["1"],"UnmodifiableListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"ReversedListIterable":{"ListIterable":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"ListIterable.E":"1","Iterable.E":"1"},"ConstantMap":{"Map":["1","2"]},"ConstantStringMap":{"ConstantMap":["1","2"],"Map":["1","2"]},"Instantiation":{"Closure":[],"Function":[]},"Instantiation1":{"Closure":[],"Function":[]},"NullError":{"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"NullThrownFromJavaScriptException":{"Exception":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"TearOffClosure":{"Closure":[],"Function":[]},"StaticClosure":{"Closure":[],"Function":[]},"BoundClosure":{"Closure":[],"Function":[]},"RuntimeError":{"Error":[]},"_AssertionError":{"Error":[]},"JsLinkedHashMap":{"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"LinkedHashMapKeyIterable":{"EfficientLengthIterable":["1"],"Iterable":["1"],"Iterable.E":"1"},"LinkedHashMapKeyIterator":{"Iterator":["1"]},"JSSyntaxRegExp":{"RegExp":[],"Pattern":[]},"_MatchImplementation":{"RegExpMatch":[],"Match":[]},"_AllMatchesIterable":{"Iterable":["RegExpMatch"],"Iterable.E":"RegExpMatch"},"_AllMatchesIterator":{"Iterator":["RegExpMatch"]},"StringMatch":{"Match":[]},"_StringAllMatchesIterable":{"Iterable":["Match"],"Iterable.E":"Match"},"_StringAllMatchesIterator":{"Iterator":["Match"]},"NativeByteBuffer":{"ByteBuffer":[]},"NativeTypedData":{"TypedData":[]},"NativeTypedArray":{"JavaScriptIndexingBehavior":["1"],"TypedData":[],"JSIndexable":["1"]},"NativeTypedArrayOfDouble":{"NativeTypedArray":["double"],"ListMixin":["double"],"JavaScriptIndexingBehavior":["double"],"List":["double"],"EfficientLengthIterable":["double"],"TypedData":[],"JSIndexable":["double"],"Iterable":["double"],"FixedLengthListMixin":["double"],"ListMixin.E":"double"},"NativeTypedArrayOfInt":{"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"]},"NativeInt16List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeInt8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint16List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint32List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint32List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8ClampedList":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"NativeUint8List":{"NativeTypedArrayOfInt":[],"NativeTypedArray":["int"],"ListMixin":["int"],"Uint8List":[],"JavaScriptIndexingBehavior":["int"],"List":["int"],"EfficientLengthIterable":["int"],"TypedData":[],"JSIndexable":["int"],"Iterable":["int"],"FixedLengthListMixin":["int"],"ListMixin.E":"int"},"_Error":{"Error":[]},"_TypeError":{"Error":[]},"_Future":{"Future":["1"]},"_IterablePendingEvents":{"_PendingEvents":["1"]},"AsyncError":{"Error":[]},"_AsyncCompleter":{"_Completer":["1"]},"StreamView":{"Stream":["1"]},"_BufferingStreamSubscription":{"StreamSubscription":["1"],"_EventDispatch":["1"]},"_StreamImpl":{"Stream":["1"]},"_GeneratedStreamImpl":{"_StreamImpl":["1"],"Stream":["1"],"Stream.T":"1"},"_DoneStreamSubscription":{"StreamSubscription":["1"]},"_EmptyStream":{"Stream":["1"],"Stream.T":"1"},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"_LinkedIdentityHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedCustomHashMap":{"JsLinkedHashMap":["1","2"],"MapMixin":["1","2"],"LinkedHashMap":["1","2"],"Map":["1","2"],"MapMixin.K":"1","MapMixin.V":"2"},"_LinkedHashSet":{"SetMixin":["1"],"LinkedHashSet":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"],"SetMixin.E":"1"},"_LinkedHashSetIterator":{"Iterator":["1"]},"IterableBase":{"Iterable":["1"]},"ListBase":{"ListMixin":["1"],"List":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"MapBase":{"MapMixin":["1","2"],"Map":["1","2"]},"MapMixin":{"Map":["1","2"]},"MapView":{"Map":["1","2"]},"UnmodifiableMapView":{"_UnmodifiableMapView_MapView__UnmodifiableMapMixin":["1","2"],"MapView":["1","2"],"_UnmodifiableMapMixin":["1","2"],"Map":["1","2"]},"_SetBase":{"SetMixin":["1"],"Set":["1"],"EfficientLengthIterable":["1"],"Iterable":["1"]},"Encoding":{"Codec":["String","List<int>"]},"_JsonMap":{"MapMixin":["String","@"],"Map":["String","@"],"MapMixin.K":"String","MapMixin.V":"@"},"_JsonMapKeyIterable":{"ListIterable":["String"],"EfficientLengthIterable":["String"],"Iterable":["String"],"ListIterable.E":"String","Iterable.E":"String"},"AsciiCodec":{"Encoding":[],"Codec":["String","List<int>"]},"_UnicodeSubsetDecoder":{"Converter":["List<int>","String"]},"AsciiDecoder":{"Converter":["List<int>","String"]},"Base64Codec":{"Codec":["List<int>","String"]},"Base64Encoder":{"Converter":["List<int>","String"]},"ByteConversionSink":{"ChunkedConversionSink":["List<int>"]},"ByteConversionSinkBase":{"ChunkedConversionSink":["List<int>"]},"_ByteCallbackSink":{"ChunkedConversionSink":["List<int>"]},"JsonCodec":{"Codec":["Object?","String"]},"JsonDecoder":{"Converter":["String","Object?"]},"Latin1Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Latin1Decoder":{"Converter":["List<int>","String"]},"Utf8Codec":{"Encoding":[],"Codec":["String","List<int>"]},"Utf8Decoder":{"Converter":["List<int>","String"]},"DateTime":{"Comparable":["DateTime"]},"double":{"num":[],"Comparable":["num"]},"int":{"num":[],"Comparable":["num"]},"List":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"num":{"Comparable":["num"]},"RegExpMatch":{"Match":[]},"Set":{"EfficientLengthIterable":["1"],"Iterable":["1"]},"String":{"Comparable":["String"],"Pattern":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"StateError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"OutOfMemoryError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_Exception":{"Exception":[]},"FormatException":{"Exception":[]},"_StringStackTrace":{"StackTrace":[]},"StringBuffer":{"StringSink":[]},"_Uri":{"Uri":[]},"_SimpleUri":{"Uri":[]},"_DataUri":{"Uri":[]},"Animation":{"EventTarget":[]},"Element":{"Node":[],"EventTarget":[]},"HttpRequest":{"EventTarget":[]},"HttpRequestEventTarget":{"EventTarget":[]},"MouseEvent":{"Event":[]},"Node":{"EventTarget":[]},"ProgressEvent":{"Event":[]},"SourceBuffer":{"EventTarget":[]},"TextTrack":{"EventTarget":[]},"TextTrackCue":{"EventTarget":[]},"UIEvent":{"Event":[]},"_Html5NodeValidator":{"NodeValidator":[]},"HtmlElement":{"Element":[],"Node":[],"EventTarget":[]},"AnchorElement":{"Element":[],"Node":[],"EventTarget":[]},"AreaElement":{"Element":[],"Node":[],"EventTarget":[]},"BaseElement":{"Element":[],"Node":[],"EventTarget":[]},"BodyElement":{"Element":[],"Node":[],"EventTarget":[]},"ButtonElement":{"Element":[],"Node":[],"EventTarget":[]},"CharacterData":{"Node":[],"EventTarget":[]},"DivElement":{"Element":[],"Node":[],"EventTarget":[]},"Document":{"Node":[],"EventTarget":[]},"DomRectList":{"ListMixin":["Rectangle<num>"],"ImmutableListMixin":["Rectangle<num>"],"List":["Rectangle<num>"],"JavaScriptIndexingBehavior":["Rectangle<num>"],"EfficientLengthIterable":["Rectangle<num>"],"Iterable":["Rectangle<num>"],"JSIndexable":["Rectangle<num>"],"ImmutableListMixin.E":"Rectangle<num>","ListMixin.E":"Rectangle<num>"},"DomRectReadOnly":{"Rectangle":["num"]},"DomStringList":{"ListMixin":["String"],"ImmutableListMixin":["String"],"List":["String"],"JavaScriptIndexingBehavior":["String"],"EfficientLengthIterable":["String"],"Iterable":["String"],"JSIndexable":["String"],"ImmutableListMixin.E":"String","ListMixin.E":"String"},"FileList":{"ListMixin":["File"],"ImmutableListMixin":["File"],"List":["File"],"JavaScriptIndexingBehavior":["File"],"EfficientLengthIterable":["File"],"Iterable":["File"],"JSIndexable":["File"],"ImmutableListMixin.E":"File","ListMixin.E":"File"},"FileWriter":{"EventTarget":[]},"FormElement":{"Element":[],"Node":[],"EventTarget":[]},"HeadingElement":{"Element":[],"Node":[],"EventTarget":[]},"HtmlCollection":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"JSIndexable":["Node"],"ImmutableListMixin.E":"Node","ListMixin.E":"Node"},"HtmlDocument":{"Document":[],"Node":[],"EventTarget":[]},"ImageElement":{"Element":[],"Node":[],"EventTarget":[]},"MidiInputMap":{"MapMixin":["String","@"],"Map":["String","@"],"MapMixin.K":"String","MapMixin.V":"@"},"MidiOutputMap":{"MapMixin":["String","@"],"Map":["String","@"],"MapMixin.K":"String","MapMixin.V":"@"},"MimeTypeArray":{"ListMixin":["MimeType"],"ImmutableListMixin":["MimeType"],"List":["MimeType"],"JavaScriptIndexingBehavior":["MimeType"],"EfficientLengthIterable":["MimeType"],"Iterable":["MimeType"],"JSIndexable":["MimeType"],"ImmutableListMixin.E":"MimeType","ListMixin.E":"MimeType"},"_ChildNodeListLazy":{"ListMixin":["Node"],"List":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"ListMixin.E":"Node"},"NodeList":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"JSIndexable":["Node"],"ImmutableListMixin.E":"Node","ListMixin.E":"Node"},"ParagraphElement":{"Element":[],"Node":[],"EventTarget":[]},"PluginArray":{"ListMixin":["Plugin"],"ImmutableListMixin":["Plugin"],"List":["Plugin"],"JavaScriptIndexingBehavior":["Plugin"],"EfficientLengthIterable":["Plugin"],"Iterable":["Plugin"],"JSIndexable":["Plugin"],"ImmutableListMixin.E":"Plugin","ListMixin.E":"Plugin"},"RtcStatsReport":{"MapMixin":["String","@"],"Map":["String","@"],"MapMixin.K":"String","MapMixin.V":"@"},"SelectElement":{"Element":[],"Node":[],"EventTarget":[]},"SourceBufferList":{"ListMixin":["SourceBuffer"],"ImmutableListMixin":["SourceBuffer"],"List":["SourceBuffer"],"JavaScriptIndexingBehavior":["SourceBuffer"],"EventTarget":[],"EfficientLengthIterable":["SourceBuffer"],"Iterable":["SourceBuffer"],"JSIndexable":["SourceBuffer"],"ImmutableListMixin.E":"SourceBuffer","ListMixin.E":"SourceBuffer"},"SpeechGrammarList":{"ListMixin":["SpeechGrammar"],"ImmutableListMixin":["SpeechGrammar"],"List":["SpeechGrammar"],"JavaScriptIndexingBehavior":["SpeechGrammar"],"EfficientLengthIterable":["SpeechGrammar"],"Iterable":["SpeechGrammar"],"JSIndexable":["SpeechGrammar"],"ImmutableListMixin.E":"SpeechGrammar","ListMixin.E":"SpeechGrammar"},"Storage":{"MapMixin":["String","String"],"Map":["String","String"],"MapMixin.K":"String","MapMixin.V":"String"},"TableElement":{"Element":[],"Node":[],"EventTarget":[]},"TableRowElement":{"Element":[],"Node":[],"EventTarget":[]},"TableSectionElement":{"Element":[],"Node":[],"EventTarget":[]},"TemplateElement":{"Element":[],"Node":[],"EventTarget":[]},"TextTrackCueList":{"ListMixin":["TextTrackCue"],"ImmutableListMixin":["TextTrackCue"],"List":["TextTrackCue"],"JavaScriptIndexingBehavior":["TextTrackCue"],"EfficientLengthIterable":["TextTrackCue"],"Iterable":["TextTrackCue"],"JSIndexable":["TextTrackCue"],"ImmutableListMixin.E":"TextTrackCue","ListMixin.E":"TextTrackCue"},"TextTrackList":{"ListMixin":["TextTrack"],"ImmutableListMixin":["TextTrack"],"List":["TextTrack"],"JavaScriptIndexingBehavior":["TextTrack"],"EventTarget":[],"EfficientLengthIterable":["TextTrack"],"Iterable":["TextTrack"],"JSIndexable":["TextTrack"],"ImmutableListMixin.E":"TextTrack","ListMixin.E":"TextTrack"},"TouchList":{"ListMixin":["Touch"],"ImmutableListMixin":["Touch"],"List":["Touch"],"JavaScriptIndexingBehavior":["Touch"],"EfficientLengthIterable":["Touch"],"Iterable":["Touch"],"JSIndexable":["Touch"],"ImmutableListMixin.E":"Touch","ListMixin.E":"Touch"},"VideoTrackList":{"EventTarget":[]},"_Attr":{"Node":[],"EventTarget":[]},"_CssRuleList":{"ListMixin":["CssRule"],"ImmutableListMixin":["CssRule"],"List":["CssRule"],"JavaScriptIndexingBehavior":["CssRule"],"EfficientLengthIterable":["CssRule"],"Iterable":["CssRule"],"JSIndexable":["CssRule"],"ImmutableListMixin.E":"CssRule","ListMixin.E":"CssRule"},"_DomRect":{"Rectangle":["num"]},"_GamepadList":{"ListMixin":["Gamepad?"],"ImmutableListMixin":["Gamepad?"],"List":["Gamepad?"],"JavaScriptIndexingBehavior":["Gamepad?"],"EfficientLengthIterable":["Gamepad?"],"Iterable":["Gamepad?"],"JSIndexable":["Gamepad?"],"ImmutableListMixin.E":"Gamepad?","ListMixin.E":"Gamepad?"},"_NamedNodeMap":{"ListMixin":["Node"],"ImmutableListMixin":["Node"],"List":["Node"],"JavaScriptIndexingBehavior":["Node"],"EfficientLengthIterable":["Node"],"Iterable":["Node"],"JSIndexable":["Node"],"ImmutableListMixin.E":"Node","ListMixin.E":"Node"},"_SpeechRecognitionResultList":{"ListMixin":["SpeechRecognitionResult"],"ImmutableListMixin":["SpeechRecognitionResult"],"List":["SpeechRecognitionResult"],"JavaScriptIndexingBehavior":["SpeechRecognitionResult"],"EfficientLengthIterable":["SpeechRecognitionResult"],"Iterable":["SpeechRecognitionResult"],"JSIndexable":["SpeechRecognitionResult"],"ImmutableListMixin.E":"SpeechRecognitionResult","ListMixin.E":"SpeechRecognitionResult"},"_StyleSheetList":{"ListMixin":["StyleSheet"],"ImmutableListMixin":["StyleSheet"],"List":["StyleSheet"],"JavaScriptIndexingBehavior":["StyleSheet"],"EfficientLengthIterable":["StyleSheet"],"Iterable":["StyleSheet"],"JSIndexable":["StyleSheet"],"ImmutableListMixin.E":"StyleSheet","ListMixin.E":"StyleSheet"},"_AttributeMap":{"MapMixin":["String","String"],"Map":["String","String"]},"_ElementAttributeMap":{"MapMixin":["String","String"],"Map":["String","String"],"MapMixin.K":"String","MapMixin.V":"String"},"_EventStream":{"Stream":["1"],"Stream.T":"1"},"_ElementEventStreamImpl":{"_EventStream":["1"],"Stream":["1"],"Stream.T":"1"},"_EventStreamSubscription":{"StreamSubscription":["1"]},"NodeValidatorBuilder":{"NodeValidator":[]},"_SimpleNodeValidator":{"NodeValidator":[]},"_TemplatingNodeValidator":{"NodeValidator":[]},"_SvgNodeValidator":{"NodeValidator":[]},"FixedSizeListIterator":{"Iterator":["1"]},"_SameOriginUriPolicy":{"UriPolicy":[]},"_ValidatingTreeSanitizer":{"NodeTreeSanitizer":[]},"NullRejectionException":{"Exception":[]},"LengthList":{"ListMixin":["Length"],"ImmutableListMixin":["Length"],"List":["Length"],"EfficientLengthIterable":["Length"],"Iterable":["Length"],"ImmutableListMixin.E":"Length","ListMixin.E":"Length"},"NumberList":{"ListMixin":["Number"],"ImmutableListMixin":["Number"],"List":["Number"],"EfficientLengthIterable":["Number"],"Iterable":["Number"],"ImmutableListMixin.E":"Number","ListMixin.E":"Number"},"ScriptElement0":{"SvgElement":[],"Element":[],"Node":[],"EventTarget":[]},"StringList":{"ListMixin":["String"],"ImmutableListMixin":["String"],"List":["String"],"EfficientLengthIterable":["String"],"Iterable":["String"],"ImmutableListMixin.E":"String","ListMixin.E":"String"},"SvgElement":{"Element":[],"Node":[],"EventTarget":[]},"TransformList":{"ListMixin":["Transform"],"ImmutableListMixin":["Transform"],"List":["Transform"],"EfficientLengthIterable":["Transform"],"Iterable":["Transform"],"ImmutableListMixin.E":"Transform","ListMixin.E":"Transform"},"AudioParamMap":{"MapMixin":["String","@"],"Map":["String","@"],"MapMixin.K":"String","MapMixin.V":"@"},"AudioTrackList":{"EventTarget":[]},"BaseAudioContext":{"EventTarget":[]},"OfflineAudioContext":{"EventTarget":[]},"SqlResultSetRowList":{"ListMixin":["Map<@,@>"],"ImmutableListMixin":["Map<@,@>"],"List":["Map<@,@>"],"EfficientLengthIterable":["Map<@,@>"],"Iterable":["Map<@,@>"],"ImmutableListMixin.E":"Map<@,@>","ListMixin.E":"Map<@,@>"},"CanonicalizedMap":{"Map":["2","3"]},"BaseClient":{"Client0":[]},"BrowserClient":{"Client0":[]},"ByteStream":{"StreamView":["List<int>"],"Stream":["List<int>"],"StreamView.T":"List<int>","Stream.T":"List<int>"},"ClientException":{"Exception":[]},"Request":{"BaseRequest":[]},"CaseInsensitiveMap":{"CanonicalizedMap":["String","String","1"],"Map":["String","1"],"CanonicalizedMap.K":"String","CanonicalizedMap.V":"1","CanonicalizedMap.C":"String"},"PathException":{"Exception":[]},"PosixStyle":{"InternalStyle":[]},"UrlStyle":{"InternalStyle":[]},"WindowsStyle":{"InternalStyle":[]},"FileLocation":{"SourceLocation":[],"Comparable":["SourceLocation"]},"_FileSpan":{"FileSpan":[],"SourceSpanWithContext":[],"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceLocation":{"Comparable":["SourceLocation"]},"SourceLocationMixin":{"SourceLocation":[],"Comparable":["SourceLocation"]},"SourceSpan":{"Comparable":["SourceSpan"]},"SourceSpanBase":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanException":{"Exception":[]},"SourceSpanFormatException":{"FormatException":[],"Exception":[]},"SourceSpanMixin":{"SourceSpan":[],"Comparable":["SourceSpan"]},"SourceSpanWithContext":{"SourceSpan":[],"Comparable":["SourceSpan"]},"StringScannerException":{"FormatException":[],"Exception":[]},"LoadingState":{"DisplayState":[]},"ProjectViewState":{"DisplayState":[]},"Uint8List":{"List":["int"],"EfficientLengthIterable":["int"],"Iterable":["int"],"TypedData":[]}}'));
+  H._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"UnmodifiableListBase":1,"NativeTypedArray":1,"StreamTransformerBase":2,"IterableBase":1,"ListBase":1,"MapBase":2,"_SetBase":1,"_ListBase_Object_ListMixin":1,"__SetBase_Object_SetMixin":1,"_RectangleBase":1}'));
   var string$ = {
     x20must_: " must not be greater than the number of characters in the file, ",
     Cannotff: "Cannot extract a file path from a URI with a fragment component",
@@ -15582,12 +17250,14 @@
     var findType = H.findType;
     return {
       $env_1_1_void: findType("@<~>"),
+      Animation: findType("Animation"),
       AsyncError: findType("AsyncError"),
       BaseElement: findType("BaseElement"),
       BodyElement: findType("BodyElement"),
       ByteBuffer: findType("ByteBuffer"),
       CodeUnits: findType("CodeUnits"),
       Comparable_dynamic: findType("Comparable<@>"),
+      CssRule: findType("CssRule"),
       DateTime: findType("DateTime"),
       Document: findType("Document"),
       EfficientLengthIterable_dynamic: findType("EfficientLengthIterable<@>"),
@@ -15595,6 +17265,7 @@
       Error: findType("Error"),
       Event: findType("Event"),
       Exception: findType("Exception"),
+      File: findType("File"),
       FileSpan: findType("FileSpan"),
       FormatException: findType("FormatException"),
       Function: findType("Function"),
@@ -15625,6 +17296,7 @@
       JsLinkedHashMap_of_legacy_LegoPiece_and_legacy_int: findType("JsLinkedHashMap<LegoPiece*,int*>"),
       JsLinkedHashMap_of_legacy_String_and_legacy_Map_of_legacy_int_and_legacy_LegoPiece: findType("JsLinkedHashMap<String*,Map<int*,LegoPiece*>*>"),
       JsLinkedHashMap_of_legacy_int_and_legacy_LegoPiece: findType("JsLinkedHashMap<int*,LegoPiece*>"),
+      Length: findType("Length"),
       List_String: findType("List<String>"),
       List__Highlight: findType("List<_Highlight>"),
       List_dynamic: findType("List<@>"),
@@ -15634,27 +17306,39 @@
       MappedListIterable_String_dynamic: findType("MappedListIterable<String,@>"),
       MappedListIterable_of_legacy_String_and_String: findType("MappedListIterable<String*,String>"),
       MediaType: findType("MediaType"),
+      MimeType: findType("MimeType"),
       NativeTypedArrayOfInt: findType("NativeTypedArrayOfInt"),
       NativeUint8List: findType("NativeUint8List"),
       Node: findType("Node"),
       NodeValidator: findType("NodeValidator"),
       Null: findType("Null"),
+      Number: findType("Number"),
       Object: findType("Object"),
       Pattern: findType("Pattern"),
+      Plugin: findType("Plugin"),
       ProgressEvent: findType("ProgressEvent"),
+      Rectangle_num: findType("Rectangle<num>"),
       RegExp: findType("RegExp"),
       Response: findType("Response"),
       ScriptElement: findType("ScriptElement0"),
+      SourceBuffer: findType("SourceBuffer"),
       SourceLocation: findType("SourceLocation"),
       SourceSpan: findType("SourceSpan"),
       SourceSpanWithContext: findType("SourceSpanWithContext"),
+      SpeechGrammar: findType("SpeechGrammar"),
+      SpeechRecognitionResult: findType("SpeechRecognitionResult"),
       StackTrace: findType("StackTrace"),
       StreamedResponse: findType("StreamedResponse"),
       String: findType("String"),
       String_Function_Match: findType("String(Match)"),
       String_Function_legacy_String: findType("String(String*)"),
+      StyleSheet: findType("StyleSheet"),
       SvgElement: findType("SvgElement"),
       TemplateElement: findType("TemplateElement"),
+      TextTrack: findType("TextTrack"),
+      TextTrackCue: findType("TextTrackCue"),
+      Touch: findType("Touch"),
+      Transform: findType("Transform"),
       TypedData: findType("TypedData"),
       Uint8List: findType("Uint8List"),
       UnknownJavaScriptObject: findType("UnknownJavaScriptObject"),
@@ -15687,6 +17371,7 @@
       dynamic_Function_String: findType("@(String)"),
       dynamic_Function_dynamic_dynamic: findType("@(@,@)"),
       int: findType("int"),
+      legacy_Animation: findType("Animation*"),
       legacy_DisplayState: findType("DisplayState*"),
       legacy_DivElement: findType("DivElement*"),
       legacy_Future_legacy_String: findType("Future<String*>*"),
@@ -15699,11 +17384,13 @@
       legacy_Never: findType("0&*"),
       legacy_Object: findType("Object*"),
       legacy_Response: findType("Response*"),
+      legacy_Set_legacy_bool: findType("Set<bool*>*"),
       legacy_String: findType("String*"),
       legacy_bool: findType("bool*"),
       nullable_EventTarget: findType("EventTarget?"),
       nullable_FS: findType("FS?"),
       nullable_Future_Null: findType("Future<Null>?"),
+      nullable_Gamepad: findType("Gamepad?"),
       nullable_List_String: findType("List<String>?"),
       nullable_List_dynamic: findType("List<@>?"),
       nullable_Map_String_String: findType("Map<String,String>?"),
@@ -15742,6 +17429,7 @@
     C.JSArray_methods = J.JSArray.prototype;
     C.JSInt_methods = J.JSInt.prototype;
     C.JSNull_methods = J.JSNull.prototype;
+    C.JSNumber_methods = J.JSNumber.prototype;
     C.JSString_methods = J.JSString.prototype;
     C.JavaScriptFunction_methods = J.JavaScriptFunction.prototype;
     C.NativeUint32List_methods = H.NativeUint32List.prototype;
@@ -15887,6 +17575,9 @@
     C.C__StringStackTrace = new P._StringStackTrace();
     C.DisplayStateType_0 = new S.DisplayStateType("DisplayStateType.LOADING");
     C.DisplayStateType_1 = new S.DisplayStateType("DisplayStateType.PROJECT_VIEW");
+    C.DisplayStateType_2 = new S.DisplayStateType("DisplayStateType.ADD_SET");
+    C.DisplayStateType_3 = new S.DisplayStateType("DisplayStateType.EDIT_PIECES");
+    C.DisplayStateType_4 = new S.DisplayStateType("DisplayStateType.ALL_MISSING_PIECES_VIEW");
     C.JsonDecoder_null = new P.JsonDecoder(null);
     C.Latin1Decoder_false_255 = new P.Latin1Decoder(false, 255);
     C.List_2Vk = H.setRuntimeTypeInfo(makeConstList([0, 0, 32776, 33792, 1, 10240, 0, 0]), type$.JSArray_legacy_int);
@@ -16095,12 +17786,19 @@
       }
       init.dispatchPropertyName = init.getIsolateTag("dispatch_record");
     }();
-    hunkHelpers.setOrUpdateInterceptorsByTag({Blob: J.Interceptor, DOMError: J.Interceptor, File: J.Interceptor, MediaError: J.Interceptor, NavigatorUserMediaError: J.Interceptor, OverconstrainedError: J.Interceptor, PositionError: J.Interceptor, Range: J.Interceptor, SQLError: J.Interceptor, ArrayBuffer: H.NativeByteBuffer, ArrayBufferView: H.NativeTypedData, Int8Array: H.NativeInt8List, Uint32Array: H.NativeUint32List, Uint8Array: H.NativeUint8List, HTMLAudioElement: W.HtmlElement, HTMLBRElement: W.HtmlElement, HTMLCanvasElement: W.HtmlElement, HTMLContentElement: W.HtmlElement, HTMLDListElement: W.HtmlElement, HTMLDataElement: W.HtmlElement, HTMLDataListElement: W.HtmlElement, HTMLDetailsElement: W.HtmlElement, HTMLDialogElement: W.HtmlElement, HTMLEmbedElement: W.HtmlElement, HTMLFieldSetElement: W.HtmlElement, HTMLHRElement: W.HtmlElement, HTMLHeadElement: W.HtmlElement, HTMLHtmlElement: W.HtmlElement, HTMLIFrameElement: W.HtmlElement, HTMLInputElement: W.HtmlElement, HTMLLIElement: W.HtmlElement, HTMLLabelElement: W.HtmlElement, HTMLLegendElement: W.HtmlElement, HTMLLinkElement: W.HtmlElement, HTMLMapElement: W.HtmlElement, HTMLMediaElement: W.HtmlElement, HTMLMenuElement: W.HtmlElement, HTMLMetaElement: W.HtmlElement, HTMLMeterElement: W.HtmlElement, HTMLModElement: W.HtmlElement, HTMLOListElement: W.HtmlElement, HTMLObjectElement: W.HtmlElement, HTMLOptGroupElement: W.HtmlElement, HTMLOptionElement: W.HtmlElement, HTMLOutputElement: W.HtmlElement, HTMLParamElement: W.HtmlElement, HTMLPictureElement: W.HtmlElement, HTMLPreElement: W.HtmlElement, HTMLProgressElement: W.HtmlElement, HTMLQuoteElement: W.HtmlElement, HTMLScriptElement: W.HtmlElement, HTMLShadowElement: W.HtmlElement, HTMLSlotElement: W.HtmlElement, HTMLSourceElement: W.HtmlElement, HTMLSpanElement: W.HtmlElement, HTMLStyleElement: W.HtmlElement, HTMLTableCaptionElement: W.HtmlElement, HTMLTableCellElement: W.HtmlElement, HTMLTableDataCellElement: W.HtmlElement, HTMLTableHeaderCellElement: W.HtmlElement, HTMLTableColElement: W.HtmlElement, HTMLTextAreaElement: W.HtmlElement, HTMLTimeElement: W.HtmlElement, HTMLTitleElement: W.HtmlElement, HTMLTrackElement: W.HtmlElement, HTMLUListElement: W.HtmlElement, HTMLUnknownElement: W.HtmlElement, HTMLVideoElement: W.HtmlElement, HTMLDirectoryElement: W.HtmlElement, HTMLFontElement: W.HtmlElement, HTMLFrameElement: W.HtmlElement, HTMLFrameSetElement: W.HtmlElement, HTMLMarqueeElement: W.HtmlElement, HTMLElement: W.HtmlElement, HTMLAnchorElement: W.AnchorElement, HTMLAreaElement: W.AreaElement, HTMLBaseElement: W.BaseElement, HTMLBodyElement: W.BodyElement, HTMLButtonElement: W.ButtonElement, CDATASection: W.CharacterData, CharacterData: W.CharacterData, Comment: W.CharacterData, ProcessingInstruction: W.CharacterData, Text: W.CharacterData, HTMLDivElement: W.DivElement, XMLDocument: W.Document, Document: W.Document, DOMException: W.DomException, DOMImplementation: W.DomImplementation, DOMTokenList: W.DomTokenList, Element: W.Element, AbortPaymentEvent: W.Event, AnimationEvent: W.Event, AnimationPlaybackEvent: W.Event, ApplicationCacheErrorEvent: W.Event, BackgroundFetchClickEvent: W.Event, BackgroundFetchEvent: W.Event, BackgroundFetchFailEvent: W.Event, BackgroundFetchedEvent: W.Event, BeforeInstallPromptEvent: W.Event, BeforeUnloadEvent: W.Event, BlobEvent: W.Event, CanMakePaymentEvent: W.Event, ClipboardEvent: W.Event, CloseEvent: W.Event, CustomEvent: W.Event, DeviceMotionEvent: W.Event, DeviceOrientationEvent: W.Event, ErrorEvent: W.Event, ExtendableEvent: W.Event, ExtendableMessageEvent: W.Event, FetchEvent: W.Event, FontFaceSetLoadEvent: W.Event, ForeignFetchEvent: W.Event, GamepadEvent: W.Event, HashChangeEvent: W.Event, InstallEvent: W.Event, MediaEncryptedEvent: W.Event, MediaKeyMessageEvent: W.Event, MediaQueryListEvent: W.Event, MediaStreamEvent: W.Event, MediaStreamTrackEvent: W.Event, MessageEvent: W.Event, MIDIConnectionEvent: W.Event, MIDIMessageEvent: W.Event, MutationEvent: W.Event, NotificationEvent: W.Event, PageTransitionEvent: W.Event, PaymentRequestEvent: W.Event, PaymentRequestUpdateEvent: W.Event, PopStateEvent: W.Event, PresentationConnectionAvailableEvent: W.Event, PresentationConnectionCloseEvent: W.Event, PromiseRejectionEvent: W.Event, PushEvent: W.Event, RTCDataChannelEvent: W.Event, RTCDTMFToneChangeEvent: W.Event, RTCPeerConnectionIceEvent: W.Event, RTCTrackEvent: W.Event, SecurityPolicyViolationEvent: W.Event, SensorErrorEvent: W.Event, SpeechRecognitionError: W.Event, SpeechRecognitionEvent: W.Event, SpeechSynthesisEvent: W.Event, StorageEvent: W.Event, SyncEvent: W.Event, TrackEvent: W.Event, TransitionEvent: W.Event, WebKitTransitionEvent: W.Event, VRDeviceEvent: W.Event, VRDisplayEvent: W.Event, VRSessionEvent: W.Event, MojoInterfaceRequestEvent: W.Event, USBConnectionEvent: W.Event, IDBVersionChangeEvent: W.Event, AudioProcessingEvent: W.Event, OfflineAudioCompletionEvent: W.Event, WebGLContextEvent: W.Event, Event: W.Event, InputEvent: W.Event, SubmitEvent: W.Event, Window: W.EventTarget, DOMWindow: W.EventTarget, EventTarget: W.EventTarget, HTMLFormElement: W.FormElement, HTMLHeadingElement: W.HeadingElement, HTMLCollection: W.HtmlCollection, HTMLFormControlsCollection: W.HtmlCollection, HTMLOptionsCollection: W.HtmlCollection, HTMLDocument: W.HtmlDocument, XMLHttpRequest: W.HttpRequest, XMLHttpRequestEventTarget: W.HttpRequestEventTarget, HTMLImageElement: W.ImageElement, Location: W.Location, MouseEvent: W.MouseEvent, DragEvent: W.MouseEvent, PointerEvent: W.MouseEvent, WheelEvent: W.MouseEvent, DocumentFragment: W.Node, ShadowRoot: W.Node, DocumentType: W.Node, Node: W.Node, NodeList: W.NodeList, RadioNodeList: W.NodeList, HTMLParagraphElement: W.ParagraphElement, ProgressEvent: W.ProgressEvent, ResourceProgressEvent: W.ProgressEvent, HTMLSelectElement: W.SelectElement, HTMLTableElement: W.TableElement, HTMLTableRowElement: W.TableRowElement, HTMLTableSectionElement: W.TableSectionElement, HTMLTemplateElement: W.TemplateElement, CompositionEvent: W.UIEvent, FocusEvent: W.UIEvent, KeyboardEvent: W.UIEvent, TextEvent: W.UIEvent, TouchEvent: W.UIEvent, UIEvent: W.UIEvent, Attr: W._Attr, NamedNodeMap: W._NamedNodeMap, MozNamedAttrMap: W._NamedNodeMap, SVGScriptElement: P.ScriptElement0, SVGAElement: P.SvgElement, SVGAnimateElement: P.SvgElement, SVGAnimateMotionElement: P.SvgElement, SVGAnimateTransformElement: P.SvgElement, SVGAnimationElement: P.SvgElement, SVGCircleElement: P.SvgElement, SVGClipPathElement: P.SvgElement, SVGDefsElement: P.SvgElement, SVGDescElement: P.SvgElement, SVGDiscardElement: P.SvgElement, SVGEllipseElement: P.SvgElement, SVGFEBlendElement: P.SvgElement, SVGFEColorMatrixElement: P.SvgElement, SVGFEComponentTransferElement: P.SvgElement, SVGFECompositeElement: P.SvgElement, SVGFEConvolveMatrixElement: P.SvgElement, SVGFEDiffuseLightingElement: P.SvgElement, SVGFEDisplacementMapElement: P.SvgElement, SVGFEDistantLightElement: P.SvgElement, SVGFEFloodElement: P.SvgElement, SVGFEFuncAElement: P.SvgElement, SVGFEFuncBElement: P.SvgElement, SVGFEFuncGElement: P.SvgElement, SVGFEFuncRElement: P.SvgElement, SVGFEGaussianBlurElement: P.SvgElement, SVGFEImageElement: P.SvgElement, SVGFEMergeElement: P.SvgElement, SVGFEMergeNodeElement: P.SvgElement, SVGFEMorphologyElement: P.SvgElement, SVGFEOffsetElement: P.SvgElement, SVGFEPointLightElement: P.SvgElement, SVGFESpecularLightingElement: P.SvgElement, SVGFESpotLightElement: P.SvgElement, SVGFETileElement: P.SvgElement, SVGFETurbulenceElement: P.SvgElement, SVGFilterElement: P.SvgElement, SVGForeignObjectElement: P.SvgElement, SVGGElement: P.SvgElement, SVGGeometryElement: P.SvgElement, SVGGraphicsElement: P.SvgElement, SVGImageElement: P.SvgElement, SVGLineElement: P.SvgElement, SVGLinearGradientElement: P.SvgElement, SVGMarkerElement: P.SvgElement, SVGMaskElement: P.SvgElement, SVGMetadataElement: P.SvgElement, SVGPathElement: P.SvgElement, SVGPatternElement: P.SvgElement, SVGPolygonElement: P.SvgElement, SVGPolylineElement: P.SvgElement, SVGRadialGradientElement: P.SvgElement, SVGRectElement: P.SvgElement, SVGSetElement: P.SvgElement, SVGStopElement: P.SvgElement, SVGStyleElement: P.SvgElement, SVGSVGElement: P.SvgElement, SVGSwitchElement: P.SvgElement, SVGSymbolElement: P.SvgElement, SVGTSpanElement: P.SvgElement, SVGTextContentElement: P.SvgElement, SVGTextElement: P.SvgElement, SVGTextPathElement: P.SvgElement, SVGTextPositioningElement: P.SvgElement, SVGTitleElement: P.SvgElement, SVGUseElement: P.SvgElement, SVGViewElement: P.SvgElement, SVGGradientElement: P.SvgElement, SVGComponentTransferFunctionElement: P.SvgElement, SVGFEDropShadowElement: P.SvgElement, SVGMPathElement: P.SvgElement, SVGElement: P.SvgElement});
-    hunkHelpers.setOrUpdateLeafTags({Blob: true, DOMError: true, File: true, MediaError: true, NavigatorUserMediaError: true, OverconstrainedError: true, PositionError: true, Range: true, SQLError: true, ArrayBuffer: true, ArrayBufferView: false, Int8Array: true, Uint32Array: true, Uint8Array: false, HTMLAudioElement: true, HTMLBRElement: true, HTMLCanvasElement: true, HTMLContentElement: true, HTMLDListElement: true, HTMLDataElement: true, HTMLDataListElement: true, HTMLDetailsElement: true, HTMLDialogElement: true, HTMLEmbedElement: true, HTMLFieldSetElement: true, HTMLHRElement: true, HTMLHeadElement: true, HTMLHtmlElement: true, HTMLIFrameElement: true, HTMLInputElement: true, HTMLLIElement: true, HTMLLabelElement: true, HTMLLegendElement: true, HTMLLinkElement: true, HTMLMapElement: true, HTMLMediaElement: true, HTMLMenuElement: true, HTMLMetaElement: true, HTMLMeterElement: true, HTMLModElement: true, HTMLOListElement: true, HTMLObjectElement: true, HTMLOptGroupElement: true, HTMLOptionElement: true, HTMLOutputElement: true, HTMLParamElement: true, HTMLPictureElement: true, HTMLPreElement: true, HTMLProgressElement: true, HTMLQuoteElement: true, HTMLScriptElement: true, HTMLShadowElement: true, HTMLSlotElement: true, HTMLSourceElement: true, HTMLSpanElement: true, HTMLStyleElement: true, HTMLTableCaptionElement: true, HTMLTableCellElement: true, HTMLTableDataCellElement: true, HTMLTableHeaderCellElement: true, HTMLTableColElement: true, HTMLTextAreaElement: true, HTMLTimeElement: true, HTMLTitleElement: true, HTMLTrackElement: true, HTMLUListElement: true, HTMLUnknownElement: true, HTMLVideoElement: true, HTMLDirectoryElement: true, HTMLFontElement: true, HTMLFrameElement: true, HTMLFrameSetElement: true, HTMLMarqueeElement: true, HTMLElement: false, HTMLAnchorElement: true, HTMLAreaElement: true, HTMLBaseElement: true, HTMLBodyElement: true, HTMLButtonElement: true, CDATASection: true, CharacterData: true, Comment: true, ProcessingInstruction: true, Text: true, HTMLDivElement: true, XMLDocument: true, Document: false, DOMException: true, DOMImplementation: true, DOMTokenList: true, Element: false, AbortPaymentEvent: true, AnimationEvent: true, AnimationPlaybackEvent: true, ApplicationCacheErrorEvent: true, BackgroundFetchClickEvent: true, BackgroundFetchEvent: true, BackgroundFetchFailEvent: true, BackgroundFetchedEvent: true, BeforeInstallPromptEvent: true, BeforeUnloadEvent: true, BlobEvent: true, CanMakePaymentEvent: true, ClipboardEvent: true, CloseEvent: true, CustomEvent: true, DeviceMotionEvent: true, DeviceOrientationEvent: true, ErrorEvent: true, ExtendableEvent: true, ExtendableMessageEvent: true, FetchEvent: true, FontFaceSetLoadEvent: true, ForeignFetchEvent: true, GamepadEvent: true, HashChangeEvent: true, InstallEvent: true, MediaEncryptedEvent: true, MediaKeyMessageEvent: true, MediaQueryListEvent: true, MediaStreamEvent: true, MediaStreamTrackEvent: true, MessageEvent: true, MIDIConnectionEvent: true, MIDIMessageEvent: true, MutationEvent: true, NotificationEvent: true, PageTransitionEvent: true, PaymentRequestEvent: true, PaymentRequestUpdateEvent: true, PopStateEvent: true, PresentationConnectionAvailableEvent: true, PresentationConnectionCloseEvent: true, PromiseRejectionEvent: true, PushEvent: true, RTCDataChannelEvent: true, RTCDTMFToneChangeEvent: true, RTCPeerConnectionIceEvent: true, RTCTrackEvent: true, SecurityPolicyViolationEvent: true, SensorErrorEvent: true, SpeechRecognitionError: true, SpeechRecognitionEvent: true, SpeechSynthesisEvent: true, StorageEvent: true, SyncEvent: true, TrackEvent: true, TransitionEvent: true, WebKitTransitionEvent: true, VRDeviceEvent: true, VRDisplayEvent: true, VRSessionEvent: true, MojoInterfaceRequestEvent: true, USBConnectionEvent: true, IDBVersionChangeEvent: true, AudioProcessingEvent: true, OfflineAudioCompletionEvent: true, WebGLContextEvent: true, Event: false, InputEvent: false, SubmitEvent: false, Window: true, DOMWindow: true, EventTarget: false, HTMLFormElement: true, HTMLHeadingElement: true, HTMLCollection: true, HTMLFormControlsCollection: true, HTMLOptionsCollection: true, HTMLDocument: true, XMLHttpRequest: true, XMLHttpRequestEventTarget: false, HTMLImageElement: true, Location: true, MouseEvent: true, DragEvent: true, PointerEvent: true, WheelEvent: true, DocumentFragment: true, ShadowRoot: true, DocumentType: true, Node: false, NodeList: true, RadioNodeList: true, HTMLParagraphElement: true, ProgressEvent: true, ResourceProgressEvent: true, HTMLSelectElement: true, HTMLTableElement: true, HTMLTableRowElement: true, HTMLTableSectionElement: true, HTMLTemplateElement: true, CompositionEvent: true, FocusEvent: true, KeyboardEvent: true, TextEvent: true, TouchEvent: true, UIEvent: false, Attr: true, NamedNodeMap: true, MozNamedAttrMap: true, SVGScriptElement: true, SVGAElement: true, SVGAnimateElement: true, SVGAnimateMotionElement: true, SVGAnimateTransformElement: true, SVGAnimationElement: true, SVGCircleElement: true, SVGClipPathElement: true, SVGDefsElement: true, SVGDescElement: true, SVGDiscardElement: true, SVGEllipseElement: true, SVGFEBlendElement: true, SVGFEColorMatrixElement: true, SVGFEComponentTransferElement: true, SVGFECompositeElement: true, SVGFEConvolveMatrixElement: true, SVGFEDiffuseLightingElement: true, SVGFEDisplacementMapElement: true, SVGFEDistantLightElement: true, SVGFEFloodElement: true, SVGFEFuncAElement: true, SVGFEFuncBElement: true, SVGFEFuncGElement: true, SVGFEFuncRElement: true, SVGFEGaussianBlurElement: true, SVGFEImageElement: true, SVGFEMergeElement: true, SVGFEMergeNodeElement: true, SVGFEMorphologyElement: true, SVGFEOffsetElement: true, SVGFEPointLightElement: true, SVGFESpecularLightingElement: true, SVGFESpotLightElement: true, SVGFETileElement: true, SVGFETurbulenceElement: true, SVGFilterElement: true, SVGForeignObjectElement: true, SVGGElement: true, SVGGeometryElement: true, SVGGraphicsElement: true, SVGImageElement: true, SVGLineElement: true, SVGLinearGradientElement: true, SVGMarkerElement: true, SVGMaskElement: true, SVGMetadataElement: true, SVGPathElement: true, SVGPatternElement: true, SVGPolygonElement: true, SVGPolylineElement: true, SVGRadialGradientElement: true, SVGRectElement: true, SVGSetElement: true, SVGStopElement: true, SVGStyleElement: true, SVGSVGElement: true, SVGSwitchElement: true, SVGSymbolElement: true, SVGTSpanElement: true, SVGTextContentElement: true, SVGTextElement: true, SVGTextPathElement: true, SVGTextPositioningElement: true, SVGTitleElement: true, SVGUseElement: true, SVGViewElement: true, SVGGradientElement: true, SVGComponentTransferFunctionElement: true, SVGFEDropShadowElement: true, SVGMPathElement: true, SVGElement: false});
+    hunkHelpers.setOrUpdateInterceptorsByTag({AnimationEffectReadOnly: J.Interceptor, AnimationEffectTiming: J.Interceptor, AnimationEffectTimingReadOnly: J.Interceptor, AnimationTimeline: J.Interceptor, AnimationWorkletGlobalScope: J.Interceptor, AuthenticatorAssertionResponse: J.Interceptor, AuthenticatorAttestationResponse: J.Interceptor, AuthenticatorResponse: J.Interceptor, BackgroundFetchFetch: J.Interceptor, BackgroundFetchManager: J.Interceptor, BackgroundFetchSettledFetch: J.Interceptor, BarProp: J.Interceptor, BarcodeDetector: J.Interceptor, BluetoothRemoteGATTDescriptor: J.Interceptor, Body: J.Interceptor, BudgetState: J.Interceptor, CacheStorage: J.Interceptor, CanvasGradient: J.Interceptor, CanvasPattern: J.Interceptor, CanvasRenderingContext2D: J.Interceptor, Client: J.Interceptor, Clients: J.Interceptor, CookieStore: J.Interceptor, Coordinates: J.Interceptor, Credential: J.Interceptor, CredentialUserData: J.Interceptor, CredentialsContainer: J.Interceptor, Crypto: J.Interceptor, CryptoKey: J.Interceptor, CSS: J.Interceptor, CSSVariableReferenceValue: J.Interceptor, CustomElementRegistry: J.Interceptor, DataTransfer: J.Interceptor, DataTransferItem: J.Interceptor, DeprecatedStorageInfo: J.Interceptor, DeprecatedStorageQuota: J.Interceptor, DeprecationReport: J.Interceptor, DetectedBarcode: J.Interceptor, DetectedFace: J.Interceptor, DetectedText: J.Interceptor, DeviceAcceleration: J.Interceptor, DeviceRotationRate: J.Interceptor, DirectoryEntry: J.Interceptor, DirectoryReader: J.Interceptor, DocumentOrShadowRoot: J.Interceptor, DocumentTimeline: J.Interceptor, DOMError: J.Interceptor, Iterator: J.Interceptor, DOMMatrix: J.Interceptor, DOMMatrixReadOnly: J.Interceptor, DOMParser: J.Interceptor, DOMPoint: J.Interceptor, DOMPointReadOnly: J.Interceptor, DOMQuad: J.Interceptor, DOMStringMap: J.Interceptor, Entry: J.Interceptor, External: J.Interceptor, FaceDetector: J.Interceptor, FederatedCredential: J.Interceptor, FileEntry: J.Interceptor, DOMFileSystem: J.Interceptor, FontFace: J.Interceptor, FontFaceSource: J.Interceptor, FormData: J.Interceptor, GamepadButton: J.Interceptor, GamepadPose: J.Interceptor, Geolocation: J.Interceptor, Position: J.Interceptor, Headers: J.Interceptor, HTMLHyperlinkElementUtils: J.Interceptor, IdleDeadline: J.Interceptor, ImageBitmap: J.Interceptor, ImageBitmapRenderingContext: J.Interceptor, ImageCapture: J.Interceptor, ImageData: J.Interceptor, InputDeviceCapabilities: J.Interceptor, IntersectionObserver: J.Interceptor, IntersectionObserverEntry: J.Interceptor, InterventionReport: J.Interceptor, KeyframeEffect: J.Interceptor, KeyframeEffectReadOnly: J.Interceptor, MediaCapabilities: J.Interceptor, MediaCapabilitiesInfo: J.Interceptor, MediaDeviceInfo: J.Interceptor, MediaError: J.Interceptor, MediaKeyStatusMap: J.Interceptor, MediaKeySystemAccess: J.Interceptor, MediaKeys: J.Interceptor, MediaKeysPolicy: J.Interceptor, MediaMetadata: J.Interceptor, MediaSession: J.Interceptor, MediaSettingsRange: J.Interceptor, MemoryInfo: J.Interceptor, MessageChannel: J.Interceptor, Metadata: J.Interceptor, MutationObserver: J.Interceptor, WebKitMutationObserver: J.Interceptor, MutationRecord: J.Interceptor, NavigationPreloadManager: J.Interceptor, Navigator: J.Interceptor, NavigatorAutomationInformation: J.Interceptor, NavigatorConcurrentHardware: J.Interceptor, NavigatorCookies: J.Interceptor, NavigatorUserMediaError: J.Interceptor, NodeFilter: J.Interceptor, NodeIterator: J.Interceptor, NonDocumentTypeChildNode: J.Interceptor, NonElementParentNode: J.Interceptor, NoncedElement: J.Interceptor, OffscreenCanvasRenderingContext2D: J.Interceptor, OverconstrainedError: J.Interceptor, PaintRenderingContext2D: J.Interceptor, PaintSize: J.Interceptor, PaintWorkletGlobalScope: J.Interceptor, PasswordCredential: J.Interceptor, Path2D: J.Interceptor, PaymentAddress: J.Interceptor, PaymentInstruments: J.Interceptor, PaymentManager: J.Interceptor, PaymentResponse: J.Interceptor, PerformanceEntry: J.Interceptor, PerformanceLongTaskTiming: J.Interceptor, PerformanceMark: J.Interceptor, PerformanceMeasure: J.Interceptor, PerformanceNavigation: J.Interceptor, PerformanceNavigationTiming: J.Interceptor, PerformanceObserver: J.Interceptor, PerformanceObserverEntryList: J.Interceptor, PerformancePaintTiming: J.Interceptor, PerformanceResourceTiming: J.Interceptor, PerformanceServerTiming: J.Interceptor, PerformanceTiming: J.Interceptor, Permissions: J.Interceptor, PhotoCapabilities: J.Interceptor, PositionError: J.Interceptor, Presentation: J.Interceptor, PresentationReceiver: J.Interceptor, PublicKeyCredential: J.Interceptor, PushManager: J.Interceptor, PushMessageData: J.Interceptor, PushSubscription: J.Interceptor, PushSubscriptionOptions: J.Interceptor, Range: J.Interceptor, RelatedApplication: J.Interceptor, ReportBody: J.Interceptor, ReportingObserver: J.Interceptor, ResizeObserver: J.Interceptor, ResizeObserverEntry: J.Interceptor, RTCCertificate: J.Interceptor, RTCIceCandidate: J.Interceptor, mozRTCIceCandidate: J.Interceptor, RTCLegacyStatsReport: J.Interceptor, RTCRtpContributingSource: J.Interceptor, RTCRtpReceiver: J.Interceptor, RTCRtpSender: J.Interceptor, RTCSessionDescription: J.Interceptor, mozRTCSessionDescription: J.Interceptor, RTCStatsResponse: J.Interceptor, Screen: J.Interceptor, ScrollState: J.Interceptor, ScrollTimeline: J.Interceptor, Selection: J.Interceptor, SharedArrayBuffer: J.Interceptor, SpeechRecognitionAlternative: J.Interceptor, SpeechSynthesisVoice: J.Interceptor, StaticRange: J.Interceptor, StorageManager: J.Interceptor, StyleMedia: J.Interceptor, StylePropertyMap: J.Interceptor, StylePropertyMapReadonly: J.Interceptor, SyncManager: J.Interceptor, TaskAttributionTiming: J.Interceptor, TextDetector: J.Interceptor, TextMetrics: J.Interceptor, TrackDefault: J.Interceptor, TreeWalker: J.Interceptor, TrustedHTML: J.Interceptor, TrustedScriptURL: J.Interceptor, TrustedURL: J.Interceptor, UnderlyingSourceBase: J.Interceptor, URLSearchParams: J.Interceptor, VRCoordinateSystem: J.Interceptor, VRDisplayCapabilities: J.Interceptor, VREyeParameters: J.Interceptor, VRFrameData: J.Interceptor, VRFrameOfReference: J.Interceptor, VRPose: J.Interceptor, VRStageBounds: J.Interceptor, VRStageBoundsPoint: J.Interceptor, VRStageParameters: J.Interceptor, ValidityState: J.Interceptor, VideoPlaybackQuality: J.Interceptor, VideoTrack: J.Interceptor, VTTRegion: J.Interceptor, WindowClient: J.Interceptor, WorkletAnimation: J.Interceptor, WorkletGlobalScope: J.Interceptor, XPathEvaluator: J.Interceptor, XPathExpression: J.Interceptor, XPathNSResolver: J.Interceptor, XPathResult: J.Interceptor, XMLSerializer: J.Interceptor, XSLTProcessor: J.Interceptor, Bluetooth: J.Interceptor, BluetoothCharacteristicProperties: J.Interceptor, BluetoothRemoteGATTServer: J.Interceptor, BluetoothRemoteGATTService: J.Interceptor, BluetoothUUID: J.Interceptor, BudgetService: J.Interceptor, Cache: J.Interceptor, DOMFileSystemSync: J.Interceptor, DirectoryEntrySync: J.Interceptor, DirectoryReaderSync: J.Interceptor, EntrySync: J.Interceptor, FileEntrySync: J.Interceptor, FileReaderSync: J.Interceptor, FileWriterSync: J.Interceptor, HTMLAllCollection: J.Interceptor, Mojo: J.Interceptor, MojoHandle: J.Interceptor, MojoWatcher: J.Interceptor, NFC: J.Interceptor, PagePopupController: J.Interceptor, Report: J.Interceptor, Request: J.Interceptor, Response: J.Interceptor, SubtleCrypto: J.Interceptor, USBAlternateInterface: J.Interceptor, USBConfiguration: J.Interceptor, USBDevice: J.Interceptor, USBEndpoint: J.Interceptor, USBInTransferResult: J.Interceptor, USBInterface: J.Interceptor, USBIsochronousInTransferPacket: J.Interceptor, USBIsochronousInTransferResult: J.Interceptor, USBIsochronousOutTransferPacket: J.Interceptor, USBIsochronousOutTransferResult: J.Interceptor, USBOutTransferResult: J.Interceptor, WorkerLocation: J.Interceptor, WorkerNavigator: J.Interceptor, Worklet: J.Interceptor, IDBCursor: J.Interceptor, IDBCursorWithValue: J.Interceptor, IDBFactory: J.Interceptor, IDBIndex: J.Interceptor, IDBKeyRange: J.Interceptor, IDBObjectStore: J.Interceptor, IDBObservation: J.Interceptor, IDBObserver: J.Interceptor, IDBObserverChanges: J.Interceptor, SVGAngle: J.Interceptor, SVGAnimatedAngle: J.Interceptor, SVGAnimatedBoolean: J.Interceptor, SVGAnimatedEnumeration: J.Interceptor, SVGAnimatedInteger: J.Interceptor, SVGAnimatedLength: J.Interceptor, SVGAnimatedLengthList: J.Interceptor, SVGAnimatedNumber: J.Interceptor, SVGAnimatedNumberList: J.Interceptor, SVGAnimatedPreserveAspectRatio: J.Interceptor, SVGAnimatedRect: J.Interceptor, SVGAnimatedString: J.Interceptor, SVGAnimatedTransformList: J.Interceptor, SVGMatrix: J.Interceptor, SVGPoint: J.Interceptor, SVGPreserveAspectRatio: J.Interceptor, SVGRect: J.Interceptor, SVGUnitTypes: J.Interceptor, AudioListener: J.Interceptor, AudioParam: J.Interceptor, AudioTrack: J.Interceptor, AudioWorkletGlobalScope: J.Interceptor, AudioWorkletProcessor: J.Interceptor, PeriodicWave: J.Interceptor, WebGLActiveInfo: J.Interceptor, ANGLEInstancedArrays: J.Interceptor, ANGLE_instanced_arrays: J.Interceptor, WebGLBuffer: J.Interceptor, WebGLCanvas: J.Interceptor, WebGLColorBufferFloat: J.Interceptor, WebGLCompressedTextureASTC: J.Interceptor, WebGLCompressedTextureATC: J.Interceptor, WEBGL_compressed_texture_atc: J.Interceptor, WebGLCompressedTextureETC1: J.Interceptor, WEBGL_compressed_texture_etc1: J.Interceptor, WebGLCompressedTextureETC: J.Interceptor, WebGLCompressedTexturePVRTC: J.Interceptor, WEBGL_compressed_texture_pvrtc: J.Interceptor, WebGLCompressedTextureS3TC: J.Interceptor, WEBGL_compressed_texture_s3tc: J.Interceptor, WebGLCompressedTextureS3TCsRGB: J.Interceptor, WebGLDebugRendererInfo: J.Interceptor, WEBGL_debug_renderer_info: J.Interceptor, WebGLDebugShaders: J.Interceptor, WEBGL_debug_shaders: J.Interceptor, WebGLDepthTexture: J.Interceptor, WEBGL_depth_texture: J.Interceptor, WebGLDrawBuffers: J.Interceptor, WEBGL_draw_buffers: J.Interceptor, EXTsRGB: J.Interceptor, EXT_sRGB: J.Interceptor, EXTBlendMinMax: J.Interceptor, EXT_blend_minmax: J.Interceptor, EXTColorBufferFloat: J.Interceptor, EXTColorBufferHalfFloat: J.Interceptor, EXTDisjointTimerQuery: J.Interceptor, EXTDisjointTimerQueryWebGL2: J.Interceptor, EXTFragDepth: J.Interceptor, EXT_frag_depth: J.Interceptor, EXTShaderTextureLOD: J.Interceptor, EXT_shader_texture_lod: J.Interceptor, EXTTextureFilterAnisotropic: J.Interceptor, EXT_texture_filter_anisotropic: J.Interceptor, WebGLFramebuffer: J.Interceptor, WebGLGetBufferSubDataAsync: J.Interceptor, WebGLLoseContext: J.Interceptor, WebGLExtensionLoseContext: J.Interceptor, WEBGL_lose_context: J.Interceptor, OESElementIndexUint: J.Interceptor, OES_element_index_uint: J.Interceptor, OESStandardDerivatives: J.Interceptor, OES_standard_derivatives: J.Interceptor, OESTextureFloat: J.Interceptor, OES_texture_float: J.Interceptor, OESTextureFloatLinear: J.Interceptor, OES_texture_float_linear: J.Interceptor, OESTextureHalfFloat: J.Interceptor, OES_texture_half_float: J.Interceptor, OESTextureHalfFloatLinear: J.Interceptor, OES_texture_half_float_linear: J.Interceptor, OESVertexArrayObject: J.Interceptor, OES_vertex_array_object: J.Interceptor, WebGLProgram: J.Interceptor, WebGLQuery: J.Interceptor, WebGLRenderbuffer: J.Interceptor, WebGLRenderingContext: J.Interceptor, WebGL2RenderingContext: J.Interceptor, WebGLSampler: J.Interceptor, WebGLShader: J.Interceptor, WebGLShaderPrecisionFormat: J.Interceptor, WebGLSync: J.Interceptor, WebGLTexture: J.Interceptor, WebGLTimerQueryEXT: J.Interceptor, WebGLTransformFeedback: J.Interceptor, WebGLUniformLocation: J.Interceptor, WebGLVertexArrayObject: J.Interceptor, WebGLVertexArrayObjectOES: J.Interceptor, WebGL: J.Interceptor, WebGL2RenderingContextBase: J.Interceptor, Database: J.Interceptor, SQLError: J.Interceptor, SQLResultSet: J.Interceptor, SQLTransaction: J.Interceptor, ArrayBuffer: H.NativeByteBuffer, DataView: H.NativeTypedData, ArrayBufferView: H.NativeTypedData, Float32Array: H.NativeTypedArrayOfDouble, Float64Array: H.NativeTypedArrayOfDouble, Int16Array: H.NativeInt16List, Int32Array: H.NativeInt32List, Int8Array: H.NativeInt8List, Uint16Array: H.NativeUint16List, Uint32Array: H.NativeUint32List, Uint8ClampedArray: H.NativeUint8ClampedList, CanvasPixelArray: H.NativeUint8ClampedList, Uint8Array: H.NativeUint8List, HTMLAudioElement: W.HtmlElement, HTMLBRElement: W.HtmlElement, HTMLCanvasElement: W.HtmlElement, HTMLContentElement: W.HtmlElement, HTMLDListElement: W.HtmlElement, HTMLDataElement: W.HtmlElement, HTMLDataListElement: W.HtmlElement, HTMLDetailsElement: W.HtmlElement, HTMLDialogElement: W.HtmlElement, HTMLEmbedElement: W.HtmlElement, HTMLFieldSetElement: W.HtmlElement, HTMLHRElement: W.HtmlElement, HTMLHeadElement: W.HtmlElement, HTMLHtmlElement: W.HtmlElement, HTMLIFrameElement: W.HtmlElement, HTMLInputElement: W.HtmlElement, HTMLLIElement: W.HtmlElement, HTMLLabelElement: W.HtmlElement, HTMLLegendElement: W.HtmlElement, HTMLLinkElement: W.HtmlElement, HTMLMapElement: W.HtmlElement, HTMLMediaElement: W.HtmlElement, HTMLMenuElement: W.HtmlElement, HTMLMetaElement: W.HtmlElement, HTMLMeterElement: W.HtmlElement, HTMLModElement: W.HtmlElement, HTMLOListElement: W.HtmlElement, HTMLObjectElement: W.HtmlElement, HTMLOptGroupElement: W.HtmlElement, HTMLOptionElement: W.HtmlElement, HTMLOutputElement: W.HtmlElement, HTMLParamElement: W.HtmlElement, HTMLPictureElement: W.HtmlElement, HTMLPreElement: W.HtmlElement, HTMLProgressElement: W.HtmlElement, HTMLQuoteElement: W.HtmlElement, HTMLScriptElement: W.HtmlElement, HTMLShadowElement: W.HtmlElement, HTMLSlotElement: W.HtmlElement, HTMLSourceElement: W.HtmlElement, HTMLSpanElement: W.HtmlElement, HTMLStyleElement: W.HtmlElement, HTMLTableCaptionElement: W.HtmlElement, HTMLTableCellElement: W.HtmlElement, HTMLTableDataCellElement: W.HtmlElement, HTMLTableHeaderCellElement: W.HtmlElement, HTMLTableColElement: W.HtmlElement, HTMLTextAreaElement: W.HtmlElement, HTMLTimeElement: W.HtmlElement, HTMLTitleElement: W.HtmlElement, HTMLTrackElement: W.HtmlElement, HTMLUListElement: W.HtmlElement, HTMLUnknownElement: W.HtmlElement, HTMLVideoElement: W.HtmlElement, HTMLDirectoryElement: W.HtmlElement, HTMLFontElement: W.HtmlElement, HTMLFrameElement: W.HtmlElement, HTMLFrameSetElement: W.HtmlElement, HTMLMarqueeElement: W.HtmlElement, HTMLElement: W.HtmlElement, AccessibleNodeList: W.AccessibleNodeList, HTMLAnchorElement: W.AnchorElement, Animation: W.Animation, HTMLAreaElement: W.AreaElement, HTMLBaseElement: W.BaseElement, Blob: W.Blob, HTMLBodyElement: W.BodyElement, HTMLButtonElement: W.ButtonElement, CDATASection: W.CharacterData, CharacterData: W.CharacterData, Comment: W.CharacterData, ProcessingInstruction: W.CharacterData, Text: W.CharacterData, CSSPerspective: W.CssPerspective, CSSCharsetRule: W.CssRule, CSSConditionRule: W.CssRule, CSSFontFaceRule: W.CssRule, CSSGroupingRule: W.CssRule, CSSImportRule: W.CssRule, CSSKeyframeRule: W.CssRule, MozCSSKeyframeRule: W.CssRule, WebKitCSSKeyframeRule: W.CssRule, CSSKeyframesRule: W.CssRule, MozCSSKeyframesRule: W.CssRule, WebKitCSSKeyframesRule: W.CssRule, CSSMediaRule: W.CssRule, CSSNamespaceRule: W.CssRule, CSSPageRule: W.CssRule, CSSRule: W.CssRule, CSSStyleRule: W.CssRule, CSSSupportsRule: W.CssRule, CSSViewportRule: W.CssRule, CSSStyleDeclaration: W.CssStyleDeclaration, MSStyleCSSProperties: W.CssStyleDeclaration, CSS2Properties: W.CssStyleDeclaration, CSSImageValue: W.CssStyleValue, CSSKeywordValue: W.CssStyleValue, CSSNumericValue: W.CssStyleValue, CSSPositionValue: W.CssStyleValue, CSSResourceValue: W.CssStyleValue, CSSUnitValue: W.CssStyleValue, CSSURLImageValue: W.CssStyleValue, CSSStyleValue: W.CssStyleValue, CSSMatrixComponent: W.CssTransformComponent, CSSRotation: W.CssTransformComponent, CSSScale: W.CssTransformComponent, CSSSkew: W.CssTransformComponent, CSSTranslation: W.CssTransformComponent, CSSTransformComponent: W.CssTransformComponent, CSSTransformValue: W.CssTransformValue, CSSUnparsedValue: W.CssUnparsedValue, DataTransferItemList: W.DataTransferItemList, HTMLDivElement: W.DivElement, XMLDocument: W.Document, Document: W.Document, DOMException: W.DomException, DOMImplementation: W.DomImplementation, ClientRectList: W.DomRectList, DOMRectList: W.DomRectList, DOMRectReadOnly: W.DomRectReadOnly, DOMStringList: W.DomStringList, DOMTokenList: W.DomTokenList, Element: W.Element, AbortPaymentEvent: W.Event, AnimationEvent: W.Event, AnimationPlaybackEvent: W.Event, ApplicationCacheErrorEvent: W.Event, BackgroundFetchClickEvent: W.Event, BackgroundFetchEvent: W.Event, BackgroundFetchFailEvent: W.Event, BackgroundFetchedEvent: W.Event, BeforeInstallPromptEvent: W.Event, BeforeUnloadEvent: W.Event, BlobEvent: W.Event, CanMakePaymentEvent: W.Event, ClipboardEvent: W.Event, CloseEvent: W.Event, CustomEvent: W.Event, DeviceMotionEvent: W.Event, DeviceOrientationEvent: W.Event, ErrorEvent: W.Event, ExtendableEvent: W.Event, ExtendableMessageEvent: W.Event, FetchEvent: W.Event, FontFaceSetLoadEvent: W.Event, ForeignFetchEvent: W.Event, GamepadEvent: W.Event, HashChangeEvent: W.Event, InstallEvent: W.Event, MediaEncryptedEvent: W.Event, MediaKeyMessageEvent: W.Event, MediaQueryListEvent: W.Event, MediaStreamEvent: W.Event, MediaStreamTrackEvent: W.Event, MessageEvent: W.Event, MIDIConnectionEvent: W.Event, MIDIMessageEvent: W.Event, MutationEvent: W.Event, NotificationEvent: W.Event, PageTransitionEvent: W.Event, PaymentRequestEvent: W.Event, PaymentRequestUpdateEvent: W.Event, PopStateEvent: W.Event, PresentationConnectionAvailableEvent: W.Event, PresentationConnectionCloseEvent: W.Event, PromiseRejectionEvent: W.Event, PushEvent: W.Event, RTCDataChannelEvent: W.Event, RTCDTMFToneChangeEvent: W.Event, RTCPeerConnectionIceEvent: W.Event, RTCTrackEvent: W.Event, SecurityPolicyViolationEvent: W.Event, SensorErrorEvent: W.Event, SpeechRecognitionError: W.Event, SpeechRecognitionEvent: W.Event, SpeechSynthesisEvent: W.Event, StorageEvent: W.Event, SyncEvent: W.Event, TrackEvent: W.Event, TransitionEvent: W.Event, WebKitTransitionEvent: W.Event, VRDeviceEvent: W.Event, VRDisplayEvent: W.Event, VRSessionEvent: W.Event, MojoInterfaceRequestEvent: W.Event, USBConnectionEvent: W.Event, IDBVersionChangeEvent: W.Event, AudioProcessingEvent: W.Event, OfflineAudioCompletionEvent: W.Event, WebGLContextEvent: W.Event, Event: W.Event, InputEvent: W.Event, SubmitEvent: W.Event, AbsoluteOrientationSensor: W.EventTarget, Accelerometer: W.EventTarget, AccessibleNode: W.EventTarget, AmbientLightSensor: W.EventTarget, ApplicationCache: W.EventTarget, DOMApplicationCache: W.EventTarget, OfflineResourceList: W.EventTarget, BackgroundFetchRegistration: W.EventTarget, BatteryManager: W.EventTarget, BroadcastChannel: W.EventTarget, CanvasCaptureMediaStreamTrack: W.EventTarget, DedicatedWorkerGlobalScope: W.EventTarget, EventSource: W.EventTarget, FileReader: W.EventTarget, FontFaceSet: W.EventTarget, Gyroscope: W.EventTarget, LinearAccelerationSensor: W.EventTarget, Magnetometer: W.EventTarget, MediaDevices: W.EventTarget, MediaKeySession: W.EventTarget, MediaQueryList: W.EventTarget, MediaRecorder: W.EventTarget, MediaSource: W.EventTarget, MediaStream: W.EventTarget, MediaStreamTrack: W.EventTarget, MessagePort: W.EventTarget, MIDIAccess: W.EventTarget, MIDIInput: W.EventTarget, MIDIOutput: W.EventTarget, MIDIPort: W.EventTarget, NetworkInformation: W.EventTarget, Notification: W.EventTarget, OffscreenCanvas: W.EventTarget, OrientationSensor: W.EventTarget, PaymentRequest: W.EventTarget, Performance: W.EventTarget, PermissionStatus: W.EventTarget, PresentationAvailability: W.EventTarget, PresentationConnection: W.EventTarget, PresentationConnectionList: W.EventTarget, PresentationRequest: W.EventTarget, RelativeOrientationSensor: W.EventTarget, RemotePlayback: W.EventTarget, RTCDataChannel: W.EventTarget, DataChannel: W.EventTarget, RTCDTMFSender: W.EventTarget, RTCPeerConnection: W.EventTarget, webkitRTCPeerConnection: W.EventTarget, mozRTCPeerConnection: W.EventTarget, ScreenOrientation: W.EventTarget, Sensor: W.EventTarget, ServiceWorker: W.EventTarget, ServiceWorkerContainer: W.EventTarget, ServiceWorkerGlobalScope: W.EventTarget, ServiceWorkerRegistration: W.EventTarget, SharedWorker: W.EventTarget, SharedWorkerGlobalScope: W.EventTarget, SpeechRecognition: W.EventTarget, SpeechSynthesis: W.EventTarget, SpeechSynthesisUtterance: W.EventTarget, VR: W.EventTarget, VRDevice: W.EventTarget, VRDisplay: W.EventTarget, VRSession: W.EventTarget, VisualViewport: W.EventTarget, WebSocket: W.EventTarget, Window: W.EventTarget, DOMWindow: W.EventTarget, Worker: W.EventTarget, WorkerGlobalScope: W.EventTarget, WorkerPerformance: W.EventTarget, BluetoothDevice: W.EventTarget, BluetoothRemoteGATTCharacteristic: W.EventTarget, Clipboard: W.EventTarget, MojoInterfaceInterceptor: W.EventTarget, USB: W.EventTarget, IDBDatabase: W.EventTarget, IDBOpenDBRequest: W.EventTarget, IDBVersionChangeRequest: W.EventTarget, IDBRequest: W.EventTarget, IDBTransaction: W.EventTarget, AnalyserNode: W.EventTarget, RealtimeAnalyserNode: W.EventTarget, AudioBufferSourceNode: W.EventTarget, AudioDestinationNode: W.EventTarget, AudioNode: W.EventTarget, AudioScheduledSourceNode: W.EventTarget, AudioWorkletNode: W.EventTarget, BiquadFilterNode: W.EventTarget, ChannelMergerNode: W.EventTarget, AudioChannelMerger: W.EventTarget, ChannelSplitterNode: W.EventTarget, AudioChannelSplitter: W.EventTarget, ConstantSourceNode: W.EventTarget, ConvolverNode: W.EventTarget, DelayNode: W.EventTarget, DynamicsCompressorNode: W.EventTarget, GainNode: W.EventTarget, AudioGainNode: W.EventTarget, IIRFilterNode: W.EventTarget, MediaElementAudioSourceNode: W.EventTarget, MediaStreamAudioDestinationNode: W.EventTarget, MediaStreamAudioSourceNode: W.EventTarget, OscillatorNode: W.EventTarget, Oscillator: W.EventTarget, PannerNode: W.EventTarget, AudioPannerNode: W.EventTarget, webkitAudioPannerNode: W.EventTarget, ScriptProcessorNode: W.EventTarget, JavaScriptAudioNode: W.EventTarget, StereoPannerNode: W.EventTarget, WaveShaperNode: W.EventTarget, EventTarget: W.EventTarget, File: W.File, FileList: W.FileList, FileWriter: W.FileWriter, HTMLFormElement: W.FormElement, Gamepad: W.Gamepad, HTMLHeadingElement: W.HeadingElement, History: W.History, HTMLCollection: W.HtmlCollection, HTMLFormControlsCollection: W.HtmlCollection, HTMLOptionsCollection: W.HtmlCollection, HTMLDocument: W.HtmlDocument, XMLHttpRequest: W.HttpRequest, XMLHttpRequestUpload: W.HttpRequestEventTarget, XMLHttpRequestEventTarget: W.HttpRequestEventTarget, HTMLImageElement: W.ImageElement, Location: W.Location, MediaList: W.MediaList, MIDIInputMap: W.MidiInputMap, MIDIOutputMap: W.MidiOutputMap, MimeType: W.MimeType, MimeTypeArray: W.MimeTypeArray, MouseEvent: W.MouseEvent, DragEvent: W.MouseEvent, PointerEvent: W.MouseEvent, WheelEvent: W.MouseEvent, DocumentFragment: W.Node, ShadowRoot: W.Node, DocumentType: W.Node, Node: W.Node, NodeList: W.NodeList, RadioNodeList: W.NodeList, HTMLParagraphElement: W.ParagraphElement, Plugin: W.Plugin, PluginArray: W.PluginArray, ProgressEvent: W.ProgressEvent, ResourceProgressEvent: W.ProgressEvent, RTCStatsReport: W.RtcStatsReport, HTMLSelectElement: W.SelectElement, SourceBuffer: W.SourceBuffer, SourceBufferList: W.SourceBufferList, SpeechGrammar: W.SpeechGrammar, SpeechGrammarList: W.SpeechGrammarList, SpeechRecognitionResult: W.SpeechRecognitionResult, Storage: W.Storage, CSSStyleSheet: W.StyleSheet, StyleSheet: W.StyleSheet, HTMLTableElement: W.TableElement, HTMLTableRowElement: W.TableRowElement, HTMLTableSectionElement: W.TableSectionElement, HTMLTemplateElement: W.TemplateElement, TextTrack: W.TextTrack, TextTrackCue: W.TextTrackCue, VTTCue: W.TextTrackCue, TextTrackCueList: W.TextTrackCueList, TextTrackList: W.TextTrackList, TimeRanges: W.TimeRanges, Touch: W.Touch, TouchList: W.TouchList, TrackDefaultList: W.TrackDefaultList, CompositionEvent: W.UIEvent, FocusEvent: W.UIEvent, KeyboardEvent: W.UIEvent, TextEvent: W.UIEvent, TouchEvent: W.UIEvent, UIEvent: W.UIEvent, URL: W.Url, VideoTrackList: W.VideoTrackList, Attr: W._Attr, CSSRuleList: W._CssRuleList, ClientRect: W._DomRect, DOMRect: W._DomRect, GamepadList: W._GamepadList, NamedNodeMap: W._NamedNodeMap, MozNamedAttrMap: W._NamedNodeMap, SpeechRecognitionResultList: W._SpeechRecognitionResultList, StyleSheetList: W._StyleSheetList, SVGLength: P.Length, SVGLengthList: P.LengthList, SVGNumber: P.Number, SVGNumberList: P.NumberList, SVGPointList: P.PointList, SVGScriptElement: P.ScriptElement0, SVGStringList: P.StringList, SVGAElement: P.SvgElement, SVGAnimateElement: P.SvgElement, SVGAnimateMotionElement: P.SvgElement, SVGAnimateTransformElement: P.SvgElement, SVGAnimationElement: P.SvgElement, SVGCircleElement: P.SvgElement, SVGClipPathElement: P.SvgElement, SVGDefsElement: P.SvgElement, SVGDescElement: P.SvgElement, SVGDiscardElement: P.SvgElement, SVGEllipseElement: P.SvgElement, SVGFEBlendElement: P.SvgElement, SVGFEColorMatrixElement: P.SvgElement, SVGFEComponentTransferElement: P.SvgElement, SVGFECompositeElement: P.SvgElement, SVGFEConvolveMatrixElement: P.SvgElement, SVGFEDiffuseLightingElement: P.SvgElement, SVGFEDisplacementMapElement: P.SvgElement, SVGFEDistantLightElement: P.SvgElement, SVGFEFloodElement: P.SvgElement, SVGFEFuncAElement: P.SvgElement, SVGFEFuncBElement: P.SvgElement, SVGFEFuncGElement: P.SvgElement, SVGFEFuncRElement: P.SvgElement, SVGFEGaussianBlurElement: P.SvgElement, SVGFEImageElement: P.SvgElement, SVGFEMergeElement: P.SvgElement, SVGFEMergeNodeElement: P.SvgElement, SVGFEMorphologyElement: P.SvgElement, SVGFEOffsetElement: P.SvgElement, SVGFEPointLightElement: P.SvgElement, SVGFESpecularLightingElement: P.SvgElement, SVGFESpotLightElement: P.SvgElement, SVGFETileElement: P.SvgElement, SVGFETurbulenceElement: P.SvgElement, SVGFilterElement: P.SvgElement, SVGForeignObjectElement: P.SvgElement, SVGGElement: P.SvgElement, SVGGeometryElement: P.SvgElement, SVGGraphicsElement: P.SvgElement, SVGImageElement: P.SvgElement, SVGLineElement: P.SvgElement, SVGLinearGradientElement: P.SvgElement, SVGMarkerElement: P.SvgElement, SVGMaskElement: P.SvgElement, SVGMetadataElement: P.SvgElement, SVGPathElement: P.SvgElement, SVGPatternElement: P.SvgElement, SVGPolygonElement: P.SvgElement, SVGPolylineElement: P.SvgElement, SVGRadialGradientElement: P.SvgElement, SVGRectElement: P.SvgElement, SVGSetElement: P.SvgElement, SVGStopElement: P.SvgElement, SVGStyleElement: P.SvgElement, SVGSVGElement: P.SvgElement, SVGSwitchElement: P.SvgElement, SVGSymbolElement: P.SvgElement, SVGTSpanElement: P.SvgElement, SVGTextContentElement: P.SvgElement, SVGTextElement: P.SvgElement, SVGTextPathElement: P.SvgElement, SVGTextPositioningElement: P.SvgElement, SVGTitleElement: P.SvgElement, SVGUseElement: P.SvgElement, SVGViewElement: P.SvgElement, SVGGradientElement: P.SvgElement, SVGComponentTransferFunctionElement: P.SvgElement, SVGFEDropShadowElement: P.SvgElement, SVGMPathElement: P.SvgElement, SVGElement: P.SvgElement, SVGTransform: P.Transform, SVGTransformList: P.TransformList, AudioBuffer: P.AudioBuffer, AudioParamMap: P.AudioParamMap, AudioTrackList: P.AudioTrackList, AudioContext: P.BaseAudioContext, webkitAudioContext: P.BaseAudioContext, BaseAudioContext: P.BaseAudioContext, OfflineAudioContext: P.OfflineAudioContext, SQLResultSetRowList: P.SqlResultSetRowList});
+    hunkHelpers.setOrUpdateLeafTags({AnimationEffectReadOnly: true, AnimationEffectTiming: true, AnimationEffectTimingReadOnly: true, AnimationTimeline: true, AnimationWorkletGlobalScope: true, AuthenticatorAssertionResponse: true, AuthenticatorAttestationResponse: true, AuthenticatorResponse: true, BackgroundFetchFetch: true, BackgroundFetchManager: true, BackgroundFetchSettledFetch: true, BarProp: true, BarcodeDetector: true, BluetoothRemoteGATTDescriptor: true, Body: true, BudgetState: true, CacheStorage: true, CanvasGradient: true, CanvasPattern: true, CanvasRenderingContext2D: true, Client: true, Clients: true, CookieStore: true, Coordinates: true, Credential: true, CredentialUserData: true, CredentialsContainer: true, Crypto: true, CryptoKey: true, CSS: true, CSSVariableReferenceValue: true, CustomElementRegistry: true, DataTransfer: true, DataTransferItem: true, DeprecatedStorageInfo: true, DeprecatedStorageQuota: true, DeprecationReport: true, DetectedBarcode: true, DetectedFace: true, DetectedText: true, DeviceAcceleration: true, DeviceRotationRate: true, DirectoryEntry: true, DirectoryReader: true, DocumentOrShadowRoot: true, DocumentTimeline: true, DOMError: true, Iterator: true, DOMMatrix: true, DOMMatrixReadOnly: true, DOMParser: true, DOMPoint: true, DOMPointReadOnly: true, DOMQuad: true, DOMStringMap: true, Entry: true, External: true, FaceDetector: true, FederatedCredential: true, FileEntry: true, DOMFileSystem: true, FontFace: true, FontFaceSource: true, FormData: true, GamepadButton: true, GamepadPose: true, Geolocation: true, Position: true, Headers: true, HTMLHyperlinkElementUtils: true, IdleDeadline: true, ImageBitmap: true, ImageBitmapRenderingContext: true, ImageCapture: true, ImageData: true, InputDeviceCapabilities: true, IntersectionObserver: true, IntersectionObserverEntry: true, InterventionReport: true, KeyframeEffect: true, KeyframeEffectReadOnly: true, MediaCapabilities: true, MediaCapabilitiesInfo: true, MediaDeviceInfo: true, MediaError: true, MediaKeyStatusMap: true, MediaKeySystemAccess: true, MediaKeys: true, MediaKeysPolicy: true, MediaMetadata: true, MediaSession: true, MediaSettingsRange: true, MemoryInfo: true, MessageChannel: true, Metadata: true, MutationObserver: true, WebKitMutationObserver: true, MutationRecord: true, NavigationPreloadManager: true, Navigator: true, NavigatorAutomationInformation: true, NavigatorConcurrentHardware: true, NavigatorCookies: true, NavigatorUserMediaError: true, NodeFilter: true, NodeIterator: true, NonDocumentTypeChildNode: true, NonElementParentNode: true, NoncedElement: true, OffscreenCanvasRenderingContext2D: true, OverconstrainedError: true, PaintRenderingContext2D: true, PaintSize: true, PaintWorkletGlobalScope: true, PasswordCredential: true, Path2D: true, PaymentAddress: true, PaymentInstruments: true, PaymentManager: true, PaymentResponse: true, PerformanceEntry: true, PerformanceLongTaskTiming: true, PerformanceMark: true, PerformanceMeasure: true, PerformanceNavigation: true, PerformanceNavigationTiming: true, PerformanceObserver: true, PerformanceObserverEntryList: true, PerformancePaintTiming: true, PerformanceResourceTiming: true, PerformanceServerTiming: true, PerformanceTiming: true, Permissions: true, PhotoCapabilities: true, PositionError: true, Presentation: true, PresentationReceiver: true, PublicKeyCredential: true, PushManager: true, PushMessageData: true, PushSubscription: true, PushSubscriptionOptions: true, Range: true, RelatedApplication: true, ReportBody: true, ReportingObserver: true, ResizeObserver: true, ResizeObserverEntry: true, RTCCertificate: true, RTCIceCandidate: true, mozRTCIceCandidate: true, RTCLegacyStatsReport: true, RTCRtpContributingSource: true, RTCRtpReceiver: true, RTCRtpSender: true, RTCSessionDescription: true, mozRTCSessionDescription: true, RTCStatsResponse: true, Screen: true, ScrollState: true, ScrollTimeline: true, Selection: true, SharedArrayBuffer: true, SpeechRecognitionAlternative: true, SpeechSynthesisVoice: true, StaticRange: true, StorageManager: true, StyleMedia: true, StylePropertyMap: true, StylePropertyMapReadonly: true, SyncManager: true, TaskAttributionTiming: true, TextDetector: true, TextMetrics: true, TrackDefault: true, TreeWalker: true, TrustedHTML: true, TrustedScriptURL: true, TrustedURL: true, UnderlyingSourceBase: true, URLSearchParams: true, VRCoordinateSystem: true, VRDisplayCapabilities: true, VREyeParameters: true, VRFrameData: true, VRFrameOfReference: true, VRPose: true, VRStageBounds: true, VRStageBoundsPoint: true, VRStageParameters: true, ValidityState: true, VideoPlaybackQuality: true, VideoTrack: true, VTTRegion: true, WindowClient: true, WorkletAnimation: true, WorkletGlobalScope: true, XPathEvaluator: true, XPathExpression: true, XPathNSResolver: true, XPathResult: true, XMLSerializer: true, XSLTProcessor: true, Bluetooth: true, BluetoothCharacteristicProperties: true, BluetoothRemoteGATTServer: true, BluetoothRemoteGATTService: true, BluetoothUUID: true, BudgetService: true, Cache: true, DOMFileSystemSync: true, DirectoryEntrySync: true, DirectoryReaderSync: true, EntrySync: true, FileEntrySync: true, FileReaderSync: true, FileWriterSync: true, HTMLAllCollection: true, Mojo: true, MojoHandle: true, MojoWatcher: true, NFC: true, PagePopupController: true, Report: true, Request: true, Response: true, SubtleCrypto: true, USBAlternateInterface: true, USBConfiguration: true, USBDevice: true, USBEndpoint: true, USBInTransferResult: true, USBInterface: true, USBIsochronousInTransferPacket: true, USBIsochronousInTransferResult: true, USBIsochronousOutTransferPacket: true, USBIsochronousOutTransferResult: true, USBOutTransferResult: true, WorkerLocation: true, WorkerNavigator: true, Worklet: true, IDBCursor: true, IDBCursorWithValue: true, IDBFactory: true, IDBIndex: true, IDBKeyRange: true, IDBObjectStore: true, IDBObservation: true, IDBObserver: true, IDBObserverChanges: true, SVGAngle: true, SVGAnimatedAngle: true, SVGAnimatedBoolean: true, SVGAnimatedEnumeration: true, SVGAnimatedInteger: true, SVGAnimatedLength: true, SVGAnimatedLengthList: true, SVGAnimatedNumber: true, SVGAnimatedNumberList: true, SVGAnimatedPreserveAspectRatio: true, SVGAnimatedRect: true, SVGAnimatedString: true, SVGAnimatedTransformList: true, SVGMatrix: true, SVGPoint: true, SVGPreserveAspectRatio: true, SVGRect: true, SVGUnitTypes: true, AudioListener: true, AudioParam: true, AudioTrack: true, AudioWorkletGlobalScope: true, AudioWorkletProcessor: true, PeriodicWave: true, WebGLActiveInfo: true, ANGLEInstancedArrays: true, ANGLE_instanced_arrays: true, WebGLBuffer: true, WebGLCanvas: true, WebGLColorBufferFloat: true, WebGLCompressedTextureASTC: true, WebGLCompressedTextureATC: true, WEBGL_compressed_texture_atc: true, WebGLCompressedTextureETC1: true, WEBGL_compressed_texture_etc1: true, WebGLCompressedTextureETC: true, WebGLCompressedTexturePVRTC: true, WEBGL_compressed_texture_pvrtc: true, WebGLCompressedTextureS3TC: true, WEBGL_compressed_texture_s3tc: true, WebGLCompressedTextureS3TCsRGB: true, WebGLDebugRendererInfo: true, WEBGL_debug_renderer_info: true, WebGLDebugShaders: true, WEBGL_debug_shaders: true, WebGLDepthTexture: true, WEBGL_depth_texture: true, WebGLDrawBuffers: true, WEBGL_draw_buffers: true, EXTsRGB: true, EXT_sRGB: true, EXTBlendMinMax: true, EXT_blend_minmax: true, EXTColorBufferFloat: true, EXTColorBufferHalfFloat: true, EXTDisjointTimerQuery: true, EXTDisjointTimerQueryWebGL2: true, EXTFragDepth: true, EXT_frag_depth: true, EXTShaderTextureLOD: true, EXT_shader_texture_lod: true, EXTTextureFilterAnisotropic: true, EXT_texture_filter_anisotropic: true, WebGLFramebuffer: true, WebGLGetBufferSubDataAsync: true, WebGLLoseContext: true, WebGLExtensionLoseContext: true, WEBGL_lose_context: true, OESElementIndexUint: true, OES_element_index_uint: true, OESStandardDerivatives: true, OES_standard_derivatives: true, OESTextureFloat: true, OES_texture_float: true, OESTextureFloatLinear: true, OES_texture_float_linear: true, OESTextureHalfFloat: true, OES_texture_half_float: true, OESTextureHalfFloatLinear: true, OES_texture_half_float_linear: true, OESVertexArrayObject: true, OES_vertex_array_object: true, WebGLProgram: true, WebGLQuery: true, WebGLRenderbuffer: true, WebGLRenderingContext: true, WebGL2RenderingContext: true, WebGLSampler: true, WebGLShader: true, WebGLShaderPrecisionFormat: true, WebGLSync: true, WebGLTexture: true, WebGLTimerQueryEXT: true, WebGLTransformFeedback: true, WebGLUniformLocation: true, WebGLVertexArrayObject: true, WebGLVertexArrayObjectOES: true, WebGL: true, WebGL2RenderingContextBase: true, Database: true, SQLError: true, SQLResultSet: true, SQLTransaction: true, ArrayBuffer: true, DataView: true, ArrayBufferView: false, Float32Array: true, Float64Array: true, Int16Array: true, Int32Array: true, Int8Array: true, Uint16Array: true, Uint32Array: true, Uint8ClampedArray: true, CanvasPixelArray: true, Uint8Array: false, HTMLAudioElement: true, HTMLBRElement: true, HTMLCanvasElement: true, HTMLContentElement: true, HTMLDListElement: true, HTMLDataElement: true, HTMLDataListElement: true, HTMLDetailsElement: true, HTMLDialogElement: true, HTMLEmbedElement: true, HTMLFieldSetElement: true, HTMLHRElement: true, HTMLHeadElement: true, HTMLHtmlElement: true, HTMLIFrameElement: true, HTMLInputElement: true, HTMLLIElement: true, HTMLLabelElement: true, HTMLLegendElement: true, HTMLLinkElement: true, HTMLMapElement: true, HTMLMediaElement: true, HTMLMenuElement: true, HTMLMetaElement: true, HTMLMeterElement: true, HTMLModElement: true, HTMLOListElement: true, HTMLObjectElement: true, HTMLOptGroupElement: true, HTMLOptionElement: true, HTMLOutputElement: true, HTMLParamElement: true, HTMLPictureElement: true, HTMLPreElement: true, HTMLProgressElement: true, HTMLQuoteElement: true, HTMLScriptElement: true, HTMLShadowElement: true, HTMLSlotElement: true, HTMLSourceElement: true, HTMLSpanElement: true, HTMLStyleElement: true, HTMLTableCaptionElement: true, HTMLTableCellElement: true, HTMLTableDataCellElement: true, HTMLTableHeaderCellElement: true, HTMLTableColElement: true, HTMLTextAreaElement: true, HTMLTimeElement: true, HTMLTitleElement: true, HTMLTrackElement: true, HTMLUListElement: true, HTMLUnknownElement: true, HTMLVideoElement: true, HTMLDirectoryElement: true, HTMLFontElement: true, HTMLFrameElement: true, HTMLFrameSetElement: true, HTMLMarqueeElement: true, HTMLElement: false, AccessibleNodeList: true, HTMLAnchorElement: true, Animation: true, HTMLAreaElement: true, HTMLBaseElement: true, Blob: false, HTMLBodyElement: true, HTMLButtonElement: true, CDATASection: true, CharacterData: true, Comment: true, ProcessingInstruction: true, Text: true, CSSPerspective: true, CSSCharsetRule: true, CSSConditionRule: true, CSSFontFaceRule: true, CSSGroupingRule: true, CSSImportRule: true, CSSKeyframeRule: true, MozCSSKeyframeRule: true, WebKitCSSKeyframeRule: true, CSSKeyframesRule: true, MozCSSKeyframesRule: true, WebKitCSSKeyframesRule: true, CSSMediaRule: true, CSSNamespaceRule: true, CSSPageRule: true, CSSRule: true, CSSStyleRule: true, CSSSupportsRule: true, CSSViewportRule: true, CSSStyleDeclaration: true, MSStyleCSSProperties: true, CSS2Properties: true, CSSImageValue: true, CSSKeywordValue: true, CSSNumericValue: true, CSSPositionValue: true, CSSResourceValue: true, CSSUnitValue: true, CSSURLImageValue: true, CSSStyleValue: false, CSSMatrixComponent: true, CSSRotation: true, CSSScale: true, CSSSkew: true, CSSTranslation: true, CSSTransformComponent: false, CSSTransformValue: true, CSSUnparsedValue: true, DataTransferItemList: true, HTMLDivElement: true, XMLDocument: true, Document: false, DOMException: true, DOMImplementation: true, ClientRectList: true, DOMRectList: true, DOMRectReadOnly: false, DOMStringList: true, DOMTokenList: true, Element: false, AbortPaymentEvent: true, AnimationEvent: true, AnimationPlaybackEvent: true, ApplicationCacheErrorEvent: true, BackgroundFetchClickEvent: true, BackgroundFetchEvent: true, BackgroundFetchFailEvent: true, BackgroundFetchedEvent: true, BeforeInstallPromptEvent: true, BeforeUnloadEvent: true, BlobEvent: true, CanMakePaymentEvent: true, ClipboardEvent: true, CloseEvent: true, CustomEvent: true, DeviceMotionEvent: true, DeviceOrientationEvent: true, ErrorEvent: true, ExtendableEvent: true, ExtendableMessageEvent: true, FetchEvent: true, FontFaceSetLoadEvent: true, ForeignFetchEvent: true, GamepadEvent: true, HashChangeEvent: true, InstallEvent: true, MediaEncryptedEvent: true, MediaKeyMessageEvent: true, MediaQueryListEvent: true, MediaStreamEvent: true, MediaStreamTrackEvent: true, MessageEvent: true, MIDIConnectionEvent: true, MIDIMessageEvent: true, MutationEvent: true, NotificationEvent: true, PageTransitionEvent: true, PaymentRequestEvent: true, PaymentRequestUpdateEvent: true, PopStateEvent: true, PresentationConnectionAvailableEvent: true, PresentationConnectionCloseEvent: true, PromiseRejectionEvent: true, PushEvent: true, RTCDataChannelEvent: true, RTCDTMFToneChangeEvent: true, RTCPeerConnectionIceEvent: true, RTCTrackEvent: true, SecurityPolicyViolationEvent: true, SensorErrorEvent: true, SpeechRecognitionError: true, SpeechRecognitionEvent: true, SpeechSynthesisEvent: true, StorageEvent: true, SyncEvent: true, TrackEvent: true, TransitionEvent: true, WebKitTransitionEvent: true, VRDeviceEvent: true, VRDisplayEvent: true, VRSessionEvent: true, MojoInterfaceRequestEvent: true, USBConnectionEvent: true, IDBVersionChangeEvent: true, AudioProcessingEvent: true, OfflineAudioCompletionEvent: true, WebGLContextEvent: true, Event: false, InputEvent: false, SubmitEvent: false, AbsoluteOrientationSensor: true, Accelerometer: true, AccessibleNode: true, AmbientLightSensor: true, ApplicationCache: true, DOMApplicationCache: true, OfflineResourceList: true, BackgroundFetchRegistration: true, BatteryManager: true, BroadcastChannel: true, CanvasCaptureMediaStreamTrack: true, DedicatedWorkerGlobalScope: true, EventSource: true, FileReader: true, FontFaceSet: true, Gyroscope: true, LinearAccelerationSensor: true, Magnetometer: true, MediaDevices: true, MediaKeySession: true, MediaQueryList: true, MediaRecorder: true, MediaSource: true, MediaStream: true, MediaStreamTrack: true, MessagePort: true, MIDIAccess: true, MIDIInput: true, MIDIOutput: true, MIDIPort: true, NetworkInformation: true, Notification: true, OffscreenCanvas: true, OrientationSensor: true, PaymentRequest: true, Performance: true, PermissionStatus: true, PresentationAvailability: true, PresentationConnection: true, PresentationConnectionList: true, PresentationRequest: true, RelativeOrientationSensor: true, RemotePlayback: true, RTCDataChannel: true, DataChannel: true, RTCDTMFSender: true, RTCPeerConnection: true, webkitRTCPeerConnection: true, mozRTCPeerConnection: true, ScreenOrientation: true, Sensor: true, ServiceWorker: true, ServiceWorkerContainer: true, ServiceWorkerGlobalScope: true, ServiceWorkerRegistration: true, SharedWorker: true, SharedWorkerGlobalScope: true, SpeechRecognition: true, SpeechSynthesis: true, SpeechSynthesisUtterance: true, VR: true, VRDevice: true, VRDisplay: true, VRSession: true, VisualViewport: true, WebSocket: true, Window: true, DOMWindow: true, Worker: true, WorkerGlobalScope: true, WorkerPerformance: true, BluetoothDevice: true, BluetoothRemoteGATTCharacteristic: true, Clipboard: true, MojoInterfaceInterceptor: true, USB: true, IDBDatabase: true, IDBOpenDBRequest: true, IDBVersionChangeRequest: true, IDBRequest: true, IDBTransaction: true, AnalyserNode: true, RealtimeAnalyserNode: true, AudioBufferSourceNode: true, AudioDestinationNode: true, AudioNode: true, AudioScheduledSourceNode: true, AudioWorkletNode: true, BiquadFilterNode: true, ChannelMergerNode: true, AudioChannelMerger: true, ChannelSplitterNode: true, AudioChannelSplitter: true, ConstantSourceNode: true, ConvolverNode: true, DelayNode: true, DynamicsCompressorNode: true, GainNode: true, AudioGainNode: true, IIRFilterNode: true, MediaElementAudioSourceNode: true, MediaStreamAudioDestinationNode: true, MediaStreamAudioSourceNode: true, OscillatorNode: true, Oscillator: true, PannerNode: true, AudioPannerNode: true, webkitAudioPannerNode: true, ScriptProcessorNode: true, JavaScriptAudioNode: true, StereoPannerNode: true, WaveShaperNode: true, EventTarget: false, File: true, FileList: true, FileWriter: true, HTMLFormElement: true, Gamepad: true, HTMLHeadingElement: true, History: true, HTMLCollection: true, HTMLFormControlsCollection: true, HTMLOptionsCollection: true, HTMLDocument: true, XMLHttpRequest: true, XMLHttpRequestUpload: true, XMLHttpRequestEventTarget: false, HTMLImageElement: true, Location: true, MediaList: true, MIDIInputMap: true, MIDIOutputMap: true, MimeType: true, MimeTypeArray: true, MouseEvent: true, DragEvent: true, PointerEvent: true, WheelEvent: true, DocumentFragment: true, ShadowRoot: true, DocumentType: true, Node: false, NodeList: true, RadioNodeList: true, HTMLParagraphElement: true, Plugin: true, PluginArray: true, ProgressEvent: true, ResourceProgressEvent: true, RTCStatsReport: true, HTMLSelectElement: true, SourceBuffer: true, SourceBufferList: true, SpeechGrammar: true, SpeechGrammarList: true, SpeechRecognitionResult: true, Storage: true, CSSStyleSheet: true, StyleSheet: true, HTMLTableElement: true, HTMLTableRowElement: true, HTMLTableSectionElement: true, HTMLTemplateElement: true, TextTrack: true, TextTrackCue: true, VTTCue: true, TextTrackCueList: true, TextTrackList: true, TimeRanges: true, Touch: true, TouchList: true, TrackDefaultList: true, CompositionEvent: true, FocusEvent: true, KeyboardEvent: true, TextEvent: true, TouchEvent: true, UIEvent: false, URL: true, VideoTrackList: true, Attr: true, CSSRuleList: true, ClientRect: true, DOMRect: true, GamepadList: true, NamedNodeMap: true, MozNamedAttrMap: true, SpeechRecognitionResultList: true, StyleSheetList: true, SVGLength: true, SVGLengthList: true, SVGNumber: true, SVGNumberList: true, SVGPointList: true, SVGScriptElement: true, SVGStringList: true, SVGAElement: true, SVGAnimateElement: true, SVGAnimateMotionElement: true, SVGAnimateTransformElement: true, SVGAnimationElement: true, SVGCircleElement: true, SVGClipPathElement: true, SVGDefsElement: true, SVGDescElement: true, SVGDiscardElement: true, SVGEllipseElement: true, SVGFEBlendElement: true, SVGFEColorMatrixElement: true, SVGFEComponentTransferElement: true, SVGFECompositeElement: true, SVGFEConvolveMatrixElement: true, SVGFEDiffuseLightingElement: true, SVGFEDisplacementMapElement: true, SVGFEDistantLightElement: true, SVGFEFloodElement: true, SVGFEFuncAElement: true, SVGFEFuncBElement: true, SVGFEFuncGElement: true, SVGFEFuncRElement: true, SVGFEGaussianBlurElement: true, SVGFEImageElement: true, SVGFEMergeElement: true, SVGFEMergeNodeElement: true, SVGFEMorphologyElement: true, SVGFEOffsetElement: true, SVGFEPointLightElement: true, SVGFESpecularLightingElement: true, SVGFESpotLightElement: true, SVGFETileElement: true, SVGFETurbulenceElement: true, SVGFilterElement: true, SVGForeignObjectElement: true, SVGGElement: true, SVGGeometryElement: true, SVGGraphicsElement: true, SVGImageElement: true, SVGLineElement: true, SVGLinearGradientElement: true, SVGMarkerElement: true, SVGMaskElement: true, SVGMetadataElement: true, SVGPathElement: true, SVGPatternElement: true, SVGPolygonElement: true, SVGPolylineElement: true, SVGRadialGradientElement: true, SVGRectElement: true, SVGSetElement: true, SVGStopElement: true, SVGStyleElement: true, SVGSVGElement: true, SVGSwitchElement: true, SVGSymbolElement: true, SVGTSpanElement: true, SVGTextContentElement: true, SVGTextElement: true, SVGTextPathElement: true, SVGTextPositioningElement: true, SVGTitleElement: true, SVGUseElement: true, SVGViewElement: true, SVGGradientElement: true, SVGComponentTransferFunctionElement: true, SVGFEDropShadowElement: true, SVGMPathElement: true, SVGElement: false, SVGTransform: true, SVGTransformList: true, AudioBuffer: true, AudioParamMap: true, AudioTrackList: true, AudioContext: true, webkitAudioContext: true, BaseAudioContext: false, OfflineAudioContext: true, SQLResultSetRowList: true});
     H.NativeTypedArray.$nativeSuperclassTag = "ArrayBufferView";
+    H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin.$nativeSuperclassTag = "ArrayBufferView";
+    H._NativeTypedArrayOfDouble_NativeTypedArray_ListMixin_FixedLengthListMixin.$nativeSuperclassTag = "ArrayBufferView";
+    H.NativeTypedArrayOfDouble.$nativeSuperclassTag = "ArrayBufferView";
     H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin.$nativeSuperclassTag = "ArrayBufferView";
     H._NativeTypedArrayOfInt_NativeTypedArray_ListMixin_FixedLengthListMixin.$nativeSuperclassTag = "ArrayBufferView";
     H.NativeTypedArrayOfInt.$nativeSuperclassTag = "ArrayBufferView";
+    W._SourceBufferList_EventTarget_ListMixin.$nativeSuperclassTag = "EventTarget";
+    W._SourceBufferList_EventTarget_ListMixin_ImmutableListMixin.$nativeSuperclassTag = "EventTarget";
+    W._TextTrackList_EventTarget_ListMixin.$nativeSuperclassTag = "EventTarget";
+    W._TextTrackList_EventTarget_ListMixin_ImmutableListMixin.$nativeSuperclassTag = "EventTarget";
   })();
   Function.prototype.call$2 = function(a, b) {
     return this(a, b);
