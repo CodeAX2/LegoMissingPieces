@@ -3602,9 +3602,6 @@
     compareTo$1$ns: function(receiver, a0) {
       return J.getInterceptor$ns(receiver).compareTo$1(receiver, a0);
     },
-    contains$1$asx: function(receiver, a0) {
-      return J.getInterceptor$asx(receiver).contains$1(receiver, a0);
-    },
     elementAt$1$ax: function(receiver, a0) {
       return J.getInterceptor$ax(receiver).elementAt$1(receiver, a0);
     },
@@ -5336,17 +5333,20 @@
       var t1, t2;
       for (t1 = J.get$iterator$ax(segments); t1.moveNext$0();) {
         t2 = t1.get$current(t1);
-        if (J.contains$1$asx(t2, "/")) {
+        t2.toString;
+        if (H.stringContainsUnchecked(t2, "/", 0)) {
           t1 = P.UnsupportedError$("Illegal path character " + t2);
           throw H.wrapException(t1);
         }
       }
     },
     _Uri__checkWindowsPathReservedCharacters: function(segments, argumentError, firstSegment) {
-      var t1, t2;
+      var t1, t2, t3;
       for (t1 = J.skip$1$ax(segments, firstSegment), t1 = t1.get$iterator(t1); t1.moveNext$0();) {
         t2 = t1.get$current(t1);
-        if (J.contains$1$asx(t2, P.RegExp_RegExp('["*/:<>?\\\\|]'))) {
+        t3 = P.RegExp_RegExp('["*/:<>?\\\\|]');
+        t2.toString;
+        if (H.stringContainsUnchecked(t2, t3, 0)) {
           t1 = P.UnsupportedError$("Illegal character in path: " + t2);
           throw H.wrapException(t1);
         }
@@ -6485,18 +6485,6 @@
         hash = t1 + ((t1 & 67108863) << 3) & 536870911;
       hash ^= hash >>> 11;
       return hash + ((hash & 16383) << 15) & 536870911;
-    },
-    _ElementCssClassSet__removeWhere: function(_element, test, doRemove) {
-      var i, t1,
-        list = _element.classList;
-      for (i = 0; i < list.length;) {
-        t1 = list.item(i);
-        t1.toString;
-        if (true === test.call$1(t1))
-          list.remove(t1);
-        else
-          ++i;
-      }
     },
     _EventStreamSubscription$: function(_target, _eventType, onData, _useCapture, $T) {
       var t1 = onData == null ? null : W._wrapZone(new W._EventStreamSubscription_closure(onData), type$.Event);
@@ -7827,7 +7815,6 @@
       this.$this = t0;
     }, ProjectViewState__renderSelectedSet_closure0: function ProjectViewState__renderSelectedSet_closure0(t0) {
       this.$this = t0;
-    }, ProjectViewState__renderSelectedSet_closure1: function ProjectViewState__renderSelectedSet_closure1() {
     }, ProjectViewState__hideDeletionConfirm_closure: function ProjectViewState__hideDeletionConfirm_closure(t0) {
       this.$this = t0;
     }, LegoSetProject: function LegoSetProject() {
@@ -8412,8 +8399,14 @@
     lastIndexOf$1: function($receiver, pattern) {
       return this.lastIndexOf$2($receiver, pattern, null);
     },
-    contains$1: function(receiver, other) {
-      return H.stringContainsUnchecked(receiver, other, 0);
+    contains$2: function(receiver, other, startIndex) {
+      var t1 = receiver.length;
+      if (startIndex > t1)
+        throw H.wrapException(P.RangeError$range(startIndex, 0, t1, null, null));
+      return H.stringContainsUnchecked(receiver, other, startIndex);
+    },
+    contains$1: function($receiver, other) {
+      return this.contains$2($receiver, other, 0);
     },
     compareTo$1: function(receiver, other) {
       var t1;
@@ -9313,19 +9306,19 @@
     call$1: function(o) {
       return this.getTag(o);
     },
-    $signature: 34
+    $signature: 27
   };
   H.initHooks_closure0.prototype = {
     call$2: function(o, tag) {
       return this.getUnknownTag(o, tag);
     },
-    $signature: 46
+    $signature: 42
   };
   H.initHooks_closure1.prototype = {
     call$1: function(tag) {
       return this.prototypeForTag(H._asStringS(tag));
     },
-    $signature: 27
+    $signature: 58
   };
   H.JSSyntaxRegExp.prototype = {
     toString$0: function(_) {
@@ -9664,7 +9657,7 @@
       t1.storedCallback = null;
       f.call$0();
     },
-    $signature: 13
+    $signature: 10
   };
   P._AsyncRun__initializeScheduleImmediate_closure.prototype = {
     call$1: function(callback) {
@@ -9674,19 +9667,19 @@
       t2 = this.span;
       t1.firstChild ? t1.removeChild(t2) : t1.appendChild(t2);
     },
-    $signature: 30
+    $signature: 31
   };
   P._AsyncRun__scheduleImmediateJsOverride_internalCallback.prototype = {
     call$0: function() {
       this.callback.call$0();
     },
-    $signature: 16
+    $signature: 11
   };
   P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback.prototype = {
     call$0: function() {
       this.callback.call$0();
     },
-    $signature: 16
+    $signature: 11
   };
   P._TimerImpl.prototype = {
     _TimerImpl$2: function(milliseconds, callback) {
@@ -9738,13 +9731,13 @@
     call$2: function(error, stackTrace) {
       this.bodyFunction.call$2(1, new H.ExceptionAndStackTrace(error, type$.StackTrace._as(stackTrace)));
     },
-    $signature: 58
+    $signature: 29
   };
   P._wrapJsFunctionForAsync_closure.prototype = {
     call$2: function(errorCode, result) {
       this.$protected(H._asIntS(errorCode), result);
     },
-    $signature: 62
+    $signature: 30
   };
   P.AsyncError.prototype = {
     toString$0: function(_) {
@@ -9765,21 +9758,21 @@
     call$1: function(t1) {
       return this._box_0._stackTrace = type$.StackTrace._as(t1);
     },
-    $signature: 42
+    $signature: 33
   };
   P.Future_wait__error_get.prototype = {
     call$0: function() {
       var t1 = this._box_0._error;
       return t1 === $ ? H.throwExpression(H.LateError$localNI("error")) : t1;
     },
-    $signature: 29
+    $signature: 34
   };
   P.Future_wait__stackTrace_get.prototype = {
     call$0: function() {
       var t1 = this._box_0._stackTrace;
       return t1 === $ ? H.throwExpression(H.LateError$localNI("stackTrace")) : t1;
     },
-    $signature: 31
+    $signature: 39
   };
   P.Future_wait_handleError.prototype = {
     call$2: function(theError, theStackTrace) {
@@ -9798,7 +9791,7 @@
       } else if (t2 === 0 && !_this.eagerError)
         _this._future._completeError$2(_this._error_get.call$0(), _this._stackTrace_get.call$0());
     },
-    $signature: 11
+    $signature: 12
   };
   P.Future_wait_closure.prototype = {
     call$1: function(value) {
@@ -10060,13 +10053,13 @@
         t1._completeError$2(error, stackTrace);
       }
     },
-    $signature: 13
+    $signature: 10
   };
   P._Future__chainForeignFuture_closure0.prototype = {
     call$2: function(error, stackTrace) {
       this.$this._completeError$2(error, type$.StackTrace._as(stackTrace));
     },
-    $signature: 39
+    $signature: 52
   };
   P._Future__chainForeignFuture_closure1.prototype = {
     call$0: function() {
@@ -10137,7 +10130,7 @@
     call$1: function(_) {
       return this.originalSource;
     },
-    $signature: 23
+    $signature: 55
   };
   P._Future__propagateToListeners_handleValueCallback.prototype = {
     call$0: function() {
@@ -10662,7 +10655,7 @@
     call$1: function(v) {
       return this.K._is(v);
     },
-    $signature: 43
+    $signature: 56
   };
   P._LinkedHashSet.prototype = {
     get$iterator: function(_) {
@@ -10722,13 +10715,8 @@
       return true;
     },
     remove$1: function(_, object) {
-      var _this = this;
-      if (typeof object == "string" && object !== "__proto__")
-        return _this._removeHashTableEntry$2(_this._collection$_strings, object);
-      else if (typeof object == "number" && (object & 1073741823) === object)
-        return _this._removeHashTableEntry$2(_this._collection$_nums, object);
-      else
-        return _this._remove$1(0, object);
+      var t1 = this._remove$1(0, object);
+      return t1;
     },
     _remove$1: function(_, object) {
       var hash, bucket, index, cell, _this = this,
@@ -10751,17 +10739,6 @@
       if (type$.nullable__LinkedHashSetCell._as(table[element]) != null)
         return false;
       table[element] = this._collection$_newLinkedCell$1(element);
-      return true;
-    },
-    _removeHashTableEntry$2: function(table, element) {
-      var cell;
-      if (table == null)
-        return false;
-      cell = type$.nullable__LinkedHashSetCell._as(table[element]);
-      if (cell == null)
-        return false;
-      this._unlinkCell$1(cell);
-      delete table[element];
       return true;
     },
     _collection$_modified$0: function() {
@@ -10935,7 +10912,7 @@
       t1._contents = t2 + ": ";
       t1._contents += H.S(v);
     },
-    $signature: 56
+    $signature: 23
   };
   P.MapMixin.prototype = {
     forEach$1: function(receiver, action) {
@@ -11130,7 +11107,7 @@
       }
       return null;
     },
-    $signature: 14
+    $signature: 13
   };
   P.Utf8Decoder__decoderNonfatal_closure.prototype = {
     call$0: function() {
@@ -11143,7 +11120,7 @@
       }
       return null;
     },
-    $signature: 14
+    $signature: 13
   };
   P.AsciiCodec.prototype = {
     decode$1: function(_, bytes) {
@@ -12200,7 +12177,7 @@
         target[t2] = transition;
       }
     },
-    $signature: 12
+    $signature: 14
   };
   P._createTables_setRange.prototype = {
     call$3: function(target, range, transition) {
@@ -12212,7 +12189,7 @@
         target[t1] = transition;
       }
     },
-    $signature: 12
+    $signature: 14
   };
   P._SimpleUri.prototype = {
     get$hasAuthority: function() {
@@ -13276,7 +13253,7 @@
     call$2: function(k, v) {
       return C.JSArray_methods.add$1(this.keys, k);
     },
-    $signature: 6
+    $signature: 5
   };
   W.StyleSheet.prototype = {$isStyleSheet: 1};
   W.TableElement.prototype = {
@@ -13722,13 +13699,13 @@
     call$1: function(e) {
       return this.onData.call$1(type$.Event._as(e));
     },
-    $signature: 9
+    $signature: 15
   };
   W._EventStreamSubscription_onData_closure.prototype = {
     call$1: function(e) {
       return this.handleData.call$1(type$.Event._as(e));
     },
-    $signature: 9
+    $signature: 15
   };
   W._Html5NodeValidator.prototype = {
     _Html5NodeValidator$1$uriPolicy: function(uriPolicy) {
@@ -13775,13 +13752,13 @@
     call$1: function(v) {
       return type$.NodeValidator._as(v).allowsElement$1(this.element);
     },
-    $signature: 15
+    $signature: 16
   };
   W.NodeValidatorBuilder_allowsAttribute_closure.prototype = {
     call$1: function(v) {
       return type$.NodeValidator._as(v).allowsAttribute$3(this.element, this.attributeName, this.value);
     },
-    $signature: 15
+    $signature: 16
   };
   W._SimpleNodeValidator.prototype = {
     _SimpleNodeValidator$4$allowedAttributes$allowedElements$allowedUriAttributes: function(uriPolicy, allowedAttributes, allowedElements, allowedUriAttributes) {
@@ -13847,7 +13824,7 @@
     call$1: function(attr) {
       return "TEMPLATE::" + H.S(H._asStringS(attr));
     },
-    $signature: 7
+    $signature: 6
   };
   W._SvgNodeValidator.prototype = {
     allowsElement$1: function(element) {
@@ -14679,7 +14656,7 @@
     call$1: function(bytes) {
       return this.completer.complete$1(0, new Uint8Array(H._ensureNativeList(type$.List_int._as(bytes))));
     },
-    $signature: 40
+    $signature: 61
   };
   E.ClientException.prototype = {
     toString$0: function(_) {
@@ -14695,7 +14672,7 @@
     call$1: function(key) {
       return H._asStringS(key).toLowerCase();
     },
-    $signature: 7
+    $signature: 6
   };
   R.MediaType.prototype = {
     toString$0: function(_) {
@@ -14771,7 +14748,7 @@
       scanner.expectDone$0();
       return R.MediaType$(t4, t5, parameters);
     },
-    $signature: 52
+    $signature: 41
   };
   R.MediaType_toString_closure.prototype = {
     call$2: function(attribute, value) {
@@ -14792,7 +14769,7 @@
       } else
         t1._contents += H.S(value);
     },
-    $signature: 6
+    $signature: 5
   };
   R.MediaType_toString__closure.prototype = {
     call$1: function(match) {
@@ -15092,7 +15069,7 @@
       H._asStringQ(arg);
       return arg == null ? "null" : '"' + arg + '"';
     },
-    $signature: 61
+    $signature: 43
   };
   B.InternalStyle.prototype = {
     getRoot$1: function(path) {
@@ -15877,7 +15854,7 @@
       t1 = t1.get$end(t1);
       return t2 != t1.get$line(t1);
     },
-    $signature: 8
+    $signature: 7
   };
   U.Highlighter$__closure0.prototype = {
     call$1: function(line) {
@@ -15971,14 +15948,14 @@
         t1 = true;
       return t1;
     },
-    $signature: 8
+    $signature: 7
   };
   U.Highlighter_highlight_closure.prototype = {
     call$1: function(highlight) {
       type$._Highlight._as(highlight).toString;
       return true;
     },
-    $signature: 8
+    $signature: 7
   };
   U.Highlighter__writeFileStart_closure.prototype = {
     call$0: function() {
@@ -16554,14 +16531,17 @@
       removeSetButton.id = "pvRemoveSetBtn";
       W._EventStreamSubscription$(removeSetButton, "click", t3._as(new S.ProjectViewState__renderSelectedSet_closure0(_this)), false, t2);
       _this._setViewDiv.appendChild(removeSetButton);
-      t2 = _this._deleteConfirmationDiv;
-      t2.toString;
-      W._ElementCssClassSet__removeWhere(t2, type$.bool_Function_String._as(new S.ProjectViewState__renderSelectedSet_closure1()), true);
+      _this._deleteConfirmationDiv.classList.remove("pvDeleteConfirmationAnim");
       _this._setViewDiv.appendChild(_this._deleteConfirmationDiv);
     },
     _hideDeletionConfirm$0: function() {
-      J.reverse$0$x(J.$index$asx(this._deleteConfirmationDiv.getAnimations(), 0));
-      P.promiseToFuture(J.$index$asx(this._deleteConfirmationDiv.getAnimations(), 0).finished, type$.Animation).then$1$1(0, new S.ProjectViewState__hideDeletionConfirm_closure(this), type$.legacy_Set_legacy_bool);
+      var _this = this,
+        t1 = _this._deleteConfirmationDiv,
+        t2 = t1.style;
+      t1 = "-" + J.toString$0$(t1.clientHeight) + "px";
+      t2.top = t1;
+      J.reverse$0$x(J.$index$asx(_this._deleteConfirmationDiv.getAnimations(), 0));
+      P.promiseToFuture(J.$index$asx(_this._deleteConfirmationDiv.getAnimations(), 0).finished, type$.Animation).then$1$1(0, new S.ProjectViewState__hideDeletionConfirm_closure(_this), type$.legacy_Set_legacy_bool);
     },
     onActivate$0: function(_) {
     },
@@ -16619,16 +16599,16 @@
   };
   S.ProjectViewState__renderSelectedSet_closure0.prototype = {
     call$1: function($event) {
+      var t1, t2;
       type$.legacy_MouseEvent._as($event);
-      this.$this._deleteConfirmationDiv.classList.add("pvDeleteConfirmationAnim");
+      t1 = this.$this;
+      t1._deleteConfirmationDiv.classList.add("pvDeleteConfirmationAnim");
+      t1 = t1._deleteConfirmationDiv;
+      t2 = t1.style;
+      t1 = "-" + J.toString$0$(t1.clientHeight) + "px";
+      t2.top = t1;
     },
     $signature: 1
-  };
-  S.ProjectViewState__renderSelectedSet_closure1.prototype = {
-    call$1: function(element) {
-      return element === "pvDeleteConfirmationAnim";
-    },
-    $signature: 53
   };
   S.ProjectViewState__hideDeletionConfirm_closure.prototype = {
     call$1: function(value) {
@@ -16639,7 +16619,7 @@
       list.remove("pvDeleteConfirmationAnim");
       return P.LinkedHashSet_LinkedHashSet$_literal([removed], type$.legacy_bool);
     },
-    $signature: 54
+    $signature: 53
   };
   R.LegoPiece.prototype = {
     LegoPiece$_$3: function(partID, colorID, apiAccess) {
@@ -16662,7 +16642,7 @@
         return "";
       return H._asStringS(J.$index$asx(C.C_JsonCodec.decode$2$reviver(0, B.encodingForCharset(U._contentTypeForHeaders(value.headers).parameters._collection$_map.$index(0, "charset")).decode$1(0, value.bodyBytes), null), "part_img_url"));
     },
-    $signature: 55
+    $signature: 54
   };
   U.LegoSet.prototype = {
     loadSet$1: function(apiAccess) {
@@ -16933,7 +16913,7 @@
         }
       }
     },
-    $signature: 20
+    $signature: 19
   };
   T.RebrickableAccess.prototype = {
     $get$2: function(_, section, params) {
@@ -16965,7 +16945,7 @@
       H._asBoolS(value);
       this.app.setCurrentState$1(C.DisplayStateType_1);
     },
-    $signature: 20
+    $signature: 19
   };
   (function aliases() {
     var _ = J.Interceptor.prototype;
@@ -17001,30 +16981,30 @@
       _instance_0_i = hunkHelpers._instance_0i,
       _static = hunkHelpers.installStaticTearOff,
       _instance_2_i = hunkHelpers._instance_2i;
-    _static_2(J, "_interceptors_JSArray__compareAny$closure", "JSArray__compareAny", 21);
-    _static_1(P, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 5);
-    _static_1(P, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 5);
-    _static_1(P, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 5);
+    _static_2(J, "_interceptors_JSArray__compareAny$closure", "JSArray__compareAny", 20);
+    _static_1(P, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 8);
+    _static_1(P, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 8);
+    _static_1(P, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 8);
     _static_0(P, "async___startMicrotaskLoop$closure", "_startMicrotaskLoop", 0);
     _static_1(P, "async___nullDataHandler$closure", "_nullDataHandler", 2);
-    _instance(P._Completer.prototype, "get$completeError", 0, 1, null, ["call$2", "call$1"], ["completeError$2", "completeError$1"], 33, 0);
-    _instance_2_u(P._Future.prototype, "get$_completeError", "_completeError$2", 11);
+    _instance(P._Completer.prototype, "get$completeError", 0, 1, null, ["call$2", "call$1"], ["completeError$2", "completeError$1"], 46, 0);
+    _instance_2_u(P._Future.prototype, "get$_completeError", "_completeError$2", 12);
     _instance_0_u(P._DoneStreamSubscription.prototype, "get$_sendDone", "_sendDone$0", 0);
-    _static_2(P, "collection___defaultEquals$closure", "_defaultEquals", 22);
-    _static_1(P, "collection___defaultHashCode$closure", "_defaultHashCode", 10);
-    _static_2(P, "collection_ListMixin__compareAny$closure", "ListMixin__compareAny", 21);
+    _static_2(P, "collection___defaultEquals$closure", "_defaultEquals", 21);
+    _static_1(P, "collection___defaultHashCode$closure", "_defaultHashCode", 22);
+    _static_2(P, "collection_ListMixin__compareAny$closure", "ListMixin__compareAny", 20);
     var _;
     _instance_1_i(_ = P._ByteCallbackSink.prototype, "get$add", "add$1", 59);
     _instance_0_i(_, "get$close", "close$0", 0);
-    _static_1(P, "core__identityHashCode$closure", "identityHashCode", 10);
-    _static_2(P, "core__identical$closure", "identical", 22);
-    _static_1(P, "core_Uri_decodeComponent$closure", "Uri_decodeComponent", 7);
-    _static(W, "html__Html5NodeValidator__standardAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__standardAttributeValidator"], 19, 0);
-    _static(W, "html__Html5NodeValidator__uriAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__uriAttributeValidator"], 19, 0);
-    _instance_2_i(W.HttpRequest.prototype, "get$setRequestHeader", "setRequestHeader$2", 6);
+    _static_1(P, "core__identityHashCode$closure", "identityHashCode", 22);
+    _static_2(P, "core__identical$closure", "identical", 21);
+    _static_1(P, "core_Uri_decodeComponent$closure", "Uri_decodeComponent", 6);
+    _static(W, "html__Html5NodeValidator__standardAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__standardAttributeValidator"], 9, 0);
+    _static(W, "html__Html5NodeValidator__uriAttributeValidator$closure", 4, null, ["call$4"], ["_Html5NodeValidator__uriAttributeValidator"], 9, 0);
+    _instance_2_i(W.HttpRequest.prototype, "get$setRequestHeader", "setRequestHeader$2", 5);
     _static(P, "math__max$closure", 2, null, ["call$1$2", "call$2"], ["max", function(a, b) {
       return P.max(a, b, type$.num);
-    }], 41, 0);
+    }], 40, 0);
   })();
   (function inheritance() {
     var _mixin = hunkHelpers.mixin,
@@ -17040,7 +17020,7 @@
     _inherit(P.ListBase, P._ListBase_Object_ListMixin);
     _inheritMany(P.ListBase, [H.UnmodifiableListBase, W._ChildNodeListLazy]);
     _inherit(H.CodeUnits, H.UnmodifiableListBase);
-    _inheritMany(H.Closure, [H.nullFuture_closure, H.Instantiation, H.TearOffClosure, H.JsLinkedHashMap_values_closure, H.initHooks_closure, H.initHooks_closure0, H.initHooks_closure1, P._AsyncRun__initializeScheduleImmediate_internalCallback, P._AsyncRun__initializeScheduleImmediate_closure, P._AsyncRun__scheduleImmediateJsOverride_internalCallback, P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, P._TimerImpl_internalCallback, P._awaitOnObject_closure, P._awaitOnObject_closure0, P._wrapJsFunctionForAsync_closure, P.Future_wait__error_set, P.Future_wait__stackTrace_set, P.Future_wait__error_get, P.Future_wait__stackTrace_get, P.Future_wait_handleError, P.Future_wait_closure, P._Future__addListener_closure, P._Future__prependListeners_closure, P._Future__chainForeignFuture_closure, P._Future__chainForeignFuture_closure0, P._Future__chainForeignFuture_closure1, P._Future__asyncCompleteWithValue_closure, P._Future__chainFuture_closure, P._Future__asyncCompleteError_closure, P._Future__propagateToListeners_handleWhenCompleteCallback, P._Future__propagateToListeners_handleWhenCompleteCallback_closure, P._Future__propagateToListeners_handleValueCallback, P._Future__propagateToListeners_handleError, P.Stream_Stream$fromIterable_closure, P.Stream_length_closure, P.Stream_length_closure0, P.Stream_first_closure, P.Stream_first_closure0, P._BufferingStreamSubscription__sendError_sendError, P._BufferingStreamSubscription__sendDone_sendDone, P._PendingEvents_schedule_closure, P._cancelAndValue_closure, P._rootHandleUncaughtError_closure, P._RootZone_bindCallbackGuarded_closure, P._RootZone_bindUnaryCallbackGuarded_closure, P._LinkedCustomHashMap_closure, P.MapBase_mapToString_closure, P.Utf8Decoder__decoder_closure, P.Utf8Decoder__decoderNonfatal_closure, P.Uri__parseIPv4Address_error, P.Uri_parseIPv6Address_error, P.Uri_parseIPv6Address_parseHex, P._createTables_build, P._createTables_setChars, P._createTables_setRange, W.Element_Element$html_closure, W.MidiInputMap_keys_closure, W.MidiOutputMap_keys_closure, W.RtcStatsReport_keys_closure, W.Storage_keys_closure, W._EventStreamSubscription_closure, W._EventStreamSubscription_onData_closure, W.NodeValidatorBuilder_allowsElement_closure, W.NodeValidatorBuilder_allowsAttribute_closure, W._SimpleNodeValidator_closure, W._SimpleNodeValidator_closure0, W._TemplatingNodeValidator_closure, W._ValidatingTreeSanitizer_sanitizeTree_walk, P._AcceptStructuredClone_walk_closure, P.promiseToFuture_closure, P.promiseToFuture_closure0, P.AudioParamMap_keys_closure, M.CanonicalizedMap_addAll_closure, M.CanonicalizedMap_forEach_closure, G.BaseRequest_closure, G.BaseRequest_closure0, O.BrowserClient_send_closure, O.BrowserClient_send_closure0, Z.ByteStream_toBytes_closure, Z.CaseInsensitiveMap$from_closure, R.MediaType_MediaType$parse_closure, R.MediaType_toString_closure, R.MediaType_toString__closure, N.expectQuotedString_closure, M.Context_joinAll_closure, M.Context_split_closure, M._validateArgList_closure, U.Highlighter_closure, U.Highlighter$__closure, U.Highlighter$___closure, U.Highlighter$__closure0, U.Highlighter__collateLines_closure, U.Highlighter__collateLines_closure0, U.Highlighter__collateLines_closure1, U.Highlighter__collateLines__closure, U.Highlighter_highlight_closure, U.Highlighter__writeFileStart_closure, U.Highlighter__writeMultilineHighlights_closure, U.Highlighter__writeMultilineHighlights_closure0, U.Highlighter__writeMultilineHighlights_closure1, U.Highlighter__writeMultilineHighlights_closure2, U.Highlighter__writeMultilineHighlights__closure, U.Highlighter__writeMultilineHighlights__closure0, U.Highlighter__writeHighlightedText_closure, U.Highlighter__writeIndicator_closure, U.Highlighter__writeIndicator_closure0, U.Highlighter__writeIndicator_closure1, U.Highlighter__writeSidebar_closure, U._Highlight_closure, S.ProjectViewState_renderToDiv_closure, S.ProjectViewState_renderToDiv_closure0, S.ProjectViewState_renderToDiv_closure1, S.ProjectViewState_renderToDiv_closure2, S.ProjectViewState_renderToDiv_closure3, S.ProjectViewState__renderSelectedSet_closure, S.ProjectViewState__renderSelectedSet_closure0, S.ProjectViewState__renderSelectedSet_closure1, S.ProjectViewState__hideDeletionConfirm_closure, R.LegoPiece$__closure, S.LegoSetProject_loadProject_closure, Z.main_closure]);
+    _inheritMany(H.Closure, [H.nullFuture_closure, H.Instantiation, H.TearOffClosure, H.JsLinkedHashMap_values_closure, H.initHooks_closure, H.initHooks_closure0, H.initHooks_closure1, P._AsyncRun__initializeScheduleImmediate_internalCallback, P._AsyncRun__initializeScheduleImmediate_closure, P._AsyncRun__scheduleImmediateJsOverride_internalCallback, P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback, P._TimerImpl_internalCallback, P._awaitOnObject_closure, P._awaitOnObject_closure0, P._wrapJsFunctionForAsync_closure, P.Future_wait__error_set, P.Future_wait__stackTrace_set, P.Future_wait__error_get, P.Future_wait__stackTrace_get, P.Future_wait_handleError, P.Future_wait_closure, P._Future__addListener_closure, P._Future__prependListeners_closure, P._Future__chainForeignFuture_closure, P._Future__chainForeignFuture_closure0, P._Future__chainForeignFuture_closure1, P._Future__asyncCompleteWithValue_closure, P._Future__chainFuture_closure, P._Future__asyncCompleteError_closure, P._Future__propagateToListeners_handleWhenCompleteCallback, P._Future__propagateToListeners_handleWhenCompleteCallback_closure, P._Future__propagateToListeners_handleValueCallback, P._Future__propagateToListeners_handleError, P.Stream_Stream$fromIterable_closure, P.Stream_length_closure, P.Stream_length_closure0, P.Stream_first_closure, P.Stream_first_closure0, P._BufferingStreamSubscription__sendError_sendError, P._BufferingStreamSubscription__sendDone_sendDone, P._PendingEvents_schedule_closure, P._cancelAndValue_closure, P._rootHandleUncaughtError_closure, P._RootZone_bindCallbackGuarded_closure, P._RootZone_bindUnaryCallbackGuarded_closure, P._LinkedCustomHashMap_closure, P.MapBase_mapToString_closure, P.Utf8Decoder__decoder_closure, P.Utf8Decoder__decoderNonfatal_closure, P.Uri__parseIPv4Address_error, P.Uri_parseIPv6Address_error, P.Uri_parseIPv6Address_parseHex, P._createTables_build, P._createTables_setChars, P._createTables_setRange, W.Element_Element$html_closure, W.MidiInputMap_keys_closure, W.MidiOutputMap_keys_closure, W.RtcStatsReport_keys_closure, W.Storage_keys_closure, W._EventStreamSubscription_closure, W._EventStreamSubscription_onData_closure, W.NodeValidatorBuilder_allowsElement_closure, W.NodeValidatorBuilder_allowsAttribute_closure, W._SimpleNodeValidator_closure, W._SimpleNodeValidator_closure0, W._TemplatingNodeValidator_closure, W._ValidatingTreeSanitizer_sanitizeTree_walk, P._AcceptStructuredClone_walk_closure, P.promiseToFuture_closure, P.promiseToFuture_closure0, P.AudioParamMap_keys_closure, M.CanonicalizedMap_addAll_closure, M.CanonicalizedMap_forEach_closure, G.BaseRequest_closure, G.BaseRequest_closure0, O.BrowserClient_send_closure, O.BrowserClient_send_closure0, Z.ByteStream_toBytes_closure, Z.CaseInsensitiveMap$from_closure, R.MediaType_MediaType$parse_closure, R.MediaType_toString_closure, R.MediaType_toString__closure, N.expectQuotedString_closure, M.Context_joinAll_closure, M.Context_split_closure, M._validateArgList_closure, U.Highlighter_closure, U.Highlighter$__closure, U.Highlighter$___closure, U.Highlighter$__closure0, U.Highlighter__collateLines_closure, U.Highlighter__collateLines_closure0, U.Highlighter__collateLines_closure1, U.Highlighter__collateLines__closure, U.Highlighter_highlight_closure, U.Highlighter__writeFileStart_closure, U.Highlighter__writeMultilineHighlights_closure, U.Highlighter__writeMultilineHighlights_closure0, U.Highlighter__writeMultilineHighlights_closure1, U.Highlighter__writeMultilineHighlights_closure2, U.Highlighter__writeMultilineHighlights__closure, U.Highlighter__writeMultilineHighlights__closure0, U.Highlighter__writeHighlightedText_closure, U.Highlighter__writeIndicator_closure, U.Highlighter__writeIndicator_closure0, U.Highlighter__writeIndicator_closure1, U.Highlighter__writeSidebar_closure, U._Highlight_closure, S.ProjectViewState_renderToDiv_closure, S.ProjectViewState_renderToDiv_closure0, S.ProjectViewState_renderToDiv_closure1, S.ProjectViewState_renderToDiv_closure2, S.ProjectViewState_renderToDiv_closure3, S.ProjectViewState__renderSelectedSet_closure, S.ProjectViewState__renderSelectedSet_closure0, S.ProjectViewState__hideDeletionConfirm_closure, R.LegoPiece$__closure, S.LegoSetProject_loadProject_closure, Z.main_closure]);
     _inheritMany(P.Iterable, [H.EfficientLengthIterable, H.MappedIterable, H.WhereIterable, H.ExpandIterable, H.SkipIterable, H.WhereTypeIterable, P.IterableBase, H._StringAllMatchesIterable]);
     _inheritMany(H.EfficientLengthIterable, [H.ListIterable, H.EmptyIterable, H.LinkedHashMapKeyIterable]);
     _inheritMany(H.ListIterable, [H.SubListIterable, H.MappedListIterable, H.ReversedListIterable, P._JsonMapKeyIterable]);
@@ -17232,7 +17212,7 @@
     mangledNames: {},
     getTypeFromName: getGlobalFromName,
     metadata: [],
-    types: ["~()", "Null(MouseEvent*)", "~(@)", "~(String,@)", "bool(String)", "~(~())", "~(String,String)", "String(String)", "bool(_Highlight)", "~(Event)", "int(Object?)", "~(Object,StackTrace)", "~(Uint8List,String,int)", "Null(@)", "@()", "bool(NodeValidator)", "Null()", "Null(ProgressEvent)", "String(Match)", "bool(Element,String,String,_Html5NodeValidator)", "Null(bool*)", "int(@,@)", "bool(Object?,Object?)", "_Future<@>(@)", "~(String[@])", "int(int,int)", "Uint8List(@,@)", "@(String)", "bool(Node)", "Object()", "Null(~())", "StackTrace()", "@(Object)", "~(Object[StackTrace?])", "@(@)", "~(Node,Node?)", "@(@,@)", "bool(String,String)", "int(String)", "Null(Object,StackTrace)", "~(List<int>)", "0^(0^,0^)<num>", "@(StackTrace)", "bool(@)", "String?()", "int(_Line)", "@(@,String)", "Uri?(_Line)", "Uri?(_Highlight)", "int(_Highlight,_Highlight)", "List<_Line>(List<_Highlight>)", "SourceSpanWithContext()", "MediaType()", "bool*(String*)", "Set<bool*>*(Animation*)", "String*(Response*)", "~(Object?,Object?)", "Future<Null>()", "Null(@,StackTrace)", "~(Object?)", "~(String,int)", "String(String?)", "~(int,@)"],
+    types: ["~()", "Null(MouseEvent*)", "~(@)", "~(String,@)", "bool(String)", "~(String,String)", "String(String)", "bool(_Highlight)", "~(~())", "bool(Element,String,String,_Html5NodeValidator)", "Null(@)", "Null()", "~(Object,StackTrace)", "@()", "~(Uint8List,String,int)", "~(Event)", "bool(NodeValidator)", "Null(ProgressEvent)", "String(Match)", "Null(bool*)", "int(@,@)", "bool(Object?,Object?)", "int(Object?)", "~(Object?,Object?)", "~(String[@])", "int(int,int)", "Uint8List(@,@)", "@(@)", "bool(Node)", "Null(@,StackTrace)", "~(int,@)", "Null(~())", "@(Object)", "@(StackTrace)", "Object()", "~(Node,Node?)", "@(@,@)", "bool(String,String)", "int(String)", "StackTrace()", "0^(0^,0^)<num>", "MediaType()", "@(@,String)", "String(String?)", "String?()", "int(_Line)", "~(Object[StackTrace?])", "Uri?(_Line)", "Uri?(_Highlight)", "int(_Highlight,_Highlight)", "List<_Line>(List<_Highlight>)", "SourceSpanWithContext()", "Null(Object,StackTrace)", "Set<bool*>*(Animation*)", "String*(Response*)", "_Future<@>(@)", "bool(@)", "Future<Null>()", "@(String)", "~(Object?)", "~(String,int)", "~(List<int>)"],
     interceptorsByTag: null,
     leafTags: null,
     arrayRti: typeof Symbol == "function" && typeof Symbol() == "symbol" ? Symbol("$ti") : "$ti"
@@ -17361,7 +17341,6 @@
       _Line: findType("_Line"),
       bool: findType("bool"),
       bool_Function_Object: findType("bool(Object)"),
-      bool_Function_String: findType("bool(String)"),
       bool_Function__Highlight: findType("bool(_Highlight)"),
       double: findType("double"),
       dynamic: findType("@"),

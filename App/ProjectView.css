@@ -60,26 +60,21 @@
 
 #pvDeleteConfirmationDiv {
     position: absolute;
-    background-color: rgba(255, 0, 0, 0);
-    display: block;
+    background-color: rgba(255, 0, 0, 0.5);
+    display: none;
     width: 80%;
-    height: 20%;
     left: 10%;
-    top: -20%;
 }
 
 .pvDeleteConfirmationAnim {
     animation: deleteConfirmationAnimation 0.25s ease-out forwards;
+    display: block !important;
 }
 
 @keyframes deleteConfirmationAnimation {
-    from {
-        top: -20%;
-        background-color: rgba(255, 0, 0, 0);
-    }
+    from {}
     to {
         top: 20px;
-        background-color: rgba(255, 0, 0, 0.5);
     }
 }
 

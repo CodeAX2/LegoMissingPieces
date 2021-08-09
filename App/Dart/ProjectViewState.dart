@@ -150,19 +150,24 @@ class ProjectViewState extends DisplayState {
 
     _setViewDiv.append(removeSetButton);
 
-    _deleteConfirmationDiv.classes
-        .removeWhere((element) => element == "pvDeleteConfirmationAnim");
+    _deleteConfirmationDiv.classes.remove("pvDeleteConfirmationAnim");
     _setViewDiv.append(_deleteConfirmationDiv);
   }
 
   void _showDeletionConfirm() {
     _deleteConfirmationDiv.classes.add("pvDeleteConfirmationAnim");
+    // Because CSS is dumb and limited
+    _deleteConfirmationDiv.style.top = "-" + _deleteConfirmationDiv.clientHeight.toString() + "px";
   }
 
   void _hideDeletionConfirm() {
+    // Because CSS is still dumb and limited
+    _deleteConfirmationDiv.style.top = "-" + _deleteConfirmationDiv.clientHeight.toString() + "px";
     _deleteConfirmationDiv.getAnimations()[0].reverse();
-    _deleteConfirmationDiv.getAnimations()[0].finished.then((value) =>
-        {_deleteConfirmationDiv.classes.remove("pvDeleteConfirmationAnim")});
+    _deleteConfirmationDiv
+        .getAnimations()[0]
+        .finished
+        .then((value) => {_deleteConfirmationDiv.classes.remove("pvDeleteConfirmationAnim")});
   }
 
   void _deleteCurrentSet() {
