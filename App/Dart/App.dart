@@ -20,6 +20,7 @@ class App {
 
     new LoadingState(this);
     new ProjectViewState(this);
+    new AddSetState(this);
   }
 
   void registerState(DisplayStateType type, DisplayState state) {

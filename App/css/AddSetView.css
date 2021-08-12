@@ -1,0 +1,35 @@
+#asContainerDiv {
+    width: 100%;
+}
+
+#asSearchBarDiv {
+    width: 100%;
+    top: 0;
+    position: sticky;
+}
+
+#asSetOutputDiv {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.asSetResultDiv {
+    width: 33%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.asSetResultDiv>img {
+    height: 75%;
+    object-fit: contain;
+}
+
+.asSetResultDiv>h1 {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    flex-grow: 1;
+}

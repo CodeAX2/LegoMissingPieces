@@ -126,6 +126,10 @@ class LegoSetProject {
     }
   }
 
+  RebrickableAccess getAPIAccess() {
+    return _apiAccess;
+  }
+
   LegoSet getSetByID(String setID) {
     for (int i = 0; i < _sets.length; i++) {
       if (_sets[i].getSetID() == setID) return _sets[i];
