@@ -51,7 +51,8 @@ class AddSetState extends DisplayState {
 
     RebrickableAccess api = _app.getProject().getAPIAccess();
 
-    api.get("sets", "search=$search&theme_id=$theme").then((value) {
+    api.get("sets", "search=$search&theme_id=$theme&page=1&page_size=25").then((value) {
+      print("Response in: " + api.getResponseTime(value).toString() + "ms");
       if (value.statusCode == 200) _renderSearchedSets(jsonDecode(value.body));
     });
   }

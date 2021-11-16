@@ -7,6 +7,7 @@ class LoadingState extends DisplayState {
 
   void renderToDiv(String divID) {
     DivElement parentDiv = document.getElementById(divID);
+    parentDiv.children.clear();
 
     parentDiv.appendHtml('''
 
