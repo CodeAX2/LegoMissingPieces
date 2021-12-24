@@ -72,8 +72,9 @@ class LegoSet {
           String partID = partsList[i]["part"]["part_num"];
           int colorID = partsList[i]["color"]["id"];
           String imageURL = partsList[i]["part"]["part_img_url"];
+          String partDesc = partsList[i]["part"]["name"];
 
-          LegoPiece piece = LegoPiece.getPieceWithoutAPI(partID, colorID, imageURL);
+          LegoPiece piece = LegoPiece.getPieceWithoutAPI(partID, colorID, imageURL, partDesc);
 
           int numInSet = partsList[i]["quantity"];
 

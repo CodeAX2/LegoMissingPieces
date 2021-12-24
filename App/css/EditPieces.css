@@ -1,0 +1,105 @@
+#epPiecesListHeadersDiv {
+    width: 99.3%;
+    display: flex;
+    flex-direction: row;
+    height: 7vh;
+    align-items: center;
+    justify-content: space-around;
+    position: fixed;
+    top: 0;
+    background-color: white;
+}
+
+#epPiecesImageHeader {
+    font-size: 14pt;
+    margin: 0 0;
+    width: 7vh;
+    overflow-x: visible;
+    white-space: nowrap;
+}
+
+#epPiecesIdHeader {
+    font-size: 14pt;
+    margin: 0 0;
+    width: 100px;
+    overflow-x: visible;
+    white-space: nowrap;
+}
+
+#epPiecesColorIdHeader {
+    font-size: 14pt;
+    margin: 0 0;
+    width: 100px;
+    overflow-x: visible;
+    white-space: nowrap;
+}
+
+#epPiecesOwnedHeader {
+    font-size: 14pt;
+    margin: 0 0;
+    width: 108px;
+    overflow-x: visible;
+    white-space: nowrap;
+}
+
+#epPiecesSetHeader {
+    font-size: 14pt;
+    margin: 0 0;
+    width: 100px;
+    overflow-x: visible;
+    white-space: nowrap;
+}
+
+#epPiecesSetHeader #epPiecesListDiv {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.epPieceListItemDiv {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    height: 7vh;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.epPieceImage {
+    width: 7vh;
+    margin: 0 0;
+}
+
+.epPieceIdTitle {
+    font-size: 14pt;
+    margin: 0 0;
+    width: 100px;
+    overflow-x: visible;
+    white-space: nowrap;
+}
+
+.epPieceColorIdTitle {
+    font-size: 14pt;
+    margin: 0 0;
+    width: 100px;
+    overflow-x: visible;
+    white-space: nowrap;
+}
+
+.epPieceOwnedAmountInput {
+    width: 100px;
+}
+
+.epPieceSetAmountTitle {
+    font-size: 14pt;
+    margin: 0 0;
+    width: 100px;
+    overflow-x: visible;
+    white-space: nowrap;
+}
+
+#epBackBtn {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+}

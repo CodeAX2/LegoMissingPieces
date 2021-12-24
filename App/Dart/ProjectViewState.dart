@@ -69,6 +69,14 @@ class ProjectViewState extends DisplayState {
     });
     leftNavDiv.append(viewAllMissingButton);
 
+    ButtonElement saveProjectButton = new ButtonElement();
+    saveProjectButton.text = "Save Project";
+    saveProjectButton.id = "pvSaveProjectBtn";
+    saveProjectButton.onClick.listen((event) {
+      _app.getProject().saveProject();
+    });
+    leftNavDiv.append(saveProjectButton);
+
     _setViewDiv = new DivElement();
     _setViewDiv.id = "pvSetViewDiv";
     parentDiv.append(_setViewDiv);
@@ -136,6 +144,8 @@ class ProjectViewState extends DisplayState {
     editPiecesButton.text = "Edit Missing Pieces";
     editPiecesButton.id = "pvEditPiecesBtn";
     editPiecesButton.onClick.listen((event) {
+      EditPiecesState newState = _app.getState(DisplayStateType.EDIT_PIECES);
+      newState.setSelectedSet(_selectedSet);
       _app.setCurrentState(DisplayStateType.EDIT_PIECES);
     });
 
@@ -157,17 +167,17 @@ class ProjectViewState extends DisplayState {
   void _showDeletionConfirm() {
     _deleteConfirmationDiv.classes.add("pvDeleteConfirmationAnim");
     // Because CSS is dumb and limited
-    _deleteConfirmationDiv.style.top = "-" + _deleteConfirmationDiv.clientHeight.toString() + "px";
+    _deleteConfirmationDiv.style.top =
+        "-" + _deleteConfirmationDiv.clientHeight.toString() + "px";
   }
 
   void _hideDeletionConfirm() {
     // Because CSS is still dumb and limited
-    _deleteConfirmationDiv.style.top = "-" + _deleteConfirmationDiv.clientHeight.toString() + "px";
+    _deleteConfirmationDiv.style.top =
+        "-" + _deleteConfirmationDiv.clientHeight.toString() + "px";
     _deleteConfirmationDiv.getAnimations()[0].reverse();
-    _deleteConfirmationDiv
-        .getAnimations()[0]
-        .finished
-        .then((value) => {_deleteConfirmationDiv.classes.remove("pvDeleteConfirmationAnim")});
+    _deleteConfirmationDiv.getAnimations()[0].finished.then((value) =>
+        {_deleteConfirmationDiv.classes.remove("pvDeleteConfirmationAnim")});
   }
 
   void _deleteCurrentSet() {

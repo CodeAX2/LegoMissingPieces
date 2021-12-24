@@ -7,10 +7,12 @@ import 'dart:html';
 import 'LegoSetProject.dart';
 import 'LegoSet.dart';
 import 'RebrickableAccess.dart';
+import 'LegoPiece.dart';
 
 part 'LoadingState.dart';
 part 'ProjectViewState.dart';
 part 'AddSetState.dart';
+part 'EditPiecesState.dart';
 
 enum DisplayStateType { LOADING, PROJECT_VIEW, ADD_SET, EDIT_PIECES, ALL_MISSING_PIECES_VIEW }
 

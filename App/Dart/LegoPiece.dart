@@ -7,6 +7,7 @@ class LegoPiece {
   int _colorID;
   Future<String> _imageURL;
   String _imageURLDone;
+  Future<String> _partDesc;
 
   static Map<String, Map<int, LegoPiece>> _registeredPieces;
 
@@ -15,7 +16,8 @@ class LegoPiece {
   /// Also requires an [apiAccess] in order to fetch the URL of the image
   /// Adds the LegoPiece to a map of all pieces, so there is never any duplicates
   /// If [apiAccess] is null, and the piece does not exist, this returns null
-  static LegoPiece getPiece(String partID, int colorID, RebrickableAccess apiAccess) {
+  static LegoPiece getPiece(
+      String partID, int colorID, RebrickableAccess apiAccess) {
     if (_registeredPieces == null) {
       _registeredPieces = new Map<String, Map<int, LegoPiece>>();
     }
@@ -26,13 +28,15 @@ class LegoPiece {
 
     if (_registeredPieces[partID][colorID] == null) {
       if (apiAccess == null) return null;
-      _registeredPieces[partID][colorID] = LegoPiece._(partID, colorID, apiAccess);
+      _registeredPieces[partID][colorID] =
+          LegoPiece._(partID, colorID, apiAccess);
     }
 
     return _registeredPieces[partID][colorID];
   }
 
-  static LegoPiece getPieceWithoutAPI(String partID, int colorID, String imageURL) {
+  static LegoPiece getPieceWithoutAPI(
+      String partID, int colorID, String imageURL, String partDesc) {
     if (_registeredPieces == null) {
       _registeredPieces = new Map<String, Map<int, LegoPiece>>();
     }
@@ -42,7 +46,8 @@ class LegoPiece {
     }
 
     if (_registeredPieces[partID][colorID] == null) {
-      _registeredPieces[partID][colorID] = LegoPiece._initWithoutAPI(partID, colorID, imageURL);
+      _registeredPieces[partID][colorID] =
+          LegoPiece._initWithoutAPI(partID, colorID, imageURL, partDesc);
     }
 
     return _registeredPieces[partID][colorID];
@@ -55,8 +60,9 @@ class LegoPiece {
     _colorID = colorID;
     _imageURLDone = "";
 
-    Future<Response> jsonResponse = apiAccess.get("parts/$_partID/colors/$_colorID", "");
-    _imageURL = jsonResponse.then((value) {
+    Future<Response> jsonImageResponse =
+        apiAccess.get("parts/$_partID/colors/$_colorID", "");
+    _imageURL = jsonImageResponse.then((value) {
       if (value.statusCode != 200) return "";
 
       String imageURLDone = jsonDecode(value.body)["part_img_url"];
@@ -64,13 +70,22 @@ class LegoPiece {
 
       return imageURLDone;
     });
+
+    Future<Response> jsonDescResponse = apiAccess.get("parts/$_partID", "");
+    _partDesc = jsonDescResponse.then((value) {
+      if (value.statusCode != 200) return "";
+
+      return jsonDecode(value.body)["name"];
+    });
   }
 
-  LegoPiece._initWithoutAPI(String partID, int colorID, String imageURL) {
+  LegoPiece._initWithoutAPI(
+      String partID, int colorID, String imageURL, String partDesc) {
     _partID = partID;
     _colorID = colorID;
     _imageURLDone = imageURL;
     _imageURL = Future<String>.value(imageURL);
+    _partDesc = Future<String>.value(partDesc);
   }
 
   Future<String> getImageURL() {
@@ -83,6 +98,10 @@ class LegoPiece {
 
   int getColorID() {
     return _colorID;
+  }
+
+  Future<String> getDescription() {
+    return _partDesc;
   }
 
   @override

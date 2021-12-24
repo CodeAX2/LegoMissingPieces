@@ -21,6 +21,7 @@ class App {
     new LoadingState(this);
     new ProjectViewState(this);
     new AddSetState(this);
+    new EditPiecesState(this);
   }
 
   void registerState(DisplayStateType type, DisplayState state) {
@@ -45,5 +46,9 @@ class App {
 
   void setProject(LegoSetProject project) {
     _project = project;
+  }
+
+  DisplayState getState(DisplayStateType stateType) {
+    return _allStates[stateType];
   }
 }

@@ -19,7 +19,8 @@ class LegoSetProject {
 
   Future<bool> loadProject() async {
     try {
-      dynamic fileContentsJson = jsonDecode(fs.readFileSync(_filePath, "utf-8"));
+      dynamic fileContentsJson =
+          jsonDecode(fs.readFileSync(_filePath, "utf-8"));
 
       _apiAccess = new RebrickableAccess(fileContentsJson["apiKey"]);
 
@@ -35,7 +36,8 @@ class LegoSetProject {
             List<dynamic> piecesOwnedJson = curSetJson["piecesOwned"];
             for (int j = 0; j < piecesOwnedJson.length; j++) {
               dynamic curPieceJson = piecesOwnedJson[j];
-              LegoPiece curPiece = LegoPiece.getPiece(curPieceJson["partID"], curPieceJson["colorID"], _apiAccess);
+              LegoPiece curPiece = LegoPiece.getPiece(
+                  curPieceJson["partID"], curPieceJson["colorID"], _apiAccess);
               curSet.setAmountOwned(curPiece, curPieceJson["amountOwned"]);
             }
           }
