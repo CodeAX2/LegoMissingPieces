@@ -81,3 +81,6 @@ typings/
 
 # dart2js unecessary files
 *.js.deps
+
+# Build folder
+build/*
