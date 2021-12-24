@@ -4,11 +4,13 @@
     "description": "App to keep track of missing pieces from Lego sets",
     "main": "main.js",
     "scripts": {
-        "start": "electron ."
+        "start": "electron .",
+        "build": "npx electron-packager . LegoMissingPieces --platform=win32 --arch=x64 --out=../build"
     },
     "author": "Jacob Hofer",
     "license": "ISC",
     "devDependencies": {
-        "electron": "^13.1.8"
+        "electron": "^13.6.3",
+        "electron-packager": "^15.4.0"
     }
 }
