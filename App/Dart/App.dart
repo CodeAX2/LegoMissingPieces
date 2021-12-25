@@ -22,6 +22,11 @@ class App {
     new ProjectViewState(this);
     new AddSetState(this);
     new EditPiecesState(this);
+    new AllMissingPiecesState(this);
+
+    window.onBeforeUnload.listen((event) {
+      _project.saveProject();
+    });
   }
 
   void registerState(DisplayStateType type, DisplayState state) {

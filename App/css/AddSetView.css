@@ -33,3 +33,9 @@
     white-space: nowrap;
     flex-grow: 1;
 }
+
+#asBackBtn {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+}

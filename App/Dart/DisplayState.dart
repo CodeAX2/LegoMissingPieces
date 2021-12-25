@@ -1,6 +1,7 @@
 library DisplayState;
 
 import 'dart:convert';
+import 'dart:math';
 
 import 'App.dart';
 import 'dart:html';
@@ -13,6 +14,7 @@ part 'LoadingState.dart';
 part 'ProjectViewState.dart';
 part 'AddSetState.dart';
 part 'EditPiecesState.dart';
+part 'AllMissingPiecesState.dart';
 
 enum DisplayStateType { LOADING, PROJECT_VIEW, ADD_SET, EDIT_PIECES, ALL_MISSING_PIECES_VIEW }
 

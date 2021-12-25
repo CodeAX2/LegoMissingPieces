@@ -69,14 +69,6 @@ class ProjectViewState extends DisplayState {
     });
     leftNavDiv.append(viewAllMissingButton);
 
-    ButtonElement saveProjectButton = new ButtonElement();
-    saveProjectButton.text = "Save Project";
-    saveProjectButton.id = "pvSaveProjectBtn";
-    saveProjectButton.onClick.listen((event) {
-      _app.getProject().saveProject();
-    });
-    leftNavDiv.append(saveProjectButton);
-
     _setViewDiv = new DivElement();
     _setViewDiv.id = "pvSetViewDiv";
     parentDiv.append(_setViewDiv);

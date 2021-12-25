@@ -76,11 +76,37 @@ class EditPiecesState extends DisplayState {
       pieceColorIdTitle.text = piece.getColorID().toString();
       pieceListItemDiv.append(pieceColorIdTitle);
 
-      InputElement pieceOwnedAmountInput = new InputElement(type: "text");
+      DivElement pieceOwnedAmountInput = new DivElement();
       pieceOwnedAmountInput.classes.add("epPieceOwnedAmountInput");
-      pieceOwnedAmountInput.value =
-          _selectedSet.getAmountOwned(piece).toString();
       pieceListItemDiv.append(pieceOwnedAmountInput);
+
+      HeadingElement pieceOwnedAmountTitle = HeadingElement.h1();
+      pieceOwnedAmountTitle.classes.add("epPieceOwnedAmountTitle");
+      pieceOwnedAmountTitle.text =
+          _selectedSet.getAmountOwned(piece).toString();
+
+      ButtonElement pieceOwnedAmountDown = new ButtonElement();
+      pieceOwnedAmountDown.classes.add("epPieceOwnedAmountDownBtn");
+      pieceOwnedAmountDown.text = "-";
+      pieceOwnedAmountDown.onClick.listen((event) {
+        int amountOwned = max(_selectedSet.getAmountOwned(piece) - 1, 0);
+        _selectedSet.setAmountOwned(piece, amountOwned);
+        pieceOwnedAmountTitle.text = amountOwned.toString();
+      });
+      pieceOwnedAmountInput.append(pieceOwnedAmountDown);
+
+      pieceOwnedAmountInput.append(pieceOwnedAmountTitle);
+
+      ButtonElement pieceOwnedAmountUp = new ButtonElement();
+      pieceOwnedAmountUp.classes.add("pieceOwnedAmountUpBtn");
+      pieceOwnedAmountUp.text = "+";
+      pieceOwnedAmountUp.onClick.listen((event) {
+        int amountOwned = min(_selectedSet.getAmountOwned(piece) + 1,
+            _selectedSet.getAmountInSet(piece));
+        _selectedSet.setAmountOwned(piece, amountOwned);
+        pieceOwnedAmountTitle.text = amountOwned.toString();
+      });
+      pieceOwnedAmountInput.append(pieceOwnedAmountUp);
 
       HeadingElement pieceSetAmountTitle = HeadingElement.h1();
       pieceSetAmountTitle.classes.add("epPieceSetAmountTitle");
@@ -99,7 +125,9 @@ class EditPiecesState extends DisplayState {
 
   void onActivate() {}
 
-  void onDeactivate() {}
+  void onDeactivate() {
+    _selectedSet.getParentProject().saveProject();
+  }
 
   void setSelectedSet(LegoSet set) {
     _selectedSet = set;

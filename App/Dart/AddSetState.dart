@@ -43,6 +43,14 @@ class AddSetState extends DisplayState {
     _setOutputDiv = new DivElement();
     _setOutputDiv.id = "asSetOutputDiv";
     parentDiv.append(_setOutputDiv);
+
+    ButtonElement backButton = new ButtonElement();
+    backButton.id = "asBackBtn";
+    backButton.text = "Back";
+    backButton.onClick.listen((event) {
+      _app.setCurrentState(DisplayStateType.PROJECT_VIEW);
+    });
+    parentDiv.append(backButton);
   }
 
   void _searchSets() {
@@ -51,7 +59,9 @@ class AddSetState extends DisplayState {
 
     RebrickableAccess api = _app.getProject().getAPIAccess();
 
-    api.get("sets", "search=$search&theme_id=$theme&page=1&page_size=25").then((value) {
+    api
+        .get("sets", "search=$search&theme_id=$theme&page=1&page_size=25")
+        .then((value) {
       print("Response in: " + api.getResponseTime(value).toString() + "ms");
       if (value.statusCode == 200) _renderSearchedSets(jsonDecode(value.body));
     });
@@ -67,6 +77,10 @@ class AddSetState extends DisplayState {
       dynamic curSet = sets[i];
 
       String setID = curSet["set_num"];
+
+      // Set already in project
+      if (_app.getProject().getSetByID(setID) != null) continue;
+
       String setName = curSet["name"];
       String imageURL = curSet["set_img_url"];
 
@@ -84,7 +98,10 @@ class AddSetState extends DisplayState {
       ButtonElement addSetButton = new ButtonElement();
       addSetButton.text = "Add Set";
       addSetButton.onClick.listen((event) {
-        _app.getProject().addNewSet(setID).then((value) => _app.setCurrentState(DisplayStateType.PROJECT_VIEW));
+        _app.getProject().addNewSet(setID).then((value) {
+          _app.setCurrentState(DisplayStateType.PROJECT_VIEW);
+          _app.getProject().saveProject();
+        });
         _app.setCurrentState(DisplayStateType.LOADING);
       });
       setResultDiv.append(addSetButton);

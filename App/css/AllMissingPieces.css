@@ -1,4 +1,4 @@
-#epPiecesListHeadersDiv {
+#ampPiecesListHeadersDiv {
     width: 99.3%;
     display: flex;
     flex-direction: row;
@@ -10,7 +10,7 @@
     background-color: white;
 }
 
-#epPiecesImageHeader {
+#ampPiecesImageHeader {
     font-size: 14pt;
     margin: 0 0;
     width: 7vh;
@@ -18,7 +18,7 @@
     white-space: nowrap;
 }
 
-#epPiecesIdHeader {
+#ampPiecesIdHeader {
     font-size: 14pt;
     margin: 0 0;
     width: 100px;
@@ -26,7 +26,7 @@
     white-space: nowrap;
 }
 
-#epPiecesColorIdHeader {
+#ampPiecesColorIdHeader {
     font-size: 14pt;
     margin: 0 0;
     width: 100px;
@@ -34,7 +34,7 @@
     white-space: nowrap;
 }
 
-#epPiecesOwnedHeader {
+#ampPiecesAmountHeader {
     font-size: 14pt;
     margin: 0 0;
     width: 100px;
@@ -42,21 +42,13 @@
     white-space: nowrap;
 }
 
-#epPiecesSetHeader {
-    font-size: 14pt;
-    margin: 0 0;
-    width: 100px;
-    overflow-x: visible;
-    white-space: nowrap;
-}
-
-#epPiecesListDiv {
+#ampPiecesListDiv {
     width: 100%;
     display: flex;
     flex-direction: column;
 }
 
-.epPieceListItemDiv {
+.ampPieceListItemDiv {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -65,12 +57,12 @@
     justify-content: space-around;
 }
 
-.epPieceImage {
+.ampPieceImage {
     width: 7vh;
     margin: 0 0;
 }
 
-.epPieceIdTitle {
+.ampPieceIdTitle {
     font-size: 14pt;
     margin: 0 0;
     width: 100px;
@@ -78,7 +70,7 @@
     white-space: nowrap;
 }
 
-.epPieceColorIdTitle {
+.ampPieceColorIdTitle {
     font-size: 14pt;
     margin: 0 0;
     width: 100px;
@@ -86,30 +78,7 @@
     white-space: nowrap;
 }
 
-.epPieceOwnedAmountInput {
-    width: 100px;
-    display: flex;
-    justify-content: center;
-}
-
-.epPieceOwnedAmountDownBtn {
-    width: 25px;
-    height: 25px;
-}
-
-.epPieceOwnedAmountTitle {
-    font-size: 14pt;
-    margin: 0 0;
-    width: 50px;
-    text-align: center;
-}
-
-.pieceOwnedAmountUpBtn {
-    width: 25px;
-    height: 25px;
-}
-
-.epPieceSetAmountTitle {
+.ampPieceAmountTitle {
     font-size: 14pt;
     margin: 0 0;
     width: 100px;
@@ -117,7 +86,7 @@
     white-space: nowrap;
 }
 
-#epBackBtn {
+#ampBackBtn {
     position: fixed;
     bottom: 10px;
     left: 10px;
