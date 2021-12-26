@@ -27,7 +27,7 @@ class EditPiecesState extends DisplayState {
     piecesListHeadersDiv.append(piecesIdHeader);
 
     HeadingElement piecesColorIdHeader = HeadingElement.h1();
-    piecesColorIdHeader.text = "Color ID";
+    piecesColorIdHeader.text = "Color Name";
     piecesColorIdHeader.id = "epPiecesColorIdHeader";
     piecesListHeadersDiv.append(piecesColorIdHeader);
 
@@ -73,7 +73,7 @@ class EditPiecesState extends DisplayState {
 
       HeadingElement pieceColorIdTitle = HeadingElement.h1();
       pieceColorIdTitle.classes.add("epPieceColorIdTitle");
-      pieceColorIdTitle.text = piece.getColorID().toString();
+      pieceColorIdTitle.text = piece.getColorName().toString();
       pieceListItemDiv.append(pieceColorIdTitle);
 
       DivElement pieceOwnedAmountInput = new DivElement();

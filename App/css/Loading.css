@@ -1,0 +1,13 @@
+#ldLoadingDiv {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#ldLoadingTitle {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+}

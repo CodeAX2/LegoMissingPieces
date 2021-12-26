@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:js';
 import 'dart:math';
 
+import 'package:node_interop/node.dart';
 import 'package:node_interop/path.dart';
 
 import 'App.dart';

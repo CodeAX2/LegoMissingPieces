@@ -1,17 +1,30 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, dialog, ipcMain } = require("electron");
 const path = require("path");
 
+var win;
+
 function createWindow() {
-    const win = new BrowserWindow({
+    win = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true,
-            contextIsolation: false
+            contextIsolation: false,
+            preload: path.join(__dirname, 'preload.js')
         }
     });
 
     win.loadFile("index.html");
 }
 
-app.whenReady().then(() => {
+function main() {
     createWindow();
+
+    ipcMain.on("select-directory", async(event, arg) => {
+        const result = await dialog.showOpenDialog(win, { properties: ["openDirectory"] });
+        win.webContents.send("directory-selected", { "directory": result.filePaths[0] });
+    });
+
+}
+
+app.whenReady().then(() => {
+    main();
 });

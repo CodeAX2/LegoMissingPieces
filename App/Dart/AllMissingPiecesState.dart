@@ -29,7 +29,7 @@ class AllMissingPiecesState extends DisplayState {
     piecesListHeadersDiv.append(piecesIdHeader);
 
     HeadingElement piecesColorIdHeader = HeadingElement.h1();
-    piecesColorIdHeader.text = "Color ID";
+    piecesColorIdHeader.text = "Color Name";
     piecesColorIdHeader.id = "ampPiecesColorIdHeader";
     piecesListHeadersDiv.append(piecesColorIdHeader);
 
@@ -70,7 +70,7 @@ class AllMissingPiecesState extends DisplayState {
 
       HeadingElement pieceColorIdTitle = HeadingElement.h1();
       pieceColorIdTitle.classes.add("ampPieceColorIdTitle");
-      pieceColorIdTitle.text = piece.getColorID().toString();
+      pieceColorIdTitle.text = piece.getColorName().toString();
       pieceListItemDiv.append(pieceColorIdTitle);
 
       HeadingElement pieceAmountTitle = HeadingElement.h1();

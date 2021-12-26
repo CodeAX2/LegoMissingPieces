@@ -8,6 +8,7 @@ class LegoPiece {
   Future<String> _imageURL;
   String _imageURLDone;
   Future<String> _partDesc;
+  String _colorName;
 
   static Map<String, Map<int, LegoPiece>> _registeredPieces;
 
@@ -35,8 +36,8 @@ class LegoPiece {
     return _registeredPieces[partID][colorID];
   }
 
-  static LegoPiece getPieceWithoutAPI(
-      String partID, int colorID, String imageURL, String partDesc) {
+  static LegoPiece getPieceWithoutAPI(String partID, int colorID,
+      String imageURL, String partDesc, String colorName) {
     if (_registeredPieces == null) {
       _registeredPieces = new Map<String, Map<int, LegoPiece>>();
     }
@@ -46,8 +47,8 @@ class LegoPiece {
     }
 
     if (_registeredPieces[partID][colorID] == null) {
-      _registeredPieces[partID][colorID] =
-          LegoPiece._initWithoutAPI(partID, colorID, imageURL, partDesc);
+      _registeredPieces[partID][colorID] = LegoPiece._initWithoutAPI(
+          partID, colorID, imageURL, partDesc, colorName);
     }
 
     return _registeredPieces[partID][colorID];
@@ -79,13 +80,14 @@ class LegoPiece {
     });
   }
 
-  LegoPiece._initWithoutAPI(
-      String partID, int colorID, String imageURL, String partDesc) {
+  LegoPiece._initWithoutAPI(String partID, int colorID, String imageURL,
+      String partDesc, String colorName) {
     _partID = partID;
     _colorID = colorID;
     _imageURLDone = imageURL;
     _imageURL = Future<String>.value(imageURL);
     _partDesc = Future<String>.value(partDesc);
+    _colorName = colorName;
   }
 
   Future<String> getImageURL() {
@@ -107,5 +109,9 @@ class LegoPiece {
   @override
   String toString() {
     return _partID;
+  }
+
+  String getColorName() {
+    return _colorName;
   }
 }

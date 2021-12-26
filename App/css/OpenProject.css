@@ -1,0 +1,43 @@
+#opOpenProjectTitle {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+}
+
+#opOpenProjectBtn {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+}
+
+#opOpenProjectInput {
+    display: none;
+}
+
+#opCreateProjectTitle {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+}
+
+#opApiKeyInput {}
+
+#opProjectNameInput {}
+
+#opSelectDirectoryBtn {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+}
+
+#opProjectInfoTitle {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 300;
+    font-size: 12pt;
+}
+
+#opProjectInfoTitle>i {
+    font-weight: 400;
+    font-style: normal;
+}
+
+#opCreateProjectBtn {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+}
