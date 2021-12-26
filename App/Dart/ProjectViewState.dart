@@ -69,6 +69,14 @@ class ProjectViewState extends DisplayState {
     });
     leftNavDiv.append(viewAllMissingButton);
 
+    ButtonElement changeProjectButton = new ButtonElement();
+    changeProjectButton.text = "Change Project";
+    changeProjectButton.id = "pvChangeProjectBtn";
+    changeProjectButton.onClick.listen((event) {
+      _app.setCurrentState(DisplayStateType.OPEN_PROJECT);
+    });
+    leftNavDiv.append(changeProjectButton);
+
     _setViewDiv = new DivElement();
     _setViewDiv.id = "pvSetViewDiv";
     parentDiv.append(_setViewDiv);
@@ -178,7 +186,12 @@ class ProjectViewState extends DisplayState {
     renderToDiv(_divRenderingTo.id);
   }
 
-  void onActivate() {}
+  void onActivate() {
+    if (_selectedSet != null &&
+        _selectedSet.getParentProject() != _app.getProject()) {
+      _selectedSet = null;
+    }
+  }
 
   void onDeactivate() {}
 }

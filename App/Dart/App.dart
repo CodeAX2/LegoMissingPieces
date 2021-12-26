@@ -23,6 +23,7 @@ class App {
     new AddSetState(this);
     new EditPiecesState(this);
     new AllMissingPiecesState(this);
+    new OpenProjectState(this);
 
     window.onBeforeUnload.listen((event) {
       _project.saveProject();
@@ -50,6 +51,9 @@ class App {
   }
 
   void setProject(LegoSetProject project) {
+    if (_project != null) {
+      _project.saveProject();
+    }
     _project = project;
   }
 

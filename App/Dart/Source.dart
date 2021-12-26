@@ -4,14 +4,14 @@ import 'DisplayState.dart';
 
 int main() {
   App app = new App();
-  app.setCurrentState(DisplayStateType.LOADING);
+  app.setCurrentState(DisplayStateType.OPEN_PROJECT);
 
-  LegoSetProject project = new LegoSetProject("TestProject.json");
-  project.loadProject().then((value) {
-    app.setCurrentState(DisplayStateType.PROJECT_VIEW);
-  });
+  //LegoSetProject project = new LegoSetProject("TestProject.json");
+  //project.loadProject().then((value) {
+  //  app.setCurrentState(DisplayStateType.PROJECT_VIEW);
+  //});
 
-  app.setProject(project);
+  //app.setProject(project);
 
   return 0;
 }

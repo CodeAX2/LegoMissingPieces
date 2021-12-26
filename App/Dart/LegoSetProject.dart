@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:node_interop/path.dart';
+
 import 'LegoSet.dart';
 import 'RebrickableAccess.dart';
 import 'package:node_interop/fs.dart';
@@ -15,6 +17,15 @@ class LegoSetProject {
     _filePath = filePath;
     _sets = [];
     _loaded = false;
+  }
+
+  LegoSetProject.CreateEmpty(String apiKey, String directory, String fileName) {
+    _apiAccess = new RebrickableAccess(apiKey);
+    _sets = [];
+    _loaded = false;
+    _filePath = path.join(directory, fileName);
+
+    saveProject();
   }
 
   Future<bool> loadProject() async {

@@ -1,7 +1,10 @@
 library DisplayState;
 
 import 'dart:convert';
+import 'dart:js';
 import 'dart:math';
+
+import 'package:node_interop/path.dart';
 
 import 'App.dart';
 import 'dart:html';
@@ -15,8 +18,9 @@ part 'ProjectViewState.dart';
 part 'AddSetState.dart';
 part 'EditPiecesState.dart';
 part 'AllMissingPiecesState.dart';
+part 'OpenProjectState.dart';
 
-enum DisplayStateType { LOADING, PROJECT_VIEW, ADD_SET, EDIT_PIECES, ALL_MISSING_PIECES_VIEW }
+enum DisplayStateType { LOADING, PROJECT_VIEW, ADD_SET, EDIT_PIECES, ALL_MISSING_PIECES_VIEW, OPEN_PROJECT }
 
 abstract class DisplayState {
   App _app;
