@@ -8,34 +8,112 @@
     position: sticky;
 }
 
+#asSearchSubmitBtn {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-bottom-right-radius: 10px;
+}
+
 #asSetOutputDiv {
-    width: 100%;
+    width: 1000px;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 20px;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+@media only screen and (max-width: 1000px) {
+    #asSetOutputDiv {
+        width: 100%;
+    }
 }
 
 .asSetResultDiv {
-    width: 33%;
+    margin-top: 20px;
     display: flex;
-    flex-direction: column;
-    align-content: center;
+    flex-direction: row;
+    align-items: center;
 }
 
-.asSetResultDiv>img {
-    height: 75%;
+.asSetResultDiv:last-child {
+    margin-bottom: 100px;
+}
+
+.asSetResultDiv > img {
+    height: 150px;
     object-fit: contain;
+    padding: 10px;
+    background-color: white;
+    justify-self: flex-start;
 }
 
-.asSetResultDiv>h1 {
+.asSetResultDiv > h1 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+    font-size: 20pt;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    flex-grow: 1;
+    padding-left: 20px;
+    padding-right: 20px;
+    justify-self: flex-start;
+}
+
+.asSetResultDiv > button {
+    margin-left: auto;
+    background: #3f5472;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+    font-size: 14pt;
+    padding: 5px 10px;
+    min-width: 100px;
+    width: 100px;
+}
+
+.asSetResultDiv > button:hover {
+    background-color: #5b79a3;
+    transition: background-color 0.3s;
 }
 
 #asBackBtn {
     position: fixed;
     bottom: 10px;
     left: 10px;
+    background: #3f5472;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#asBackBtn:hover {
+    background-color: #5b79a3;
+    transition: background-color 0.3s;
+}
+
+#asBackBtn > p {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+    font-size: 14pt;
+    display: flex;
+    width: 80px;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#asBackBtn > p > i {
+    font-size: 16pt;
+    margin-bottom: -1px;
 }

@@ -17,6 +17,12 @@ class LoadingState extends DisplayState {
     loadingTitle.text = "Loading";
     loadingTitle.id = "ldLoadingTitle";
     loadingDiv.append(loadingTitle);
+
+    DivElement loadingSpinnerContainer = new DivElement();
+    loadingSpinnerContainer.id = "ldLoadingSpinnerContainer";
+    loadingSpinnerContainer.innerHtml =
+        "<div class=\"lds-ellipsis\"><div></div><div></div><div></div><div></div></div>";
+    loadingDiv.append(loadingSpinnerContainer);
   }
 
   void onActivate() {}

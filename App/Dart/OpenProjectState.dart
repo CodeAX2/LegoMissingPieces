@@ -7,6 +7,7 @@ class OpenProjectState extends DisplayState {
 
   String _selectedDirectory = null;
 
+  InputElement _newProjectapiKeyInput = null;
   InputElement _newProjectNameInput = null;
   HeadingElement _projectInfoTitle = null;
 
@@ -34,6 +35,7 @@ class OpenProjectState extends DisplayState {
     ButtonElement openProjectButton = new ButtonElement();
     openProjectButton.id = "opOpenProjectBtn";
     openProjectButton.text = "Select Project";
+    openProjectButton.classes.add("mainBtn");
     _divRenderingTo.append(openProjectButton);
 
     InputElement openProjectInput = new InputElement(type: "file");
@@ -65,12 +67,16 @@ class OpenProjectState extends DisplayState {
 
     HeadingElement projectInfoTitle = HeadingElement.h1();
     projectInfoTitle.id = "opProjectInfoTitle";
-    projectInfoTitle.text = "Please name your project";
+    projectInfoTitle.text = "Please enter your API key";
     _projectInfoTitle = projectInfoTitle;
 
     InputElement apiKeyInput = new InputElement(type: "text");
     apiKeyInput.id = "opApiKeyInput";
     apiKeyInput.placeholder = "Rebrickable API Key";
+    apiKeyInput.onInput.listen((event) {
+      _updateProjectInfoTitle();
+    });
+    _newProjectapiKeyInput = apiKeyInput;
     _divRenderingTo.append(apiKeyInput);
 
     InputElement projectNameInput = new InputElement(type: "text");
@@ -85,6 +91,7 @@ class OpenProjectState extends DisplayState {
     ButtonElement selectDirectoryButton = new ButtonElement();
     selectDirectoryButton.id = "opSelectDirectoryBtn";
     selectDirectoryButton.text = "Select Project Location";
+    selectDirectoryButton.classes.add("subBtn");
     selectDirectoryButton.onClick.listen((event) {
       dynamic messageContents = {};
       messageContents["type"] = "select-directory";
@@ -97,9 +104,10 @@ class OpenProjectState extends DisplayState {
     ButtonElement createProjectButton = new ButtonElement();
     createProjectButton.id = "opCreateProjectBtn";
     createProjectButton.text = "Create New Project";
+    createProjectButton.classes.add("mainBtn");
     createProjectButton.onClick.listen((event) {
-      LegoSetProject project = new LegoSetProject.CreateEmpty(apiKeyInput.value,
-          _selectedDirectory, projectNameInput.value + ".json");
+      LegoSetProject project =
+          new LegoSetProject.CreateEmpty(apiKeyInput.value, _selectedDirectory, projectNameInput.value + ".json");
       project.loadProject().then((value) {
         _app.setCurrentState(DisplayStateType.PROJECT_VIEW);
       });
@@ -120,17 +128,17 @@ class OpenProjectState extends DisplayState {
   }
 
   void _updateProjectInfoTitle() {
+    String apiKey = _newProjectapiKeyInput.value;
     String currentName = _newProjectNameInput.value;
-    if (currentName == "") {
+    if (apiKey == "") {
+      _projectInfoTitle.text = "Please enter your API key";
+    } else if (currentName == "") {
       _projectInfoTitle.text = "Please name your project";
     } else if (_selectedDirectory == null) {
       _projectInfoTitle.text = "Please select a directory";
     } else {
-      _projectInfoTitle.innerHtml = "This will create a new project named: <i>" +
-          currentName +
-          "</i> in: <i>" +
-          _selectedDirectory +
-          "</i>";
+      _projectInfoTitle.innerHtml =
+          "This will create a new project named: <i>" + currentName + "</i> in: <i>" + _selectedDirectory + "</i>";
     }
   }
 }

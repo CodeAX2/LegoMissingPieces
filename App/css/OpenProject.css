@@ -1,11 +1,13 @@
 #opOpenProjectTitle {
     font-family: 'IBM Plex Sans', sans-serif;
     font-weight: 500;
+    margin-left: 20px;
 }
 
 #opOpenProjectBtn {
     font-family: 'IBM Plex Sans', sans-serif;
     font-weight: 500;
+    margin-left: 40px;
 }
 
 #opOpenProjectInput {
@@ -15,21 +17,40 @@
 #opCreateProjectTitle {
     font-family: 'IBM Plex Sans', sans-serif;
     font-weight: 500;
+    margin-left: 20px;
 }
 
-#opApiKeyInput {}
+#opApiKeyInput {
+    margin-left: 40px;
+    padding-left: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-right: solid 1px #282828;
+    width: 300px;
+    font-size: 11pt;
+}
 
-#opProjectNameInput {}
+#opProjectNameInput {
+    padding-left: 10px;
+    width: 200px;
+    font-size: 11pt;
+}
 
 #opSelectDirectoryBtn {
     font-family: 'IBM Plex Sans', sans-serif;
     font-weight: 500;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding-right: 15px;
+    padding-left: 15px;
+    font-size: 11pt;
 }
 
 #opProjectInfoTitle {
     font-family: 'IBM Plex Sans', sans-serif;
     font-weight: 300;
     font-size: 12pt;
+    margin-left: 40px;
 }
 
 #opProjectInfoTitle>i {
@@ -40,4 +61,5 @@
 #opCreateProjectBtn {
     font-family: 'IBM Plex Sans', sans-serif;
     font-weight: 500;
+    margin-left: 40px;
 }

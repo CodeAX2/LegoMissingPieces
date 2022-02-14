@@ -1,5 +1,5 @@
 #ampPiecesListHeadersDiv {
-    width: 99.3%;
+    width: 100%;
     display: flex;
     flex-direction: row;
     height: 7vh;
@@ -7,7 +7,9 @@
     justify-content: space-around;
     position: sticky;
     top: 0;
-    background-color: white;
+    background-color: #181818;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
 }
 
 #ampPiecesImageHeader {
@@ -16,6 +18,8 @@
     width: 7vh;
     overflow-x: visible;
     white-space: nowrap;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
 }
 
 #ampPiecesIdHeader {
@@ -24,6 +28,8 @@
     width: 100px;
     overflow-x: visible;
     white-space: nowrap;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
 }
 
 #ampPiecesColorIdHeader {
@@ -32,7 +38,10 @@
     width: 100px;
     overflow-x: visible;
     white-space: nowrap;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
 }
+
 
 #ampPiecesAmountHeader {
     font-size: 14pt;
@@ -40,6 +49,8 @@
     width: 100px;
     overflow-x: visible;
     white-space: nowrap;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
 }
 
 #ampPiecesListDiv {
@@ -52,14 +63,22 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    height: 7vh;
+    height: calc(7vh + 10px);
     align-items: center;
     justify-content: space-around;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.ampPieceListItemDiv:nth-child(even) {
+    background-color: #3b3b3b;
 }
 
 .ampPieceImage {
-    width: 7vh;
+    width: calc(7vh - 5px);
     margin: 0 0;
+    padding: 5px;
+    background-color: white;
 }
 
 .ampPieceIdTitle {
@@ -68,6 +87,8 @@
     width: 100px;
     overflow-x: visible;
     white-space: nowrap;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
 }
 
 .ampPieceColorIdTitle {
@@ -76,6 +97,8 @@
     width: 100px;
     overflow-x: visible;
     white-space: nowrap;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
 }
 
 .ampPieceAmountTitle {
@@ -84,10 +107,40 @@
     width: 100px;
     overflow-x: visible;
     white-space: nowrap;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
 }
 
 #ampBackBtn {
     position: fixed;
     bottom: 10px;
     left: 10px;
+    background: #3f5472;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#ampBackBtn:hover {
+    background-color: #5b79a3;
+    transition: background-color 0.3s;
+}
+
+#ampBackBtn > p {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+    font-size: 14pt;
+    display: flex;
+    width: 80px;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#ampBackBtn > p > i {
+    font-size: 16pt;
+    margin-bottom: -1px;
 }

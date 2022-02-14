@@ -87,7 +87,7 @@ class EditPiecesState extends DisplayState {
 
       ButtonElement pieceOwnedAmountDown = new ButtonElement();
       pieceOwnedAmountDown.classes.add("epPieceOwnedAmountDownBtn");
-      pieceOwnedAmountDown.text = "-";
+      pieceOwnedAmountDown.append(FontAwesome.GET_MINUS());
       pieceOwnedAmountDown.onClick.listen((event) {
         int amountOwned = max(_selectedSet.getAmountOwned(piece) - 1, 0);
         _selectedSet.setAmountOwned(piece, amountOwned);
@@ -99,7 +99,7 @@ class EditPiecesState extends DisplayState {
 
       ButtonElement pieceOwnedAmountUp = new ButtonElement();
       pieceOwnedAmountUp.classes.add("pieceOwnedAmountUpBtn");
-      pieceOwnedAmountUp.text = "+";
+      pieceOwnedAmountUp.append(FontAwesome.GET_PLUS());
       pieceOwnedAmountUp.onClick.listen((event) {
         int amountOwned = min(_selectedSet.getAmountOwned(piece) + 1,
             _selectedSet.getAmountInSet(piece));
@@ -116,10 +116,13 @@ class EditPiecesState extends DisplayState {
 
     ButtonElement backButton = new ButtonElement();
     backButton.id = "epBackBtn";
-    backButton.text = "Back";
     backButton.onClick.listen((event) {
       _app.setCurrentState(DisplayStateType.PROJECT_VIEW);
     });
+    ParagraphElement backButtonText = new ParagraphElement();
+    backButtonText.append(FontAwesome.GET_ARROW_CIRCLE_LEFT());
+    backButtonText.appendText("Back");
+    backButton.append(backButtonText);
     _divRenderingTo.append(backButton);
   }
 

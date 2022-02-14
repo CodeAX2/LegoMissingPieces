@@ -16,9 +16,41 @@ class ProjectViewState extends DisplayState {
     _divRenderingTo = document.getElementById(divID);
     _divRenderingTo.children.clear();
 
+    DivElement pvStateDiv = new DivElement();
+    pvStateDiv.id = "pvStateDiv";
+    _divRenderingTo.append(pvStateDiv);
+
+    DivElement menuDiv = new DivElement();
+    menuDiv.id = "pvMenuDiv";
+    pvStateDiv.append(menuDiv);
+
+    ButtonElement addSetButton = new ButtonElement();
+    addSetButton.text = "Add Set";
+    addSetButton.id = "pvAddSetBtn";
+    addSetButton.onClick.listen((event) {
+      _app.setCurrentState(DisplayStateType.ADD_SET);
+    });
+    menuDiv.append(addSetButton);
+
+    ButtonElement viewAllMissingButton = new ButtonElement();
+    viewAllMissingButton.text = "View All Missing Pieces";
+    viewAllMissingButton.id = "pvViewAllMissingBtn";
+    viewAllMissingButton.onClick.listen((event) {
+      _app.setCurrentState(DisplayStateType.ALL_MISSING_PIECES_VIEW);
+    });
+    menuDiv.append(viewAllMissingButton);
+
+    ButtonElement changeProjectButton = new ButtonElement();
+    changeProjectButton.text = "Change Project";
+    changeProjectButton.id = "pvChangeProjectBtn";
+    changeProjectButton.onClick.listen((event) {
+      _app.setCurrentState(DisplayStateType.OPEN_PROJECT);
+    });
+    menuDiv.append(changeProjectButton);
+
     DivElement parentDiv = new DivElement();
     parentDiv.id = "pvContainerDiv";
-    _divRenderingTo.append(parentDiv);
+    pvStateDiv.append(parentDiv);
 
     DivElement leftNavDiv = new DivElement();
     leftNavDiv.id = "pvNavDiv";
@@ -53,30 +85,6 @@ class ProjectViewState extends DisplayState {
       setDiv.append(setYear);
     }
 
-    ButtonElement addSetButton = new ButtonElement();
-    addSetButton.text = "Add Set";
-    addSetButton.id = "pvAddSetBtn";
-    addSetButton.onClick.listen((event) {
-      _app.setCurrentState(DisplayStateType.ADD_SET);
-    });
-    leftNavDiv.append(addSetButton);
-
-    ButtonElement viewAllMissingButton = new ButtonElement();
-    viewAllMissingButton.text = "View All Missing Pieces";
-    viewAllMissingButton.id = "pvViewAllMissingBtn";
-    viewAllMissingButton.onClick.listen((event) {
-      _app.setCurrentState(DisplayStateType.ALL_MISSING_PIECES_VIEW);
-    });
-    leftNavDiv.append(viewAllMissingButton);
-
-    ButtonElement changeProjectButton = new ButtonElement();
-    changeProjectButton.text = "Change Project";
-    changeProjectButton.id = "pvChangeProjectBtn";
-    changeProjectButton.onClick.listen((event) {
-      _app.setCurrentState(DisplayStateType.OPEN_PROJECT);
-    });
-    leftNavDiv.append(changeProjectButton);
-
     _setViewDiv = new DivElement();
     _setViewDiv.id = "pvSetViewDiv";
     parentDiv.append(_setViewDiv);
@@ -105,11 +113,13 @@ class ProjectViewState extends DisplayState {
 
     ButtonElement confirmationCloseButton = new ButtonElement();
     confirmationCloseButton.id = "pvConfirmationCloseBtn";
-    confirmationCloseButton.text = "X";
+    confirmationCloseButton.append(FontAwesome.GET_TIMES());
     confirmationCloseButton.onClick.listen((event) {
       _hideDeletionConfirm();
     });
     _deleteConfirmationDiv.append(confirmationCloseButton);
+
+    pvStateDiv.append(_deleteConfirmationDiv);
   }
 
   void selectSet(LegoSet set) {
@@ -119,6 +129,8 @@ class ProjectViewState extends DisplayState {
 
   void _renderSelectedSet() {
     _setViewDiv.children.clear();
+
+    _deleteConfirmationDiv.classes.remove("pvDeleteConfirmationAnim");
 
     ImageElement setImage = new ImageElement();
     setImage.src = _selectedSet.getImageURL();
@@ -140,42 +152,46 @@ class ProjectViewState extends DisplayState {
 
     _setViewDiv.append(setInformation);
 
+    DivElement setButtonsDiv = new DivElement();
+    setButtonsDiv.id = "pvSetButtonsDiv";
+    _setViewDiv.append(setButtonsDiv);
+
     ButtonElement editPiecesButton = new ButtonElement();
     editPiecesButton.text = "Edit Missing Pieces";
     editPiecesButton.id = "pvEditPiecesBtn";
+    editPiecesButton.classes.add("mainBtn");
     editPiecesButton.onClick.listen((event) {
       EditPiecesState newState = _app.getState(DisplayStateType.EDIT_PIECES);
       newState.setSelectedSet(_selectedSet);
       _app.setCurrentState(DisplayStateType.EDIT_PIECES);
     });
 
-    _setViewDiv.append(editPiecesButton);
+    setButtonsDiv.append(editPiecesButton);
 
     ButtonElement removeSetButton = new ButtonElement();
     removeSetButton.text = "Remove Set";
     removeSetButton.id = "pvRemoveSetBtn";
+    removeSetButton.classes.add("mainBtn");
     removeSetButton.onClick.listen((event) {
       _showDeletionConfirm();
     });
 
-    _setViewDiv.append(removeSetButton);
-
-    _deleteConfirmationDiv.classes.remove("pvDeleteConfirmationAnim");
-    _setViewDiv.append(_deleteConfirmationDiv);
+    setButtonsDiv.append(removeSetButton);
   }
 
   void _showDeletionConfirm() {
     _deleteConfirmationDiv.classes.add("pvDeleteConfirmationAnim");
     // Because CSS is dumb and limited
     _deleteConfirmationDiv.style.top =
-        "-" + _deleteConfirmationDiv.clientHeight.toString() + "px";
+        "-" + _deleteConfirmationDiv.offsetHeight.toString() + "px";
   }
 
   void _hideDeletionConfirm() {
     // Because CSS is still dumb and limited
     _deleteConfirmationDiv.style.top =
-        "-" + _deleteConfirmationDiv.clientHeight.toString() + "px";
+        "-" + _deleteConfirmationDiv.offsetHeight.toString() + "px";
     _deleteConfirmationDiv.getAnimations()[0].reverse();
+
     _deleteConfirmationDiv.getAnimations()[0].finished.then((value) =>
         {_deleteConfirmationDiv.classes.remove("pvDeleteConfirmationAnim")});
   }

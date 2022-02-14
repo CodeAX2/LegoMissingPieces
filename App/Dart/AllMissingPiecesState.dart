@@ -81,10 +81,13 @@ class AllMissingPiecesState extends DisplayState {
 
     ButtonElement backButton = new ButtonElement();
     backButton.id = "ampBackBtn";
-    backButton.text = "Back";
     backButton.onClick.listen((event) {
       _app.setCurrentState(DisplayStateType.PROJECT_VIEW);
     });
+    ParagraphElement backButtonText = new ParagraphElement();
+    backButtonText.append(FontAwesome.GET_ARROW_CIRCLE_LEFT());
+    backButtonText.appendText("Back");
+    backButton.append(backButtonText);
     _divRenderingTo.append(backButton);
   }
 

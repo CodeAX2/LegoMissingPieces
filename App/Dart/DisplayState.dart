@@ -13,6 +13,7 @@ import 'LegoSetProject.dart';
 import 'LegoSet.dart';
 import 'RebrickableAccess.dart';
 import 'LegoPiece.dart';
+import 'FontAwesome.dart';
 
 part 'LoadingState.dart';
 part 'ProjectViewState.dart';

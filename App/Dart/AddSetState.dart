@@ -6,13 +6,31 @@ class AddSetState extends DisplayState {
   InputElement _themeInput;
   DivElement _setOutputDiv;
 
+  String _searchValue, _themeValue;
+
+  bool _isActive;
+  bool _scrollListenerRegistered;
+  bool _atBottom;
+
+  int _nextPage = 1;
+
   AddSetState(App app) : super(app) {
     _app.registerState(DisplayStateType.ADD_SET, this);
+    _scrollListenerRegistered = false;
+    _isActive = false;
+    _atBottom = false;
   }
 
   void renderToDiv(String divID) {
     _divRenderingTo = document.getElementById(divID);
     _divRenderingTo.children.clear();
+
+    if (!_scrollListenerRegistered) {
+      _divRenderingTo.onScroll.listen((event) {
+        _onWindowScroll(event);
+      });
+      _scrollListenerRegistered = true;
+    }
 
     DivElement parentDiv = new DivElement();
     parentDiv.id = "asContainerDiv";
@@ -35,10 +53,25 @@ class AddSetState extends DisplayState {
     ButtonElement searchSubmitBtn = new ButtonElement();
     searchSubmitBtn.text = "Go";
     searchSubmitBtn.id = "asSearchSubmitBtn";
+    searchSubmitBtn.classes.add("subBtn");
     searchSubmitBtn.onClick.listen((event) {
-      _searchSets();
+      _searchValue = _searchInput.value;
+      _themeValue = _themeInput.value;
+      _searchSets(1);
     });
     searchBarDiv.append(searchSubmitBtn);
+
+    _searchInput.onKeyUp.listen((event) {
+      if (event.keyCode == KeyCode.ENTER) {
+        searchSubmitBtn.click();
+      }
+    });
+
+    _themeInput.onKeyUp.listen((event) {
+      if (event.keyCode == KeyCode.ENTER) {
+        searchSubmitBtn.click();
+      }
+    });
 
     _setOutputDiv = new DivElement();
     _setOutputDiv.id = "asSetOutputDiv";
@@ -46,31 +79,41 @@ class AddSetState extends DisplayState {
 
     ButtonElement backButton = new ButtonElement();
     backButton.id = "asBackBtn";
-    backButton.text = "Back";
     backButton.onClick.listen((event) {
       _app.setCurrentState(DisplayStateType.PROJECT_VIEW);
     });
+
+    ParagraphElement backButtonText = new ParagraphElement();
+    backButtonText.append(FontAwesome.GET_ARROW_CIRCLE_LEFT());
+    backButtonText.appendText("Back");
+    backButton.append(backButtonText);
     parentDiv.append(backButton);
   }
 
-  void _searchSets() {
-    String search = _searchInput.value;
-    String theme = _themeInput.value;
+  void _searchSets(int pageNum) {
 
     RebrickableAccess api = _app.getProject().getAPIAccess();
 
     api
-        .get("sets", "search=$search&theme_id=$theme&page=1&page_size=25")
+        .get(
+            "sets", "search=$_searchValue&theme_id=$_themeValue&page=$pageNum&page_size=25")
         .then((value) {
       print("Response in: " + api.getResponseTime(value).toString() + "ms");
-      if (value.statusCode == 200) _renderSearchedSets(jsonDecode(value.body));
+      if (value.statusCode == 200) {
+        _nextPage = pageNum + 1;
+        _renderSearchedSets(jsonDecode(value.body), pageNum, 25, pageNum == 1);
+      }
     });
   }
 
-  void _renderSearchedSets(dynamic setsJson) {
-    _setOutputDiv.children.clear();
+  void _renderSearchedSets(
+      dynamic setsJson, int curPage, int pageSize, bool clearPreviousEntries) {
+    if (clearPreviousEntries) {
+      _setOutputDiv.children.clear();
+      _divRenderingTo.scrollTop = 0;
+    }
 
-    int numSets = setsJson["count"];
+    int numSets = min(setsJson["count"] - (curPage - 1) * pageSize, pageSize);
     List<dynamic> sets = setsJson["results"];
 
     for (int i = 0; i < numSets; i++) {
@@ -108,7 +151,24 @@ class AddSetState extends DisplayState {
     }
   }
 
-  void onActivate() {}
+  void _onWindowScroll(Event event) {
+    if (!_isActive) return;
+    if (_divRenderingTo.scrollTop >=
+        _divRenderingTo.scrollHeight - _divRenderingTo.clientHeight - 100) {
+      if (!_atBottom) {
+        _searchSets(_nextPage);
+      }
+      _atBottom = true;
+    } else {
+      _atBottom = false;
+    }
+  }
 
-  void onDeactivate() {}
+  void onActivate() {
+    _isActive = true;
+  }
+
+  void onDeactivate() {
+    _isActive = false;
+  }
 }
