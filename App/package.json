@@ -1,11 +1,12 @@
 {
     "name": "lego-missing-pieces",
     "version": "1.0.0",
+    "productName": "LEGO Missing Pieces",
     "description": "App to keep track of missing pieces from Lego sets",
     "main": "main.js",
     "scripts": {
         "start": "electron .",
-        "build": "npx electron-packager . LegoMissingPieces --platform=win32 --arch=x64 --out=../build --overwrite"
+        "build": "npx electron-packager . --platform=win32 --arch=x64 --out=../build --overwrite --icon=LegoIcon.ico"
     },
     "author": "Jacob Hofer",
     "license": "ISC",

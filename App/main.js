@@ -8,11 +8,13 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
-            preload: path.join(__dirname, 'preload.js')
+            preload: path.join(__dirname, 'preload.js'),
         }
     });
 
     win.loadFile("index.html");
+    win.setTitle("LEGO Missing Pieces");
+    win.setMenu(null);
 }
 
 function main() {
