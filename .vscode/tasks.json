@@ -1,0 +1,24 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Dart Compile to JS",
+            "type": "shell",
+            "command": "dart",
+            "args": [
+                "compile",
+                "js",
+                "-o",
+                "./Webapp.js",
+                "./Dart/Source.dart"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/App"
+            },
+            "problemMatcher": [
+                "$dart-build_runner"
+            ],
+            "isBackground": true
+        }
+    ]
+}

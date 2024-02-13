@@ -7,29 +7,26 @@ import 'package:http/http.dart';
 
 class LegoSet {
   String _setID;
-  String _name;
-  int _year;
-  int _themeID;
 
-  String _imageURL;
+  late String _name;
+  late int _year;
+  late int _themeID;
 
-  Map<LegoPiece, int> _pieces;
-  int _numPieces;
+  late String _imageURL;
 
-  Map<LegoPiece, int> _piecesOwned;
+  late Map<LegoPiece, int> _pieces;
+  late int _numPieces;
+
+  late Map<LegoPiece, int> _piecesOwned;
 
   LegoSetProject _parentProject;
-  bool _loaded;
+  bool _loaded = false;
 
   /// Creates a new LegoSet to keep track of number of pieces and which ones are owned
   ///
   /// [setID] is the rebrickable ID of the set
   /// [parentProject] is the LegoSetProject that this set belongs to
-  LegoSet(String setID, LegoSetProject parentProject) {
-    _setID = setID;
-    _parentProject = parentProject;
-    _loaded = false;
-  }
+  LegoSet(this._setID, this._parentProject);
 
   /// Loads the information about this set from rebrickable
   ///
@@ -71,11 +68,15 @@ class LegoSet {
         if (!partsList[i]["is_spare"]) {
           String partID = partsList[i]["part"]["part_num"];
           int colorID = partsList[i]["color"]["id"];
-          String imageURL = partsList[i]["part"]["part_img_url"];
+          String imageURL = partsList[i]["part"]["part_img_url"] ?? "";
           String partDesc = partsList[i]["part"]["name"];
           String colorName = partsList[i]["color"]["name"];
 
-          LegoPiece piece = LegoPiece.getPieceWithoutAPI(partID, colorID, imageURL, partDesc, colorName);
+          dynamic externalPartIDs = partsList[i]["part"]["external_ids"];
+          dynamic externalColorIDs = partsList[i]["color"]["external_ids"];
+
+          LegoPiece piece = LegoPiece.getPieceWithoutAPI(
+              partID, colorID, imageURL, partDesc, colorName, externalPartIDs, externalColorIDs);
 
           int numInSet = partsList[i]["quantity"];
 
@@ -147,14 +148,14 @@ class LegoSet {
   /// Get the number of a given [piece] in a set
   ///
   /// If [piece] is not a piece in the set, this will return null
-  int getAmountInSet(LegoPiece piece) {
+  int? getAmountInSet(LegoPiece piece) {
     return _pieces[piece];
   }
 
   /// Gets the amount of a given [piece] that is owned for this set
   ///
   /// If [piece] is not in the set, this returns null
-  int getAmountOwned(LegoPiece piece) {
+  int? getAmountOwned(LegoPiece piece) {
     return _piecesOwned[piece];
   }
 
@@ -171,7 +172,7 @@ class LegoSet {
   Map<LegoPiece, int> getMissingPieces() {
     Map<LegoPiece, int> missing = new Map<LegoPiece, int>();
     for (LegoPiece key in _pieces.keys) {
-      missing[key] = _pieces[key] - _piecesOwned[key];
+      missing[key] = _pieces[key]! - _piecesOwned[key]!;
     }
     return missing;
   }

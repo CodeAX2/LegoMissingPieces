@@ -8,16 +8,12 @@ import 'package:node_interop/fs.dart';
 import 'LegoPiece.dart';
 
 class LegoSetProject {
-  List<LegoSet> _sets;
-  String _filePath;
-  bool _loaded;
-  RebrickableAccess _apiAccess;
+  List<LegoSet> _sets = [];
+  late String _filePath;
+  bool _loaded = false;
+  late RebrickableAccess _apiAccess;
 
-  LegoSetProject(String filePath) {
-    _filePath = filePath;
-    _sets = [];
-    _loaded = false;
-  }
+  LegoSetProject(this._filePath);
 
   LegoSetProject.CreateEmpty(String apiKey, String directory, String fileName) {
     _apiAccess = new RebrickableAccess(apiKey);
@@ -30,8 +26,7 @@ class LegoSetProject {
 
   Future<bool> loadProject() async {
     try {
-      dynamic fileContentsJson =
-          jsonDecode(fs.readFileSync(_filePath, "utf-8"));
+      dynamic fileContentsJson = jsonDecode(fs.readFileSync(_filePath, "utf-8"));
 
       _apiAccess = new RebrickableAccess(fileContentsJson["apiKey"]);
 
@@ -47,8 +42,7 @@ class LegoSetProject {
             List<dynamic> piecesOwnedJson = curSetJson["piecesOwned"];
             for (int j = 0; j < piecesOwnedJson.length; j++) {
               dynamic curPieceJson = piecesOwnedJson[j];
-              LegoPiece curPiece = LegoPiece.getPiece(
-                  curPieceJson["partID"], curPieceJson["colorID"], _apiAccess);
+              LegoPiece curPiece = LegoPiece.getPiece(curPieceJson["partID"], curPieceJson["colorID"], _apiAccess)!;
               curSet.setAmountOwned(curPiece, curPieceJson["amountOwned"]);
             }
           }
@@ -83,12 +77,40 @@ class LegoSetProject {
       Map<LegoPiece, int> curSetMissing = curSet.getMissingPieces();
 
       for (LegoPiece key in curSetMissing.keys) {
-        if (missing[key] == null) missing[key] = 0;
-        missing[key] += curSetMissing[key];
+        missing[key] = (missing[key] ?? 0) + curSetMissing[key]!;
       }
     }
 
     return missing;
+  }
+
+  Future<String> generateBricklinkXML() async {
+    String xml = "";
+
+    xml += "<INVENTORY>\n";
+
+    Map<LegoPiece, int> allMissing = getAllMissingPieces();
+
+    for (LegoPiece piece in allMissing.keys) {
+
+      String brickLinkID = await piece.getBricklinkID();
+      int brickLinkColorID = await piece.getBricklinkColorID();
+      int qty = allMissing[piece]!;
+
+      xml += "  <ITEM>\n";
+
+      xml += "    <ITEMTYPE>P</ITEMTYPE>\n";
+      xml += "    <ITEMID>$brickLinkID</ITEMID>\n";
+      xml += "    <COLOR>$brickLinkColorID</COLOR>\n";
+      xml += "    <MINQTY>${qty}</MINQTY>\n";
+
+      xml += "  </ITEM>\n";
+    }
+
+    xml += "</INVENTORY>";
+
+    return xml;
+
   }
 
   bool saveProject() {
@@ -143,7 +165,7 @@ class LegoSetProject {
     return _apiAccess;
   }
 
-  LegoSet getSetByID(String setID) {
+  LegoSet? getSetByID(String setID) {
     for (int i = 0; i < _sets.length; i++) {
       if (_sets[i].getSetID() == setID) return _sets[i];
     }

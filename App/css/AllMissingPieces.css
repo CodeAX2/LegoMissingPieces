@@ -144,3 +144,36 @@
     font-size: 16pt;
     margin-bottom: -1px;
 }
+
+#ampBricklinkXMLBtn {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: #3f5472;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#ampBricklinkXMLBtn:hover {
+    background-color: #5b79a3;
+    transition: background-color 0.3s;
+}
+
+#ampBricklinkXMLBtn > p {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+    font-size: 14pt;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#ampBricklinkXMLBtn > p > i {
+    font-size: 16pt;
+    margin-bottom: -1px;
+}

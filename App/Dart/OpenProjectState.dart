@@ -1,19 +1,18 @@
 part of DisplayState;
 
 class OpenProjectState extends DisplayState {
-  DivElement _divRenderingTo;
+  DivElement? _divRenderingTo;
 
-  bool _active;
+  bool _active = false;
 
-  String _selectedDirectory = null;
+  String? _selectedDirectory = null;
 
-  InputElement _newProjectapiKeyInput = null;
-  InputElement _newProjectNameInput = null;
-  HeadingElement _projectInfoTitle = null;
+  InputElement? _newProjectapiKeyInput = null;
+  InputElement? _newProjectNameInput = null;
+  HeadingElement? _projectInfoTitle = null;
 
   OpenProjectState(App app) : super(app) {
     _app.registerState(DisplayStateType.OPEN_PROJECT, this);
-    _active = false;
 
     window.onMessage.listen((event) {
       if (_active && event.data["type"] == "directory-selected") {
@@ -24,26 +23,26 @@ class OpenProjectState extends DisplayState {
   }
 
   void renderToDiv(String divID) {
-    _divRenderingTo = document.getElementById(divID);
-    _divRenderingTo.children.clear();
+    _divRenderingTo = document.getElementById(divID) as DivElement?;
+    _divRenderingTo?.children.clear();
 
     HeadingElement openProjectTitle = HeadingElement.h1();
     openProjectTitle.id = "opOpenProjectTitle";
     openProjectTitle.text = "Open Existing Project";
-    _divRenderingTo.append(openProjectTitle);
+    _divRenderingTo?.append(openProjectTitle);
 
     ButtonElement openProjectButton = new ButtonElement();
     openProjectButton.id = "opOpenProjectBtn";
     openProjectButton.text = "Select Project";
     openProjectButton.classes.add("mainBtn");
-    _divRenderingTo.append(openProjectButton);
+    _divRenderingTo?.append(openProjectButton);
 
     InputElement openProjectInput = new InputElement(type: "file");
     openProjectInput.id = "opOpenProjectInput";
     openProjectInput.accept = ".json";
     openProjectInput.onChange.listen((event) {
       List<dynamic> args = new List.empty(growable: true);
-      args.add(openProjectInput.files[0]);
+      args.add(openProjectInput.files?[0]);
       String filePath = context.callMethod("getFilePath", args);
 
       LegoSetProject project = new LegoSetProject(filePath);
@@ -54,7 +53,7 @@ class OpenProjectState extends DisplayState {
       _app.setProject(project);
       _app.setCurrentState(DisplayStateType.LOADING);
     });
-    _divRenderingTo.append(openProjectInput);
+    _divRenderingTo?.append(openProjectInput);
 
     openProjectButton.onClick.listen((event) {
       openProjectInput.click();
@@ -63,7 +62,7 @@ class OpenProjectState extends DisplayState {
     HeadingElement createProjectTitle = HeadingElement.h1();
     createProjectTitle.id = "opCreateProjectTitle";
     createProjectTitle.text = "Create New Project";
-    _divRenderingTo.append(createProjectTitle);
+    _divRenderingTo?.append(createProjectTitle);
 
     HeadingElement projectInfoTitle = HeadingElement.h1();
     projectInfoTitle.id = "opProjectInfoTitle";
@@ -77,7 +76,7 @@ class OpenProjectState extends DisplayState {
       _updateProjectInfoTitle();
     });
     _newProjectapiKeyInput = apiKeyInput;
-    _divRenderingTo.append(apiKeyInput);
+    _divRenderingTo?.append(apiKeyInput);
 
     InputElement projectNameInput = new InputElement(type: "text");
     projectNameInput.id = "opProjectNameInput";
@@ -86,7 +85,7 @@ class OpenProjectState extends DisplayState {
       _updateProjectInfoTitle();
     });
     _newProjectNameInput = projectNameInput;
-    _divRenderingTo.append(projectNameInput);
+    _divRenderingTo?.append(projectNameInput);
 
     ButtonElement selectDirectoryButton = new ButtonElement();
     selectDirectoryButton.id = "opSelectDirectoryBtn";
@@ -97,9 +96,9 @@ class OpenProjectState extends DisplayState {
       messageContents["type"] = "select-directory";
       window.postMessage(messageContents, "*");
     });
-    _divRenderingTo.append(selectDirectoryButton);
+    _divRenderingTo?.append(selectDirectoryButton);
 
-    _divRenderingTo.append(projectInfoTitle);
+    _divRenderingTo?.append(projectInfoTitle);
 
     ButtonElement createProjectButton = new ButtonElement();
     createProjectButton.id = "opCreateProjectBtn";
@@ -107,7 +106,7 @@ class OpenProjectState extends DisplayState {
     createProjectButton.classes.add("mainBtn");
     createProjectButton.onClick.listen((event) {
       LegoSetProject project =
-          new LegoSetProject.CreateEmpty(apiKeyInput.value, _selectedDirectory, projectNameInput.value + ".json");
+          new LegoSetProject.CreateEmpty(apiKeyInput.value ?? "", _selectedDirectory!, projectNameInput.value! + ".json");
       project.loadProject().then((value) {
         _app.setCurrentState(DisplayStateType.PROJECT_VIEW);
       });
@@ -115,7 +114,7 @@ class OpenProjectState extends DisplayState {
       _app.setProject(project);
       _app.setCurrentState(DisplayStateType.LOADING);
     });
-    _divRenderingTo.append(createProjectButton);
+    _divRenderingTo?.append(createProjectButton);
   }
 
   void onActivate() {
@@ -128,17 +127,17 @@ class OpenProjectState extends DisplayState {
   }
 
   void _updateProjectInfoTitle() {
-    String apiKey = _newProjectapiKeyInput.value;
-    String currentName = _newProjectNameInput.value;
+    String apiKey = _newProjectapiKeyInput?.value ?? "";
+    String currentName = _newProjectNameInput?.value ?? "";
     if (apiKey == "") {
-      _projectInfoTitle.text = "Please enter your API key";
+      _projectInfoTitle?.text = "Please enter your API key";
     } else if (currentName == "") {
-      _projectInfoTitle.text = "Please name your project";
+      _projectInfoTitle?.text = "Please name your project";
     } else if (_selectedDirectory == null) {
-      _projectInfoTitle.text = "Please select a directory";
+      _projectInfoTitle?.text = "Please select a directory";
     } else {
-      _projectInfoTitle.innerHtml =
-          "This will create a new project named: <i>" + currentName + "</i> in: <i>" + _selectedDirectory + "</i>";
+      _projectInfoTitle?.innerHtml =
+          "This will create a new project named: <i>" + currentName + "</i> in: <i>" + _selectedDirectory! + "</i>";
     }
   }
 }

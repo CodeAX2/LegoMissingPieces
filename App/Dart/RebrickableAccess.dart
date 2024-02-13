@@ -2,14 +2,10 @@ import 'package:http/http.dart';
 
 class RebrickableAccess {
   String _apiKey;
-  Client _client;
-  Map<Response, int> _responseTimes;
+  Client _client = Client();
+  Map<Response, int> _responseTimes = new Map();
 
-  RebrickableAccess(String apiKey) {
-    _apiKey = apiKey;
-    _client = Client();
-    _responseTimes = new Map();
-  }
+  RebrickableAccess(this._apiKey);
 
   /// Performs a GET request to rebrickable.com
   ///
@@ -26,7 +22,7 @@ class RebrickableAccess {
     return resp;
   }
 
-  int getResponseTime(Response resp) {
+  int? getResponseTime(Response resp) {
     return _responseTimes[resp];
   }
 

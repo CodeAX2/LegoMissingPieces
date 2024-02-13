@@ -6,12 +6,12 @@ class LoadingState extends DisplayState {
   }
 
   void renderToDiv(String divID) {
-    DivElement parentDiv = document.getElementById(divID);
-    parentDiv.children.clear();
+    DivElement? parentDiv = document.getElementById(divID) as DivElement?;
+    parentDiv?.children.clear();
 
     DivElement loadingDiv = new DivElement();
     loadingDiv.id = "ldLoadingDiv";
-    parentDiv.append(loadingDiv);
+    parentDiv?.append(loadingDiv);
 
     HeadingElement loadingTitle = HeadingElement.h1();
     loadingTitle.text = "Loading";

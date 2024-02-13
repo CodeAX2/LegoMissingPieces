@@ -1,20 +1,20 @@
 part of DisplayState;
 
 class EditPiecesState extends DisplayState {
-  LegoSet _selectedSet;
-  DivElement _divRenderingTo;
+  late LegoSet _selectedSet;
+  DivElement? _divRenderingTo;
 
   EditPiecesState(App app) : super(app) {
     _app.registerState(DisplayStateType.EDIT_PIECES, this);
   }
 
   void renderToDiv(String divID) {
-    _divRenderingTo = document.getElementById(divID);
-    _divRenderingTo.children.clear();
+    _divRenderingTo = document.getElementById(divID) as DivElement?;
+    _divRenderingTo?.children.clear();
 
     DivElement piecesListHeadersDiv = new DivElement();
     piecesListHeadersDiv.id = "epPiecesListHeadersDiv";
-    _divRenderingTo.append(piecesListHeadersDiv);
+    _divRenderingTo?.append(piecesListHeadersDiv);
 
     HeadingElement piecesImageHeader = HeadingElement.h1();
     piecesImageHeader.text = "Piece Image";
@@ -43,7 +43,7 @@ class EditPiecesState extends DisplayState {
 
     DivElement piecesListDiv = new DivElement();
     piecesListDiv.id = "epPiecesListDiv";
-    _divRenderingTo.append(piecesListDiv);
+    _divRenderingTo?.append(piecesListDiv);
 
     List<LegoPiece> allPieces = _selectedSet.getPieces().keys.toList();
 
@@ -55,7 +55,7 @@ class EditPiecesState extends DisplayState {
       ImageElement pieceImage = new ImageElement();
       pieceImage.classes.add("epPieceImage");
       piece.getImageURL().then((value) {
-        if (value == null) {
+        if (value == "") {
           // Use a random question mark image
           pieceImage.src =
               "https://t3.ftcdn.net/jpg/03/35/13/14/360_F_335131435_DrHIQjlOKlu3GCXtpFkIG1v0cGgM9vJC.jpg";
@@ -89,7 +89,7 @@ class EditPiecesState extends DisplayState {
       pieceOwnedAmountDown.classes.add("epPieceOwnedAmountDownBtn");
       pieceOwnedAmountDown.append(FontAwesome.GET_MINUS());
       pieceOwnedAmountDown.onClick.listen((event) {
-        int amountOwned = max(_selectedSet.getAmountOwned(piece) - 1, 0);
+        int amountOwned = max(_selectedSet.getAmountOwned(piece)! - 1, 0);
         _selectedSet.setAmountOwned(piece, amountOwned);
         pieceOwnedAmountTitle.text = amountOwned.toString();
       });
@@ -101,8 +101,8 @@ class EditPiecesState extends DisplayState {
       pieceOwnedAmountUp.classes.add("pieceOwnedAmountUpBtn");
       pieceOwnedAmountUp.append(FontAwesome.GET_PLUS());
       pieceOwnedAmountUp.onClick.listen((event) {
-        int amountOwned = min(_selectedSet.getAmountOwned(piece) + 1,
-            _selectedSet.getAmountInSet(piece));
+        int amountOwned = min(_selectedSet.getAmountOwned(piece)! + 1,
+            _selectedSet.getAmountInSet(piece)!);
         _selectedSet.setAmountOwned(piece, amountOwned);
         pieceOwnedAmountTitle.text = amountOwned.toString();
       });
@@ -123,7 +123,7 @@ class EditPiecesState extends DisplayState {
     backButtonText.append(FontAwesome.GET_ARROW_CIRCLE_LEFT());
     backButtonText.appendText("Back");
     backButton.append(backButtonText);
-    _divRenderingTo.append(backButton);
+    _divRenderingTo?.append(backButton);
   }
 
   void onActivate() {}

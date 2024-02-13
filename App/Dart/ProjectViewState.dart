@@ -1,24 +1,24 @@
 part of DisplayState;
 
 class ProjectViewState extends DisplayState {
-  LegoSet _selectedSet;
-  DivElement _setViewDiv;
-  DivElement _deleteConfirmationDiv;
-  DivElement _divRenderingTo;
+  LegoSet? _selectedSet;
+  DivElement? _setViewDiv;
+  DivElement? _deleteConfirmationDiv;
+  DivElement? _divRenderingTo;
 
   ProjectViewState(App app) : super(app) {
     _app.registerState(DisplayStateType.PROJECT_VIEW, this);
   }
 
   void renderToDiv(String divID) {
-    LegoSetProject project = _app.getProject();
+    LegoSetProject? project = _app.getProject();
 
-    _divRenderingTo = document.getElementById(divID);
-    _divRenderingTo.children.clear();
+    _divRenderingTo = document.getElementById(divID) as DivElement?;
+    _divRenderingTo?.children.clear();
 
     DivElement pvStateDiv = new DivElement();
     pvStateDiv.id = "pvStateDiv";
-    _divRenderingTo.append(pvStateDiv);
+    _divRenderingTo?.append(pvStateDiv);
 
     DivElement menuDiv = new DivElement();
     menuDiv.id = "pvMenuDiv";
@@ -56,52 +56,54 @@ class ProjectViewState extends DisplayState {
     leftNavDiv.id = "pvNavDiv";
     parentDiv.append(leftNavDiv);
 
-    List<LegoSet> sets = project.getSets();
-    for (LegoSet set in sets) {
-      DivElement setDiv = new DivElement();
-      setDiv.onClick.listen((event) {
-        selectSet(set);
-      });
-      setDiv.classes.add("pvNavSetDiv");
-      leftNavDiv.children.add(setDiv);
+    if (project != null) {
+      List<LegoSet> sets = project.getSets();
+      for (LegoSet set in sets) {
+        DivElement setDiv = new DivElement();
+        setDiv.onClick.listen((event) {
+          selectSet(set);
+        });
+        setDiv.classes.add("pvNavSetDiv");
+        leftNavDiv.children.add(setDiv);
 
-      ImageElement setImg = new ImageElement(src: set.getImageURL());
-      setImg.classes.add("pvNavSetImg");
-      setDiv.append(setImg);
+        ImageElement setImg = new ImageElement(src: set.getImageURL());
+        setImg.classes.add("pvNavSetImg");
+        setDiv.append(setImg);
 
-      HeadingElement setTitle = HeadingElement.h1();
-      setTitle.text = set.getName();
-      setTitle.classes.add("pvNavSetTitle");
-      setDiv.append(setTitle);
+        HeadingElement setTitle = HeadingElement.h1();
+        setTitle.text = set.getName();
+        setTitle.classes.add("pvNavSetTitle");
+        setDiv.append(setTitle);
 
-      HeadingElement setID = HeadingElement.h2();
-      setID.text = set.getSetID();
-      setID.classes.add("pvNavSetSubtitle");
-      setDiv.append(setID);
+        HeadingElement setID = HeadingElement.h2();
+        setID.text = set.getSetID();
+        setID.classes.add("pvNavSetSubtitle");
+        setDiv.append(setID);
 
-      HeadingElement setYear = HeadingElement.h2();
-      setYear.text = set.getYear().toString();
-      setYear.classes.add("pvNavSetSubtitle");
-      setDiv.append(setYear);
+        HeadingElement setYear = HeadingElement.h2();
+        setYear.text = set.getYear().toString();
+        setYear.classes.add("pvNavSetSubtitle");
+        setDiv.append(setYear);
+      }
     }
 
     _setViewDiv = new DivElement();
-    _setViewDiv.id = "pvSetViewDiv";
-    parentDiv.append(_setViewDiv);
+    _setViewDiv?.id = "pvSetViewDiv";
+    parentDiv.append(_setViewDiv as Node);
 
     if (_selectedSet != null) _renderSelectedSet();
 
     _deleteConfirmationDiv = new DivElement();
-    _deleteConfirmationDiv.id = "pvDeleteConfirmationDiv";
+    _deleteConfirmationDiv?.id = "pvDeleteConfirmationDiv";
 
     HeadingElement deleteHeading = HeadingElement.h1();
     deleteHeading.text = "Are You Sure You Want To Proceed?";
-    _deleteConfirmationDiv.append(deleteHeading);
+    _deleteConfirmationDiv?.append(deleteHeading);
 
     ParagraphElement deleteInformation = new ParagraphElement();
     deleteInformation.text =
         "This will remove the set from the current project, and any parts you have marked as missing. Are you sure you want to proceed?";
-    _deleteConfirmationDiv.append(deleteInformation);
+    _deleteConfirmationDiv?.append(deleteInformation);
 
     ButtonElement deleteConfirmButton = new ButtonElement();
     deleteConfirmButton.id = "pvDeleteConfirmationBtn";
@@ -109,7 +111,7 @@ class ProjectViewState extends DisplayState {
     deleteConfirmButton.onClick.listen((event) {
       _deleteCurrentSet();
     });
-    _deleteConfirmationDiv.append(deleteConfirmButton);
+    _deleteConfirmationDiv?.append(deleteConfirmButton);
 
     ButtonElement confirmationCloseButton = new ButtonElement();
     confirmationCloseButton.id = "pvConfirmationCloseBtn";
@@ -117,9 +119,9 @@ class ProjectViewState extends DisplayState {
     confirmationCloseButton.onClick.listen((event) {
       _hideDeletionConfirm();
     });
-    _deleteConfirmationDiv.append(confirmationCloseButton);
+    _deleteConfirmationDiv?.append(confirmationCloseButton);
 
-    pvStateDiv.append(_deleteConfirmationDiv);
+    pvStateDiv.append(_deleteConfirmationDiv as Node);
   }
 
   void selectSet(LegoSet set) {
@@ -128,41 +130,41 @@ class ProjectViewState extends DisplayState {
   }
 
   void _renderSelectedSet() {
-    _setViewDiv.children.clear();
+    _setViewDiv?.children.clear();
 
-    _deleteConfirmationDiv.classes.remove("pvDeleteConfirmationAnim");
+    _deleteConfirmationDiv?.classes.remove("pvDeleteConfirmationAnim");
 
     ImageElement setImage = new ImageElement();
-    setImage.src = _selectedSet.getImageURL();
-    _setViewDiv.append(setImage);
+    setImage.src = _selectedSet?.getImageURL();
+    _setViewDiv?.append(setImage);
 
     HeadingElement setTitle = HeadingElement.h1();
-    setTitle.text = _selectedSet.getName();
-    _setViewDiv.append(setTitle);
+    setTitle.text = _selectedSet?.getName();
+    _setViewDiv?.append(setTitle);
 
     ParagraphElement setInformation = new ParagraphElement();
 
     String setInformationText = "";
-    setInformationText += "Set ID: ${_selectedSet.getSetID()}\n";
-    setInformationText += "Year: ${_selectedSet.getYear()}\n";
-    setInformationText += "Theme ID: ${_selectedSet.getThemeID()}\n";
-    setInformationText += "Number of Pieces: ${_selectedSet.getNumPieces()}";
+    setInformationText += "Set ID: ${_selectedSet?.getSetID()}\n";
+    setInformationText += "Year: ${_selectedSet?.getYear()}\n";
+    setInformationText += "Theme ID: ${_selectedSet?.getThemeID()}\n";
+    setInformationText += "Number of Pieces: ${_selectedSet?.getNumPieces()}";
 
     setInformation.text = setInformationText;
 
-    _setViewDiv.append(setInformation);
+    _setViewDiv?.append(setInformation);
 
     DivElement setButtonsDiv = new DivElement();
     setButtonsDiv.id = "pvSetButtonsDiv";
-    _setViewDiv.append(setButtonsDiv);
+    _setViewDiv?.append(setButtonsDiv);
 
     ButtonElement editPiecesButton = new ButtonElement();
     editPiecesButton.text = "Edit Missing Pieces";
     editPiecesButton.id = "pvEditPiecesBtn";
     editPiecesButton.classes.add("mainBtn");
     editPiecesButton.onClick.listen((event) {
-      EditPiecesState newState = _app.getState(DisplayStateType.EDIT_PIECES);
-      newState.setSelectedSet(_selectedSet);
+      EditPiecesState? newState = _app.getState(DisplayStateType.EDIT_PIECES) as EditPiecesState?;
+      newState?.setSelectedSet(_selectedSet!);
       _app.setCurrentState(DisplayStateType.EDIT_PIECES);
     });
 
@@ -180,31 +182,30 @@ class ProjectViewState extends DisplayState {
   }
 
   void _showDeletionConfirm() {
-    _deleteConfirmationDiv.classes.add("pvDeleteConfirmationAnim");
+    _deleteConfirmationDiv?.classes.add("pvDeleteConfirmationAnim");
     // Because CSS is dumb and limited
-    _deleteConfirmationDiv.style.top =
-        "-" + _deleteConfirmationDiv.offsetHeight.toString() + "px";
+    _deleteConfirmationDiv?.style.top = "-" + _deleteConfirmationDiv!.offsetHeight.toString() + "px";
   }
 
   void _hideDeletionConfirm() {
     // Because CSS is still dumb and limited
-    _deleteConfirmationDiv.style.top =
-        "-" + _deleteConfirmationDiv.offsetHeight.toString() + "px";
-    _deleteConfirmationDiv.getAnimations()[0].reverse();
+    _deleteConfirmationDiv?.style.top = "-" + _deleteConfirmationDiv!.offsetHeight.toString() + "px";
+    _deleteConfirmationDiv?.getAnimations()[0].reverse();
 
-    _deleteConfirmationDiv.getAnimations()[0].finished.then((value) =>
-        {_deleteConfirmationDiv.classes.remove("pvDeleteConfirmationAnim")});
+    _deleteConfirmationDiv
+        ?.getAnimations()[0]
+        .finished
+        .then((value) => {_deleteConfirmationDiv?.classes.remove("pvDeleteConfirmationAnim")});
   }
 
   void _deleteCurrentSet() {
-    _app.getProject().removeSet(_selectedSet.getSetID());
+    _app.getProject()?.removeSet(_selectedSet!.getSetID());
     _selectedSet = null;
-    renderToDiv(_divRenderingTo.id);
+    renderToDiv(_divRenderingTo!.id);
   }
 
   void onActivate() {
-    if (_selectedSet != null &&
-        _selectedSet.getParentProject() != _app.getProject()) {
+    if (_selectedSet != null && _selectedSet?.getParentProject() != _app.getProject()) {
       _selectedSet = null;
     }
   }

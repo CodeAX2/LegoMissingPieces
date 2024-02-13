@@ -12,6 +12,8 @@ function createWindow() {
         }
     });
 
+    //win.webContents.openDevTools();
+
     win.loadFile("index.html");
     win.setTitle("LEGO Missing Pieces");
     win.setMenu(null);

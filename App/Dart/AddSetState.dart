@@ -1,32 +1,29 @@
 part of DisplayState;
 
 class AddSetState extends DisplayState {
-  DivElement _divRenderingTo;
-  InputElement _searchInput;
-  InputElement _themeInput;
-  DivElement _setOutputDiv;
+  DivElement? _divRenderingTo;
+  late InputElement _searchInput;
+  late InputElement _themeInput;
+  late DivElement _setOutputDiv;
 
-  String _searchValue, _themeValue;
+  String _searchValue = "", _themeValue = "";
 
-  bool _isActive;
-  bool _scrollListenerRegistered;
-  bool _atBottom;
+  bool _isActive = false;
+  bool _scrollListenerRegistered = false;
+  bool _atBottom = false;
 
   int _nextPage = 1;
 
   AddSetState(App app) : super(app) {
     _app.registerState(DisplayStateType.ADD_SET, this);
-    _scrollListenerRegistered = false;
-    _isActive = false;
-    _atBottom = false;
   }
 
   void renderToDiv(String divID) {
-    _divRenderingTo = document.getElementById(divID);
-    _divRenderingTo.children.clear();
+    _divRenderingTo = document.getElementById(divID) as DivElement?;
+    _divRenderingTo?.children.clear();
 
     if (!_scrollListenerRegistered) {
-      _divRenderingTo.onScroll.listen((event) {
+      _divRenderingTo?.onScroll.listen((event) {
         _onWindowScroll(event);
       });
       _scrollListenerRegistered = true;
@@ -34,7 +31,7 @@ class AddSetState extends DisplayState {
 
     DivElement parentDiv = new DivElement();
     parentDiv.id = "asContainerDiv";
-    _divRenderingTo.append(parentDiv);
+    _divRenderingTo?.append(parentDiv);
 
     DivElement searchBarDiv = new DivElement();
     searchBarDiv.id = "asSearchBarDiv";
@@ -55,8 +52,8 @@ class AddSetState extends DisplayState {
     searchSubmitBtn.id = "asSearchSubmitBtn";
     searchSubmitBtn.classes.add("subBtn");
     searchSubmitBtn.onClick.listen((event) {
-      _searchValue = _searchInput.value;
-      _themeValue = _themeInput.value;
+      _searchValue = _searchInput.value ?? "";
+      _themeValue = _themeInput.value ?? "";
       _searchSets(1);
     });
     searchBarDiv.append(searchSubmitBtn);
@@ -91,26 +88,23 @@ class AddSetState extends DisplayState {
   }
 
   void _searchSets(int pageNum) {
+    RebrickableAccess? api = _app.getProject()?.getAPIAccess();
 
-    RebrickableAccess api = _app.getProject().getAPIAccess();
-
-    api
-        .get(
-            "sets", "search=$_searchValue&theme_id=$_themeValue&page=$pageNum&page_size=25")
-        .then((value) {
-      print("Response in: " + api.getResponseTime(value).toString() + "ms");
-      if (value.statusCode == 200) {
-        _nextPage = pageNum + 1;
-        _renderSearchedSets(jsonDecode(value.body), pageNum, 25, pageNum == 1);
-      }
-    });
+    if (api != null) {
+      api.get("sets", "search=$_searchValue&theme_id=$_themeValue&page=$pageNum&page_size=25").then((value) {
+        print("Response in: " + api.getResponseTime(value).toString() + "ms");
+        if (value.statusCode == 200) {
+          _nextPage = pageNum + 1;
+          _renderSearchedSets(jsonDecode(value.body), pageNum, 25, pageNum == 1);
+        }
+      });
+    }
   }
 
-  void _renderSearchedSets(
-      dynamic setsJson, int curPage, int pageSize, bool clearPreviousEntries) {
+  void _renderSearchedSets(dynamic setsJson, int curPage, int pageSize, bool clearPreviousEntries) {
     if (clearPreviousEntries) {
       _setOutputDiv.children.clear();
-      _divRenderingTo.scrollTop = 0;
+      _divRenderingTo?.scrollTop = 0;
     }
 
     int numSets = min(setsJson["count"] - (curPage - 1) * pageSize, pageSize);
@@ -122,7 +116,7 @@ class AddSetState extends DisplayState {
       String setID = curSet["set_num"];
 
       // Set already in project
-      if (_app.getProject().getSetByID(setID) != null) continue;
+      if (_app.getProject()?.getSetByID(setID) != null) continue;
 
       String setName = curSet["name"];
       String imageURL = curSet["set_img_url"];
@@ -141,9 +135,9 @@ class AddSetState extends DisplayState {
       ButtonElement addSetButton = new ButtonElement();
       addSetButton.text = "Add Set";
       addSetButton.onClick.listen((event) {
-        _app.getProject().addNewSet(setID).then((value) {
+        _app.getProject()?.addNewSet(setID).then((value) {
           _app.setCurrentState(DisplayStateType.PROJECT_VIEW);
-          _app.getProject().saveProject();
+          _app.getProject()?.saveProject();
         });
         _app.setCurrentState(DisplayStateType.LOADING);
       });
@@ -153,8 +147,8 @@ class AddSetState extends DisplayState {
 
   void _onWindowScroll(Event event) {
     if (!_isActive) return;
-    if (_divRenderingTo.scrollTop >=
-        _divRenderingTo.scrollHeight - _divRenderingTo.clientHeight - 100) {
+    if (_divRenderingTo == null) return;
+    if (_divRenderingTo!.scrollTop >= _divRenderingTo!.scrollHeight - _divRenderingTo!.clientHeight - 100) {
       if (!_atBottom) {
         _searchSets(_nextPage);
       }

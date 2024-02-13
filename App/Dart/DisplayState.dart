@@ -31,9 +31,7 @@ abstract class DisplayState {
     return _app;
   }
 
-  DisplayState(App app) {
-    _app = app;
-  }
+  DisplayState(this._app);
 
   void renderToDiv(String divID);
   void onActivate();
